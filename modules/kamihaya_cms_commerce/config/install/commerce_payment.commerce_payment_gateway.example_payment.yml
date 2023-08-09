@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_payment_example
+id: example_payment
+label: 'Example Payment'
+weight: null
+plugin: example_stored_offsite_redirect
+configuration:
+  redirect_method: post
+  display_label: 'Example Stored Offsite'
+  mode: test
+  payment_method_types:
+    - credit_card
+  collect_billing_information: true
+conditions: {  }
+conditionOperator: AND

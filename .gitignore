@@ -11,3 +11,4 @@ deployment_identifier
 vendor
 web
 salt.txt
+.DS_Store

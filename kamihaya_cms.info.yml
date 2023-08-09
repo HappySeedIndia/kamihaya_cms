@@ -41,8 +41,9 @@ install:
   - kamihaya_cms_faq
   - kamihaya_cms_page
   # - kamihaya_cms_recruitment
-  - kamihaya_cms_user
+  # - kamihaya_cms_user
   # - kamihaya_cms_webform
+  - kamihaya_cms_commerce
 
 # List any themes that should be installed as part of the profile installation.
 # Note that this will not set any theme as the default theme.
