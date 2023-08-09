@@ -1,0 +1,9 @@
+langcode: ja
+status: true
+dependencies:
+  module:
+    - node
+id: node.apply_form
+label: 応募フォーム
+targetEntityType: node
+cache: true

@@ -1,0 +1,18 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_holiday
+    - node.type.recruitment
+id: node.recruitment.field_holiday
+field_name: field_holiday
+entity_type: node
+bundle: recruitment
+label: 休日・休暇
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

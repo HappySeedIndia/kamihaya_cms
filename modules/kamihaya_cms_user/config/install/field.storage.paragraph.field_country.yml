@@ -1,0 +1,18 @@
+langcode: ja
+status: true
+dependencies:
+  module:
+    - address
+    - paragraphs
+id: paragraph.field_country
+field_name: field_country
+entity_type: paragraph
+type: address_country
+settings: {  }
+module: address
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

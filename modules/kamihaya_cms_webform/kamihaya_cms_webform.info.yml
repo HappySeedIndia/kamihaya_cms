@@ -1,0 +1,21 @@
+name: ウェブフォーム
+description: 'Provides ウェブフォーム コンテンツタイプ and related configuration. A basic page with a webform attached.'
+type: module
+core_version_requirement: '^9.4 || ^10'
+dependencies:
+  - 'address:address'
+  - 'drupal:ckeditor5'
+  - 'drupal:datetime'
+  - 'drupal:editor'
+  - 'drupal:field'
+  - 'drupal:image'
+  - 'drupal:link'
+  - 'drupal:options'
+  - 'drupal:path'
+  - 'drupal:telephone'
+  - 'drupal:text'
+  - 'drupal:user'
+  - 'entity_reference_revisions:entity_reference_revisions'
+  - 'paragraphs:paragraphs'
+  - 'select_or_other:select_or_other'
+  - 'webform:webform'

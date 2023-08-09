@@ -1,0 +1,18 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_school
+    - paragraphs.paragraphs_type.educational_background
+id: paragraph.educational_background.field_school
+field_name: field_school
+entity_type: paragraph
+bundle: educational_background
+label: 学校名
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

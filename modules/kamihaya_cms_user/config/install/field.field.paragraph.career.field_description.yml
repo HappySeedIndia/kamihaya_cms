@@ -1,0 +1,21 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_description
+    - paragraphs.paragraphs_type.career
+  module:
+    - text
+id: paragraph.career.field_description
+field_name: field_description
+entity_type: paragraph
+bundle: career
+label: 業務内容
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

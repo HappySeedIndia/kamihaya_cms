@@ -1,0 +1,58 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.recruitment.body
+    - field.field.node.recruitment.field_apply_form
+    - field.field.node.recruitment.field_company
+    - field.field.node.recruitment.field_company_url
+    - field.field.node.recruitment.field_employment_status
+    - field.field.node.recruitment.field_holiday
+    - field.field.node.recruitment.field_min_annual_income
+    - field.field.node.recruitment.field_occupation
+    - field.field.node.recruitment.field_overview
+    - field.field.node.recruitment.field_required_skill
+    - field.field.node.recruitment.field_salary
+    - field.field.node.recruitment.field_tag
+    - field.field.node.recruitment.field_welcome_skill
+    - field.field.node.recruitment.field_welfare
+    - field.field.node.recruitment.field_working_hours
+    - node.type.recruitment
+  module:
+    - text
+    - user
+id: node.recruitment.teaser
+targetEntityType: node
+bundle: recruitment
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_apply_form: true
+  field_company: true
+  field_company_url: true
+  field_employment_status: true
+  field_holiday: true
+  field_min_annual_income: true
+  field_occupation: true
+  field_overview: true
+  field_required_skill: true
+  field_salary: true
+  field_tag: true
+  field_welcome_skill: true
+  field_welfare: true
+  field_working_hours: true
+  langcode: true

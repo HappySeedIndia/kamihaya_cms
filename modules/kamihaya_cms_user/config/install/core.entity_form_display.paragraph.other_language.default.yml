@@ -1,0 +1,36 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.other_language.field_business_level
+    - field.field.paragraph.other_language.field_conversation_level
+    - field.field.paragraph.other_language.field_language
+    - paragraphs.paragraphs_type.other_language
+id: paragraph.other_language.default
+targetEntityType: paragraph
+bundle: other_language
+mode: default
+content:
+  field_business_level:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_conversation_level:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_language:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

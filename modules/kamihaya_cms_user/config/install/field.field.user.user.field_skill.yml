@@ -1,0 +1,54 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_skill
+    - paragraphs.paragraphs_type.skill
+  module:
+    - entity_reference_revisions
+    - user
+id: user.user.field_skill
+field_name: field_skill
+entity_type: user
+bundle: user
+label: スキル
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      skill: skill
+    negate: 0
+    target_bundles_drag_drop:
+      career:
+        weight: 10
+        enabled: false
+      educational_background:
+        weight: 11
+        enabled: false
+      english_skill:
+        weight: 12
+        enabled: false
+      groups:
+        weight: 13
+        enabled: false
+      license:
+        weight: 14
+        enabled: false
+      other_language:
+        weight: 15
+        enabled: false
+      other_notice:
+        weight: 16
+        enabled: false
+      q_a:
+        weight: 17
+        enabled: false
+      skill:
+        weight: 18
+        enabled: true
+field_type: entity_reference_revisions

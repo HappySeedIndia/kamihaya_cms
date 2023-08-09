@@ -1,0 +1,7 @@
+langcode: ja
+status: true
+dependencies: {  }
+name: 求人タグ
+vid: recruitment_tag
+description: ''
+weight: 0

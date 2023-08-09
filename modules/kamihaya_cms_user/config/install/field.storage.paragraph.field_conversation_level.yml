@@ -1,0 +1,32 @@
+langcode: ja
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_conversation_level
+field_name: field_conversation_level
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: ネイティブレベル
+      label: ネイティブレベル
+    -
+      value: ビジネス会話可能
+      label: ビジネス会話可能
+    -
+      value: 日常会話可能
+      label: 日常会話可能
+    -
+      value: 簡単な会話可能
+      label: 簡単な会話可能
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,9 @@
+langcode: ja
+status: true
+dependencies: {  }
+id: educational_background
+label: 学歴
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

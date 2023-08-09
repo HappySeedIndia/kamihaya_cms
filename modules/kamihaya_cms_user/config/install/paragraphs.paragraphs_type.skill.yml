@@ -1,0 +1,9 @@
+langcode: ja
+status: true
+dependencies: {  }
+id: skill
+label: スキル
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

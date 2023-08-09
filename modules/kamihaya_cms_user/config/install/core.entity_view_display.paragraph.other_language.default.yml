@@ -1,0 +1,38 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.other_language.field_business_level
+    - field.field.paragraph.other_language.field_conversation_level
+    - field.field.paragraph.other_language.field_language
+    - paragraphs.paragraphs_type.other_language
+  module:
+    - options
+id: paragraph.other_language.default
+targetEntityType: paragraph
+bundle: other_language
+mode: default
+content:
+  field_business_level:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_conversation_level:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_language:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

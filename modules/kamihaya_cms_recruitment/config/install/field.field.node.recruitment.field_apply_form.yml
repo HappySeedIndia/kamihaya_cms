@@ -1,0 +1,32 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_apply_form
+    - node.type.recruitment
+    - webform.webform.apply_job
+  module:
+    - webform
+id: node.recruitment.field_apply_form
+field_name: field_apply_form
+entity_type: node
+bundle: recruitment
+label: 応募フォーム
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    target_uuid: b1d89451-c316-4690-8322-ee69a1355021
+    default_data: ''
+    status: open
+    open: ''
+    close: ''
+    webform_access_group: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:webform'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: webform

@@ -1,0 +1,22 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_min_annual_income
+    - node.type.recruitment
+id: node.recruitment.field_min_annual_income
+field_name: field_min_annual_income
+entity_type: node
+bundle: recruitment
+label: 最低年収
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: 万円
+field_type: integer

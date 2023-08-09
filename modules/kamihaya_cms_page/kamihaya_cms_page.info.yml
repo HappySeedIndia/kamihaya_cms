@@ -1,0 +1,12 @@
+name: 基本ページ
+description: 'Provides 基本ページ コンテンツタイプ and related configuration. 「About us」のような、あまり更新されない内容の場合は <em>基本ページ</em> を使ってください。'
+type: module
+core_version_requirement: '^9.4 || ^10'
+dependencies:
+  - 'drupal:field'
+  - 'drupal:node'
+  - 'drupal:path'
+  - 'drupal:text'
+  - 'drupal:user'
+  - 'metatag:metatag'
+  - 'pathauto:pathauto'

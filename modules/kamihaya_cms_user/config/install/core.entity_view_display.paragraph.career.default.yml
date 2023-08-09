@@ -1,0 +1,89 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.career.field_company
+    - field.field.paragraph.career.field_company_address
+    - field.field.paragraph.career.field_country
+    - field.field.paragraph.career.field_description
+    - field.field.paragraph.career.field_enrollment
+    - field.field.paragraph.career.field_join_date
+    - field.field.paragraph.career.field_leave_date
+    - field.field.paragraph.career.field_occupation
+    - paragraphs.paragraphs_type.career
+  module:
+    - address
+    - datetime
+    - text
+id: paragraph.career.default
+targetEntityType: paragraph
+bundle: career
+mode: default
+content:
+  field_company:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_company_address:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_country:
+    type: address_country_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_description:
+    type: text_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_enrollment:
+    type: boolean
+    label: inline
+    settings:
+      format: yes-no
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_join_date:
+    type: datetime_default
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: y_m_d
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_leave_date:
+    type: datetime_default
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: y_m_d
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_occupation:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

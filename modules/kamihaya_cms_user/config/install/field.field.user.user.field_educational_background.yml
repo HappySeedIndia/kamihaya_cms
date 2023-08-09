@@ -1,0 +1,36 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_educational_background
+    - paragraphs.paragraphs_type.educational_background
+  module:
+    - entity_reference_revisions
+    - user
+id: user.user.field_educational_background
+field_name: field_educational_background
+entity_type: user
+bundle: user
+label: 学歴
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      educational_background: educational_background
+    negate: 0
+    target_bundles_drag_drop:
+      career:
+        weight: 4
+        enabled: false
+      educational_background:
+        weight: 5
+        enabled: true
+      q_a:
+        weight: 6
+        enabled: false
+field_type: entity_reference_revisions

@@ -1,0 +1,20 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_enrollment
+    - paragraphs.paragraphs_type.career
+id: paragraph.career.field_enrollment
+field_name: field_enrollment
+entity_type: paragraph
+bundle: career
+label: 在籍中
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: オン
+  off_label: オフ
+field_type: boolean

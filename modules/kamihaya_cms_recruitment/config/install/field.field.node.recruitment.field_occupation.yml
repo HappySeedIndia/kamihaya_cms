@@ -1,0 +1,18 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_occupation
+    - node.type.recruitment
+id: node.recruitment.field_occupation
+field_name: field_occupation
+entity_type: node
+bundle: recruitment
+label: 職種
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

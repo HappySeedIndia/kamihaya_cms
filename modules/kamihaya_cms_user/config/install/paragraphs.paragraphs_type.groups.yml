@@ -1,0 +1,9 @@
+langcode: ja
+status: true
+dependencies: {  }
+id: groups
+label: 所属団体
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

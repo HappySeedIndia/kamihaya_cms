@@ -1,0 +1,20 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_licensed_date
+    - paragraphs.paragraphs_type.license
+  module:
+    - datetime
+id: paragraph.license.field_licensed_date
+field_name: field_licensed_date
+entity_type: paragraph
+bundle: license
+label: 取得年月日
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

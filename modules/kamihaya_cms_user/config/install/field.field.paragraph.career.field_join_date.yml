@@ -1,0 +1,20 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_join_date
+    - paragraphs.paragraphs_type.career
+  module:
+    - datetime
+id: paragraph.career.field_join_date
+field_name: field_join_date
+entity_type: paragraph
+bundle: career
+label: 入社日
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

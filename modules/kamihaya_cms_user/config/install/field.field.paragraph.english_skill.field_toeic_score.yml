@@ -1,0 +1,22 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_toeic_score
+    - paragraphs.paragraphs_type.english_skill
+id: paragraph.english_skill.field_toeic_score
+field_name: field_toeic_score
+entity_type: paragraph
+bundle: english_skill
+label: TOEICスコア
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

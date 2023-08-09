@@ -1,0 +1,19 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_first_name_kana
+  module:
+    - user
+id: user.user.field_first_name_kana
+field_name: field_first_name_kana
+entity_type: user
+bundle: user
+label: 名(カナ)
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

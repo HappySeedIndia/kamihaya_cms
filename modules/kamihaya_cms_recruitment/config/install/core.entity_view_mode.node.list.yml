@@ -1,0 +1,9 @@
+langcode: ja
+status: true
+dependencies:
+  module:
+    - node
+id: node.list
+label: リスト
+targetEntityType: node
+cache: true

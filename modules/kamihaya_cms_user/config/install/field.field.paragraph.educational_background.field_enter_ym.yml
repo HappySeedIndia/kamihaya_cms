@@ -1,0 +1,20 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_enter_ym
+    - paragraphs.paragraphs_type.educational_background
+  module:
+    - datetime
+id: paragraph.educational_background.field_enter_ym
+field_name: field_enter_ym
+entity_type: paragraph
+bundle: educational_background
+label: 入学年月
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

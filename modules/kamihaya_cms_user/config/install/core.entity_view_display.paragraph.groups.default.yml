@@ -1,0 +1,61 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.groups.field_belong_term
+    - field.field.paragraph.groups.field_current_member
+    - field.field.paragraph.groups.field_description
+    - field.field.paragraph.groups.field_group_description
+    - field.field.paragraph.groups.field_group_name
+    - paragraphs.paragraphs_type.groups
+  module:
+    - datetime_range
+    - text
+id: paragraph.groups.default
+targetEntityType: paragraph
+bundle: groups
+mode: default
+content:
+  field_belong_term:
+    type: daterange_default
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: medium
+      separator: '-'
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_current_member:
+    type: boolean
+    label: inline
+    settings:
+      format: yes-no
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_description:
+    type: text_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_group_description:
+    type: basic_string
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_group_name:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

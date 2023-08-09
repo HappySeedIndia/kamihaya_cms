@@ -1,0 +1,35 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.english_skill.field_business_level
+    - field.field.paragraph.english_skill.field_conversation_level
+    - field.field.paragraph.english_skill.field_toeic_score
+    - paragraphs.paragraphs_type.english_skill
+id: paragraph.english_skill.default
+targetEntityType: paragraph
+bundle: english_skill
+mode: default
+content:
+  field_business_level:
+    type: options_buttons
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_conversation_level:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_toeic_score:
+    type: number
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

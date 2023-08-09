@@ -1,0 +1,20 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_graduation_type
+    - paragraphs.paragraphs_type.educational_background
+  module:
+    - options
+id: paragraph.educational_background.field_graduation_type
+field_name: field_graduation_type
+entity_type: paragraph
+bundle: educational_background
+label: 卒業区分
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

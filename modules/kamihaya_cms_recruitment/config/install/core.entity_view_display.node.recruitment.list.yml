@@ -1,0 +1,86 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.list
+    - field.field.node.recruitment.body
+    - field.field.node.recruitment.field_apply_form
+    - field.field.node.recruitment.field_company
+    - field.field.node.recruitment.field_company_url
+    - field.field.node.recruitment.field_employment_status
+    - field.field.node.recruitment.field_holiday
+    - field.field.node.recruitment.field_min_annual_income
+    - field.field.node.recruitment.field_occupation
+    - field.field.node.recruitment.field_overview
+    - field.field.node.recruitment.field_required_skill
+    - field.field.node.recruitment.field_salary
+    - field.field.node.recruitment.field_tag
+    - field.field.node.recruitment.field_welcome_skill
+    - field.field.node.recruitment.field_welfare
+    - field.field.node.recruitment.field_working_hours
+    - node.type.recruitment
+  module:
+    - options
+    - user
+id: node.recruitment.list
+targetEntityType: node
+bundle: recruitment
+mode: list
+content:
+  field_company:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_employment_status:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_occupation:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_overview:
+    type: basic_string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_salary:
+    type: basic_string
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_tag:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  body: true
+  field_apply_form: true
+  field_company_url: true
+  field_holiday: true
+  field_min_annual_income: true
+  field_required_skill: true
+  field_welcome_skill: true
+  field_welfare: true
+  field_working_hours: true
+  langcode: true
+  links: true

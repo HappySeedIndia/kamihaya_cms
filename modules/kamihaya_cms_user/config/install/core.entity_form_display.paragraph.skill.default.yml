@@ -1,0 +1,30 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.skill.field_experience_term
+    - field.field.paragraph.skill.field_skill
+    - paragraphs.paragraphs_type.skill
+id: paragraph.skill.default
+targetEntityType: paragraph
+bundle: skill
+mode: default
+content:
+  field_experience_term:
+    type: number
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_skill:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

@@ -1,0 +1,62 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.apply_form
+    - field.field.node.recruitment.body
+    - field.field.node.recruitment.field_apply_form
+    - field.field.node.recruitment.field_company
+    - field.field.node.recruitment.field_company_url
+    - field.field.node.recruitment.field_employment_status
+    - field.field.node.recruitment.field_holiday
+    - field.field.node.recruitment.field_min_annual_income
+    - field.field.node.recruitment.field_occupation
+    - field.field.node.recruitment.field_overview
+    - field.field.node.recruitment.field_required_skill
+    - field.field.node.recruitment.field_salary
+    - field.field.node.recruitment.field_tag
+    - field.field.node.recruitment.field_welcome_skill
+    - field.field.node.recruitment.field_welfare
+    - field.field.node.recruitment.field_working_hours
+    - node.type.recruitment
+  module:
+    - user
+    - webform
+id: node.recruitment.apply_form
+targetEntityType: node
+bundle: recruitment
+mode: apply_form
+content:
+  field_apply_form:
+    type: webform_entity_reference_entity_view
+    label: hidden
+    settings:
+      source_entity: true
+      lazy: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_company:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  body: true
+  field_company_url: true
+  field_employment_status: true
+  field_holiday: true
+  field_min_annual_income: true
+  field_occupation: true
+  field_overview: true
+  field_required_skill: true
+  field_salary: true
+  field_tag: true
+  field_welcome_skill: true
+  field_welfare: true
+  field_working_hours: true
+  langcode: true
+  links: true

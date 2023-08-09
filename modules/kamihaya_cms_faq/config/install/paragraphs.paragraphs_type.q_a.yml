@@ -1,0 +1,9 @@
+langcode: ja
+status: true
+dependencies: {  }
+id: q_a
+label: 'Q&A'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

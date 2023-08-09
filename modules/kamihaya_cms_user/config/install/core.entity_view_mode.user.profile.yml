@@ -1,0 +1,9 @@
+langcode: ja
+status: true
+dependencies:
+  module:
+    - user
+id: user.profile
+label: プロフィール
+targetEntityType: user
+cache: true

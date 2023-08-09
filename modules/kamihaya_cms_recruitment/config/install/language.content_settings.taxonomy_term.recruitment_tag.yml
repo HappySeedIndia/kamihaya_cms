@@ -1,0 +1,10 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.recruitment_tag
+id: taxonomy_term.recruitment_tag
+target_entity_type_id: taxonomy_term
+target_bundle: recruitment_tag
+default_langcode: site_default
+language_alterable: false

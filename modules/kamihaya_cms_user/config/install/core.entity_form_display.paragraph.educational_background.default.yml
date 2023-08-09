@@ -1,0 +1,78 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.educational_background.field_country
+    - field.field.paragraph.educational_background.field_enter_ym
+    - field.field.paragraph.educational_background.field_graduate_ym
+    - field.field.paragraph.educational_background.field_graduation_type
+    - field.field.paragraph.educational_background.field_major
+    - field.field.paragraph.educational_background.field_school
+    - field.field.paragraph.educational_background.field_school_address
+    - field.field.paragraph.educational_background.field_school_type
+    - paragraphs.paragraphs_type.educational_background
+  module:
+    - address
+    - datetime
+id: paragraph.educational_background.default
+targetEntityType: paragraph
+bundle: educational_background
+mode: default
+content:
+  field_country:
+    type: address_country_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_enter_ym:
+    type: datetime_default
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_graduate_ym:
+    type: datetime_default
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_graduation_type:
+    type: options_select
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_major:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_school:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_school_address:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_school_type:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

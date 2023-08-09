@@ -1,0 +1,86 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.educational_background.field_country
+    - field.field.paragraph.educational_background.field_enter_ym
+    - field.field.paragraph.educational_background.field_graduate_ym
+    - field.field.paragraph.educational_background.field_graduation_type
+    - field.field.paragraph.educational_background.field_major
+    - field.field.paragraph.educational_background.field_school
+    - field.field.paragraph.educational_background.field_school_address
+    - field.field.paragraph.educational_background.field_school_type
+    - paragraphs.paragraphs_type.educational_background
+  module:
+    - address
+    - datetime
+    - options
+id: paragraph.educational_background.default
+targetEntityType: paragraph
+bundle: educational_background
+mode: default
+content:
+  field_country:
+    type: address_country_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_enter_ym:
+    type: datetime_default
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: y_m
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_graduate_ym:
+    type: datetime_default
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: y_m
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_graduation_type:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_major:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_school:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_school_address:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_school_type:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

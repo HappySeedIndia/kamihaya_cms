@@ -1,0 +1,60 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_appeal_point
+    - paragraphs.paragraphs_type.english_skill
+    - paragraphs.paragraphs_type.groups
+    - paragraphs.paragraphs_type.other_language
+    - paragraphs.paragraphs_type.other_notice
+  module:
+    - entity_reference_revisions
+    - user
+id: user.user.field_appeal_point
+field_name: field_appeal_point
+entity_type: user
+bundle: user
+label: その他アピールポイント
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      english_skill: english_skill
+      other_language: other_language
+      groups: groups
+      other_notice: other_notice
+    negate: 0
+    target_bundles_drag_drop:
+      career:
+        weight: -19
+        enabled: false
+      educational_background:
+        weight: -18
+        enabled: false
+      english_skill:
+        weight: -17
+        enabled: true
+      groups:
+        weight: -15
+        enabled: true
+      license:
+        weight: -13
+        enabled: false
+      other_language:
+        weight: -16
+        enabled: true
+      other_notice:
+        weight: -14
+        enabled: true
+      q_a:
+        weight: -12
+        enabled: false
+      skill:
+        weight: -11
+        enabled: false
+field_type: entity_reference_revisions

@@ -1,0 +1,21 @@
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_answer
+    - paragraphs.paragraphs_type.q_a
+  module:
+    - text
+id: paragraph.q_a.field_answer
+field_name: field_answer
+entity_type: paragraph
+bundle: q_a
+label: 回答
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

@@ -1,0 +1,21 @@
+langcode: ja
+status: true
+dependencies:
+  module:
+    - node
+id: job_page
+label: 求人ページ
+type: 'canonical_entities:node'
+pattern: 'jobs/[node:nid]'
+selection_criteria:
+  a86165e2-afbd-4024-a875-f27a427289fd:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: a86165e2-afbd-4024-a875-f27a427289fd
+    context_mapping:
+      node: node
+    bundles:
+      recruitment: recruitment
+selection_logic: and
+weight: -5
+relationships: {  }

@@ -1,0 +1,7 @@
+langcode: ja
+status: true
+dependencies: {  }
+id: node__page
+label: 'コンテンツ: 基本ページ'
+tags:
+  description: '[node:field_metatag_description:value]'
