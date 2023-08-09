@@ -20,6 +20,6 @@ function kamihaya_cms_install() {
   \Drupal::configFactory()
     ->getEditable('system.theme')
     ->set('default', 'olivero')
-    ->set('admin', 'seven')
+    ->set('admin', 'claro')
     ->save();  
 }
