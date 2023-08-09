@@ -1,7 +1,7 @@
 name: Kamihaya CMS
 type: profile
 description: 'Kamihaya CMS distribution.'
-core_version_requirement: '^9'
+core_version_requirement: '^10'
 
 distribution:
   name: Kamihaya CMS
@@ -10,8 +10,6 @@ install:
   - node
   - block
   - breakpoint
-  - ckeditor
-  - color
   - config
   - contextual
   - menu_link_content
@@ -31,7 +29,6 @@ install:
   - toolbar
   - field_ui
   - file
-  - rdf
   - views
   - views_ui
   - tour
@@ -44,5 +41,4 @@ install:
 # List any themes that should be installed as part of the profile installation.
 # Note that this will not set any theme as the default theme.
 themes:
-  - seven
   - olivero
