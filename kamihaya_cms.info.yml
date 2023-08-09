@@ -37,6 +37,7 @@ install:
   - admin_toolbar_tools
   - entity_reference_revisions
   - paragraphs
+  - commerce
   - kamihaya_cms_faq
   - kamihaya_cms_page
   # - kamihaya_cms_recruitment

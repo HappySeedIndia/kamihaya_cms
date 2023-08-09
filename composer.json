@@ -82,6 +82,7 @@
     "require": {
         "drupal/address": "^1.12",
         "drupal/admin_toolbar": "^3.4",
+        "drupal/commerce": "^2.36",
         "drupal/diff": "^1.1",
         "drupal/entity_browser": "^2.9",
         "drupal/metatag": "^2.0",
