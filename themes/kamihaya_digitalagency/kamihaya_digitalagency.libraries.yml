@@ -1,0 +1,36 @@
+global-styling:
+  css:
+    theme:
+      css/style.css: {}
+      css/components.css: {}
+      css/components/page.css:
+        weight: -10
+      css/components/field.css:
+        weight: -10
+      css/components/common.css:
+        weight: -10
+
+node:
+  css:
+    theme:
+      css/components/node.css: {}
+
+user:
+  css:
+    theme:
+      css/components/user.css: {}
+
+view:
+  css:
+    theme:
+      css/components/view.css: {}
+
+mdb:
+  js:
+    js/mdb/mdb.min.js: {}
+  css:
+    theme:
+      css/mdb/mdb.min.css: {}
+      css/mdb/style.css: {}
+      https://use.fontawesome.com/releases/v5.11.2/css/all.css: { type: external, minified: true }
+

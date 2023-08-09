@@ -1,0 +1,38 @@
+.user--view-mode-full .field--label-above,
+.user--view-mode-adoption-form .field--label-above {
+  border: 1px solid #cabfab;
+  border-bottom: 0;
+}
+
+.user--view-mode-full .field--label-above:nth-last-child(1),
+.user--view-mode-adoption-form .field--label-above:nth-last-child(2) {
+  border-bottom: 1px;
+  border-bottom-color: #d6bdbd;
+  border-bottom-style: solid;
+}
+
+.user--view-mode-full .field--label-above > .field__label,
+.user--view-mode-adoption-form .field--label-above>.field__label {
+  background-color: #d6bdbd;
+  color: #ffffff;
+  padding: 5px;
+}
+
+.user--view-mode-full .field--label-above > .field__item,
+.user--view-mode-full .field--label-above>.field__items,
+.user--view-mode-adoption-form .field--label-above>.field__item,
+.user--view-mode-adoption-form .field--label-above>.field__items {
+  padding: 10px;
+}
+
+.user--view-mode-full .apply_link {
+  text-align: center;
+  margin: 2rem 0;
+}
+.user--view-mode-full .apply_link a {
+  text-decoration: none;
+  background-color: #3d8115;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: 3px double #ffffff;
+}

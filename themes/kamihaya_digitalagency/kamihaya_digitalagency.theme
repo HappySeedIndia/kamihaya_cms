@@ -1,0 +1,135 @@
+<?php
+
+use Drupal\Core\Url;
+use Drupal\Core\Template\Attribute;
+use Drupal\user\Entity\User;
+
+/**
+ * @file
+ * Kamihaya デジタル庁デザインシステム準拠テーマ theme file.
+ */
+
+/**
+ * Implements hook_preprocess_pager().
+ */
+function kamihaya_digitalagency_preprocess_pager(&$variables) {
+  $element = $variables['pager']['#element'];
+  /** @var \Drupal\Core\Pager\PagerManagerInterface $pager_manager */
+  $pager_manager = \Drupal::service('pager.manager');
+  $pager = $pager_manager->getPager($element);
+  $variables['pager_max'] = $pager->getTotalPages();
+ }
+
+/**
+ * Implements hook_preprocess_views_mini_pager().
+ */
+function kamihaya_digitalagency_preprocess_views_mini_pager(&$variables) {
+  /** @var \Drupal\Core\Pager\PagerManagerInterface $pager_manager */
+  $pager_manager = \Drupal::service('pager.manager');
+
+  $element = $variables['element'];
+  $parameters = $variables['parameters'];
+  $pager = $pager_manager->getPager($element);
+  if (!$pager) {
+    return;
+  }
+
+  $items = &$variables['items'];
+  $current = $pager->getCurrentPage();
+  $total = $pager->getTotalPages();
+
+  $route_name = '<current>';
+  $route_parameters = $variables['pager']['#route_parameters'] ?? [];
+
+  $variables['pager_max'] = $total;
+
+  // Create the "first" and "previous" links if we are not on the first page.
+  if ($current > 0) {
+    $items['first'] = [];
+    $items['first']['attributes'] = new Attribute();
+    $options = [
+      'query' => $pager_manager->getUpdatedParameters($parameters, $element, 0),
+    ];
+    $items['first']['href'] = Url::fromRoute($route_name, $route_parameters, $options)->toString();
+  }
+
+  // Create the "next" and "last" links if we are not on the last page.
+  if ($current < ($total - 1)) {
+    $items['last'] = [];
+    $items['last']['attributes'] = new Attribute();
+    $options = [
+      'query' => $pager_manager->getUpdatedParameters($parameters, $element, $total - 1),
+    ];
+    $items['last']['href'] = Url::fromRoute($route_name, $route_parameters, $options)->toString();
+  }
+ }
+
+ /**
+ * Implements hook_theme_suggestions_alter().
+ */
+function kamihaya_digitalagency_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  if ($hook === 'views_view_grid') {
+    $suggestions[] = $hook . '__' . $variables['view']->id() . '_' . $variables['view']->current_display;
+  }
+  if ($hook === 'views_view') {
+    $suggestions[] = $hook . '__' . $variables['view']->id();
+  }
+  if ($hook === 'user') {
+    $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+    $suggestions[] = 'user__' . $sanitized_view_mode;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function kamihaya_digitalagency_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  // Content type specific twig suggestion.
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    if (is_object($node)) {
+      $content_type = $node->bundle();
+      $suggestions[] = 'page__' . $content_type;
+      $paths = explode('/', $node->toUrl()->toString());
+      $suggest = '';
+      foreach($paths as $path) {
+        if (empty($path)) {
+          continue;
+        }
+        $suggest .= "_$path";
+       $suggestions[] = 'page__' . $content_type . '_' . $suggest;
+      }
+    }
+  }
+}
+
+ /**
+ * Implements hook_preprocess_node().
+ */
+function kamihaya_digitalagency_preprocess_node(array &$variables) {
+  $variables['#attached']['library'][] = 'kamihaya_digitalagency/node';
+  if ($variables['elements']['#node']->bundle() === 'recruitment' && $variables['view_mode'] === 'apply_form') {
+    $user = User::load(Drupal::currentUser()->id());
+    $view_builder = \Drupal::entityTypeManager()->getViewBuilder('user');
+
+    $variables['profile'] = $view_builder->view($user, 'profile');
+    $variables['resume'] =  $view_builder->view($user, 'resume');
+  }
+  if ($variables['elements']['#node']->bundle() === 'page') {
+    $variables['#attached']['library'][] = 'kamihaya_digitalagency/mdb';
+  }
+}
+
+ /**
+ * Implements hook_preprocess_user().
+ */
+function kamihaya_digitalagency_preprocess_user(array &$variables) {
+  $variables['#attached']['library'][] = 'kamihaya_digitalagency/user';
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+}
+
+ /**
+ * Implements hook_preprocess_view().
+ */
+function kamihaya_digitalagency_preprocess_views_view(array &$variables) {
+  $variables['#attached']['library'][] = 'kamihaya_digitalagency/view';
+}

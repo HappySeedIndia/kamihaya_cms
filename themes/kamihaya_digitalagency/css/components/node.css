@@ -1,0 +1,52 @@
+
+.node--view-mode-list .field--name-field-company {
+  font-size: 1.1rem;
+  margin: 7px 0 5px !important;
+}
+
+.node--view-mode-list .field--name-field-overview {
+  border-radius: 5px;
+  background-color: #f2f0ea;
+  font-size: 0.9rem;
+  padding: 10px;
+  margin: 10px 0 20px !important;
+}
+
+.node--type-recruitment.node--view-mode-full .field--name-field-tag {
+  margin: 1rem 0;
+  justify-content: center;
+}
+
+.node--type-recruitment.node--view-mode-full .field--label-above {
+  border: 1px solid #cabfab;
+  border-bottom: 0;
+}
+
+.node--type-recruitment.node--view-mode-full .field--label-above:nth-last-child(1) {
+  border-bottom: 1px;
+  border-bottom-color: #cabfab;
+  border-bottom-style: solid;
+}
+
+.node--type-recruitment.node--view-mode-full .field--label-above .field__label {
+  background-color: #cabfab;
+  color: #ffffff;
+  padding: 5px;
+}
+
+.node--type-recruitment.node--view-mode-full .field--label-above .field__item {
+  padding: 10px;
+}
+
+.node--type-recruitment.node--view-mode-full .apply_link {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.node--type-recruitment.node--view-mode-full .apply_link a {
+  text-decoration: none;
+  background-color: #be123f;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: 3px double #ffffff;
+}

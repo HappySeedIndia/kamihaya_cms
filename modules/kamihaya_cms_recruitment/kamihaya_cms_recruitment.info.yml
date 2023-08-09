@@ -14,5 +14,5 @@ dependencies:
   - 'drupal:text'
   - 'drupal:user'
   - 'drupal:views'
-  - 'select_or_other:select_or_other'
-  - 'webform:webform'
+  - 'drupal:select_or_other'
+  - 'drupal:webform'

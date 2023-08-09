@@ -1,0 +1,117 @@
+.views-view-grid .views-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.views-view-grid .views-col {
+  border: 1px solid #8f8f8f;
+  border-radius: 5px;
+  padding: 10px 15px 45px;
+  font-size: 0.9rem;
+  width: 100%;
+  max-width: 355px;
+  position: relative;
+}
+
+.views-view-grid .views-col .views-field-rendered-entity h2 {
+  font-size: 1.3rem;
+}
+
+.views-view-grid .views-col .views-field-rendered-entity h2 a {
+  color: var(--bs-body-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.views-view-grid .views-col .views-field-view-node,
+.views-view-grid .views-col .views-field-view-user {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.views-view-grid .views-col .views-field-view-node a,
+.views-view-grid .views-col .views-field-view-user a {
+  font-size: 0.85rem;
+  padding: 2px 5px;
+  background-color: #358aae;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.views-view-grid .views-col .node__content .field,
+.views-view-grid .views-col .profile .field {
+  margin: 2px 0;
+}
+
+.views-view-grid .views-col .views-label {
+  font-weight: bold;
+}
+
+.views-view-grid .views-col .field--type-entity-reference-revisions > .field__label {
+  font-size: 1rem;
+  background-color: #a5b389;
+  color: #ffffff;
+  padding: 0 5px;
+  font-weight: 400;
+}
+
+.views-view-grid .views-col .field--type-entity-reference-revisions > .field__items {
+  padding: 15px 5px;
+}
+
+.view-id-talent_list .views-field-uid {
+  background-color: #ad5c76;
+  color: #ffffff;
+  padding: 0 5px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.views-exposed-form input[name='field_min_annual_income_value'] {
+  width: 8rem;
+}
+
+.views-exposed-form .form--inline .form-item {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.views-exposed-form .form-item .description {
+  margin-bottom: 0;
+}
+
+.views-exposed-form .form--inline .form-actions input[type='submit'] {
+  max-width: 8rem;
+}
+
+h1 {
+  background-color: #be123f;
+  color: #ffffff;
+  border: 3px double #ffffff;
+  text-align: center;
+  padding: 10px 0;
+  margin-bottom: 2rem;
+}
+
+.view-job-list .views-exposed-form .form--inline {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.view-job-list .views-exposed-form .form--inline .form-actions {
+  margin-top: 10px;
+  clear: none;
+  width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 575px) {
+.views-view-grid .views-col {
+    max-width: none;
+  }
+}

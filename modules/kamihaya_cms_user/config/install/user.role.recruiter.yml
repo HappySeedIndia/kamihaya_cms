@@ -1,0 +1,7 @@
+langcode: ja
+status: true
+dependencies: {  }
+id: recruiter
+label: 採用者
+weight: 5
+is_admin: null
