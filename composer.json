@@ -26,7 +26,10 @@
             "drupal/core": "dist"
         },
         "process-timeout": 0,
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "extra": {
         "drupal-scaffold": {
@@ -83,6 +86,7 @@
         "drupal/address": "^1.12",
         "drupal/admin_toolbar": "^3.4",
         "drupal/bootstrap5": "^3.0",
+        "drupal/cloud": "^6.0@beta",
         "drupal/commerce": "^2.36",
         "drupal/diff": "^1.1",
         "drupal/entity_browser": "^2.9",
