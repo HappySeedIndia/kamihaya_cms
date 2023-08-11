@@ -16,10 +16,15 @@ use Drupal\shortcut\Entity\Shortcut;
  * @see system_install()
  */
 function kamihaya_cms_install() {
-  \Drupal::service('theme_installer')->install(['kamihaya_digitalagency', 'claro']);
+  \Drupal::service('theme_installer')->install(['kamihaya_digitalagency', 'gin']);
   \Drupal::configFactory()
     ->getEditable('system.theme')
     ->set('default', 'kamihaya_digitalagency')
-    ->set('admin', 'claro')
-    ->save();  
+    ->set('admin', 'gin')
+    ->save();
+  // Use admin theme while editing the content
+  // \Drupal::configFactory()
+  //   ->getEditable('node.settings')
+  //   ->set('use_admin_theme', 'true')
+  //   ->save();
 }
