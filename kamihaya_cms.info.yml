@@ -39,8 +39,6 @@ install:
   - paragraphs
   - commerce
   - webform
-  - cloud
-  - aws_cloud
   - kamihaya_cms_faq
   - kamihaya_cms_page
   - kamihaya_cms_recruitment
