@@ -1,0 +1,4 @@
+cart:
+  css:
+    theme:
+      assets/css/cart.css: {}
