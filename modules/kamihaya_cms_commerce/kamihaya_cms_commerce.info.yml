@@ -26,3 +26,5 @@ dependencies:
   - 'metatag:metatag'
   - 'profile:profile'
   - 'state_machine:state_machine'
+libraries:
+  - kamihaya_cms_commerce/cart

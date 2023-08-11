@@ -1,0 +1,7 @@
+.cart-block--summary a {
+  color: rgba(255, 255, 255, 0.75);
+}
+.cart-block--summary a:hover,
+.cart-block--summary a:focus {
+  color: rgba(255, 255, 255, 0.553);
+}
