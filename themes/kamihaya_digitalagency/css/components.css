@@ -99,6 +99,24 @@ button.link {
   --bs-btn-disabled-border-color: #949497;
 }
 
+.btn-tertiary {
+  --bs-btn-color: #0017C1;
+  --bs-btn-bg: none;
+  --bs-btn-border-color: none;
+  --bs-btn-hover-color: #000082;
+  --bs-btn-hover-bg: none;
+  --bs-btn-hover-border-color: none;
+  --bs-btn-focus-shadow-rgb: none;
+  --bs-btn-active-color: #000082;
+  --bs-btn-active-bg: none;
+  --bs-btn-active-border-color: none;
+  --bs-btn-active-shadow: none;
+  --bs-btn-disabled-color: #949497;
+  --bs-btn-disabled-bg: none;
+  --bs-btn-disabled-border-color: none;
+  text-decoration: underline;
+}
+
 .btn:focus-visible,
 .node-preview-container .node-preview-backlink:focus-visible,
 a.button:focus-visible,
@@ -108,6 +126,39 @@ button.link:focus {
   --bs-btn-focus-border: 2px solid var(--light-border-focused);
   --bs-btn-line-height: 1.25;
   border: var(--bs-btn-focus-border);
+}
+
+#backtotop {
+  --light-button-normal: #0017C1;
+  --light-background-primary: #FFFFFF;
+  --light-button-hover: #000082;
+  --primitive-colors-sea-50: #E8F1FE;
+  --light-button-active: #000082;
+  background-image: url(../images/back_to_top.svg);
+  padding: 16px;
+  background-size: 14px 16px;
+  border-radius: 34px;
+  border: 1px solid var(--light-button-normal);
+  background-color: var(--light-background-primary);
+  height: 56px;
+  width: 56px;
+}
+
+#backtotop:hover {
+  border-color: var(--light-button-hover);
+  background-color: var(--primitive-colors-sea-50);
+  background-image: url(../images/back_to_top_hover.svg);
+}
+
+#backtotop:active {
+  border-color: var(--light-button-active);
+  background-color: var(--primitive-colors-sea-50);
+  background-image: url(../images/back_to_top_hover.svg);
+}
+
+#backtotop:focus {
+  border-color: var(--light-border-focused);
+  border-width: 2px;
 }
 
 /* Form control */
