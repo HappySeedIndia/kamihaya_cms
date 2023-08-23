@@ -40,6 +40,7 @@ install:
   - paragraphs
   - commerce
   - webform
+  - webform_ui
   - gin_toolbar
   - kamihaya_cms_faq
   - kamihaya_cms_page

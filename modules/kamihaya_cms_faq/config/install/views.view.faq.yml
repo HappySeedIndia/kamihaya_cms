@@ -213,15 +213,17 @@ display:
           separator: ', '
           field_api_classes: false
       pager:
-        type: mini
+        type: full
         options:
           offset: 0
-          items_per_page: 1
+          items_per_page: 5
           total_pages: null
           id: 0
           tags:
             next: ››
             previous: ‹‹
+            first: '« 最初'
+            last: '最後 »'
           expose:
             items_per_page: false
             items_per_page_label: ページ毎の件数
@@ -230,6 +232,7 @@ display:
             items_per_page_options_all_label: '- 全て -'
             offset: false
             offset_label: オフセット
+          quantity: 9
       exposed_form:
         type: basic
         options:
