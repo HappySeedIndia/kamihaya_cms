@@ -1,0 +1,56 @@
+<?php
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\node\NodeInterface;
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function kamihaya_cms_access_control_node_access(NodeInterface $node, $operation, AccountInterface $account) {
+  $type = $node->bundle();
+
+  if ($type !== 'recruitment' || $operation !== 'view') {
+    return AccessResult::neutral();
+  }
+
+  if ($node->access('update')) {
+    return AccessResult::neutral();
+  }
+
+  if (array_intersect($account->getRoles(TRUE), ['administrator', 'applicant'])) {
+    return AccessResult::allowed();
+  }
+
+  return AccessResult::forbidden();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function kamihaya_cms_access_control_user_access(UserInterface $user, $operation, AccountInterface $account) {
+  if ($operation === 'update' && $user->id() === $account->id()) {
+    return AccessResult::allowed();
+  }
+
+  if ($operation === 'view'
+    && $user->id() !== $account->id()
+    && array_intersect($account->getRoles(TRUE), ['administrator', 'recruiter'])) {
+    return AccessResult::allowed();
+  }
+
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function kamihaya_cms_access_control_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() == 'user') {
+    if (isset($fields['mail'])) {
+      $fields['mail']->setDisplayConfigurable('view', TRUE);
+    }
+  }
+}

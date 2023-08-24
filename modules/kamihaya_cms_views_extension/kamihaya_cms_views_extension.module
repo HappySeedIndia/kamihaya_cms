@@ -1,0 +1,79 @@
+<?php
+
+use Drupal\Core\Database\DatabaseExceptionWrapper;
+use Drupal\views\Plugin\views\pager\Full;
+use Drupal\views\Plugin\views\pager\Mini;
+use Drupal\views\Views;
+use Drupal\views\ViewExecutable;
+
+/**
+ * @file
+ * Extend the view functions.
+ */
+
+/**
+ * Implements hook_views_post_execute().
+ */
+function _kamihaya_cms_views_extension_views_pre_execute(ViewExecutable $view) {
+  if (!$view->pager || !($view->pager instanceof Full)) {
+    return;
+  }
+
+  // $view->get_total_rows = TRUE;
+}
+
+/**
+ * Implements hook_views_post_execute().
+ */
+function kamihaya_cms_views_extension_views_post_execute(ViewExecutable $view) {
+  if (!$view->pager || !($view->pager instanceof Mini) || $view->get_total_rows) {
+    return;
+  }
+
+  $count_query = $view->build_info['count_query'];
+  $count_query->addMetaData('view', $view);
+
+  if (empty($view->query->options['disable_sql_rewrite'])) {
+    $base_table_data = Views::viewsData()->get($view->storage->get('base_table'));
+    if (isset($base_table_data['table']['base']['access query tag'])) {
+      $access_tag = $base_table_data['table']['base']['access query tag'];
+      $count_query->addTag($access_tag);
+    }
+
+    if (isset($base_table_data['table']['base']['query metadata'])) {
+      foreach ($base_table_data['table']['base']['query metadata'] as $key => $value) {
+        $count_query->addMetaData($key, $value);
+      }
+    }
+  }
+
+  if ($count_query) {
+    $count_query->preExecute();
+
+    // Build the count query.
+    $count_query = $count_query->countQuery();
+
+    try {
+      $view->pager->executeCountQuery($count_query);
+      $view->pager->updatePageInfo();
+    }
+    catch (DatabaseExceptionWrapper $e) {
+      if (!empty($view->live_preview)) {
+        Drupal::messenger()->addError($e->getMessage());
+      }
+      else {
+        throw new DatabaseExceptionWrapper("Exception in {$view->storage->label()}[{$view->storage->id()}]: {$e->getMessage()}");
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
+  if (!$view->pager || !($view->pager instanceof Full)) {
+    return;
+  }
+  $view->pager->options['quantity'] = 7;
+}

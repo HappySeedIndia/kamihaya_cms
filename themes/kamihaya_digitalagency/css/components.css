@@ -509,6 +509,7 @@ button.link:focus {
   align-self: unset;
 }
 
+/* Breadcrumb */
 .breadcrumb {
   --bs-breadcrumb-font-size: 0.875rem;
   --bs-breadcrumb-item-padding-x: 0;
@@ -543,5 +544,74 @@ button.link:focus {
 
   .page-item:not(.pager__item--first):not(.pager__item--previous):not(.pager__item--next):not(.pager__item--last):not(.active) {
     display: none;
+  }
+}
+
+/* Devider */
+hr.devider.devider {
+  margin: 16px auto 17px;
+  opacity: unset;
+}
+
+hr.devider.cl_default {
+  border-color: #D8D8DB;
+}
+
+hr.devider.cl_medium {
+  border-color: #949497;
+}
+
+hr.devider.cl_dark {
+  border-color: #000000;
+}
+
+hr.devider.wd_1px {
+  border-width: 1px;
+}
+
+hr.devider.wd_2px {
+  border-width: 2px;
+}
+
+hr.devider.wd_3px {
+  border-width: 3px;
+}
+
+hr.devider.wd_4px {
+  border-width: 4px;
+}
+
+hr.devider.dashed {
+  border-style: dashed;
+}
+
+/* Modal dialog */
+.modal-content {
+  --mdb-modal-header-padding: 0;
+  --mdb-modal-padding: 16px 0 40px;
+  padding: 40px 56px;
+}
+
+.modal-title {
+  color: var(--light-text-body, #1A1A1C);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: 0.88px;
+}
+
+.modal-footer .btn {
+  width: 100%;
+  margin: 8px 0 0 0;
+}
+
+.modal-footer .btn:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 767.98px) {
+  .modal-content {
+    --mdb-modal-padding: 16px 0 24px;
+    padding: 16px;
   }
 }
