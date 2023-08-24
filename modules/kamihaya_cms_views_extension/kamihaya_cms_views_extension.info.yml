@@ -1,0 +1,10 @@
+name: Kamihaya CMS Views Extension
+type: module
+core_version_requirement: ^9 || ^10
+package: Kamihaya
+description: 'Extend the view functions.'
+
+dependencies:
+  - drupal:views
+
+project: 'kamihaya'

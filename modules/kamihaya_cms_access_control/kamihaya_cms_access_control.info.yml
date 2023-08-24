@@ -1,0 +1,11 @@
+name: Kamihaya CMS Access Control
+type: module
+core_version_requirement: ^9 || ^10
+package: Kamihaya
+description: 'Customize the access control.'
+
+dependencies:
+  - drupal:node
+  - drupal:user
+
+project: 'kamihaya'
