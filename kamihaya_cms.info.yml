@@ -38,6 +38,7 @@ install:
   - admin_toolbar_tools
   - entity_reference_revisions
   - paragraphs
+  - pathauto
   - commerce
   - webform
   - webform_ui

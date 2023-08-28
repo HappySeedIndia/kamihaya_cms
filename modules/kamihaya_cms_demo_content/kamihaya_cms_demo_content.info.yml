@@ -6,6 +6,7 @@ description: 'Contains demo content.'
 
 dependencies:
   - drupal:node
+  - drupal:pathauto
   - drupal:default_content
 
 project: 'kamihaya'
