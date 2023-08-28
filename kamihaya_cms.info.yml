@@ -48,7 +48,6 @@ install:
   - kamihaya_cms_recruitment
   - kamihaya_cms_user
   - kamihaya_cms_webform
-  - kamihaya_cms_commerce
   - kamihaya_cms_common
   - kamihaya_cms_access_control
   - kamihaya_cms_views_extension
