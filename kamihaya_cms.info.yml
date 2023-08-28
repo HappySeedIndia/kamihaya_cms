@@ -39,7 +39,6 @@ install:
   - entity_reference_revisions
   - paragraphs
   - pathauto
-  - commerce
   - webform
   - webform_ui
   - gin_toolbar
