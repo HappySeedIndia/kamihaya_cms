@@ -99,6 +99,7 @@
         "drupal/pathauto": "^1.11",
         "drupal/recreate_block_content": "^3.0",
         "drupal/redirect": "^1.8",
+        "drupal/responsive_preview": "^2.1",
         "drupal/scheduler": "^2.0",
         "drupal/seckit": "^2.0",
         "drupal/select_or_other": "^4.1",
