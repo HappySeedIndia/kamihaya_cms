@@ -1,0 +1,109 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 52fcd25b-99e0-4ce3-b390-52cccffdcb72
+  bundle: recruitment
+  depends:
+    77f55665-1465-4d45-b235-b5a015923dcd: taxonomy_term
+    28703da2-e44a-4365-b880-753fb043d419: taxonomy_term
+    88bc2016-2505-46f2-a7f2-02041c1c9a79: taxonomy_term
+    e8f14bd8-fdff-4212-86b6-779223af467e: taxonomy_term
+    c340de43-ef97-4d54-a133-b5cb8230b76c: taxonomy_term
+    72ad8487-904d-4481-8a46-0de119460c30: taxonomy_term
+    202097da-898f-4b52-99c2-67aa5a2310aa: taxonomy_term
+default:
+  revision_uid:
+    -
+      entity: 2c7f2ba9-9c96-4605-9e71-275f32945f00
+  status:
+    -
+      value: true
+  title:
+    -
+      value: 'PHP/動画クリエイター向け素材提供サービスの開発案件・求人 '
+  created:
+    -
+      value: 1691635877
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: 'PHP/動画クリエイター向け素材提供サービスの開発案件・求人 | Kamihaya Demo 1'
+    -
+      tag: meta
+      attributes:
+        name: description
+        content: "動画クリエイターを支援し、\_ 活躍の場を広げるための素材提供サービスのサーバサイド開発です。\_ リリースしたばかりのサービスです。\_ LAMP環境でAWSを用いて、アジャイルで開発していきます。"
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'http://default/jobs/5'
+  path:
+    -
+      alias: /jobs/5
+      langcode: ja
+      pathauto: 1
+  body:
+    -
+      value: "動画クリエイターを支援し、\_\r\n活躍の場を広げるための素材提供サービスのサーバサイド開発です。\_\r\n\r\nリリースしたばかりのサービスです。\_\r\nLAMP環境でAWSを用いて、アジャイルで開発していきます。"
+      format: plain_text
+      summary: ''
+  field_apply_form:
+    -
+      target_id: apply_job
+      default_data: ''
+      status: open
+      open: ''
+      close: ''
+  field_company:
+    -
+      value: 株式会社XYZ
+  field_employment_status:
+    -
+      value: 業務委託
+  field_min_annual_income:
+    -
+      value: 600
+  field_occupation:
+    -
+      value: システムエンジニア(SE)
+    -
+      value: 'プログラマ(PG) '
+  field_overview:
+    -
+      value: 'LAMP環境でAWSを用いて、PHP開発出来るエンジニア募集しています '
+  field_required_skill:
+    -
+      value: '・PHPでのWeb開発経験 '
+  field_salary:
+    -
+      value: '50 〜 70 万円/月'
+  field_tag:
+    -
+      entity: 77f55665-1465-4d45-b235-b5a015923dcd
+    -
+      entity: 28703da2-e44a-4365-b880-753fb043d419
+    -
+      entity: 88bc2016-2505-46f2-a7f2-02041c1c9a79
+    -
+      entity: e8f14bd8-fdff-4212-86b6-779223af467e
+    -
+      entity: c340de43-ef97-4d54-a133-b5cb8230b76c
+    -
+      entity: 72ad8487-904d-4481-8a46-0de119460c30
+    -
+      entity: 202097da-898f-4b52-99c2-67aa5a2310aa
+  field_welcome_skill:
+    -
+      value: "・Drupalを用いた開発経験 \r\n・HTML/CSSでのコーディング経験 \r\n・JavaScriptでの開発経験 "

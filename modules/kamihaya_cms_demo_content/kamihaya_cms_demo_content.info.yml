@@ -1,0 +1,11 @@
+name: Kamihaya CMS Demo content
+type: module
+core_version_requirement: ^9 || ^10
+package: Kamihaya
+description: 'Contains demo content.'
+
+dependencies:
+  - drupal:node
+  - drupal:default_content
+
+project: 'kamihaya'

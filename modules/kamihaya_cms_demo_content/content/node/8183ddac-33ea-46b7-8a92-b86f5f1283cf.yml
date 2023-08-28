@@ -1,0 +1,240 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 8183ddac-33ea-46b7-8a92-b86f5f1283cf
+  bundle: faq
+default:
+  revision_uid:
+    -
+      entity: 2c7f2ba9-9c96-4605-9e71-275f32945f00
+  status:
+    -
+      value: true
+  title:
+    -
+      value: Drupalでの作業
+  created:
+    -
+      value: 1691635236
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: 'Drupalでの作業 | Kamihaya Demo 1'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'http://default/node/1'
+  path:
+    -
+      alias: ''
+      langcode: ja
+      pathauto: 0
+  field_q_a:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 1fc2df7a-8996-4b3f-af7f-14ac43b6a207
+          bundle: q_a
+          default_langcode: ja
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1691635269
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_answer:
+            -
+              value: "モジュールはDrupalを拡張する機能の集まりです。Drupalの機能を拡張することができます。\_\r\n例えば、Drupalのコア機能に含まれていないメール管理ツールと統合する必要があるかもしれません。コミュニティが提供しているモジュールを使用するか、独自のモジュールを作成することで、その機能を追加することができます。"
+              format: plain_text
+          field_question:
+            -
+              value: Drupalモジュールとは何ですか？
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 4ec84bd5-492f-4962-a5dc-bba8aeb73655
+          bundle: q_a
+          default_langcode: ja
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1691635269
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_answer:
+            -
+              value: "テーマはDrupalサイトの外観を設定します。 それはファイルまたはファイルの集まり（PHP、INFO、CSS、JPG、GIF、PNG）で、ヘッダー、アイコン、ブロックレイアウトなどの要素を含んでいます。\r\nコミュニティがすでに提供しているテーマをダウンロードしてインストールすることもできますし、自分で作ることもできます。"
+              format: plain_text
+          field_question:
+            -
+              value: テーマとは何ですか？
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 77e63628-95ae-4135-b717-ea5bd70ebda5
+          bundle: q_a
+          default_langcode: ja
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1691635283
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_answer:
+            -
+              value: "ディストリビューションとは、Drupalの中核部分とコントリビュートされたモジュール、テーマ、設定などを含むパッケージです。\_\r\nそれは、ある特定の種類のサイトのために作られた機能と特徴を組み合わせたスターターキットのようなものです。\r\nディストリビューションの構築は通常、Drupalの上級者のための作業ですが、コミュニティがすでに貢献しているディストリビューションをダウンロードしてインストールすることもできます。"
+              format: plain_text
+          field_question:
+            -
+              value: ディストリビューションとは何ですか？
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 6974a3f3-8408-4b14-8968-b4a1017e9ed2
+          bundle: q_a
+          default_langcode: ja
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1691635298
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_answer:
+            -
+              value: 'はい、WordPress Migrateのようなモジュールがあります。'
+              format: plain_text
+          field_question:
+            -
+              value: WordPressサイトをDrupalに移行できますか？
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: af115f8d-438d-4e53-af37-00904029dddb
+          bundle: q_a
+          default_langcode: ja
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1691635311
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_answer:
+            -
+              value: はい。Drupalプロジェクトに含むコードを作成する場合は、Drupalのコーディング規約に従ってください。
+              format: plain_text
+          field_question:
+            -
+              value: Drupalはコード規約やスタイルを採用していますか？
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 4c39632e-9292-4167-9cc5-e7a1726a7ebe
+          bundle: q_a
+          default_langcode: ja
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1691635321
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_answer:
+            -
+              value: "この方法はおすすめしません。 Drupalの基幹ファイルを変更することは、あなたの変更を失うことなく Drupal のアップデート（セキュリティアップデートを含む）を利用することができなくなることを意味します。 また、あなたが作成したバグがコミュニティによって修正される可能性もかなり低くなります。\r\nその代わりに、フックシステムとテーマのオーバーライドを使ってみてください。"
+              format: plain_text
+          field_question:
+            -
+              value: 自分のサイトやアプリケーションに変更を加えるために、Drupalの基幹ファイルを変更することはできますか？
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: a3553c60-0228-46d9-8981-89b4a3b30869
+          bundle: q_a
+          default_langcode: ja
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1691635333
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_answer:
+            -
+              value: "サポートページでは、ドキュメンテーションの作成方法、質問できる人の見つけ方などを紹介しています。\r\n課題の一覧は、私たちがコミュニティへ注意喚起のために利用されます。"
+              format: plain_text
+          field_question:
+            -
+              value: Drupalのヘルプはどこにありますか？

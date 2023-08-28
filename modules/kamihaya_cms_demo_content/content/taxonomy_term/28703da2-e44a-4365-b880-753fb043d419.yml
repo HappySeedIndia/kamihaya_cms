@@ -1,0 +1,38 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 28703da2-e44a-4365-b880-753fb043d419
+  bundle: recruitment_tag
+  default_langcode: ja
+default:
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 副業・WワークOK
+  weight:
+    -
+      value: 0
+  parent:
+    -
+      target_id: 0
+  revision_translation_affected:
+    -
+      value: true
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: '副業・WワークOK | Kamihaya Demo 1'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'http://default/taxonomy/term/2'
+  path:
+    -
+      alias: ''
+      langcode: ja
+      pathauto: 0

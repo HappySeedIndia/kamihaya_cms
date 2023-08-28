@@ -1,0 +1,212 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 0cfbbaaa-47ca-4b44-833c-28364be058c0
+  bundle: faq
+default:
+  revision_uid:
+    -
+      entity: 2c7f2ba9-9c96-4605-9e71-275f32945f00
+  status:
+    -
+      value: true
+  title:
+    -
+      value: Drupalについて
+  created:
+    -
+      value: 1691635359
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: 'Drupalについて | Kamihaya Demo 1'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'http://default/node/2'
+  path:
+    -
+      alias: ''
+      langcode: ja
+      pathauto: 0
+  field_q_a:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: e0769acf-53e3-4cd5-92d9-164f0758c7af
+          bundle: q_a
+          default_langcode: ja
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1691635382
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_answer:
+            -
+              value: "Drupalは、何百万ものウェブサイトやアプリケーションを支えるオープンソースのコンテンツ管理フレームワークです。ウェブ上で最も影響力のあるプラットフォームの多くを動かしています。\_\r\nDrupalは長い間、企業や組織（規模の大小を問わず）がコンテンツ運用を管理するための手段として利用されてきました。\r\n\r\n汎用性の高い構造化コンテンツを簡単に作成し、強力な統合ツールを接続するために構築されています。また、マルチサイト対応と深い多言語サポートでも知られています。Drupalが選ばれる理由については、ケーススタディをご覧ください。"
+              format: plain_text
+          field_question:
+            -
+              value: CMSの選択肢はたくさんありますが、なぜDrupalなのでしょうか？
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 3ed50e2a-7ebe-4fed-83f8-9859745a57df
+          bundle: q_a
+          default_langcode: ja
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1691635382
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_answer:
+            -
+              value: "Drupalアソシエーションは、Drupalの発展を支援する非営利団体です。\r\nこの団体は、資金、インフラ、イベント、プロモーション、配布などでDrupalコミュニティを支援しています。"
+              format: plain_text
+          field_question:
+            -
+              value: Drupalアソシエーションとはなんですか？
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 2ab38e08-111d-4a78-b8e4-4cf754003af2
+          bundle: q_a
+          default_langcode: ja
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1691635398
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_answer:
+            -
+              value: "私たちのコミュニティはあらゆる貢献によって成り立っています。寄付やアソシエーションメンバーシップは、Drupalアソシエーションがdrupal.orgのメンテナンスやコミュニティイベントなどを可能にするのに役立っています。\r\nしかし、必ずしも誰もが寄付できるわけではないことを我々は理解しています。あなたは、コードの提供、翻訳の支援、ドキュメントの作成、アクセシビリティに関するアドバイスの共有、パッチのテストなど、他の多くの方法で支援することができます。\r\n興味のあるものを見つけてください。"
+              format: plain_text
+          field_question:
+            -
+              value: どのようにDrupalプロジェクトに貢献できますか？
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: e2de6f4f-5728-41e9-89e9-0326c7ef6085
+          bundle: q_a
+          default_langcode: ja
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1691635411
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_answer:
+            -
+              value: Drupalはグローバルです。多国籍コミュニティのリストや、各地域のグループやミートアップのリストをご覧ください。
+              format: plain_text
+          field_question:
+            -
+              value: 近くのDrupalコミュニティーはどこにありますか？
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 68ea81f3-2d1f-46ab-b39e-18e9658ca1a0
+          bundle: q_a
+          default_langcode: ja
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1691635422
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_answer:
+            -
+              value: "私たちは革新と安定を大切にしています。\r\n私たちは、どちらかを犠牲にしてもう一方を犠牲にすることがないように細心の注意を払っています。Drupalは非常に広く使われているため、Drupalの中核に含まれるコードの一行一行は細心の注意を払って検証されます。中核部分の変更は、何百回とまではいかなくても、何十回ものリビジョンを経てから反映されます。\r\n\r\nまた、優れたソフトウェアの設計、開発、翻訳、テストには時間がかかることも認識しています。\r\n中核となる機能を必要不可欠なものにとどめ、それを拡張するために投稿されたモジュールを推奨することで、一般的にバージョンリリースのサイクルを短縮することができます。"
+              format: plain_text
+          field_question:
+            -
+              value: なぜDrupalには他の機能がないのですか？
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 592b879e-4f7b-43e6-841a-9c92558f2643
+          bundle: q_a
+          default_langcode: ja
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1691635434
+          behavior_settings:
+            -
+              value: {  }
+          revision_translation_affected:
+            -
+              value: true
+          field_answer:
+            -
+              value: 'Drupal 8のリリースから、Drupalのリリースサイクルスケジュールが変わり、セマンティックバージョン管理が使われるようになりました。'
+              format: plain_text
+          field_question:
+            -
+              value: 新しいバージョンはいつ、どのようにリリースされますか？

@@ -1,0 +1,38 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 77f55665-1465-4d45-b235-b5a015923dcd
+  bundle: recruitment_tag
+  default_langcode: ja
+default:
+  status:
+    -
+      value: true
+  name:
+    -
+      value: リモート面接OK
+  weight:
+    -
+      value: 0
+  parent:
+    -
+      target_id: 0
+  revision_translation_affected:
+    -
+      value: true
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: 'リモート面接OK | Kamihaya Demo 1'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'http://default/taxonomy/term/1'
+  path:
+    -
+      alias: ''
+      langcode: ja
+      pathauto: 0

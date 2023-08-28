@@ -1,0 +1,38 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: c340de43-ef97-4d54-a133-b5cb8230b76c
+  bundle: recruitment_tag
+  default_langcode: ja
+default:
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 急募
+  weight:
+    -
+      value: 0
+  parent:
+    -
+      target_id: 0
+  revision_translation_affected:
+    -
+      value: true
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: '急募 | Kamihaya Demo 1'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'http://default/taxonomy/term/5'
+  path:
+    -
+      alias: ''
+      langcode: ja
+      pathauto: 0
