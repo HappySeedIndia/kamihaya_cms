@@ -2,3 +2,6 @@ name: 'Kamihaya CMS Common'
 description: 'Kamihaya cms common features'
 type: module
 core_version_requirement: '^9.4 || ^10'
+
+dependencies:
+  - drupal:responsive_preview
