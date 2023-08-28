@@ -1,0 +1,48 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: c8e63fb9-5d9d-48e0-90b6-020bd0358d8e
+  bundle: page
+default:
+  revision_uid:
+    -
+      entity: 2c7f2ba9-9c96-4605-9e71-275f32945f00
+  status:
+    -
+      value: true
+  title:
+    -
+      value: Devider
+  created:
+    -
+      value: 1692934268
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: 'Devider | Kamihaya Demo 1'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'http://default/node/6'
+  path:
+    -
+      alias: ''
+      langcode: ja
+      pathauto: 0
+  body:
+    -
+      value: '<hr class="devider cl_default wd_1px">'
+      format: html_paste
+      summary: ''

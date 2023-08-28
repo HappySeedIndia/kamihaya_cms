@@ -1,0 +1,38 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 255f3573-925d-4b22-a62c-d45d7a990dc9
+  bundle: recruitment_tag
+  default_langcode: ja
+default:
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 昇給あり
+  weight:
+    -
+      value: 0
+  parent:
+    -
+      target_id: 0
+  revision_translation_affected:
+    -
+      value: true
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: '昇給あり | Kamihaya Demo 1'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'http://default/taxonomy/term/6'
+  path:
+    -
+      alias: ''
+      langcode: ja
+      pathauto: 0

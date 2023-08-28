@@ -1,0 +1,109 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 7e3d125e-223b-4341-873a-6d310cb2752f
+  bundle: recruitment
+  depends:
+    77f55665-1465-4d45-b235-b5a015923dcd: taxonomy_term
+    88bc2016-2505-46f2-a7f2-02041c1c9a79: taxonomy_term
+    e8f14bd8-fdff-4212-86b6-779223af467e: taxonomy_term
+    c340de43-ef97-4d54-a133-b5cb8230b76c: taxonomy_term
+    255f3573-925d-4b22-a62c-d45d7a990dc9: taxonomy_term
+    6ced335b-abb2-498f-b783-5841a6f548ef: taxonomy_term
+default:
+  revision_uid:
+    -
+      entity: 2c7f2ba9-9c96-4605-9e71-275f32945f00
+  status:
+    -
+      value: true
+  title:
+    -
+      value: 'ITサポート&ホームページサポート担当'
+  created:
+    -
+      value: 1691635724
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: 'ITサポート&ホームページサポート担当 | Kamihaya Demo 1'
+    -
+      tag: meta
+      attributes:
+        name: description
+        content: '当社のITサポートチームとして、以下のような業務を担当していただきます。 社内外のIT機器の保守、設定、トラブルシューティングサーバーやネットワーク機器の管理とメンテナンスホームページの更新とメンテナンス（必要に応じて）社員のITに関する質問や問題の解決サポートベンダーや協業会社等とのコミュニケーション'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'http://default/jobs/4'
+  path:
+    -
+      alias: /jobs/4
+      langcode: ja
+      pathauto: 1
+  body:
+    -
+      value: "当社のITサポートチームとして、以下のような業務を担当していただきます。\r\n\r\n社内外のIT機器の保守、設定、トラブルシューティングサーバーやネットワーク機器の管理とメンテナンスホームページの更新とメンテナンス（必要に応じて）社員のITに関する質問や問題の解決サポートベンダーや協業会社等とのコミュニケーション"
+      format: plain_text
+      summary: ''
+  field_apply_form:
+    -
+      target_id: apply_job
+      default_data: ''
+      status: open
+      open: ''
+      close: ''
+  field_company:
+    -
+      value: 医療法人社団ABC
+  field_employment_status:
+    -
+      value: 正社員
+    -
+      value: アルバイト･パート
+  field_holiday:
+    -
+      value: "・完全週休二日制\r\n・年間休日 122日（2023年）\r\n・年末年始休暇\r\n・有給休暇\r\n・慶弔休暇\r\n・その他 就業規則による"
+  field_min_annual_income:
+    -
+      value: 240
+  field_overview:
+    -
+      value: 心臓の画像診断を行うグループ医療機関のシステム及びホームページやその他コンピュータやネットワークに至るまで、小さいながらも様々なITスキルを学べます。
+  field_required_skill:
+    -
+      value: "・基本的なコンピュータとネットワークの知識\r\n・トラブルシューティングと問題解決へのモチベーション\r\n・チームプレーヤーでありながら、自主的に行動できる能力\r\n・日本語（コミュニケーション可能なレベル）"
+  field_salary:
+    -
+      value: '20万円 ~ 35万円'
+  field_tag:
+    -
+      entity: 77f55665-1465-4d45-b235-b5a015923dcd
+    -
+      entity: 88bc2016-2505-46f2-a7f2-02041c1c9a79
+    -
+      entity: e8f14bd8-fdff-4212-86b6-779223af467e
+    -
+      entity: c340de43-ef97-4d54-a133-b5cb8230b76c
+    -
+      entity: 255f3573-925d-4b22-a62c-d45d7a990dc9
+    -
+      entity: 6ced335b-abb2-498f-b783-5841a6f548ef
+  field_welcome_skill:
+    -
+      value: "HTML, CSS, JavaScriptなどの基本的なウェブ技術の知識\r\n・IT関連の学位または相当の経験\r\n・ITサポートの経験\r\n・CMS（例：WordPress, Drupal）の経験\r\n・IT関連の資格（なんでも）\r\n・英語力（コミュニケーション）\r\n・その他外国語（中国語、韓国語、ベトナム語、ロシア語、などなど なんでも）"
+  field_welfare:
+    -
+      value: "社会保険完備（健康保険、厚生年金、雇用保険、労災保険）\r\n・通勤手当支給（規定による上限あり）\r\n・賞与年2回（業績に応じて）\r\n・昇給年1回\r\n・教育研修制度あり\r\n・定年制度あり（再雇用あり）\r\n・学会参加やその他支援など"
