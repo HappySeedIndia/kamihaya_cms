@@ -1,4 +1,6 @@
 global-styling:
+  js:
+    js/menu.js: {}
   css:
     theme:
       css/style.css: {}

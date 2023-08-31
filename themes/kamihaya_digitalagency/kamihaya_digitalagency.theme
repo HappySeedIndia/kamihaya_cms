@@ -114,9 +114,6 @@ function kamihaya_digitalagency_preprocess_node(array &$variables) {
     $variables['profile'] = $view_builder->view($user, 'profile');
     $variables['resume'] =  $view_builder->view($user, 'resume');
   }
-  if ($variables['elements']['#node']->bundle() === 'page') {
-    $variables['#attached']['library'][] = 'kamihaya_digitalagency/mdb';
-  }
 }
 
  /**
