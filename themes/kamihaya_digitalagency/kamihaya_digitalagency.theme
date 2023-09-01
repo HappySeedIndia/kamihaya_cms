@@ -114,9 +114,6 @@ function kamihaya_digitalagency_preprocess_node(array &$variables) {
     $variables['profile'] = $view_builder->view($user, 'profile');
     $variables['resume'] =  $view_builder->view($user, 'resume');
   }
-  if ($variables['elements']['#node']->bundle() === 'page') {
-    $variables['#attached']['library'][] = 'kamihaya_digitalagency/mdb';
-  }
 }
 
  /**
@@ -132,4 +129,15 @@ function kamihaya_digitalagency_preprocess_user(array &$variables) {
  */
 function kamihaya_digitalagency_preprocess_views_view(array &$variables) {
   $variables['#attached']['library'][] = 'kamihaya_digitalagency/view';
+}
+
+/**
+ * Implements hook_preprocess_breadcrumb().
+ */
+function kamihaya_digitalagency_preprocess_breadcrumb(&$variables){
+  if(($node = \Drupal::routeMatch()->getParameter('node')) && $variables['breadcrumb']){
+    $variables['breadcrumb'][] = [
+      'text' => $node->getTitle()
+    ];
+  }
 }
