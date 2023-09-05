@@ -58,8 +58,6 @@ class LanguageSelector extends BlockBase implements ContainerFactoryPluginInterf
    *   The plugin implementation definition.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The config factory.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route Matcher.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request
@@ -117,6 +115,7 @@ class LanguageSelector extends BlockBase implements ContainerFactoryPluginInterf
     }
 
     $build = [];
+    $links = [];
     $languages = $this->languageManager->getLanguages();
 
     if (count($languages) > 1) {
