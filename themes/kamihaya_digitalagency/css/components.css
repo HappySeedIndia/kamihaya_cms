@@ -686,6 +686,17 @@ header .container {
   }
 }
 
+@media (max-width: 767px) {
+  header .container {
+    flex-wrap: wrap;
+  }
+
+  .region-header {
+    justify-content:  unset;
+  }
+
+}
+
 @media (max-width: 575px) {
   header {
     display: flex;
@@ -694,6 +705,9 @@ header .container {
 }
 
 /* Grobal menu */
+.navbar {
+  --bs-navbar-toggler-icon-bg: url(../images/burger-menu-close.svg);
+}
 .region-nav-main .navbar-nav {
   display: flex;
   gap: 23px;
@@ -917,4 +931,108 @@ header .container {
   position: absolute;
   left: 5px;
   top: 8px;
+}
+
+/* Burger menu and mobile menu */
+@media (max-width: 991px) {
+  .navbar-expand-lg {
+    box-shadow: none;
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .navbar>.container {
+    justify-content: flex-end;
+    position: relative;
+  }
+
+  .navbar>.container  .navbar-collapse {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    border: 1px solid var(--light-border-divider);
+    z-index: 1;
+    background: var(--light-background-primary);
+  }
+
+  .region-nav-main .navbar-nav {
+    gap: 0;
+  }
+
+  .region-nav-main .navbar-nav > .nav-item {
+    padding: 0 20px;
+  }
+
+  .region-nav-main .navbar-nav>.nav-item>.nav-link {
+    padding: 6px 0 7px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 170%;
+    letter-spacing: 0.64px;
+  }
+
+  .navbar-nav>.nav-item>.dropdown-menu {
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .navbar-nav>.nav-item>.dropdown-menu .nav-item.dropdown .dropdown-toggle {
+    padding: 6px 0 7px 24px;
+  }
+
+  .navbar-nav>.nav-item>.dropdown-menu .nav-item.dropdown .dropdown-toggle:after {
+    margin-right: 3px;
+  }
+
+  .navbar-nav>.nav-item>.dropdown-menu .nav-item.dropdown .dropdown-menu {
+    padding: 0;
+  }
+
+  .navbar-nav .dropdown-menu.nav-level-2>.nav-item>.dropdown-item {
+    padding: 6px 0 7px 48px;
+  }
+}
+
+.navbar-toggler {
+  border: 0;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.navbar-toggler-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.collapsed .navbar-toggler-icon {
+  --bs-navbar-toggler-icon-bg: url(../images/burger-menu.svg);
+}
+
+.navbar-toggler-label-open,
+.navbar-toggler-label-close {
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 100%;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+.navbar-toggler-label-open {
+  display: none;
+}
+
+.collapsed .navbar-toggler-label-open {
+  display: inline-block;
+}
+
+.collapsed .navbar-toggler-label-close {
+  display: none;
 }
