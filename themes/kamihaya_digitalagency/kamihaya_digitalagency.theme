@@ -141,3 +141,18 @@ function kamihaya_digitalagency_preprocess_breadcrumb(&$variables){
     ];
   }
 }
+
+ /**
+ * Implements hook_preprocess_tb_megamenu_submenu().
+ */
+function kamihaya_digitalagency_preprocess_tb_megamenu_submenu(array &$variables) {
+  if ($variables['level'] > 1) {
+    return;
+  }
+  $parent = $variables['parent'];
+  $variables['parent_title'] = $parent->link->getTitle();
+  $variables['parent_link'] = [
+    'title' => $parent->link->getTitle(),
+    'url' => $parent->link->getUrlObject(),
+  ];
+}

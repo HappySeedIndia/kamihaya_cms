@@ -39,6 +39,7 @@ install:
   - entity_reference_revisions
   - paragraphs
   - pathauto
+  - tb_megamenu
   - webform
   - webform_ui
   - gin_toolbar
