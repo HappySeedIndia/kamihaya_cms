@@ -3,8 +3,6 @@ type: theme
 description: 'Kamihaya デジタル庁デザインシステム準拠テーマ subtheme based on Bootstrap 5 theme.'
 core_version_requirement: '^9.4 || ^10'
 'base theme': bootstrap5
-dependencies:
-  - drupal:menu_link_content
 libraries:
   - kamihaya_digitalagency/mdb
   - kamihaya_digitalagency/global-styling
