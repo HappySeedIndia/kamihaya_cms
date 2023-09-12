@@ -664,6 +664,12 @@ footer .nav .nav-link:focus {
   border: 2px solid var(--light-border-focused, #CD820A);
 }
 
+.region-header .nav .nav-link .menu-icon,
+footer .nav .nav-link .menu-icon {
+  margin-right: 4px;
+  display: inline-block;
+}
+
 /* Header container */
 header .container {
   display: flex;
@@ -720,6 +726,7 @@ header .container {
   line-height: 150%;
   letter-spacing: 0.64px;
   color: #1A1A1C !important;
+  display: flexz;
   flex-wrap: nowrap;
 }
 
@@ -733,6 +740,16 @@ header .container {
 .region-nav-main .navbar-nav>.nav-item.open>.tbm-link-container .nav-link {
   border-bottom: 2px solid var(--light-icon-active) !important;
   color: var(--light-text-link) !important;
+}
+
+.region-nav-main .navbar-nav>.nav-item>.nav-link .menu-icon,
+.region-nav-main .navbar-nav>.nav-item .tbm-link-container .nav-link .menu-icon {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.region-nav-main .navbar-nav>.nav-item .tbm-link-container .nav-link .menu-icon [class*=' fa-'] {
+  margin-right: 0;
 }
 
 .region-nav-main .navbar-nav .dropdown-toggle:after {
@@ -1233,4 +1250,63 @@ header .container {
   .tbm.tbm--mobile .tbm-subnav .tbm-subnav {
     margin-left: 0;
   }
+}
+
+/* Bottom navigation */
+@media (min-width: 992px) {
+  .region-bottom-navigation {
+    display: none;
+  }
+}
+
+.region-bottom-navigation {
+  z-index: 90;
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #D8D8DB;
+  background-color: #fff;
+}
+
+.region-bottom-navigation .navbar-nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0px 8px;
+}
+
+.region-bottom-navigation .navbar-nav .nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--light-text-body);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 150%;
+  letter-spacing: 0.48px;
+  padding: 8px 0 12px;
+  width: 89.75px;
+  height: 100%;
+}
+
+.region-bottom-navigation .navbar-nav .nav-link.active {
+  color: var(--light-text-link);
+  font-weight: 700;
+}
+
+.region-bottom-navigation .navbar-nav .nav-link .menu-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  width: 56px;
+  height: 33px;
+}
+
+.region-bottom-navigation .navbar-nav .nav-link.active .menu-icon {
+  border-radius: 18px;
+  background: var(--primitive-colors-sea-50);
 }

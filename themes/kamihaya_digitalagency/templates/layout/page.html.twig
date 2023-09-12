@@ -124,6 +124,11 @@ set footer_classes = 'bg-light text-lg-start' ~
 
 </main>
 
+{# Buttom Navigation #}
+{% if page.bottom_navigation %}
+  {{ page.bottom_navigation }}
+{% endif %}
+
 {% if page.footer %}
 <footer class="mt-auto {{ footer_classes }}">
   <div class="{{ b5_top_container }}">

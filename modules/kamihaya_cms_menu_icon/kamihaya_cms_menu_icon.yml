@@ -1,0 +1,8 @@
+name: 'Kamihaya CMS Menu Icon'
+description: 'Kamihaya cms menu icon features'
+type: module
+core_version_requirement: '^9.4 || ^10'
+
+dependencies:
+  - drupal:fontawesome
+  - drupal:menu_link_attributes
