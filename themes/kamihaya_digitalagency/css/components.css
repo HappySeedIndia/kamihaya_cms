@@ -726,7 +726,7 @@ header .container {
   line-height: 150%;
   letter-spacing: 0.64px;
   color: #1A1A1C !important;
-  display: flexz;
+  display: flex;
   flex-wrap: nowrap;
 }
 
