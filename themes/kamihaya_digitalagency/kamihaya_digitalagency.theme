@@ -158,6 +158,9 @@ function kamihaya_digitalagency_preprocess_tb_megamenu_submenu(array &$variables
   ];
 }
 
+ /**
+ * Implements hook_preprocess_tb_megamenu_item().
+ */
 function kamihaya_digitalagency_preprocess_tb_megamenu_item(array &$variables) {
   if (empty($variables['item']->link->getOptions()['container_attributes'])) {
     return;
