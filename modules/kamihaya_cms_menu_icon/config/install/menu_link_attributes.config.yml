@@ -1,0 +1,14 @@
+attributes:
+  container_font_awesome_class:
+    label: 'Font Awesome class'
+    description: 'Enter font awesome classes to display icon for the menu item.'
+  class:
+    label: ''
+    description: ''
+  target:
+    label: ''
+    description: ''
+    options:
+      _blank: 'New window (_blank)'
+      _self: 'Same window (_self)'
+    default_value: ''

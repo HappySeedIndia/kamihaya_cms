@@ -37,6 +37,8 @@ install:
   - admin_toolbar
   - admin_toolbar_tools
   - entity_reference_revisions
+  - fontawesome
+  - menu_link_attributes
   - paragraphs
   - pathauto
   - tb_megamenu

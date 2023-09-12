@@ -23,7 +23,17 @@
     {% if fontawesome and item_config['xicon'] %}
       <span class="{{ item_config['xicon'] }}"></span>
     {% endif %}
-    {{ link.title_translate }}
+    {% set link_text %}
+      {% if font_awesome_class %}
+        <span class="menu-icon">
+          <i class="{{ font_awesome_class }}"></i>
+        </span>
+        {{ link.title_translate }}
+      {% else %}
+       {{ link.title_translate }}
+      {% endif %}
+    {% endset %}
+    {{ link_text }}
     {% if item_config['caption'] %}
       {% autoescape %}
         {# Passed through Xss::filter prior to reaching twig.  We want to allow some html here. #}
