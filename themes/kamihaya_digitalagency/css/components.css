@@ -670,6 +670,12 @@ footer .nav .nav-link .menu-icon {
 }
 
 /* Header container */
+header {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
 header .container {
   display: flex;
   justify-content: space-between;
@@ -687,7 +693,6 @@ header .container {
   header {
     display: flex;
     max-width: 720px;
-    margin: 0 auto;
   }
 }
 
