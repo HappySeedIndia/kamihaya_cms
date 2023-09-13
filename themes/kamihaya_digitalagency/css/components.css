@@ -672,7 +672,7 @@ footer .nav .nav-link .menu-icon {
 /* Header container */
 header {
   width: 100%;
-  max-width: 1140px;
+  max-width: 1320px;
   margin: 0 auto;
 }
 
@@ -687,6 +687,12 @@ header .container {
   align-items: center;
   flex-wrap: wrap;
   justify-content: flex-end;
+}
+
+@media (max-width: 1199px) {
+  header {
+    max-width: 1140px;
+  }
 }
 
 @media (max-width: 991px) {
@@ -1144,7 +1150,7 @@ header .container {
 }
 
 @media (min-width: 1400px) {
-  .tbm-submenu{
+  .tbm-submenu {
     max-width: 1320px;
   }
 }
