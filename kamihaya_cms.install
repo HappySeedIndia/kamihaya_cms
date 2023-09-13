@@ -30,8 +30,6 @@ function kamihaya_cms_install() {
 }
 
 /**
- * Implements hook_update_N().
- *
  * Install custom modules.
  */
 function kamihaya_cms_update_1001() {
