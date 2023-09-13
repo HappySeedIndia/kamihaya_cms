@@ -28,3 +28,23 @@ function kamihaya_cms_install() {
   //   ->set('use_admin_theme', 'true')
   //   ->save();
 }
+
+/**
+ * Install custom modules.
+ */
+function kamihaya_cms_update_1001() {
+  $modules = [];
+  if (!\Drupal::moduleHandler()->moduleExists('kamihaya_cms_language_selector')) {
+    $modules[] = 'kamihaya_cms_language_selector';
+  }
+  if (!\Drupal::moduleHandler()->moduleExists('kamihaya_cms_menu_icon')) {
+    $modules[] = 'kamihaya_cms_menu_icon';
+  }
+
+  if (empty($modules)) {
+    return;
+  }
+  /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
+  $module_installer = \Drupal::service("module_installer");
+  $module_installer->install($modules);
+}

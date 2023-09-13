@@ -756,6 +756,7 @@ header .container {
   background-image: url(../images/dropdown_arrow.svg);
   width: 24px;
   height: 20px;
+  margin-left: auto;
 }
 
 .region-nav-main .navbar-nav .dropdown-toggle.show:after {
@@ -798,6 +799,7 @@ header .container {
 
 .navbar-nav>.nav-item>.dropdown-menu .nav-item.dropdown .dropdown-menu.show {
   display: flex;
+  padding: 0;
 }
 
 .navbar-nav>.nav-item>.dropdown-menu .nav-item.dropdown .dropdown-toggle,
@@ -993,6 +995,7 @@ header .container {
     font-weight: 400;
     line-height: 170%;
     letter-spacing: 0.64px;
+    justify-content: unset;
   }
 
   .navbar-nav>.nav-item>.dropdown-menu {
