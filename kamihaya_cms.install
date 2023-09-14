@@ -32,7 +32,7 @@ function kamihaya_cms_install() {
 /**
  * Install custom modules.
  */
-function kamihaya_cms_update_1001() {
+function kamihaya_cms_update_10001() {
   $modules = [];
   if (!\Drupal::moduleHandler()->moduleExists('kamihaya_cms_language_selector')) {
     $modules[] = 'kamihaya_cms_language_selector';

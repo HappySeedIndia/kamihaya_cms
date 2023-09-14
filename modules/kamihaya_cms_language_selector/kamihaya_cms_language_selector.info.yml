@@ -7,5 +7,3 @@ description: 'Display the block for selecting language.'
 dependencies:
   - drupal:language
   - drupal:block
-
-project: 'kamihaya'
