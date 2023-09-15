@@ -60,7 +60,9 @@ function kamihaya_cms_menu_icon_modules_installed($modules, $is_syncing) {
 				'use_sharpsolid_file' => true,
 				'use_custom_file' => true,
 			];
-      $config->set($settings);
+			foreach($settings as $key => $value) {
+				$config->set($key, $value);
+			}
       $config->save();
     }
   }
