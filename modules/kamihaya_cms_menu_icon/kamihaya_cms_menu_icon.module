@@ -40,7 +40,7 @@ function kamihaya_cms_menu_icon_modules_installed($modules, $is_syncing) {
     	$config = \Drupal::service('config.factory')->getEditable('fontawesome.settings');
       $config->set(
       	'tag' => 'i',
-				'method' => svg,
+				'method' => 'svg',
 				'load_assets' => true,
 				'use_cdn' => true,
 				'external_svg_location' => 'https://use.fontawesome.com/releases/v6.4.0/js/all.js',
