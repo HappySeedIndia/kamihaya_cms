@@ -38,14 +38,14 @@ function kamihaya_cms_menu_icon_modules_installed($modules, $is_syncing) {
     // Update fontawesome settings.
     if ($module_handler->moduleExists('fontawesome')) {
     	$config = \Drupal::service('config.factory')->getEditable('fontawesome.settings');
-      $config->set(
+    	$settings = [
       	'tag' => 'i',
 				'method' => 'svg',
 				'load_assets' => true,
 				'use_cdn' => true,
 				'external_svg_location' => 'https://use.fontawesome.com/releases/v6.4.0/js/all.js',
 				'use_shim' => true,
-				'external_shim_location' => 'https://use.fontawesome.com/releases/v6.4.0/js/,v4-shims.js'
+				'external_shim_location' => 'https://use.fontawesome.com/releases/v6.4.0/js/,v4-shims.js',
 				'allow_pseudo_elements' => false,
 				'use_solid_file' => true,
 				'use_regular_file' => true,
@@ -59,7 +59,8 @@ function kamihaya_cms_menu_icon_modules_installed($modules, $is_syncing) {
 				'use_sharplight_file' => true,
 				'use_sharpsolid_file' => true,
 				'use_custom_file' => true,
-		  );
+			];
+      $config->set($settings);
       $config->save();
     }
   }
