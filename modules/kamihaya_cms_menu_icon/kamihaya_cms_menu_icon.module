@@ -11,9 +11,9 @@
 function kamihaya_cms_menu_icon_modules_installed($modules, $is_syncing) {
   if (!$is_syncing) {
     $module_handler = \Drupal::service('module_handler');
-    $config = \Drupal::service('config.factory')->getEditable('fontawesome.settings');
     // Update menu_link_attributes settings.
     if ($module_handler->moduleExists('menu_link_attributes')) {
+    	$config = \Drupal::service('config.factory')->getEditable('menu_link_attributes.config');
       $config->set('attributes', [
         'container_font_awesome_class' => [
           'label' => 'Font Awesome class',
@@ -37,6 +37,7 @@ function kamihaya_cms_menu_icon_modules_installed($modules, $is_syncing) {
 
     // Update fontawesome settings.
     if ($module_handler->moduleExists('fontawesome')) {
+    	$config = \Drupal::service('config.factory')->getEditable('fontawesome.settings');
       $config->set(
       	'tag' => 'i',
 				'method' => svg,
