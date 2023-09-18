@@ -37,8 +37,11 @@ install:
   - admin_toolbar
   - admin_toolbar_tools
   - entity_reference_revisions
+  - fontawesome
+  - menu_link_attributes
   - paragraphs
   - pathauto
+  - tb_megamenu
   - webform
   - webform_ui
   - gin_toolbar
@@ -50,7 +53,9 @@ install:
   - kamihaya_cms_common
   - kamihaya_cms_access_control
   - kamihaya_cms_views_extension
+  - kamihaya_cms_language_selector
   - kamihaya_cms_commerce
+  - kamihaya_cms_menu_icon
 
 # List any themes that should be installed as part of the profile installation.
 # Note that this will not set any theme as the default theme.

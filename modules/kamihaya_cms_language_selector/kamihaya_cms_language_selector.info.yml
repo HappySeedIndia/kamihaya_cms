@@ -1,0 +1,9 @@
+name: Kamihaya CMS Language Selector
+type: module
+core_version_requirement: ^9 || ^10
+package: Kamihaya
+description: 'Display the block for selecting language.'
+
+dependencies:
+  - drupal:language
+  - drupal:block
