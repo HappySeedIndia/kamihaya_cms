@@ -1,0 +1,20 @@
+uuid: 0808d1ab-094a-48cc-8769-39f93f5d9889
+langcode: ja
+status: true
+dependencies:
+  module:
+    - commerce_product
+id: commerce_product.field_contentserv_id
+field_name: field_contentserv_id
+entity_type: commerce_product
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

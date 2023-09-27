@@ -1,0 +1,20 @@
+uuid: f5c32904-9af1-41d7-8d44-74f47f5a34d5
+langcode: ja
+status: true
+dependencies:
+  module:
+    - commerce_product
+    - datetime
+id: commerce_product.field_created
+field_name: field_created
+entity_type: commerce_product
+type: datetime
+settings:
+  datetime_type: datetime
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,19 @@
+uuid: af427fcf-13ca-474f-a3ae-6aab691df3bd
+langcode: ja
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.default
+    - field.storage.commerce_product.field_preview_path
+id: commerce_product.default.field_preview_path
+field_name: field_preview_path
+entity_type: commerce_product
+bundle: default
+label: 'Preview path'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

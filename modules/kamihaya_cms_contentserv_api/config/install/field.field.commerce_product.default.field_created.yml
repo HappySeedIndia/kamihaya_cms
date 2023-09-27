@@ -1,0 +1,21 @@
+uuid: 689005a1-f397-44b9-a30a-4d3548954d86
+langcode: ja
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.default
+    - field.storage.commerce_product.field_created
+  module:
+    - datetime
+id: commerce_product.default.field_created
+field_name: field_created
+entity_type: commerce_product
+bundle: default
+label: Created
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

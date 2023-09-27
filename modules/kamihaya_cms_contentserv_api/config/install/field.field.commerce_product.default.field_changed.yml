@@ -1,0 +1,21 @@
+uuid: 8a7a3d1b-7446-4d42-8444-033dd7ddd7f3
+langcode: ja
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.default
+    - field.storage.commerce_product.field_changed
+  module:
+    - datetime
+id: commerce_product.default.field_changed
+field_name: field_changed
+entity_type: commerce_product
+bundle: default
+label: Changed
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

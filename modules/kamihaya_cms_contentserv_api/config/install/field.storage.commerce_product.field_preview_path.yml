@@ -1,0 +1,21 @@
+uuid: 393fae93-8077-4564-8e34-fabf2e01379f
+langcode: ja
+status: true
+dependencies:
+  module:
+    - commerce_product
+id: commerce_product.field_preview_path
+field_name: field_preview_path
+entity_type: commerce_product
+type: string
+settings:
+  max_length: 512
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

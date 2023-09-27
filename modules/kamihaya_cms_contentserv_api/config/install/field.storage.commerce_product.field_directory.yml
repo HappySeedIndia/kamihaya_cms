@@ -1,0 +1,21 @@
+uuid: a39d4f6b-2b08-4f10-878d-a4d7d9131c9c
+langcode: ja
+status: true
+dependencies:
+  module:
+    - commerce_product
+id: commerce_product.field_directory
+field_name: field_directory
+entity_type: commerce_product
+type: string
+settings:
+  max_length: 512
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
