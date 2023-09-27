@@ -56,7 +56,6 @@ install:
   - kamihaya_cms_language_selector
   - kamihaya_cms_commerce
   - kamihaya_cms_menu_icon
-  - kamihaya_cms_contentserv_api
 
 # List any themes that should be installed as part of the profile installation.
 # Note that this will not set any theme as the default theme.
