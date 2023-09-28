@@ -74,7 +74,7 @@ class ContentServApiSettings extends ConfigFormBase {
 
     $form['contentserv']['contentserv_api_url'] = [
       '#type' => 'url',
-      '#title' => $this->t('ContentServ Api Url'),
+      '#title' => $this->t('ContentServ API URL'),
       '#default_value' => $config->get('contentserv_api_url'),
     ];
 
@@ -98,7 +98,7 @@ class ContentServApiSettings extends ConfigFormBase {
 
     $form['contentserv']['contentserv_api_interval'] = [
       '#type' => 'select',
-      '#title' => $this->t('ContentServ Api Interval'),
+      '#title' => $this->t('ContentServ API Interval'),
       '#description' => $this->t('Get data interval.'),
       '#default_value' => $config->get('contentserv_api_interval'),
       '#options' => [
@@ -115,8 +115,8 @@ class ContentServApiSettings extends ConfigFormBase {
 
     $form['contentserv']['contentserv_api_limit'] = [
       '#type' => 'number',
-      '#title' => $this->t('ContentServ Api Limit'),
-      '#description' => $this->t('Data count getting at one api request.'),
+      '#title' => $this->t('ContentServ API Limit'),
+      '#description' => $this->t('Data count getting at one API request.'),
       '#default_value' => $config->get('contentserv_api_limit'),
     ];
 
