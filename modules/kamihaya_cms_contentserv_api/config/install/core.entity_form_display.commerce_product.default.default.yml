@@ -1,5 +1,4 @@
-uuid: fa20dc38-db4c-4af1-a0ae-10cad47624ad
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
@@ -13,8 +12,6 @@ dependencies:
   module:
     - commerce
     - datetime
-    - field_layout
-    - layout_discovery
     - path
     - text
 third_party_settings:

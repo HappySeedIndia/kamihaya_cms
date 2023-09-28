@@ -1,5 +1,4 @@
-uuid: 164117e6-95b6-4656-b25e-f2f652f179d7
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:

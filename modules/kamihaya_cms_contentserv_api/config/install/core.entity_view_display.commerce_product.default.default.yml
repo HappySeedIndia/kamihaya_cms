@@ -1,5 +1,4 @@
-uuid: b17a3a9e-31f3-4f80-af34-daeba22715bb
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
@@ -12,8 +11,6 @@ dependencies:
     - field.field.commerce_product.default.field_preview_path
   module:
     - commerce_product
-    - field_layout
-    - layout_discovery
     - text
 third_party_settings:
   field_layout:
