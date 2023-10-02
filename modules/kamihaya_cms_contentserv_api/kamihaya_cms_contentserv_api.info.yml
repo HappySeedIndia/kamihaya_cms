@@ -1,0 +1,16 @@
+name: Kamihaya CMS ContentServ API
+type: module
+core_version_requirement: ^9 || ^10
+package: Kamihaya
+description: 'Synchronize data with ContentServ.'
+
+dependencies:
+  - drupal:datetime
+  - commerce:commerce
+  - commerce:commerce_product
+
+project: 'kamihaya'
+configure: kamihaya_cms_contentserv_api.settings
+
+interface translation project: kamihaya_cms_contentserv_api
+interface translation server pattern: profiles/contrib/kamihaya_cms/modules/kamihaya_cms_contentserv_api/translations/%language.po
