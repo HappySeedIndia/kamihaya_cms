@@ -1,0 +1,8 @@
+contentserv_api_url: ''
+contentserv_api_folder_id: ''
+contentserv_username: ''
+contentserv_password: ''
+contentserv_api_interval: '3600'
+contentserv_api_limit: '100'
+contentserv_product_type: ''
+contentserv_api_last_executed_time: 0

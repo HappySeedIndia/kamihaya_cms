@@ -89,6 +89,7 @@
         "drupal/bootstrap5": "^3.0",
         "drupal/cloud": "^6.0@beta",
         "drupal/commerce": "^2.36",
+        "drupal/content_access": "^2.0",
         "drupal/default_content": "^2.0@alpha",
         "drupal/diff": "^1.1",
         "drupal/entity_browser": "^2.9",
