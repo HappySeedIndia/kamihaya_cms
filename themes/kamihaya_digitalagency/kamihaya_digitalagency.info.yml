@@ -4,6 +4,7 @@ description: 'Kamihaya デジタル庁デザインシステム準拠テーマ su
 core_version_requirement: '^9.4 || ^10'
 'base theme': bootstrap5
 libraries:
+  - kamihaya_digitalagency/mdb
   - kamihaya_digitalagency/global-styling
 ckeditor_stylesheets:
   - css/style.css
@@ -18,6 +19,7 @@ regions:
   content: 'Main content'
   sidebar_first: 'Sidebar first'
   sidebar_second: 'Sidebar second'
+  bottom_navigation: 'Bottom Navigation'
   footer: Footer
 libraries-override:
   bootstrap5/global-styling: false

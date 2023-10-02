@@ -57,17 +57,22 @@ set footer_classes = 'bg-light text-lg-start' ~
 %}
 
 <header>
-  {{ page.header }}
+  {% if page.nav_branding or page.header %}
+    <div class="container">
+      {{ page.nav_branding }}
+      {{ page.header }}
+    </div>
+  {% endif %}
 
-  {% if page.nav_branding or page.nav_main or page.nav_additional %}
+  {% if page.nav_main or page.nav_additional %}
   <nav class="{{ nav_classes }}">
     <div class="{{ b5_top_container }} d-flex">
-      {{ page.nav_branding }}
-
       <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
               data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
               aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-label-open">{{ 'Menu'|t }}</span>
+        <span class="navbar-toggler-label-close">{{ 'Close'|t }}</span>
       </button>
 
       <div class="collapse navbar-collapse justify-content-md-end" id="navbarSupportedContent">
@@ -118,6 +123,11 @@ set footer_classes = 'bg-light text-lg-start' ~
   </div>
 
 </main>
+
+{# Buttom Navigation #}
+{% if page.bottom_navigation %}
+  {{ page.bottom_navigation }}
+{% endif %}
 
 {% if page.footer %}
 <footer class="mt-auto {{ footer_classes }}">

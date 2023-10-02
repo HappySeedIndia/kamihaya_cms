@@ -48,17 +48,19 @@
 %}
 {% block paragraph %}
   {% block content %}
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="heading{{ paragraph.id() }}">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ paragraph.id() }}" aria-expanded="false" aria-controls="collapseOne">
-          {{ content.field_question }}
-        </button>
-      </h2>
-      <div id="collapse{{ paragraph.id() }}" class="accordion-collapse collapse" aria-labelledby="heading{{ paragraph.id() }}" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-          {{ content.field_answer }}
+    {% if content.field_question|render and content.field_answer|render %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading{{ paragraph.id() }}">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ paragraph.id() }}" aria-expanded="false" aria-controls="collapseOne">
+            {{ content.field_question }}
+          </button>
+        </h2>
+        <div id="collapse{{ paragraph.id() }}" class="accordion-collapse collapse" aria-labelledby="heading{{ paragraph.id() }}" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            {{ content.field_answer }}
+          </div>
         </div>
       </div>
-    </div>
+    {% endif %}
   {% endblock %}
 {% endblock paragraph %}

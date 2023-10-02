@@ -1,0 +1,50 @@
+{% set linkAttributes = link['attributes'] %}
+{% if ( link['url'] is defined and link['url'] is not empty ) %}
+  {% set tag = "a" %}
+{% else  %}
+  {% set tag = 'span' %}
+  {% if submenu is empty %}
+    {% set linkAttributes = linkAttributes.addClass('tbm-no-submenu') %}
+  {% endif %}
+{% endif %}
+<li {{ attributes.addClass('nav-item') }} >
+  {% if section == 'frontend' %}
+	  <div class="tbm-link-container">
+	{% endif %}
+  {% if tag == 'a' %}
+    {% if section == 'frontend' and submenu and not group %}
+      <{{tag}} href="{{ link['url'] }}" {{ link['attributes'].addClass('nav-link', 'dropdown-toggle', 'tbm-submenu-toggle') }} role='button' data-bs-toggle='dropdown' aria-expanded='false'>
+    {% else %}
+      <{{tag}} href="{{ link['url'] }}" {{ link['attributes'].addClass('nav-link') }}>
+    {% endif %}
+  {% else %}
+    <{{ tag }}{{ link['attributes'] }}>
+  {% endif %}
+    {% if fontawesome and item_config['xicon'] %}
+      <span class="{{ item_config['xicon'] }}"></span>
+    {% endif %}
+    {% set link_text %}
+      {% if font_awesome_class %}
+        <span class="menu-icon">
+          <i class="{{ font_awesome_class }}"></i>
+        </span>
+        {{ link.title_translate }}
+      {% else %}
+       {{ link.title_translate }}
+      {% endif %}
+    {% endset %}
+    {{ link_text }}
+    {% if item_config['caption'] %}
+      {% autoescape %}
+        {# Passed through Xss::filter prior to reaching twig.  We want to allow some html here. #}
+        <span class="tbm-caption">{{ item_config['caption']|raw }}</span>
+      {% endautoescape %}
+    {% endif %}
+  </{{ tag }}>
+  {% if section == 'frontend' %}
+	  </div>
+	{% endif %}
+  {% if submenu %}
+    {{ submenu }}
+  {% endif %}
+</li>

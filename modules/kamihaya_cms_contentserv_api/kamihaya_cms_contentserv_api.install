@@ -1,0 +1,43 @@
+<?php
+
+use Drupal\Component\Serialization\Yaml;
+
+/**
+ * Implements hook_install().
+ */
+function kamihaya_cms_contentserv_api_install() {
+  $module_path = \Drupal::service('extension.path.resolver')->getPath('module', 'kamihaya_cms_contentserv_api');
+  $config_path = "$module_path/config/optional";
+  $config_manager = \Drupal::service('config.manager');
+  $entity_yype_manager = \Drupal::entityTypeManager();
+
+  $files = [
+    'core.entity_form_display.commerce_product.default.default.yml',
+    'core.entity_view_display.commerce_product.default.default.yml',
+  ];
+
+  foreach ($files ?: [] as $file) {
+    $filename = $config_path . '/' . $file;
+    $file = file_get_contents($filename);
+    if (!$file) {
+      continue;
+    }
+    $value = Yaml::decode($file);
+    $type = $config_manager->getEntityTypeIdByName(basename($filename));
+
+    $definition = $entity_yype_manager->getDefinition($type);
+    $id_key = $definition->getKey('id');
+
+    $id = $value[$id_key];
+    $entity_storage = $entity_yype_manager->getStorage($type);
+    $entity = $entity_storage->load($id);
+    if ($entity) {
+      $entity = $entity_storage->updateFromStorageRecord($entity, $value);
+      $entity->save();
+    }
+    else {
+      $entity = $entity_storage->createFromStorageRecord($value);
+      $entity->save();
+    }
+  }
+}

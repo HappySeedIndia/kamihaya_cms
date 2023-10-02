@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f200c2949c4e710df4cf0ebfeb851b2f",
+    "content-hash": "40d3df596d970f0e6fc896611a72e3ab",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1464,6 +1464,61 @@
             }
         },
         {
+            "name": "drupal/content_access",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/content_access.git",
+                "reference": "2.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/content_access-2.0.0.zip",
+                "reference": "2.0.0",
+                "shasum": "01be4c9612d31b77f6117297b0bacaf78aeffd81"
+            },
+            "require": {
+                "drupal/core": "^9.4 || ^10"
+            },
+            "require-dev": {
+                "drupal/acl": "~1.0 || ~2.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.0",
+                    "datestamp": "1694013168",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "fago",
+                    "homepage": "https://www.drupal.org/user/16747"
+                },
+                {
+                    "name": "gisle",
+                    "homepage": "https://www.drupal.org/user/409554"
+                },
+                {
+                    "name": "Steven Jones",
+                    "homepage": "https://www.drupal.org/user/99644"
+                }
+            ],
+            "description": "Provides flexible content access control.",
+            "homepage": "https://drupal.org/project/content_access",
+            "support": {
+                "source": "https://git.drupalcode.org/project/content_access"
+            }
+        },
+        {
             "name": "drupal/core",
             "version": "10.1.2",
             "source": {
@@ -2108,6 +2163,60 @@
             }
         },
         {
+            "name": "drupal/fontawesome",
+            "version": "2.26.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/fontawesome.git",
+                "reference": "8.x-2.26"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/fontawesome-8.x-2.26.zip",
+                "reference": "8.x-2.26",
+                "shasum": "22e67458e1ebc274c3a8b494ce2c4056a3d2af29"
+            },
+            "require": {
+                "drupal/core": "^9.4 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-2.26",
+                    "datestamp": "1688063477",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9 || ^10 || ^11"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel.Moberly",
+                    "homepage": "https://www.drupal.org/user/1160788"
+                },
+                {
+                    "name": "truls1502",
+                    "homepage": "https://www.drupal.org/user/325866"
+                }
+            ],
+            "description": "The web's most popular icon set and toolkit.",
+            "homepage": "https://www.drupal.org/project/fontawesome",
+            "support": {
+                "source": "https://git.drupalcode.org/project/fontawesome",
+                "issues": "https://drupal.org/project/issues/fontawesome"
+            }
+        },
+        {
             "name": "drupal/geocoder",
             "version": "4.9.0",
             "source": {
@@ -2413,6 +2522,58 @@
             "homepage": "https://www.drupal.org/project/inline_entity_form",
             "support": {
                 "source": "https://git.drupalcode.org/project/inline_entity_form"
+            }
+        },
+        {
+            "name": "drupal/menu_link_attributes",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/menu_link_attributes.git",
+                "reference": "8.x-1.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/menu_link_attributes-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "431c7954cc614a1b9677173f0209f1df15592503"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.3",
+                    "datestamp": "1671026425",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "jcnventura",
+                    "homepage": "https://www.drupal.org/user/122464"
+                },
+                {
+                    "name": "yannickoo",
+                    "homepage": "https://www.drupal.org/user/531118"
+                }
+            ],
+            "description": "Allows you to add attributes to menu links.",
+            "homepage": "http://drupal.org/project/menu_link_attributes",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/menu_link_attributes",
+                "issues": "http://drupal.org/project/issues/menu_link_attributes"
             }
         },
         {
@@ -3361,6 +3522,85 @@
             "homepage": "http://drupal.org/project/state_machine",
             "support": {
                 "source": "https://git.drupalcode.org/project/state_machine"
+            }
+        },
+        {
+            "name": "drupal/tb_megamenu",
+            "version": "3.0.0-alpha2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/tb_megamenu.git",
+                "reference": "3.0.0-alpha2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/tb_megamenu-3.0.0-alpha2.zip",
+                "reference": "3.0.0-alpha2",
+                "shasum": "fb5f23cc423a86271b766724c1dc8351c862f650"
+            },
+            "require": {
+                "drupal/core": "^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "3.0.0-alpha2",
+                    "datestamp": "1686707489",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Wade Stewart (themodularlab)",
+                    "homepage": "https://www.drupal.org/u/themodularlab",
+                    "role": "Owner"
+                },
+                {
+                    "name": "Michael Girgis (knaffles)",
+                    "homepage": "https://www.drupal.org/u/knaffles",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Andrew Olson (andrewozone)",
+                    "homepage": "https://www.drupal.org/u/andrewozone",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Justin Todd (quondam)",
+                    "homepage": "https://www.drupal.org/u/quondam",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Irene Dobbs (irene_dobbs)",
+                    "homepage": "https://www.drupal.org/u/irene_dobbs",
+                    "role": "Co-Maintainer"
+                },
+                {
+                    "name": "Henry Odiete (henry.odiete)",
+                    "homepage": "https://www.drupal.org/u/henry.odiete",
+                    "role": "Co-Maintainer"
+                },
+                {
+                    "name": "quondam",
+                    "homepage": "https://www.drupal.org/user/327869"
+                },
+                {
+                    "name": "themodularlab",
+                    "homepage": "https://www.drupal.org/user/3190381"
+                }
+            ],
+            "description": "Provides complex, multi-column mega menu solutions for Drupal.",
+            "homepage": "https://www.drupal.org/project/tb_megamenu",
+            "support": {
+                "source": "https://git.drupalcode.org/project/tb_megamenu",
+                "issues": "https://www.drupal.org/project/issues/tb_megamenu"
             }
         },
         {
@@ -10098,7 +10338,8 @@
     "stability-flags": {
         "drupal/cloud": 10,
         "drupal/default_content": 15,
-        "drupal/gin": 5
+        "drupal/gin": 5,
+        "drupal/tb_megamenu": 15
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -1,0 +1,101 @@
+<?php
+
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+
+/**
+ * Implements hook_cron().
+ */
+function kamihaya_cms_contentserv_api_cron() {
+  $config = \Drupal::configFactory()->getEditable('kamihaya_cms_contentserv_api.settings');
+  $interval = $config->get('contentserv_api_interval');
+
+  $last_executed_time = !empty($config->get('contentserv_api_last_executed_time'))
+    ? $config->get('contentserv_api_last_executed_time')
+    : 0;
+
+  if (!empty($last_executed_time) && ($last_executed_time + $interval) > time()) {
+    return;
+  }
+
+  // Save the last executed time.
+  $config->set('contentserv_api_last_executed_time', time());
+  $config->save();
+
+  $limit = $config->get('contentserv_api_limit');
+
+  _kamihaya_cms_contentserv_api_synchronize_data($last_executed_time, $limit);
+}
+
+/**
+ * Synchronize data with ContentServ.
+ *
+ * @param int $last_executed_time
+ *   Last executed time.
+ * @param int $limit
+ *   The limit data count of one API call.
+ * @param int $page
+ *   The result page.
+ */
+function _kamihaya_cms_contentserv_api_synchronize_data($last_executed_time, $limit, $page = 0) {
+  $contenterv_api = \Drupal::service('contentserv.api');
+  $result = $contenterv_api->getChangedData($last_executed_time, $limit, $page);
+  if (empty($result) || empty($result['Total']) || empty($result['Products'])) {
+    return;
+  }
+  _kamihaya_cms_contentserv_api_update_entities($result['Products']);
+
+  \Drupal::logger('kamihaya_cms_contentserv_api')->info("Synchronized with ContentServ. Count: from @from to @to of Total @total", [
+    '@from' => $limit * $page + 1,
+    '@to' => $result['Total'] <= $limit * ($page + 1) ? $result['Total'] : $limit * ($page + 1),
+    '@total' => $result['Total'],
+  ]);
+  if ($result['Total'] <= $limit * ($page + 1)) {
+    return;
+  }
+  _kamihaya_cms_contentserv_api_synchronize_data($last_executed_time, $limit, $page + 1);
+}
+
+/**
+ * Update product entities with API results.
+ *
+ * @param array $api_result
+ *   The array of API result.
+ */
+function _kamihaya_cms_contentserv_api_update_entities(array $api_result) {
+  $config = \Drupal::configFactory()->getEditable('kamihaya_cms_contentserv_api.settings');
+  $product_type = $config->get('contentserv_product_type');
+
+  $storage_format = DateTimeItemInterface::DATETIME_STORAGE_FORMAT;
+  $storage_timezone = new \DateTimezone(DateTimeItemInterface::STORAGE_TIMEZONE);
+
+  $product_storage = Drupal::entityTypeManager()->getStorage('commerce_product');
+  foreach($api_result ?: [] as $result) {
+    if (empty($result['ID']) || empty($result['Label'])) {
+      break;
+    }
+    $entities = $product_storage->loadByProperties(['field_contentserv_id' => $result['ID']]);
+
+    if (!empty($entities)) {
+      $product = reset($entities);
+    }
+    else {
+      $product = $product_storage->create(['type' => $product_type]);
+      $product->set('field_contentserv_id', $result['ID']);
+    }
+    $product->setTitle($result['Label']);
+    $product->set('field_preview_path', !empty($result['Preview']) ? $result['Preview'] : '');
+    $product->set('field_directory', !empty($result['Path']['Labels']) ? $result['Path']['Labels'] : '');
+    if (!empty($result['Created'])) {
+      $date = new DrupalDateTime($result['Created']);
+      $value = $date->setTimezone($storage_timezone)->format($storage_format);
+      $product->set('field_created', $value);
+    }
+    if (!empty($result['Changed'])) {
+      $date = new DrupalDateTime($result['Changed']);
+      $value = $date->setTimezone($storage_timezone)->format($storage_format);
+      $product->set('field_changed', $value);
+    }
+    $product->save();
+  }
+}

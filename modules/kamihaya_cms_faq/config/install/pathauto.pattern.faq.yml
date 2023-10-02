@@ -1,0 +1,20 @@
+status: true
+dependencies:
+  module:
+    - node
+id: faq
+label: FAQ
+type: 'canonical_entities:node'
+pattern: '/[node:title]'
+selection_criteria:
+  55b41ca0-4336-4939-92b3-3a0f1ae6c7f7:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 55b41ca0-4336-4939-92b3-3a0f1ae6c7f7
+    context_mapping:
+      node: node
+    bundles:
+      faq: faq
+selection_logic: and
+weight: -5
+relationships: {  }
