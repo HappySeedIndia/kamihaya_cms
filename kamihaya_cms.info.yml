@@ -65,6 +65,7 @@ install:
   - kamihaya_cms_views_extension
   - kamihaya_cms_language_selector
   - kamihaya_cms_commerce
+  - kamihaya_cms_menu_icon
   - kamihaya_cms_menu_media_type
   - kamihaya_cms_menu_paragraph_type
   - kamihaya_cms_menu_content_type
