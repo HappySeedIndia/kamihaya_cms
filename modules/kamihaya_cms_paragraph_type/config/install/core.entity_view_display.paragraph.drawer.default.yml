@@ -16,13 +16,13 @@ bundle: drawer
 mode: default
 content:
   field_drawer_body:
-    type: entity_reference_revisions_entity_view
+    type: layout_paragraphs
     label: hidden
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   field_drawer_position:
     type: list_default
