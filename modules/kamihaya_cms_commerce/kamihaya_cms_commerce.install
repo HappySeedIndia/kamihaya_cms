@@ -31,13 +31,6 @@ function kamihaya_cms_commerce_update_10001() {
   ], 'install');
 
   _kamihaya_cms_commerce_change_configs([
-    'field.field.commerce_product.default.field_body.yml',
-    'field.field.commerce_product.default.field_category.yml',
-    'field.field.commerce_product.default.field_description.yml',
-    'field.field.commerce_product.default.field_thumbnail_image.yml',
-  ], 'install/language/ja');
-
-  _kamihaya_cms_commerce_change_configs([
     'core.entity_form_display.commerce_product.default.default.yml',
     'core.entity_view_display.commerce_product.default.default.yml',
   ], 'optional');
