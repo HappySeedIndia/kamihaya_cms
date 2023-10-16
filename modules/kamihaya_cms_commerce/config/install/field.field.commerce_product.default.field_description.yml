@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.default
+    - field.storage.commerce_product.field_description
+  module:
+    - text
+id: commerce_product.default.field_description
+field_name: field_description
+entity_type: commerce_product
+bundle: default
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

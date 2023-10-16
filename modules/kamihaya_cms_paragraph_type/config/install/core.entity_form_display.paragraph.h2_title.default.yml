@@ -1,0 +1,22 @@
+slangcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.h2_title.field_h2_title
+    - paragraphs.paragraphs_type.h2_title
+id: paragraph.h2_title.default
+targetEntityType: paragraph
+bundle: h2_title
+mode: default
+content:
+  field_h2_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

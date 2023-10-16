@@ -1,0 +1,14 @@
+name: Kamihaya CMS Paragraph type
+type: module
+core_version_requirement: ^9 || ^10
+package: Kamihaya
+description: 'Paragraphs for Kamihaya CMS.'
+
+dependencies:
+  - color_field:color_field
+  - imce:imce
+  - paragraphs:paragraphs
+  - layout_paragraphs:layout_paragraphs
+  - string_field_formatter:string_field_formatter
+
+project: 'kamihaya'

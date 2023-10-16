@@ -11,9 +11,9 @@ use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
 
 /**
- * The ContentServ API client.
+ * The Contentserv API client.
  */
-class ContentServApi {
+class ContentservApi {
 
   use StringTranslationTrait;
 
@@ -78,7 +78,7 @@ class ContentServApi {
   }
 
   /**
-   * Get changed data from ContentServ.
+   * Get changed data from Contentserv.
    *
    * @param int $start_date
    *   Search from time.
@@ -119,7 +119,7 @@ class ContentServApi {
 
     $url = substr($api_url, -1) === '/' ? "{$api_url}{$folder_id}" : "{$api_url}/{$folder_id}";
     try {
-      $response = $this->httpClient->get($url, [
+      $response = $this->httpClient->request('GET', $url, [
         'headers' => $api_headers,
         'query' => $parameters,
       ]);
@@ -141,7 +141,7 @@ class ContentServApi {
       ];
     }
     catch (GuzzleException $e) {
-      $this->logger->error('Failed to get the changed data from ContentServ. Error: @error', ['@error' => $e->getMessage()]);
+      $this->logger->error('Failed to get the changed data from Contentserv. Error: @error', ['@error' => $e->getMessage()]);
       return [];
     }
   }

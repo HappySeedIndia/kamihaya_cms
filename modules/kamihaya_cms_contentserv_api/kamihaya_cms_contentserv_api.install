@@ -6,17 +6,31 @@ use Drupal\Component\Serialization\Yaml;
  * Implements hook_install().
  */
 function kamihaya_cms_contentserv_api_install() {
-  $module_path = \Drupal::service('extension.path.resolver')->getPath('module', 'kamihaya_cms_contentserv_api');
-  $config_path = "$module_path/config/optional";
-  $config_manager = \Drupal::service('config.manager');
-  $entity_yype_manager = \Drupal::entityTypeManager();
+  _kamihaya_cms_contentserv_api_change_configs([
+    'field.field.commerce_product.default.field_contentserv_id.yml',
+  ], 'install');
 
-  $files = [
+  _kamihaya_cms_contentserv_api_change_configs([
     'core.entity_form_display.commerce_product.default.default.yml',
     'core.entity_view_display.commerce_product.default.default.yml',
-  ];
+  ], 'optional');
+}
 
-  foreach ($files ?: [] as $file) {
+/**
+ * Change configs.
+ *
+ * @param array $files
+ *   The array of file names to be changed.
+ * @param string $path_name
+ *   The path name under the config directory.
+ */
+function _kamihaya_cms_contentserv_api_change_configs(array $files, $path_name) {
+  $module_path = \Drupal::service('extension.path.resolver')->getPath('module', 'kamihaya_cms_contentserv_api');
+  $config_path = "$module_path/config/$path_name";
+  $config_manager = \Drupal::service('config.manager');
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  foreach ($files as $file) {
     $filename = $config_path . '/' . $file;
     $file = file_get_contents($filename);
     if (!$file) {
@@ -25,11 +39,12 @@ function kamihaya_cms_contentserv_api_install() {
     $value = Yaml::decode($file);
     $type = $config_manager->getEntityTypeIdByName(basename($filename));
 
-    $definition = $entity_yype_manager->getDefinition($type);
+    $definition = $entity_type_manager->getDefinition($type);
     $id_key = $definition->getKey('id');
 
     $id = $value[$id_key];
-    $entity_storage = $entity_yype_manager->getStorage($type);
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityStorage $entity_storage */
+    $entity_storage = $entity_type_manager->getStorage($type);
     $entity = $entity_storage->load($id);
     if ($entity) {
       $entity = $entity_storage->updateFromStorageRecord($entity, $value);

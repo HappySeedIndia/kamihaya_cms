@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_editor
+    - paragraphs.paragraphs_type.wysiwyg_editor
+  module:
+    - text
+id: paragraph.wysiwyg_editor.field_editor
+field_name: field_editor
+entity_type: paragraph
+bundle: wysiwyg_editor
+label: Editor
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

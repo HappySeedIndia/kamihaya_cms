@@ -1,0 +1,86 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.image_link.field_image
+    - field.field.paragraph.image_link.field_image_link
+    - field.field.paragraph.image_link.field_image_text
+    - field.field.paragraph.image_link.field_image_text_color
+    - field.field.paragraph.image_link.field_image_text_halign
+    - field.field.paragraph.image_link.field_image_text_size
+    - field.field.paragraph.image_link.field_image_text_valign
+    - paragraphs.paragraphs_type.image_link
+  module:
+    - color_field
+    - image
+    - link
+    - options
+id: paragraph.image_link.default
+targetEntityType: paragraph
+bundle: image_link
+mode: default
+content:
+  field_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_image_link:
+    type: link
+    label: hidden
+    settings:
+      trim_length: null
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_image_text:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_image_text_color:
+    type: color_field_formatter_text
+    label: hidden
+    settings:
+      format: rgb
+      opacity: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_image_text_halign:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_image_text_size:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_image_text_valign:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden: {  }

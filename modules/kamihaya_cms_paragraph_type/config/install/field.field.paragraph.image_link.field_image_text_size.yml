@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_image_text_size
+    - paragraphs.paragraphs_type.image_link
+id: paragraph.image_link.field_image_text_size
+field_name: field_image_text_size
+entity_type: paragraph
+bundle: image_link
+label: 'Text size'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 6
+  max: null
+  prefix: ''
+  suffix: px
+field_type: integer

@@ -1,5 +1,5 @@
 kamihaya_cms_contentserv_api.settings:
-  title: 'Kamihaya CMS ContentServ API Settings'
-  description: 'amihaya CMS ContentServ Api Settings.'
+  title: 'Kamihaya CMS Contentserv API Settings'
+  description: 'amihaya CMS Contentserv Api Settings.'
   route_name: kamihaya_cms_contentserv_api.settings
   parent: system.admin_config_services

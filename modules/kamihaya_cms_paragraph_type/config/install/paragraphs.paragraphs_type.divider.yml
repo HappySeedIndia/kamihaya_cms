@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:3e4d3738-616d-4ad5-86c2-ab1d1c65847a'
+id: divider
+label: Divider
+icon_uuid: 3e4d3738-616d-4ad5-86c2-ab1d1c65847a
+icon_default: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAgMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTIgOWgxNnYySDJ6Ii8+PC9zdmc+Cg=='
+description: ''
+behavior_plugins: {  }
