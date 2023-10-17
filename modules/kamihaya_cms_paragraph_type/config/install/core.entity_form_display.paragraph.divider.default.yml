@@ -1,0 +1,50 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.divider.field_divider_color
+    - field.field.paragraph.divider.field_divider_image
+    - field.field.paragraph.divider.field_divider_style
+    - field.field.paragraph.divider.field_divider_width
+    - image.style.thumbnail
+    - paragraphs.paragraphs_type.divider
+  module:
+    - color_field
+    - image
+id: paragraph.divider.default
+targetEntityType: paragraph
+bundle: divider
+mode: default
+content:
+  field_divider_color:
+    type: color_field_widget_default
+    weight: 2
+    region: content
+    settings:
+      placeholder_color: ''
+      placeholder_opacity: ''
+    third_party_settings: {  }
+  field_divider_image:
+    type: image_image
+    weight: 3
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+  field_divider_style:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_divider_width:
+    type: number
+    weight: 0
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

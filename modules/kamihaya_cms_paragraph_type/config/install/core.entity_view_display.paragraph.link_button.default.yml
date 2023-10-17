@@ -1,0 +1,86 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.link_button.field_button_bg_color
+    - field.field.paragraph.link_button.field_button_border_color
+    - field.field.paragraph.link_button.field_button_border_radius
+    - field.field.paragraph.link_button.field_button_link
+    - field.field.paragraph.link_button.field_button_text
+    - field.field.paragraph.link_button.field_button_text_color
+    - field.field.paragraph.link_button.field_button_text_size
+    - paragraphs.paragraphs_type.link_button
+  module:
+    - color_field
+    - link
+id: paragraph.link_button.default
+targetEntityType: paragraph
+bundle: link_button
+mode: default
+content:
+  field_button_bg_color:
+    type: color_field_formatter_text
+    label: hidden
+    settings:
+      format: rgb
+      opacity: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_button_border_color:
+    type: color_field_formatter_text
+    label: hidden
+    settings:
+      format: rgb
+      opacity: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_button_border_radius:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_button_link:
+    type: link
+    label: hidden
+    settings:
+      trim_length: null
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_button_text:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_button_text_color:
+    type: color_field_formatter_text
+    label: hidden
+    settings:
+      format: rgb
+      opacity: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_button_text_size:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden: {  }

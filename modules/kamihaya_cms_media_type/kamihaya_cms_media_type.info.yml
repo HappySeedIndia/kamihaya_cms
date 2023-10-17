@@ -1,0 +1,12 @@
+name: Kamihaya CMS Media type
+type: module
+core_version_requirement: ^9 || ^10
+package: Kamihaya
+description: 'Media types for Kamihaya CMS.'
+
+dependencies:
+  - drupal:media
+  - drupal:media_library
+  - imce:imce
+
+project: 'kamihaya'

@@ -1,0 +1,121 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_accordion_body
+    - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.accordion_item
+    - paragraphs.paragraphs_type.divider
+    - paragraphs.paragraphs_type.h2_title
+    - paragraphs.paragraphs_type.h3_title
+    - paragraphs.paragraphs_type.h4_title
+    - paragraphs.paragraphs_type.image
+    - paragraphs.paragraphs_type.image_link
+    - paragraphs.paragraphs_type.layout_paragraph
+    - paragraphs.paragraphs_type.left_image_text
+    - paragraphs.paragraphs_type.link_button
+    - paragraphs.paragraphs_type.right_image_text
+    - paragraphs.paragraphs_type.wysiwyg_editor
+  module:
+    - entity_reference_revisions
+id: paragraph.accordion_item.field_accordion_body
+field_name: field_accordion_body
+entity_type: paragraph
+bundle: accordion_item
+label: Body
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      layout_paragraph: layout_paragraph
+      h2_title: h2_title
+      h3_title: h3_title
+      h4_title: h4_title
+      wysiwyg_editor: wysiwyg_editor
+      image: image
+      image_link: image_link
+      link_button: link_button
+      left_image_text: left_image_text
+      right_image_text: right_image_text
+      divider: divider
+      accordion: accordion
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: -26
+        enabled: true
+      accordion_item:
+        weight: -47
+        enabled: false
+      career:
+        weight: -49
+        enabled: false
+      divider:
+        weight: -27
+        enabled: true
+      drawer:
+        weight: -38
+        enabled: false
+      educational_background:
+        weight: -48
+        enabled: false
+      english_skill:
+        weight: -46
+        enabled: false
+      groups:
+        weight: -45
+        enabled: false
+      h2_title:
+        weight: -36
+        enabled: true
+      h3_title:
+        weight: -35
+        enabled: true
+      h4_title:
+        weight: -34
+        enabled: true
+      image:
+        weight: -32
+        enabled: true
+      image_link:
+        weight: -31
+        enabled: true
+      layout_paragraph:
+        weight: -37
+        enabled: true
+      left_image_text:
+        weight: -29
+        enabled: true
+      license:
+        weight: -44
+        enabled: false
+      link_button:
+        weight: -30
+        enabled: true
+      modal_dialog:
+        weight: -39
+        enabled: false
+      other_language:
+        weight: -43
+        enabled: false
+      other_notice:
+        weight: -42
+        enabled: false
+      q_a:
+        weight: -41
+        enabled: false
+      right_image_text:
+        weight: -28
+        enabled: true
+      skill:
+        weight: -40
+        enabled: false
+      wysiwyg_editor:
+        weight: -33
+        enabled: true
+field_type: entity_reference_revisions

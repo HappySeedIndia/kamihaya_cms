@@ -1,0 +1,11 @@
+settings:
+  allowed_values:
+    -
+      value: top
+      label: 上
+    -
+      value: center
+      label: 中央
+    -
+      value: bottom
+      label: 下

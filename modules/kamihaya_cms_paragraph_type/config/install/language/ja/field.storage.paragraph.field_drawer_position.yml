@@ -1,0 +1,8 @@
+settings:
+  allowed_values:
+    -
+      value: left
+      label: 左
+    -
+      value: right
+      label: 右

@@ -1,0 +1,26 @@
+settings:
+  allowed_values:
+    -
+      value: solid
+      label: 実線
+    -
+      value: dotted
+      label: 点線
+    -
+      value: dashed
+      label: 破線
+    -
+      value: double
+      label: 二重線
+    -
+      value: groove
+      label: 凹線
+    -
+      value: ridge
+      label: 凸線
+    -
+      value: inset
+      label: 内側凹線
+    -
+      value: outset
+      label: 内側凸線

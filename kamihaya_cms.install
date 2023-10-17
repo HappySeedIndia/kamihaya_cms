@@ -48,3 +48,26 @@ function kamihaya_cms_update_10001() {
   $module_installer = \Drupal::service("module_installer");
   $module_installer->install($modules);
 }
+
+/**
+ * Install custom modules.
+ */
+function kamihaya_cms_update_10002() {
+  $modules = [];
+  if (!\Drupal::moduleHandler()->moduleExists('kamihaya_cms_media_type')) {
+    $modules[] = 'kamihaya_cms_media_type';
+  }
+  if (!\Drupal::moduleHandler()->moduleExists('kamihaya_cms_paragraph_type')) {
+    $modules[] = 'kamihaya_cms_paragraph_type';
+  }
+  if (!\Drupal::moduleHandler()->moduleExists('kamihaya_cms_content_type')) {
+    $modules[] = 'kamihaya_cms_content_type';
+  }
+
+  if (empty($modules)) {
+    return;
+  }
+  /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
+  $module_installer = \Drupal::service("module_installer");
+  $module_installer->install($modules);
+}

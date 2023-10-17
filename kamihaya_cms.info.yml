@@ -19,6 +19,8 @@ install:
   - editor
   - help
   - image
+  - media
+  - media_library
   - menu_ui
   - options
   - path
@@ -36,12 +38,19 @@ install:
   - automated_cron
   - admin_toolbar
   - admin_toolbar_tools
+  - color_field
   - content_access
   - entity_reference_revisions
   - fontawesome
+  - imce
+  - layout_paragraphs
   - menu_link_attributes
+  - metatag
   - paragraphs
   - pathauto
+  - quick_node_clone
+  - scheduler
+  - string_field_formatter
   - tb_megamenu
   - webform
   - webform_ui
@@ -57,6 +66,9 @@ install:
   - kamihaya_cms_language_selector
   - kamihaya_cms_commerce
   - kamihaya_cms_menu_icon
+  - kamihaya_cms_media_type
+  - kamihaya_cms_paragraph_type
+  - kamihaya_cms_content_type
 
 # List any themes that should be installed as part of the profile installation.
 # Note that this will not set any theme as the default theme.
