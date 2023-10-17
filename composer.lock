@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f6391d7567e2cf108cf805c70c2c882",
+    "content-hash": "930233625c779e8d74185ed670580856",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -210,42 +210,6 @@
                 "source": "https://github.com/aws/aws-sdk-php/tree/3.283.2"
             },
             "time": "2023-10-06T18:09:54+00:00"
-        },
-        {
-            "name": "bower-asset/jquery",
-            "version": "3.7.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jquery/jquery-dist.git",
-                "reference": "fde1f76e2799dd877c176abde0ec836553246991"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/fde1f76e2799dd877c176abde0ec836553246991",
-                "reference": "fde1f76e2799dd877c176abde0ec836553246991"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/spectrum",
-            "version": "1.8.1",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:bgrins/spectrum.git",
-                "reference": "9aa028de7e8039c41ac792485a928edb97d4ac40"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bgrins/spectrum/zipball/9aa028de7e8039c41ac792485a928edb97d4ac40",
-                "reference": "9aa028de7e8039c41ac792485a928edb97d4ac40"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.7.2"
-            },
-            "type": "bower-asset"
         },
         {
             "name": "caxy/php-htmldiff",
