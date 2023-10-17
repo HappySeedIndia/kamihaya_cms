@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "40d3df596d970f0e6fc896611a72e3ab",
+    "content-hash": "2f6391d7567e2cf108cf805c70c2c882",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -210,6 +210,42 @@
                 "source": "https://github.com/aws/aws-sdk-php/tree/3.283.2"
             },
             "time": "2023-10-06T18:09:54+00:00"
+        },
+        {
+            "name": "bower-asset/jquery",
+            "version": "3.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jquery/jquery-dist.git",
+                "reference": "fde1f76e2799dd877c176abde0ec836553246991"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/fde1f76e2799dd877c176abde0ec836553246991",
+                "reference": "fde1f76e2799dd877c176abde0ec836553246991"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "bower-asset/spectrum",
+            "version": "1.8.1",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:bgrins/spectrum.git",
+                "reference": "9aa028de7e8039c41ac792485a928edb97d4ac40"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bgrins/spectrum/zipball/9aa028de7e8039c41ac792485a928edb97d4ac40",
+                "reference": "9aa028de7e8039c41ac792485a928edb97d4ac40"
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.7.2"
+            },
+            "type": "bower-asset"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -1376,6 +1412,58 @@
             }
         },
         {
+            "name": "drupal/color_field",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/color_field.git",
+                "reference": "3.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/color_field-3.0.0.zip",
+                "reference": "3.0.0",
+                "shasum": "7a72fde925bc777b292aef7afa4ceb98d46cc0b5"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10"
+            },
+            "require-dev": {
+                "drupal/token": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "3.0.0",
+                    "datestamp": "1671324231",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "NickDickinsonWilde",
+                    "homepage": "https://www.drupal.org/user/3094661"
+                },
+                {
+                    "name": "targoo",
+                    "homepage": "https://www.drupal.org/user/431910"
+                }
+            ],
+            "description": "Provides a color field type to store the color value and opacity.",
+            "homepage": "https://www.drupal.org/project/color_field",
+            "support": {
+                "source": "https://git.drupalcode.org/project/color_field",
+                "error": "require-dev.drupal/feeds : invalid version constraint (Could not parse version constraint : Invalid version string \"\")"
+            }
+        },
+        {
             "name": "drupal/commerce",
             "version": "2.36.0",
             "source": {
@@ -2433,6 +2521,59 @@
             ]
         },
         {
+            "name": "drupal/imce",
+            "version": "3.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/imce.git",
+                "reference": "3.0.9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/imce-3.0.9.zip",
+                "reference": "3.0.9",
+                "shasum": "08961c8293d862fcb971518dbfcfffc78f546548"
+            },
+            "require": {
+                "drupal/core": "^9.3 || ^10"
+            },
+            "require-dev": {
+                "drupal/ckeditor": "^1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "3.0.9",
+                    "datestamp": "1691188107",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "See contributors",
+                    "homepage": "https://www.drupal.org/node/2841111/committers",
+                    "role": "Developer"
+                },
+                {
+                    "name": "ufku",
+                    "homepage": "https://www.drupal.org/user/9910"
+                }
+            ],
+            "description": "Provides a file manager supporting personal folders.",
+            "homepage": "https://drupal.org/project/imce",
+            "support": {
+                "source": "https://git.drupalcode.org/project/imce",
+                "issues": "https://www.drupal.org/project/issues/imce"
+            }
+        },
+        {
             "name": "drupal/inline_entity_form",
             "version": "1.0.0-rc15",
             "source": {
@@ -2522,6 +2663,64 @@
             "homepage": "https://www.drupal.org/project/inline_entity_form",
             "support": {
                 "source": "https://git.drupalcode.org/project/inline_entity_form"
+            }
+        },
+        {
+            "name": "drupal/layout_paragraphs",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/layout_paragraphs.git",
+                "reference": "2.0.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/layout_paragraphs-2.0.3.zip",
+                "reference": "2.0.3",
+                "shasum": "e0703d8b7c93931c4840167883d3993846485f44"
+            },
+            "require": {
+                "drupal/core": "^9.2 || ^10",
+                "drupal/paragraphs": "^1.6"
+            },
+            "require-dev": {
+                "drupal/block_field": "~1.0",
+                "drupal/entity_usage": "2.x-dev",
+                "drupal/paragraphs-paragraphs_library": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.3",
+                    "datestamp": "1683938207",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "itamair",
+                    "homepage": "https://www.drupal.org/user/1179076"
+                },
+                {
+                    "name": "justin2pin",
+                    "homepage": "https://www.drupal.org/user/278450"
+                }
+            ],
+            "description": "Layout Paragraphs",
+            "homepage": "https://www.drupal.org/project/layout_paragraphs",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/layout_paragraphs",
+                "issues": "https://www.drupal.org/project/issues/layout_paragraphs"
             }
         },
         {
@@ -2932,6 +3131,60 @@
             "homepage": "https://drupal.org/project/profile",
             "support": {
                 "source": "https://git.drupalcode.org/project/profile"
+            }
+        },
+        {
+            "name": "drupal/quick_node_clone",
+            "version": "1.16.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/quick_node_clone.git",
+                "reference": "8.x-1.16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/quick_node_clone-8.x-1.16.zip",
+                "reference": "8.x-1.16",
+                "shasum": "44cc517788cf2d9613fd2070b1aa9e62627c5e1c"
+            },
+            "require": {
+                "drupal/core": "^8.8 || ^9 || ^10"
+            },
+            "require-dev": {
+                "drupal/paragraphs": "1.x-dev"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.16",
+                    "datestamp": "1678754974",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "vilepickle",
+                    "homepage": "https://www.drupal.org/u/vilepickle",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Neslee Canil Pinto",
+                    "homepage": "https://www.drupal.org/u/neslee-canil-pinto",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Quickly clone a node with regular fields.",
+            "homepage": "https://www.drupal.org/project/quick_node_clone",
+            "support": {
+                "source": "https://git.drupalcode.org/project/quick_node_clone",
+                "issues": "https://www.drupal.org/project/issues/quick_node_clone"
             }
         },
         {
@@ -3522,6 +3775,54 @@
             "homepage": "http://drupal.org/project/state_machine",
             "support": {
                 "source": "https://git.drupalcode.org/project/state_machine"
+            }
+        },
+        {
+            "name": "drupal/string_field_formatter",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/string_field_formatter.git",
+                "reference": "2.0.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/string_field_formatter-2.0.3.zip",
+                "reference": "2.0.3",
+                "shasum": "1268d1ac2c811130e3524700639ef9c42f83f8c1"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.3",
+                    "datestamp": "1696786969",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Denes.Szabo",
+                    "homepage": "https://www.drupal.org/user/582668"
+                },
+                {
+                    "name": "xmacinfo",
+                    "homepage": "https://www.drupal.org/user/12131"
+                }
+            ],
+            "description": "Adds formatters to plain string type field.",
+            "homepage": "https://www.drupal.org/project/string_field_formatter",
+            "support": {
+                "source": "https://git.drupalcode.org/project/string_field_formatter"
             }
         },
         {

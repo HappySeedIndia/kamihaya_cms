@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.h3_title.field_h3_title
+    - paragraphs.paragraphs_type.h3_title
+  module:
+    - string_field_formatter
+id: paragraph.h3_title.default
+targetEntityType: paragraph
+bundle: h3_title
+mode: default
+content:
+  field_h3_title:
+    type: plain_string_formatter
+    label: hidden
+    settings:
+      link_to_entity: false
+      wrap_tag: h3
+      wrap_class: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

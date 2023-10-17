@@ -4,5 +4,6 @@ contentserv_username: ''
 contentserv_password: ''
 contentserv_api_interval: '3600'
 contentserv_api_limit: '100'
+contentserv_store: ''
 contentserv_product_type: ''
 contentserv_api_last_executed_time: 0

@@ -15,7 +15,7 @@ use Drupal\views\ViewExecutable;
  * Implements hook_views_post_execute().
  */
 function _kamihaya_cms_views_extension_views_pre_execute(ViewExecutable $view) {
-  if (!$view->pager || !($view->pager instanceof Full)) {
+  if (empty($view->pager) || !($view->pager instanceof Full)) {
     return;
   }
 
@@ -26,7 +26,7 @@ function _kamihaya_cms_views_extension_views_pre_execute(ViewExecutable $view) {
  * Implements hook_views_post_execute().
  */
 function kamihaya_cms_views_extension_views_post_execute(ViewExecutable $view) {
-  if (!$view->pager || !($view->pager instanceof Mini) || $view->get_total_rows) {
+  if (empty($view->pager) || !($view->pager instanceof Mini) || $view->get_total_rows) {
     return;
   }
 
@@ -72,7 +72,7 @@ function kamihaya_cms_views_extension_views_post_execute(ViewExecutable $view) {
  * Implements hook_views_pre_render().
  */
 function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
-  if (!$view->pager || !($view->pager instanceof Full)) {
+  if (empty($view->pager) || !($view->pager instanceof Full)) {
     return;
   }
   $view->pager->options['quantity'] = 7;

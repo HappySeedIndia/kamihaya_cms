@@ -6,33 +6,47 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeBundleInfo;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class ContentServ API Settings.
+ * Class Contentserv API Settings.
  */
-class ContentServApiSettings extends ConfigFormBase {
+class ContentservApiSettings extends ConfigFormBase {
 
   /**
-   * Undocumented variable.
+   * The entity bundle info.
    *
    * @var \Drupal\Core\Entity\EntityTypeBundleInfo
    */
   protected $entityTypeBundleInfo;
 
   /**
-   * Constructs a new ContentServApiSettings.
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a new ContentservApiSettings.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The factory for configuration objects.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfo $entity_type_bundleInfo
+   *   The entity bundle info.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeBundleInfo $entity_type_bundleInfo) {
+  public function __construct(
+    ConfigFactoryInterface $config_factory,
+    EntityTypeBundleInfo $entity_type_bundleInfo,
+    EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($config_factory);
     $this->entityTypeBundleInfo = $entity_type_bundleInfo;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -41,7 +55,8 @@ class ContentServApiSettings extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('entity_type.bundle.info')
+      $container->get('entity_type.bundle.info'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -68,37 +83,37 @@ class ContentServApiSettings extends ConfigFormBase {
 
     $form['contentserv'] = [
       '#type' => 'details',
-      '#title' => $this->t('ContentServ'),
+      '#title' => $this->t('Contentserv'),
       '#open' => TRUE,
     ];
 
     $form['contentserv']['contentserv_api_url'] = [
       '#type' => 'url',
-      '#title' => $this->t('ContentServ API URL'),
+      '#title' => $this->t('Contentserv API URL'),
       '#default_value' => $config->get('contentserv_api_url'),
     ];
 
     $form['contentserv']['contentserv_api_folder_id'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('ContentServ Folder ID'),
+      '#title' => $this->t('Contentserv Folder ID'),
       '#default_value' => $config->get('contentserv_api_folder_id'),
     ];
 
     $form['contentserv']['contentserv_username'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('ContentServ Username'),
+      '#title' => $this->t('Contentserv Username'),
       '#default_value' => $config->get('contentserv_username'),
     ];
 
     $form['contentserv']['contentserv_password'] = [
       '#type' => 'password',
-      '#title' => $this->t('ContentServ Password'),
+      '#title' => $this->t('Contentserv Password'),
       '#default_value' => $config->get('contentserv_password'),
     ];
 
     $form['contentserv']['contentserv_api_interval'] = [
       '#type' => 'select',
-      '#title' => $this->t('ContentServ API Interval'),
+      '#title' => $this->t('Contentserv API Interval'),
       '#description' => $this->t('Get data interval.'),
       '#default_value' => $config->get('contentserv_api_interval'),
       '#options' => [
@@ -115,9 +130,20 @@ class ContentServApiSettings extends ConfigFormBase {
 
     $form['contentserv']['contentserv_api_limit'] = [
       '#type' => 'number',
-      '#title' => $this->t('ContentServ API Limit'),
+      '#title' => $this->t('Contentserv API Limit'),
       '#description' => $this->t('Data count getting at one API request.'),
       '#default_value' => $config->get('contentserv_api_limit'),
+    ];
+
+    $options = [];
+    foreach ($this->entityTypeManager->getStorage('commerce_store')->loadMultiple() ?: [] as $key => $entity) {
+      $options[$key] = $entity->label();
+    }
+    $form['contentserv']['contentserv_store'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Contentserv Store(Drupal)'),
+      '#default_value' => $config->get('contentserv_store'),
+      '#options' => $options,
     ];
 
     $options = [];
@@ -126,7 +152,7 @@ class ContentServApiSettings extends ConfigFormBase {
     }
     $form['contentserv']['contentserv_product_type'] = [
       '#type' => 'select',
-      '#title' => $this->t('ContentServ Product Type(Drupal)'),
+      '#title' => $this->t('Contentserv Product Type(Drupal)'),
       '#default_value' => $config->get('contentserv_product_type'),
       '#options' => $options,
     ];

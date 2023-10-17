@@ -183,6 +183,13 @@ function kamihaya_digitalagency_preprocess_menu(array &$variables) {
 }
 
 /**
+ * Implements hook_preprocess_paragraph().
+ */
+function kamihaya_digitalagency_preprocess_paragraph(array &$variables) {
+  $variables['#attached']['library'][] = 'kamihaya_digitalagency/paragraph';
+}
+
+/**
  * Helper function to recursively set the font awesome information.
  */
 function _kamihaya_digitalagency_preprocess_menu_items(array &$items) {

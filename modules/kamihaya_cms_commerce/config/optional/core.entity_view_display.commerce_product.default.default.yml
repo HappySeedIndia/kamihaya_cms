@@ -1,0 +1,72 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.default
+    - field.field.commerce_product.default.field_body
+    - field.field.commerce_product.default.field_category
+    - field.field.commerce_product.default.field_description
+    - field.field.commerce_product.default.field_thumbnail_image
+  module:
+    - commerce_product
+    - field_layout
+    - layout_paragraphs
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings:
+      label: ''
+_core:
+  default_config_hash: 10qgl6V_HwkrJufzsNCV75OpqOeMzzKDJb3BhaogmzQ
+id: commerce_product.default.default
+targetEntityType: commerce_product
+bundle: default
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_body:
+    type: layout_paragraphs
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_category:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  variations:
+    type: commerce_add_to_cart
+    label: hidden
+    settings:
+      combine: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  created: true
+  field_description: true
+  field_thumbnail_image: true
+  langcode: true
+  stores: true
+  uid: true

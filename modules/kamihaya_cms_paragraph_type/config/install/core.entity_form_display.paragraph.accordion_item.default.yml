@@ -1,0 +1,43 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.accordion_item.field_accordion_body
+    - field.field.paragraph.accordion_item.field_accordion_title
+    - field.field.paragraph.accordion_item.field_expanded
+    - paragraphs.paragraphs_type.accordion_item
+  module:
+    - layout_paragraphs
+id: paragraph.accordion_item.default
+targetEntityType: paragraph
+bundle: accordion_item
+mode: default
+content:
+  field_accordion_body:
+    type: layout_paragraphs
+    weight: 2
+    region: content
+    settings:
+      preview_view_mode: default
+      nesting_depth: 0
+      require_layouts: 0
+      empty_message: ''
+    third_party_settings: {  }
+  field_accordion_title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_expanded:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

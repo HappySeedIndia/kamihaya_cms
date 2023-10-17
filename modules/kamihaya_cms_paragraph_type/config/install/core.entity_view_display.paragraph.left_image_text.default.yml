@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.left_image_text.field_image
+    - field.field.paragraph.left_image_text.field_text
+    - paragraphs.paragraphs_type.left_image_text
+  module:
+    - image
+id: paragraph.left_image_text.default
+targetEntityType: paragraph
+bundle: left_image_text
+mode: default
+content:
+  field_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_text:
+    type: basic_string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {  }

@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_divider_style
+    - paragraphs.paragraphs_type.divider
+  module:
+    - options
+id: paragraph.divider.field_divider_style
+field_name: field_divider_style
+entity_type: paragraph
+bundle: divider
+label: Style
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

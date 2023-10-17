@@ -1,12 +1,13 @@
-name: Kamihaya CMS ContentServ API
+name: Kamihaya CMS Contentserv API
 type: module
 core_version_requirement: ^9 || ^10
 package: Kamihaya
-description: 'Synchronize data with ContentServ.'
+description: 'Synchronize data with Contentserv.'
 
 dependencies:
   - drupal:datetime
   - commerce:commerce
+  - commerce:commerce_product
   - commerce:commerce_product
 
 project: 'kamihaya'

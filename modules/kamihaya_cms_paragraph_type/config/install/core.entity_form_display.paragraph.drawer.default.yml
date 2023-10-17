@@ -1,0 +1,51 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.drawer.field_drawer_body
+    - field.field.paragraph.drawer.field_drawer_position
+    - field.field.paragraph.drawer.field_drawer_title
+    - field.field.paragraph.drawer.field_open_button_label
+    - paragraphs.paragraphs_type.drawer
+  module:
+    - paragraphs
+id: paragraph.drawer.default
+targetEntityType: paragraph
+bundle: drawer
+mode: default
+content:
+  field_drawer_body:
+    type: layout_paragraphsz
+    weight: 1
+    region: content
+    settings:
+      preview_view_mode: default
+      nesting_depth: 0
+      require_layouts: 0
+      empty_message: ''
+    third_party_settings: {  }
+  field_drawer_position:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_drawer_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_open_button_label:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

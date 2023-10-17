@@ -8,7 +8,7 @@ id: commerce_product.default.field_contentserv_id
 field_name: field_contentserv_id
 entity_type: commerce_product
 bundle: default
-label: 'ContentServ ID'
+label: 'Contentserv ID'
 description: ''
 required: true
 translatable: false

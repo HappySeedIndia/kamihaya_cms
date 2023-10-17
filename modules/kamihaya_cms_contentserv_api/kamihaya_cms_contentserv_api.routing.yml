@@ -1,7 +1,7 @@
 kamihaya_cms_contentserv_api.settings:
   path: '/admin/config/application/kamihaya_cms_contentserv_api'
   defaults:
-    _title: Kamihaya CMS ContentServ API
-    _form: '\Drupal\kamihaya_cms_contentserv_api\Form\Config\ContentServApiSettings'
+    _title: Kamihaya CMS Contentserv API
+    _form: '\Drupal\kamihaya_cms_contentserv_api\Form\Config\ContentservApiSettings'
   requirements:
     _permission: 'administer site configuration'

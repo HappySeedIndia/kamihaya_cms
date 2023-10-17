@@ -27,6 +27,11 @@ view:
     theme:
       css/components/view.css: {}
 
+paragraph:
+  css:
+    theme:
+      css/components/paragraph.css: {}
+
 mdb:
   js:
     js/mdb/mdb.min.js: {}

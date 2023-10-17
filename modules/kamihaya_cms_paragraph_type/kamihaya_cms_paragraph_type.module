@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function kamihaya_cms_paragraph_type_theme() {
+  return [
+    'paragraph__accordion' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__accordion_item' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__divider' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__image_link' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__link_button' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__modal_dialog' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__drawer' => [
+      'base hook' => 'paragraph',
+    ],
+  ];
+}
