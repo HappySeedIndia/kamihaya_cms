@@ -13,6 +13,7 @@ dependencies:
     - layout_paragraphs
     - media_library
     - path
+    - scheduler
     - text
 id: node.kamihaya_basic.default
 targetEntityType: node
@@ -87,19 +88,19 @@ content:
       display_label: true
     third_party_settings: {  }
   publish_on:
-    type: datetime_timestamp
+    type: datetime_timestamp_no_default
     weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
   scheduler_settings:
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 13
+    weight: 12
     region: content
     settings:
       display_label: true
@@ -130,7 +131,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   unpublish_on:
-    type: datetime_timestamp
+    type: datetime_timestamp_no_default
     weight: 15
     region: content
     settings: {  }
