@@ -83,7 +83,6 @@
         }
     },
     "require": {
-        "bower-asset/spectrum": "^1.8",
         "drupal/address": "^1.12",
         "drupal/admin_toolbar": "^3.4",
         "drupal/back_to_top": "^3.0",
