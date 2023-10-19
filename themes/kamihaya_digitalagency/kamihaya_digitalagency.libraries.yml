@@ -1,9 +1,9 @@
 global-styling:
-  js:
-    js/menu.js: {}
   css:
     theme:
       css/style.css: {}
+      css/components/header.css: {}
+      css/components/footer.css: {}
       css/components.css: {}
       css/components/page.css:
         weight: -10
@@ -11,6 +11,8 @@ global-styling:
         weight: -10
       css/components/common.css:
         weight: -10
+  js:
+    js/menu.js: {}
 
 node:
   css:

@@ -1,0 +1,12 @@
+/* Header */
+.header-right .navbar-nav .nav-item {
+  font-weight: 500;
+}
+@media (min-width: 992px) {
+  .header-right {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+}
