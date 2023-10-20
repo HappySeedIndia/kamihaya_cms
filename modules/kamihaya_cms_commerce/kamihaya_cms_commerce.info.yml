@@ -18,13 +18,17 @@ dependencies:
   - 'drupal:options'
   - 'drupal:path'
   - 'drupal:system'
+  - 'drupal:taxonomy's
   - 'drupal:text'
   - 'drupal:user'
   - 'drupal:views'
   - 'entity_reference_revisions:entity_reference_revisions'
   - 'inline_entity_form:inline_entity_form'
+  - 'layout_paragraphs:layout_paragraphs'
   - 'metatag:metatag'
   - 'profile:profile'
+  - 'paragraphs:paragraphs'
   - 'state_machine:state_machine'
+  - 'kamihaya_cms_paragraph_type:kamihaya_cms_paragraph_type'
 libraries:
   - kamihaya_cms_commerce/cart
