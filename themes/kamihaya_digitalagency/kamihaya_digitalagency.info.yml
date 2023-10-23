@@ -4,10 +4,6 @@ description: 'Kamihaya デジタル庁デザインシステム準拠テーマ su
 core_version_requirement: '^9.4 || ^10'
 'base theme': bootstrap5
 regions:
-  header: Header
-  # nav_branding: 'Navigation branding region'
-  # nav_main: 'Main navigation region'
-  # nav_additional: 'Additional navigation region (eg search form, social icons, etc)'
   header_left: Header Left
   header_right: Header Right
   breadcrumb: Breadcrumbs
