@@ -15,7 +15,7 @@ bundle: drawer
 mode: default
 content:
   field_drawer_body:
-    type: layout_paragraphsz
+    type: layout_paragraphs
     weight: 1
     region: content
     settings:
