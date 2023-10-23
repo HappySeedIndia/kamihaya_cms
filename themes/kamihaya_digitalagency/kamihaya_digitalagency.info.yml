@@ -3,23 +3,23 @@ type: theme
 description: 'Kamihaya デジタル庁デザインシステム準拠テーマ subtheme based on Bootstrap 5 theme.'
 core_version_requirement: '^9.4 || ^10'
 'base theme': bootstrap5
-libraries:
-  - kamihaya_digitalagency/mdb
-  - kamihaya_digitalagency/global-styling
-ckeditor_stylesheets:
-  - css/style.css
-ckeditor5-stylesheets:
-  - css/ck5style.css
 regions:
-  header: Header
-  nav_branding: 'Navigation branding region'
-  nav_main: 'Main navigation region'
-  nav_additional: 'Additional navigation region (eg search form, social icons, etc)'
+  header_left: Header Left
+  header_right: Header Right
   breadcrumb: Breadcrumbs
   content: 'Main content'
   sidebar_first: 'Sidebar first'
   sidebar_second: 'Sidebar second'
   bottom_navigation: 'Bottom Navigation'
-  footer: Footer
+  footer_top_left: Footer Top Left
+  footer_top_right: Footer Top Right
+  footer_bottom: Footer Bottom
+libraries:
+  # - kamihaya_digitalagency/mdb
+  - kamihaya_digitalagency/global-styling
+ckeditor_stylesheets:
+  - css/style.css
+ckeditor5-stylesheets:
+  - css/ck5style.css
 libraries-override:
   bootstrap5/global-styling: false

@@ -2,8 +2,8 @@ b5_body_schema: none
 b5_body_bg_schema: none
 b5_navbar_schema: none
 b5_navbar_bg_schema: none
-b5_footer_schema: dark
-b5_footer_bg_schema: secondary
+b5_footer_schema: none
+b5_footer_bg_schema: none
 b5_top_container: container
 b5_top_container_config: ''
 features:
