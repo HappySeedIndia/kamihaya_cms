@@ -1,5 +1,4 @@
-uuid: ed17b4f2-c521-4869-8b80-058509018857
-langcode: en-gb
+langcode: en
 status: true
 dependencies: {  }
 id: slider

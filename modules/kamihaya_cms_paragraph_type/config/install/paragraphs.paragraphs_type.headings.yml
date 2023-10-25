@@ -1,5 +1,4 @@
-uuid: 9e373d7a-1465-4d69-ba97-4d72846d401b
-langcode: en-gb
+langcode: en
 status: true
 dependencies: {  }
 id: headings
