@@ -17,6 +17,7 @@ dependencies:
     - paragraphs.paragraphs_type.link_button
     - paragraphs.paragraphs_type.modal_dialog
     - paragraphs.paragraphs_type.right_image_text
+    - paragraphs.paragraphs_type.slider
     - paragraphs.paragraphs_type.wysiwyg_editor
   module:
     - entity_reference_revisions
@@ -48,6 +49,7 @@ settings:
       accordion: accordion
       divider: divider
       drawer: drawer
+      slider: slider
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -118,6 +120,12 @@ settings:
         enabled: true
       skill:
         weight: -40
+        enabled: false
+      slider:
+        weight: 50
+        enabled: true
+      slider_item:
+        weight: 51
         enabled: false
       wysiwyg_editor:
         weight: -35
