@@ -1,0 +1,31 @@
+uuid: c89863c6-bb79-4b7d-8205-d152bf51ce75
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.headings.field_title_tag
+    - field.field.paragraph.headings.field_title_text
+    - paragraphs.paragraphs_type.headings
+  module:
+    - options
+id: paragraph.headings.default
+targetEntityType: paragraph
+bundle: headings
+mode: default
+content:
+  field_title_tag:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_title_text:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

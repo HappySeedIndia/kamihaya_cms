@@ -1,0 +1,109 @@
+uuid: 273eefcb-d5b2-49c2-ab2e-0e99dbd24939
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_slider_items
+    - paragraphs.paragraphs_type.slider
+    - paragraphs.paragraphs_type.slider_item
+  module:
+    - entity_reference_revisions
+id: paragraph.slider.field_slider_items
+field_name: field_slider_items
+entity_type: paragraph
+bundle: slider
+label: 'Slider Items'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      slider_item: slider_item
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: 28
+        enabled: false
+      accordion_item:
+        weight: 29
+        enabled: false
+      career:
+        weight: 30
+        enabled: false
+      divider:
+        weight: 31
+        enabled: false
+      drawer:
+        weight: 32
+        enabled: false
+      educational_background:
+        weight: 33
+        enabled: false
+      english_skill:
+        weight: 34
+        enabled: false
+      groups:
+        weight: 35
+        enabled: false
+      h2_title:
+        weight: 36
+        enabled: false
+      h3_title:
+        weight: 37
+        enabled: false
+      h4_title:
+        weight: 38
+        enabled: false
+      headings:
+        weight: 39
+        enabled: false
+      image:
+        weight: 40
+        enabled: false
+      image_link:
+        weight: 41
+        enabled: false
+      layout_paragraph:
+        weight: 42
+        enabled: false
+      left_image_text:
+        weight: 43
+        enabled: false
+      license:
+        weight: 44
+        enabled: false
+      link_button:
+        weight: 45
+        enabled: false
+      modal_dialog:
+        weight: 46
+        enabled: false
+      other_language:
+        weight: 47
+        enabled: false
+      other_notice:
+        weight: 48
+        enabled: false
+      q_a:
+        weight: 49
+        enabled: false
+      right_image_text:
+        weight: 50
+        enabled: false
+      skill:
+        weight: 51
+        enabled: false
+      slider:
+        weight: 52
+        enabled: false
+      slider_item:
+        weight: 53
+        enabled: true
+      wysiwyg_editor:
+        weight: 54
+        enabled: false
+field_type: entity_reference_revisions

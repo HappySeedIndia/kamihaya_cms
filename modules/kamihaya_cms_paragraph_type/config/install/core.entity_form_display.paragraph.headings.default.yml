@@ -1,0 +1,30 @@
+uuid: 2d2cfaec-e899-4059-b1ae-765ae1f650d9
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.headings.field_title_tag
+    - field.field.paragraph.headings.field_title_text
+    - paragraphs.paragraphs_type.headings
+id: paragraph.headings.default
+targetEntityType: paragraph
+bundle: headings
+mode: default
+content:
+  field_title_tag:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_title_text:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
