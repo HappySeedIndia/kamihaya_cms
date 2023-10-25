@@ -1,0 +1,34 @@
+{# Header #}
+{%
+  set nav_classes = 'navbar navbar-expand-lg' ~
+  (b5_navbar_schema != 'none' ? " navbar-#{b5_navbar_schema}" : ' ') ~
+  (b5_navbar_schema != 'none' ? (b5_navbar_schema == 'dark' ? ' text-light' : ' text-dark' ) : ' ') ~
+  (b5_navbar_bg_schema != 'none' ? " bg-#{b5_navbar_bg_schema}" : ' ')
+%}
+
+<header>
+  <nav class="{{ nav_classes }}">
+    <div class="container">
+      {# Header Left #}
+      {% if page.header_left %}
+        {{ page.header_left }}
+      {% endif %}
+      
+      {# Header Right #}
+      {% if page.header_right %}
+        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+          {# <span class="sr-only">Toggle navigation</span> #}
+          <span class="icon-bar top-bar"></span>
+          <span class="icon-bar middle-bar"></span>
+          <span class="icon-bar bottom-bar"></span>
+        </button>
+
+      <div class="collapse navbar-collapse" id="navbarToggler">
+        <div class="header-right">
+        {{ page.header_right }}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </nav>
+</header>

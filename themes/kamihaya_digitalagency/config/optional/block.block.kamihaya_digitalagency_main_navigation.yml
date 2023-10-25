@@ -9,7 +9,7 @@ dependencies:
     - kamihaya_digitalagency
 id: kamihaya_digitalagency_main_navigation
 theme: kamihaya_digitalagency
-region: nav_main
+region: header_right
 weight: 0
 provider: null
 plugin: 'system_menu_block:main'

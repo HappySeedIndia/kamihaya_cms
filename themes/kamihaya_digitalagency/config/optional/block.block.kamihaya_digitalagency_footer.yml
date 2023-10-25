@@ -9,7 +9,7 @@ dependencies:
     - kamihaya_digitalagency
 id: kamihaya_digitalagency_footer
 theme: kamihaya_digitalagency
-region: footer
+region: footer_top_right
 weight: -6
 provider: null
 plugin: 'system_menu_block:footer'
