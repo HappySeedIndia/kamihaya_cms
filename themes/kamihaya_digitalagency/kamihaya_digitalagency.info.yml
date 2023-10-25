@@ -18,7 +18,6 @@ regions:
   footer_bottom: Footer Bottom
 libraries:
   # - kamihaya_digitalagency/mdb
-  - kamihaya_digitalagency/animate-library
   - kamihaya_digitalagency/global-styling
 ckeditor_stylesheets:
   - css/style.css

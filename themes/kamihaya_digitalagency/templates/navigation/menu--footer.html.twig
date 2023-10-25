@@ -72,22 +72,6 @@
           {% endif %}
         {% endif %}
       </li>
-      {# <li{{ item.attributes.addClass(classes_link) }}>
-        {% set link_text %}
-          {% if item.font_awesome_class %}
-            <span class="menu-icon">
-              <i class="{{ item.font_awesome_class }}"></i>
-            </span>
-            {{ item.title }}
-          {% else %}
-            {{ item.title }}
-          {% endif %}
-        {% endset %}
-        {{ link(link_text, item.url, { 'class': classes_link }) }}
-        {% if item.below %}
-          {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
-        {% endif %}
-      </li> #}
     {% endfor %}
     </ul>
   {% endif %}
