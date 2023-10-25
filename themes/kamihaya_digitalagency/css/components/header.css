@@ -1,7 +1,7 @@
 /* Header */
 header {
   box-shadow: 0 2px 6px -1px rgba(0,0,0,.07), 0 6px 18px -1px rgba(0,0,0,.04);
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 .navbar-toggler {
   border-radius: 0;

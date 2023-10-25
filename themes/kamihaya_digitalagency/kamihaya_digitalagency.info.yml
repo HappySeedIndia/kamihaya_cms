@@ -6,16 +6,19 @@ core_version_requirement: '^9.4 || ^10'
 regions:
   header_left: Header Left
   header_right: Header Right
+  after_header: After Header
   breadcrumb: Breadcrumbs
   content: 'Main content'
   sidebar_first: 'Sidebar first'
   sidebar_second: 'Sidebar second'
   bottom_navigation: 'Bottom Navigation'
+  before_footer: 'Before Footer'
   footer_top_left: Footer Top Left
   footer_top_right: Footer Top Right
   footer_bottom: Footer Bottom
 libraries:
   # - kamihaya_digitalagency/mdb
+  - kamihaya_digitalagency/animate-library
   - kamihaya_digitalagency/global-styling
 ckeditor_stylesheets:
   - css/style.css

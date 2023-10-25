@@ -30,6 +30,8 @@
 
 .hero .swiper {
   z-index: 1;
+  height: 100vh;
+  width: 100%;
 }
 
 .hero .swiper-slide {
@@ -115,8 +117,40 @@
   color: var(--primary-color);
 }
 
+.swiper-button-prev,
+.swiper-button-next {
+  width: 48px;
+  height: 48px;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(0, 0, 0, 0.15);
+  font-size: 24px;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.swiper-button-prev:hover:after,
+.swiper-button-next:hover:after {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
 @media (max-width: 767px) {
   .swiper-button-next:after, .swiper-button-prev:after {
     font-size: 20px;
+  }
+}
+
+@media (max-width: 575px) {
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none;
   }
 }
