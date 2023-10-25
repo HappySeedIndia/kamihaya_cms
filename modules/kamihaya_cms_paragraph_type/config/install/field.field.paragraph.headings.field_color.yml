@@ -1,0 +1,21 @@
+uuid: e562c0f8-e5b3-4d15-a36b-743d10796a2c
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_color
+    - paragraphs.paragraphs_type.headings
+id: paragraph.headings.field_color
+field_name: field_color
+entity_type: paragraph
+bundle: headings
+label: 'Title Color'
+description: "Please enter hexadecimal color value without '#'."
+required: false
+translatable: false
+default_value:
+  -
+    value: '000000'
+default_value_callback: ''
+settings: {  }
+field_type: string

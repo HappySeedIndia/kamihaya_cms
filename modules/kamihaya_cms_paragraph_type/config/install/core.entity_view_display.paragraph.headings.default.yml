@@ -1,7 +1,9 @@
-langcode: en
+langcode: en-gb
 status: true
 dependencies:
   config:
+    - field.field.paragraph.headings.field_color
+    - field.field.paragraph.headings.field_style
     - field.field.paragraph.headings.field_title_tag
     - field.field.paragraph.headings.field_title_text
     - paragraphs.paragraphs_type.headings
@@ -12,6 +14,21 @@ targetEntityType: paragraph
 bundle: headings
 mode: default
 content:
+  field_color:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_style:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
   field_title_tag:
     type: list_key
     label: hidden

@@ -1,0 +1,36 @@
+uuid: bfc92923-2b61-411d-b9dc-2ffacd079c12
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_style
+field_name: field_style
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: style_one
+      label: 'Style One'
+    -
+      value: style_two
+      label: 'Style Two'
+    -
+      value: style_three
+      label: 'Style Three'
+    -
+      value: style_four
+      label: 'Style Four'
+    -
+      value: style_five
+      label: 'Style Five'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
