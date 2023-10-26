@@ -1,5 +1,4 @@
-uuid: bfc92923-2b61-411d-b9dc-2ffacd079c12
-langcode: en-gb
+langcode: en
 status: true
 dependencies:
   module:
@@ -26,6 +25,9 @@ settings:
     -
       value: style_five
       label: 'Style Five'
+    -
+      value: style_six
+      label: 'Style Six'
   allowed_values_function: ''
 module: options
 locked: false

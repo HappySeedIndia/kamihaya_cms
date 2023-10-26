@@ -10,6 +10,7 @@ dependencies:
     - paragraphs.paragraphs_type.h2_title
     - paragraphs.paragraphs_type.h3_title
     - paragraphs.paragraphs_type.h4_title
+    - paragraphs.paragraphs_type.headings
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.image_link
     - paragraphs.paragraphs_type.layout_paragraph
@@ -49,6 +50,7 @@ settings:
       accordion: accordion
       divider: divider
       drawer: drawer
+      headings: headings
       slider: slider
     negate: 0
     target_bundles_drag_drop:
@@ -84,6 +86,9 @@ settings:
         enabled: true
       h4_title:
         weight: -36
+        enabled: true
+      headings:
+        weight: 39
         enabled: true
       image:
         weight: -34
