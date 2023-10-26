@@ -22,8 +22,6 @@ dependencies:
     - paragraphs.paragraphs_type.wysiwyg_editor
   module:
     - entity_reference_revisions
-_core:
-  default_config_hash: Fj2M3gY4x3_Me43UfMo1eSK5kg-gRoYu3SZRpsfd-Io
 id: node.kamihaya_basic.field_body
 field_name: field_body
 entity_type: node
