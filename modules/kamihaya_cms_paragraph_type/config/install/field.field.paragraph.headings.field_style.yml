@@ -1,0 +1,23 @@
+uuid: 06e56b5c-a5f7-4b72-8dae-feadf4ae553b
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_style
+    - paragraphs.paragraphs_type.headings
+  module:
+    - options
+id: paragraph.headings.field_style
+field_name: field_style
+entity_type: paragraph
+bundle: headings
+label: 'Title Style'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: style_one
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -46,45 +46,22 @@
 {# Header #}
 {% include '@kamihaya_digitalagency/includes/header.html.twig' %}
 
+{# After Header #}
+{% if page.after_header %}
+  {{ page.after_header }}
+{% endif %}
+
+{# Page Content #}
 <main role="main">
   <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
-  {%  set sidebar_first_classes = (page.sidebar_first and page.sidebar_second) ? 
-    'col-12 col-sm-6 col-lg-3' : 'col-12 col-lg-3' %}
-
-  {%  set sidebar_second_classes = (page.sidebar_first and page.sidebar_second) ? 
-    'col-12 col-sm-6 col-lg-3' : 'col-12 col-lg-3' %}
-
-  {% set content_classes = (page.sidebar_first and page.sidebar_second) ? 
-    'col-12 col-lg-6' : ((page.sidebar_first or page.sidebar_second) ? 
-    'col-12 col-lg-9' : 'col-12' ) %}
-
-  <div class="{{ b5_top_container }}">
-    {% if page.breadcrumb %}
-      {{ page.breadcrumb }}
-    {% endif %}
-    <div class="row g-0">
-      {% if page.sidebar_first %}
-        <div class="order-2 order-lg-1 {{ sidebar_first_classes }}">
-          {{ page.sidebar_first }}
-        </div>
-      {% endif %}
-      <div class="order-1 order-lg-2 {{ content_classes }}">
-        {{ page.content }}
-      </div>
-      {% if page.sidebar_second %}
-        <div class="order-3 {{ sidebar_second_classes }}">
-          {{ page.sidebar_second }}
-        </div>
-      {% endif %}
-    </div>
-  </div>
-
+  {{ page.content }}
+  
 </main>
 
-{# Buttom Navigation #}
-{% if page.bottom_navigation %}
-  {{ page.bottom_navigation }}
+{# Before Footer #}
+{% if page.before_footer %}
+  {{ page.before_footer }}
 {% endif %}
 
 {# Footer #}
