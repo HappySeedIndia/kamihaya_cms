@@ -4,7 +4,6 @@ global-styling:
       css/style.css: {}
       css/components/header.css: {}
       css/components/footer.css: {}
-      css/components/headings.css: {}
       css/components.css: {}
       css/components/page.css:
         weight: -10
@@ -58,3 +57,8 @@ swiper-library:
   js:
     assets/libraries/swiper/swiper-bundle.min.js: {}
     js/components/slider.js: {}
+
+heading-css:
+  css:
+    base:
+      css/components/headings.css: {}

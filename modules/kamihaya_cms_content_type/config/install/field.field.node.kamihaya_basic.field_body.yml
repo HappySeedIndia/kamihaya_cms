@@ -10,6 +10,7 @@ dependencies:
     - paragraphs.paragraphs_type.h2_title
     - paragraphs.paragraphs_type.h3_title
     - paragraphs.paragraphs_type.h4_title
+    - paragraphs.paragraphs_type.headings
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.image_link
     - paragraphs.paragraphs_type.layout_paragraph
@@ -21,6 +22,8 @@ dependencies:
     - paragraphs.paragraphs_type.wysiwyg_editor
   module:
     - entity_reference_revisions
+_core:
+  default_config_hash: Fj2M3gY4x3_Me43UfMo1eSK5kg-gRoYu3SZRpsfd-Io
 id: node.kamihaya_basic.field_body
 field_name: field_body
 entity_type: node
@@ -49,6 +52,7 @@ settings:
       accordion: accordion
       divider: divider
       drawer: drawer
+      headings: headings
       slider: slider
     negate: 0
     target_bundles_drag_drop:
@@ -84,6 +88,9 @@ settings:
         enabled: true
       h4_title:
         weight: -36
+        enabled: true
+      headings:
+        weight: 39
         enabled: true
       image:
         weight: -34
