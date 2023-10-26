@@ -1,9 +1,9 @@
 global-styling:
+  js:
+    js/menu.js: {}
   css:
     theme:
       css/style.css: {}
-      css/components/header.css: {}
-      css/components/footer.css: {}
       css/components.css: {}
       css/components/page.css:
         weight: -10
@@ -11,8 +11,6 @@ global-styling:
         weight: -10
       css/components/common.css:
         weight: -10
-  js:
-    js/menu.js: {}
 
 node:
   css:
@@ -43,17 +41,3 @@ mdb:
       css/mdb/style.css: {}
       https://use.fontawesome.com/releases/v5.11.2/css/all.css: { type: external, minified: true }
 
-animate-library:
-  header: true
-  css:
-    base:
-      assets/libraries/animate.css/animate.min.css: {}
-
-swiper-library:
-  css:
-    base:
-      assets/libraries/swiper/swiper-bundle.min.css: {}
-      css/components/slider.css: {}
-  js:
-    assets/libraries/swiper/swiper-bundle.min.js: {}
-    js/components/slider.js: {}
