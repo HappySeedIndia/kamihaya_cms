@@ -28,7 +28,9 @@ dependencies:
   - 'metatag:metatag'
   - 'profile:profile'
   - 'paragraphs:paragraphs'
+  - 'scheduler:scheduler'
   - 'state_machine:state_machine'
+  - 'kamihaya_cms_media_type:kamihaya_cms_media_type'
   - 'kamihaya_cms_paragraph_type:kamihaya_cms_paragraph_type'
 libraries:
   - kamihaya_cms_commerce/cart
