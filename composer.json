@@ -83,6 +83,7 @@
         }
     },
     "require": {
+        "drupal/acquia_dam": "^1.0",
         "drupal/address": "^1.12",
         "drupal/admin_toolbar": "^3.4",
         "drupal/back_to_top": "^3.0",
