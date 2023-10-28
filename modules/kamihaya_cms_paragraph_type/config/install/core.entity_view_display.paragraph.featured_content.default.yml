@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.featured_content.field_content
+    - paragraphs.paragraphs_type.featured_content
+id: paragraph.featured_content.default
+targetEntityType: paragraph
+bundle: featured_content
+mode: default
+content:
+  field_content:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: pick_up
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

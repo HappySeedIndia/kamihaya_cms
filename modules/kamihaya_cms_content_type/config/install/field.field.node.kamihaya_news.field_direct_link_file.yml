@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_direct_link_file
+    - node.type.kamihaya_news
+  module:
+    - file
+id: node.kamihaya_news.field_direct_link_file
+field_name: field_direct_link_file
+entity_type: node
+bundle: kamihaya_news
+label: 'Direct link file'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: news/files
+  file_extensions: 'pdf ppt pptx xls xlsx doc docx txt'
+  max_filesize: ''
+  description_field: false
+field_type: file

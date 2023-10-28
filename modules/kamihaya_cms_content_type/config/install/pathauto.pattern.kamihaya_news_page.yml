@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: kamihaya_news_page
+label: 'Kamihaya news page'
+type: 'canonical_entities:node'
+pattern: 'news/[node:nid]'
+selection_criteria:
+  094c12e3-482a-4340-b108-60ca823a2c5f:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 094c12e3-482a-4340-b108-60ca823a2c5f
+    context_mapping:
+      node: node
+    bundles:
+      kamihaya_news: kamihaya_news
+selection_logic: and
+weight: -5
+relationships: {  }

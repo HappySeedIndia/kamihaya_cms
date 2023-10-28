@@ -1,0 +1,12 @@
+name: Kamihaya CMS Google map paragraph
+type: module
+core_version_requirement: ^9 || ^10
+package: Kamihaya
+description: 'Google map paragraphs for Kamihaya CMS.'
+
+dependencies:
+  - paragraphs:paragraphs
+
+project: 'kamihaya'
+configure: kamihaya_cms_google_map_paragraph.settings
+

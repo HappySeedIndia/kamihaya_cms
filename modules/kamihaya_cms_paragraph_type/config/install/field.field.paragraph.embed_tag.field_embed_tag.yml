@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_embed_tag
+    - paragraphs.paragraphs_type.embed_tag
+id: paragraph.embed_tag.field_embed_tag
+field_name: field_embed_tag
+entity_type: paragraph
+bundle: embed_tag
+label: 'Embed tag'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

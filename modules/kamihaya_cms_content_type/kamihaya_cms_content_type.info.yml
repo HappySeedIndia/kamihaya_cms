@@ -9,7 +9,9 @@ dependencies:
   - drupal:taxonomy
   - paragraphs:paragraphs
   - layout_paragraphs:layout_paragraphs
+  - pathauto:pathauto
   - scheduler:scheduler
+  - kamihaya_cms_common:kamihaya_cms_common
   - kamihaya_cms_media_type:kamihaya_cms_media_type
   - kamihaya_cms_paragraph_type:kamihaya_cms_paragraph_type
 

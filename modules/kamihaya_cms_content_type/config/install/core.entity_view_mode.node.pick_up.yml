@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.pick_up
+label: 'Pick up'
+targetEntityType: node
+cache: true

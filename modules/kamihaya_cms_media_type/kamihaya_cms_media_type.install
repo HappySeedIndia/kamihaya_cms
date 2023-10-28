@@ -1,0 +1,25 @@
+<?php
+
+use Drupal\Component\Serialization\Yaml;
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_media_type_update_10001() {
+  _kamihaya_cms_common_change_configs('kamihaya_cms_media_type', [
+    'media.type.video.yml',
+    'language.content_settings.media.video.yml',
+    'field.storage.media.field_media_video_file.yml',
+    'field.field.media.video.field_media_video_file.yml',
+    'core.entity_form_display.media.video.default.yml',
+    'core.entity_form_display.media.video.media_library.yml',
+    'core.entity_view_display.media.video.default.yml',
+    'core.entity_view_display.media.video.media_library.yml',
+  ], 'install');
+
+  _kamihaya_cms_common_save_translation_configs([
+    'media.type.video.yml',
+    'field.storage.media.field_media_video_file.yml',
+    'field.field.media.default.field_media_video_file.yml',
+  ], 'ja');
+}

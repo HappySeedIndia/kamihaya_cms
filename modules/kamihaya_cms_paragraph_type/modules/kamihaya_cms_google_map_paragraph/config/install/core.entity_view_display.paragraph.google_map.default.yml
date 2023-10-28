@@ -1,0 +1,89 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.google_map.field_address
+    - field.field.paragraph.google_map.field_latitude
+    - field.field.paragraph.google_map.field_longitude
+    - field.field.paragraph.google_map.field_map_height
+    - field.field.paragraph.google_map.field_map_width
+    - field.field.paragraph.google_map.field_marker_description
+    - field.field.paragraph.google_map.field_marker_tooltip
+    - field.field.paragraph.google_map.field_zoom
+    - paragraphs.paragraphs_type.google_map
+  module:
+    - text
+id: paragraph.google_map.default
+targetEntityType: paragraph
+bundle: google_map
+mode: default
+content:
+  field_address:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_latitude:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_longitude:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_map_height:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_map_width:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_marker_description:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_marker_tooltip:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_zoom:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 7
+    region: content
+hidden: {  }

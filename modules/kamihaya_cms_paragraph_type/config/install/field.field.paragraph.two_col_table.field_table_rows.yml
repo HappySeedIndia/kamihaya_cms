@@ -1,0 +1,120 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_table_rows
+    - paragraphs.paragraphs_type.two_col_table
+    - paragraphs.paragraphs_type.two_col_table_row
+  module:
+    - entity_reference_revisions
+id: paragraph.two_col_table.field_table_rows
+field_name: field_table_rows
+entity_type: paragraph
+bundle: two_col_table
+label: 'Table rows'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      two_col_table_row: two_col_table_row
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: 32
+        enabled: false
+      accordion_item:
+        weight: 33
+        enabled: false
+      career:
+        weight: 34
+        enabled: false
+      divider:
+        weight: 35
+        enabled: false
+      drawer:
+        weight: 36
+        enabled: false
+      educational_background:
+        weight: 37
+        enabled: false
+      embed_tag:
+        weight: 38
+        enabled: false
+      english_skill:
+        weight: 39
+        enabled: false
+      featured_content:
+        weight: 40
+        enabled: false
+      file_download:
+        weight: 41
+        enabled: false
+      google_map:
+        weight: 42
+        enabled: false
+      groups:
+        weight: 43
+        enabled: false
+      h2_title:
+        weight: 44
+        enabled: false
+      h3_title:
+        weight: 45
+        enabled: false
+      h4_title:
+        weight: 46
+        enabled: false
+      image:
+        weight: 47
+        enabled: false
+      image_link:
+        weight: 48
+        enabled: false
+      layout_paragraph:
+        weight: 49
+        enabled: false
+      left_image_text:
+        weight: 50
+        enabled: false
+      license:
+        weight: 51
+        enabled: false
+      link_button:
+        weight: 52
+        enabled: false
+      modal_dialog:
+        weight: 53
+        enabled: false
+      other_language:
+        weight: 54
+        enabled: false
+      other_notice:
+        weight: 55
+        enabled: false
+      q_a:
+        weight: 56
+        enabled: false
+      right_image_text:
+        weight: 57
+        enabled: false
+      skill:
+        weight: 58
+        enabled: false
+      two_col_table:
+        weight: 59
+        enabled: false
+      two_col_table_row:
+        weight: 60
+        enabled: true
+      video:
+        weight: 61
+        enabled: false
+      wysiwyg_editor:
+        weight: 62
+        enabled: false
+field_type: entity_reference_revisions

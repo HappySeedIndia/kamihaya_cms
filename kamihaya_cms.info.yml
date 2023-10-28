@@ -40,6 +40,7 @@ install:
   - admin_toolbar_tools
   - color_field
   - content_access
+  - entity_browser
   - entity_reference_revisions
   - fontawesome
   - imce
@@ -48,6 +49,11 @@ install:
   - metatag
   - paragraphs
   - pathauto
+  - password_policy
+  - password_policy_character_types
+  - password_policy_consecutive
+  - password_policy_length
+  - password_policy_username
   - quick_node_clone
   - scheduler
   - string_field_formatter

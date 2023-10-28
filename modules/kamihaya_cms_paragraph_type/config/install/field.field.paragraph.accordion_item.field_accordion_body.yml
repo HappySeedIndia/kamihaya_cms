@@ -6,6 +6,10 @@ dependencies:
     - paragraphs.paragraphs_type.accordion
     - paragraphs.paragraphs_type.accordion_item
     - paragraphs.paragraphs_type.divider
+    - paragraphs.paragraphs_type.embed_tag
+    - paragraphs.paragraphs_type.featured_content
+    - paragraphs.paragraphs_type.file_download
+    - paragraphs.paragraphs_type.google_map
     - paragraphs.paragraphs_type.h2_title
     - paragraphs.paragraphs_type.h3_title
     - paragraphs.paragraphs_type.h4_title
@@ -15,6 +19,8 @@ dependencies:
     - paragraphs.paragraphs_type.left_image_text
     - paragraphs.paragraphs_type.link_button
     - paragraphs.paragraphs_type.right_image_text
+    - paragraphs.paragraphs_type.two_col_table
+    - paragraphs.paragraphs_type.video
     - paragraphs.paragraphs_type.wysiwyg_editor
   module:
     - entity_reference_revisions
@@ -38,84 +44,111 @@ settings:
       h4_title: h4_title
       wysiwyg_editor: wysiwyg_editor
       image: image
+      video: video
       image_link: image_link
       link_button: link_button
+      file_download: file_download
       left_image_text: left_image_text
       right_image_text: right_image_text
       divider: divider
       accordion: accordion
+      featured_content: featured_content
+      google_map: google_map
+      two_col_table: two_col_table
+      embed_tag: embed_tag
     negate: 0
     target_bundles_drag_drop:
       accordion:
-        weight: -26
+        weight: -38
         enabled: true
       accordion_item:
-        weight: -47
+        weight: -61
         enabled: false
       career:
-        weight: -49
+        weight: -63
         enabled: false
       divider:
-        weight: -27
+        weight: -39
         enabled: true
       drawer:
-        weight: -38
+        weight: -52
         enabled: false
       educational_background:
-        weight: -48
+        weight: -62
         enabled: false
-      english_skill:
-        weight: -46
-        enabled: false
-      groups:
-        weight: -45
-        enabled: false
-      h2_title:
-        weight: -36
-        enabled: true
-      h3_title:
-        weight: -35
-        enabled: true
-      h4_title:
+      embed_tag:
         weight: -34
         enabled: true
-      image:
-        weight: -32
-        enabled: true
-      image_link:
-        weight: -31
-        enabled: true
-      layout_paragraph:
+      english_skill:
+        weight: -60
+        enabled: false
+      featured_content:
         weight: -37
         enabled: true
+      file_download:
+        weight: -42
+        enabled: true
+      google_map:
+        weight: -36
+        enabled: true
+      groups:
+        weight: -59
+        enabled: false
+      h2_title:
+        weight: -50
+        enabled: true
+      h3_title:
+        weight: -49
+        enabled: true
+      h4_title:
+        weight: -48
+        enabled: true
+      image:
+        weight: -46
+        enabled: true
+      image_link:
+        weight: -44
+        enabled: true
+      layout_paragraph:
+        weight: -51
+        enabled: true
       left_image_text:
-        weight: -29
+        weight: -41
         enabled: true
       license:
-        weight: -44
+        weight: -58
         enabled: false
       link_button:
-        weight: -30
+        weight: -43
         enabled: true
       modal_dialog:
-        weight: -39
+        weight: -53
         enabled: false
       other_language:
-        weight: -43
+        weight: -57
         enabled: false
       other_notice:
-        weight: -42
+        weight: -56
         enabled: false
       q_a:
-        weight: -41
+        weight: -55
         enabled: false
       right_image_text:
-        weight: -28
+        weight: -40
         enabled: true
       skill:
-        weight: -40
+        weight: -54
         enabled: false
-      wysiwyg_editor:
+      two_col_table:
+        weight: -35
+        enabled: true
+      two_col_table_row:
         weight: -33
+        enabled: false
+      video:
+        weight: -45
+        enabled: true
+      wysiwyg_editor:
+        weight: -47
         enabled: true
 field_type: entity_reference_revisions

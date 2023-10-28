@@ -1,0 +1,15 @@
+<?php
+
+use Drupal\Component\Serialization\Yaml;
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_common_update_10001() {
+  _kamihaya_cms_common_change_configs('kamihaya_cms_common', [
+    'core.date_format.kamihaya_date_time.yml',
+    'core.date_format.kamihaya_date.yml',
+    'core.date_format.kamihaya_year_month.yml',
+  ], 'install');
+
+}

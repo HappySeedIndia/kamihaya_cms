@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.contents_list
+    - field.field.paragraph.featured_content.field_content
+    - paragraphs.paragraphs_type.featured_content
+  module:
+    - entity_browser
+id: paragraph.featured_content.default
+targetEntityType: paragraph
+bundle: featured_content
+mode: default
+content:
+  field_content:
+    type: entity_browser_entity_reference
+    weight: 0
+    region: content
+    settings:
+      entity_browser: contents_list
+      field_widget_display: label
+      field_widget_edit: false
+      field_widget_remove: true
+      field_widget_replace: false
+      open: false
+      field_widget_display_settings: {  }
+      selection_mode: selection_append
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

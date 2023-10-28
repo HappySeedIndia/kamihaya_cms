@@ -63,6 +63,25 @@
   padding: 0 0 15px 15px;
 }
 
+.paragraph--type--video {
+  display: flex;
+  justify-content: center;
+}
+
+.paragraph--type--google-map #map {
+  margin: 0 auto;
+}
+
+.paragraph--type--two-col-table table {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.paragraph--type--two-col-table table > tbody > tr > td > .paragraph {
+  margin: 0;
+}
+
 @media (max-width: 1199px) {
 
 }

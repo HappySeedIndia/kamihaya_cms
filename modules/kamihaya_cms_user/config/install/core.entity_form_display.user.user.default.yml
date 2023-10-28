@@ -1,7 +1,8 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.commerce_remote_id
     - field.field.user.user.field_address
     - field.field.user.user.field_appeal_point
     - field.field.user.user.field_birthday
@@ -12,7 +13,10 @@ dependencies:
     - field.field.user.user.field_gender
     - field.field.user.user.field_last_name
     - field.field.user.user.field_last_name_kana
+    - field.field.user.user.field_last_password_reset
     - field.field.user.user.field_license
+    - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_pending_expire_sent
     - field.field.user.user.field_recruitment_form
     - field.field.user.user.field_skill
     - field.field.user.user.field_tel
@@ -20,10 +24,8 @@ dependencies:
   module:
     - address
     - datetime
-    - paragraphs
     - telephone
     - user
-    - webform
 id: user.user.default
 targetEntityType: user
 bundle: user
@@ -40,68 +42,11 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_appeal_point:
-    type: paragraphs
-    weight: 13
-    region: content
-    settings:
-      title: Paragraph
-      title_plural: パラグラフ
-      edit_mode: closed
-      closed_mode: preview
-      autocollapse: none
-      closed_mode_threshold: 0
-      add_mode: modal
-      form_display_mode: default
-      default_paragraph_type: _none
-      features:
-        add_above: '0'
-        collapse_edit_all: collapse_edit_all
-        duplicate: duplicate
-    third_party_settings: {  }
   field_birthday:
     type: datetime_default
     weight: 7
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_career:
-    type: paragraphs
-    weight: 9
-    region: content
-    settings:
-      title: Paragraph
-      title_plural: パラグラフ
-      edit_mode: closed
-      closed_mode: preview
-      autocollapse: none
-      closed_mode_threshold: 0
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: career
-      features:
-        add_above: '0'
-        collapse_edit_all: collapse_edit_all
-        duplicate: duplicate
-    third_party_settings: {  }
-  field_educational_background:
-    type: paragraphs
-    weight: 10
-    region: content
-    settings:
-      title: Paragraph
-      title_plural: パラグラフ
-      edit_mode: closed
-      closed_mode: preview
-      autocollapse: none
-      closed_mode_threshold: 0
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: educational_background
-      features:
-        add_above: '0'
-        collapse_edit_all: collapse_edit_all
-        duplicate: duplicate
     third_party_settings: {  }
   field_first_name:
     type: string_textfield
@@ -141,53 +86,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_license:
-    type: paragraphs
-    weight: 12
-    region: content
-    settings:
-      title: Paragraph
-      title_plural: パラグラフ
-      edit_mode: closed
-      closed_mode: preview
-      autocollapse: none
-      closed_mode_threshold: 0
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: _none
-      features:
-        add_above: '0'
-        collapse_edit_all: collapse_edit_all
-        duplicate: duplicate
-    third_party_settings: {  }
-  field_recruitment_form:
-    type: webform_entity_reference_select
-    weight: 14
-    region: content
-    settings:
-      default_data: true
-      webforms:
-        - recruitment_form
-    third_party_settings: {  }
-  field_skill:
-    type: paragraphs
-    weight: 11
-    region: content
-    settings:
-      title: Paragraph
-      title_plural: パラグラフ
-      edit_mode: closed
-      closed_mode: preview
-      autocollapse: none
-      closed_mode_threshold: 0
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: _none
-      features:
-        add_above: '0'
-        collapse_edit_all: collapse_edit_all
-        duplicate: duplicate
-    third_party_settings: {  }
   field_tel:
     type: telephone_default
     weight: 6
@@ -196,7 +94,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
+  commerce_remote_id: true
   contact: true
+  customer_profiles: true
+  field_appeal_point: true
+  field_career: true
+  field_educational_background: true
+  field_license: true
+  field_pending_expire_sent: true
+  field_recruitment_form: true
+  field_skill: true
   langcode: true
   language: true
   path: true

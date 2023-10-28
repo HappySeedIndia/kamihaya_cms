@@ -1,0 +1,29 @@
+label: 'コンテンツリスト'
+display:
+  default:
+    display_options:
+      fields:
+        title:
+          label: タイトル
+        type:
+          label: コンテンツタイプ
+        term_node_tid:
+          label: カテゴリー
+        created:
+          label: 登録日時
+        changed:
+          label: 更新日時
+      pager:
+        options:
+          tags:
+            first: '« 最初へ'
+            last: '最後へ »'
+      exposed_form:
+          submit_button: 絞り込む
+      filters:
+        type:
+          expose:
+            label: コンテンツタイプ
+        title:
+          expose:
+            label: タイトル

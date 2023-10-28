@@ -1,0 +1,7 @@
+langcode: und
+status: true
+dependencies: {  }
+id: kamihaya_year_month
+label: 'Kamihaya year month'
+locked: false
+pattern: Y.m

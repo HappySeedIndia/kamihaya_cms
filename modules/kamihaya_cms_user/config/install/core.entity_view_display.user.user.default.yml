@@ -1,7 +1,8 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.commerce_remote_id
     - field.field.user.user.field_address
     - field.field.user.user.field_appeal_point
     - field.field.user.user.field_birthday
@@ -12,7 +13,10 @@ dependencies:
     - field.field.user.user.field_gender
     - field.field.user.user.field_last_name
     - field.field.user.user.field_last_name_kana
+    - field.field.user.user.field_last_password_reset
     - field.field.user.user.field_license
+    - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_pending_expire_sent
     - field.field.user.user.field_recruitment_form
     - field.field.user.user.field_skill
     - field.field.user.user.field_tel
@@ -20,7 +24,6 @@ dependencies:
   module:
     - address
     - datetime
-    - entity_reference_revisions
     - options
     - telephone
     - user
@@ -36,15 +39,6 @@ content:
     third_party_settings: {  }
     weight: 5
     region: content
-  field_appeal_point:
-    type: entity_reference_revisions_entity_view
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    weight: 12
-    region: content
   field_birthday:
     type: datetime_default
     label: above
@@ -53,24 +47,6 @@ content:
       format_type: y_m_d
     third_party_settings: {  }
     weight: 7
-    region: content
-  field_career:
-    type: entity_reference_revisions_entity_view
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    weight: 8
-    region: content
-  field_educational_background:
-    type: entity_reference_revisions_entity_view
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    weight: 9
     region: content
   field_first_name:
     type: string
@@ -111,24 +87,6 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
-  field_license:
-    type: entity_reference_revisions_entity_view
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    weight: 11
-    region: content
-  field_skill:
-    type: entity_reference_revisions_entity_view
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    weight: 10
-    region: content
   field_tel:
     type: telephone_link
     label: above
@@ -138,7 +96,16 @@ content:
     weight: 6
     region: content
 hidden:
+  commerce_remote_id: true
+  customer_profiles: true
+  field_appeal_point: true
+  field_career: true
+  field_educational_background: true
+  field_license: true
+  field_pending_expire_sent: true
   field_recruitment_form: true
+  field_skill: true
   langcode: true
+  mail: true
   member_for: true
   user_picture: true

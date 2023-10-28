@@ -6,7 +6,7 @@ use Drupal\Component\Serialization\Yaml;
  * Implements hook_install().
  */
 function kamihaya_cms_commerce_install() {
-  _kamihaya_cms_commerce_change_configs([
+  _kamihaya_cms_common_change_configs('kamihaya_cms_commerce', [
     'core.entity_form_display.commerce_product.default.default.yml',
     'core.entity_view_display.commerce_product.default.default.yml',
   ], 'optional');
@@ -16,7 +16,7 @@ function kamihaya_cms_commerce_install() {
  * Update configs.
  */
 function kamihaya_cms_commerce_update_10001() {
-  _kamihaya_cms_commerce_change_configs([
+  _kamihaya_cms_common_change_configs('kamihaya_cms_commerce', [
     'field.storage.commerce_product.field_body.yml',
     'field.storage.commerce_product.field_category.yml',
     'field.storage.commerce_product.field_description.yml',
@@ -30,49 +30,26 @@ function kamihaya_cms_commerce_update_10001() {
     'language.content_settings.taxonomy_term.product_category.yml',
   ], 'install');
 
-  _kamihaya_cms_commerce_change_configs([
+  _kamihaya_cms_common_change_configs('kamihaya_cms_commerce', [
     'core.entity_form_display.commerce_product.default.default.yml',
     'core.entity_view_display.commerce_product.default.default.yml',
   ], 'optional');
+
 }
 
 /**
- * Change configs.
- *
- * @param array $files
- *   The array of file names to be changed.
- * @param string $path_name
- *   The path name under the config directory.
+ * Update configs.
  */
-function _kamihaya_cms_commerce_change_configs(array $files, $path_name) {
-  $module_path = \Drupal::service('extension.path.resolver')->getPath('module', 'kamihaya_cms_commerce');
-  $config_path = "$module_path/config/$path_name";
-  $config_manager = \Drupal::service('config.manager');
-  $entity_type_manager = \Drupal::entityTypeManager();
+function kamihaya_cms_commerce_update_10002() {
+  _kamihaya_cms_common_change_configs('kamihaya_cms_commerce', [
+    'pathauto.pattern.product_page.yml',
+  ], 'install');
 
-  foreach ($files as $file) {
-    $filename = $config_path . '/' . $file;
-    $file = file_get_contents($filename);
-    if (!$file) {
-      continue;
-    }
-    $value = Yaml::decode($file);
-    $type = $config_manager->getEntityTypeIdByName(basename($filename));
-
-    $definition = $entity_type_manager->getDefinition($type);
-    $id_key = $definition->getKey('id');
-
-    $id = $value[$id_key];
-    /** @var \Drupal\Core\Config\Entity\ConfigEntityStorage $entity_storage */
-    $entity_storage = $entity_type_manager->getStorage($type);
-    $entity = $entity_storage->load($id);
-    if ($entity) {
-      $entity = $entity_storage->updateFromStorageRecord($entity, $value);
-      $entity->save();
-    }
-    else {
-      $entity = $entity_storage->createFromStorageRecord($value);
-      $entity->save();
-    }
-  }
+  _kamihaya_cms_common_save_translation_configs([
+    'field.field.commerce_product.default.field_body.yml',
+    'field.field.commerce_product.default.field_category.yml',
+    'field.field.commerce_product.default.field_description.yml',
+    'field.field.commerce_product.default.field_thumbnail_image.yml',
+    'taxonomy.vocabulary.product_category.yml',
+  ], 'ja');
 }

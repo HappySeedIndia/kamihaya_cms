@@ -8,5 +8,6 @@ dependencies:
   - drupal:media
   - drupal:media_library
   - imce:imce
+  - kamihaya_cms_common:kamihaya_cms_common
 
 project: 'kamihaya'
