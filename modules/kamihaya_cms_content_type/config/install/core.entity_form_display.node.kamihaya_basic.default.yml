@@ -16,6 +16,8 @@ dependencies:
     - scheduler
     - shs
     - text
+_core:
+  default_config_hash: s1OgDmj1IwSEx-pDBywnR33Dkx1Jx1DxcGlvlZkD9MQ
 id: node.kamihaya_basic.default
 targetEntityType: node
 bundle: kamihaya_basic
