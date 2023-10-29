@@ -1,0 +1,47 @@
+<?php
+
+use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\Core\Database\Query\SelectInterface;
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function kamihaya_cms_commerce_query_product_list_alter(AlterableInterface $query) {
+  if (!$query instanceof SelectInterface) {
+    return;
+  }
+
+  $conditions = &$query->conditions();
+  foreach($conditions as &$condition) {
+    if (empty($condition['field']) || !is_object($condition['field'])) {
+      continue;
+    }
+    foreach($condition['field']->conditions() as &$con1) {
+      if (empty($con1['field']) || !is_object($con1['field'])) {
+        continue;
+      }
+    }
+    $cons = &$con1['field']->conditions();
+    foreach($cons as $idx => &$con2) {
+      if (empty($con2['field'])
+        || !is_string($con2['field'])
+        || strpos($con2['field'], 'field_category.field_category_target_id') === FALSE) {
+        continue;
+      }
+      $or = $query->orConditionGroup();
+      $or->where($con2['field'], $con2['value']);
+      $keys = array_keys($con2['value']);
+      $value = $con2['value'][$keys[0]];
+      $field1 = 'taxonomy_term_field_data_taxonomy_term__parent.tid = :term_id1';
+      $value1 = [':term_id1' => $value];
+      $or->where($field1, $value1);
+      $field2 = 'taxonomy_term_field_data_taxonomy_term__parent_1.tid = :term_id2';
+      $value2 = [':term_id2' => $value];
+      $or->where($field2, $value2);
+      unset($cons[$idx]);
+      $con1['field']->condition($or);
+      break;
+    }
+  }
+}
+

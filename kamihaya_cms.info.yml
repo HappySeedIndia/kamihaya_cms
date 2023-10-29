@@ -38,6 +38,7 @@ install:
   - automated_cron
   - admin_toolbar
   - admin_toolbar_tools
+  - better_exposed_filters
   - color_field
   - content_access
   - entity_browser
@@ -56,6 +57,7 @@ install:
   - password_policy_username
   - quick_node_clone
   - scheduler
+  - shs
   - string_field_formatter
   - tb_megamenu
   - webform

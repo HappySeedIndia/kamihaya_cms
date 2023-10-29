@@ -1,0 +1,20 @@
+label: コンテンツ一覧
+display:
+  default:
+    display_options:
+      title: コンテンツ一覧
+      pager:
+        options:
+          tags:
+            first: '« 最初へ'
+            last: '最後へ »'
+      exposed_form:
+        options:
+          submit_button: 検索
+      filters:
+        term_node_tid_depth:
+          expose:
+            label: カテゴリー
+        combine:
+          expose:
+            label: キーワード

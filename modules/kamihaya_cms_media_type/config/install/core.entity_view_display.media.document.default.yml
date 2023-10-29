@@ -3,9 +3,11 @@ status: true
 dependencies:
   config:
     - field.field.media.document.field_media_file
+    - field.field.media.document.field_thumbnail_image
     - media.type.document
   module:
     - file
+    - image
 id: media.document.default
 targetEntityType: media
 bundle: document
@@ -17,11 +19,29 @@ content:
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
+    weight: 1
+    region: content
+  field_thumbnail_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  name:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
     weight: 0
     region: content
 hidden:
   created: true
   langcode: true
-  name: true
   thumbnail: true
   uid: true

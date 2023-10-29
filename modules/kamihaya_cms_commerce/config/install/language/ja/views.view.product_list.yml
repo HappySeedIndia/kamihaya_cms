@@ -1,0 +1,21 @@
+label: 商品一覧
+display:
+  default:
+    display_options:
+      title: 商品一覧
+      pager:
+        options:
+          tags:
+            first: '« 最初へ'
+            last: '最後へ »'
+      exposed_form:
+        options:
+          submit_button: 検索
+      filters:
+        field_category_target_id:
+          expose:
+            label: カテゴリー
+        combine:
+          exposed: true
+          expose:
+            label: キーワード

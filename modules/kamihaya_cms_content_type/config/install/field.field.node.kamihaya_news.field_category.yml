@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.storage.node.field_category
     - node.type.kamihaya_news
-    - taxonomy.vocabulary.kamihaya_basic_category
     - taxonomy.vocabulary.news_category
 id: node.kamihaya_news.field_category
 field_name: field_category
@@ -20,7 +19,6 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      kamihaya_basic_category: kamihaya_basic_category
       news_category: news_category
     sort:
       field: name

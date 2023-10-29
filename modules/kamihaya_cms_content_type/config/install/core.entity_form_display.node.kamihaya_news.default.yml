@@ -19,6 +19,7 @@ dependencies:
     - media_library
     - path
     - scheduler
+    - shs
     - text
 id: node.kamihaya_news.default
 targetEntityType: node
@@ -42,14 +43,14 @@ content:
       empty_message: ''
     third_party_settings: {  }
   field_category:
-    type: entity_reference_autocomplete
+    type: options_shs
     weight: 4
     region: content
     settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
+      display_node_count: false
+      create_new_items: false
+      create_new_levels: false
+      force_deepest: false
     third_party_settings: {  }
   field_description:
     type: text_textarea
@@ -160,6 +161,11 @@ content:
   unpublish_on:
     type: datetime_timestamp_no_default
     weight: 18
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  url_redirects:
+    weight: 50
     region: content
     settings: {  }
     third_party_settings: {  }

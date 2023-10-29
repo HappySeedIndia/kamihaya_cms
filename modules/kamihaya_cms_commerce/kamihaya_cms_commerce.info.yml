@@ -30,6 +30,7 @@ dependencies:
   - 'profile:profile'
   - 'paragraphs:paragraphs'
   - 'scheduler:scheduler'
+  - 'shs:shs'
   - 'state_machine:state_machine'
   - 'kamihaya_cms_common:kamihaya_cms_common'
   - 'kamihaya_cms_media_type:kamihaya_cms_media_type'
