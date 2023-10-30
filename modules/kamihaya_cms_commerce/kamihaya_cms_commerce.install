@@ -49,8 +49,10 @@ function kamihaya_cms_commerce_update_10002() {
     'field.field.taxonomy_term.product_category.field_thumbnail_image.yml',
     'field.field.taxonomy_term.product_category.field_path_name.yml',
     'field.field.taxonomy_term.product_category.field_direct_link.yml',
+    'core.entity_view_mode.commerce_product.product_list.yml',
     'core.entity_view_display.taxonomy_term.product_category.default.yml',
     'core.entity_form_display.taxonomy_term.product_category.default.yml',
+    'core.entity_view_display.commerce_product.default.product_list.yml',
     'views.view.product_list.yml',
   ], 'install');
 
