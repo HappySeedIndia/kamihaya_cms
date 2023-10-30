@@ -75,23 +75,36 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'node-view-list'
   ]
 %}
 {{ attach_library('bootstrap5/node') }}
 <div{{ attributes.addClass(classes) }}>
-  {{ content.field_publish_date }}
-  {{ content.field_category }}
-  {% if label %}
-    {% if content.field_direct_link_url|render %}
-	    {% set url = content.field_direct_link_url.0['#url'] %}
-    {% elseif content.field_direct_link_file|render %}
-      {% set url = content.field_direct_link_file.0 %}
+
+  <div class="list-info">
+    {# Date #}
+    <div class="list-date">
+      {{ content.field_publish_date }}
+    </div>
+
+    <div class="list-category">
+      {{ content.field_category }}
+    </div>
+  </div>
+  
+  <div class="list-link">
+    {% if label %}
+      {% if content.field_direct_link_url|render %}
+        {% set url = content.field_direct_link_url.0['#url'] %}
+      {% elseif content.field_direct_link_file|render %}
+        {% set url = content.field_direct_link_file.0 %}
+      {% endif %}
+      {% if url.external == true %}
+        <a href="{{ url }}" target=" _blank">
+      {% else %}
+        <a href="{{ url }}">
+      {% endif %}
+      {{ label }}</a>
     {% endif %}
-    {% if url.external == true %}
-      <a href="{{ url }}" target=" _blank">
-    {% else %}
-      <a href="{{ url }}">
-    {% endif %}
-    {{ label }}</a>
-  {% endif %}
+  </div>
 </div>
