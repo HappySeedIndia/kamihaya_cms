@@ -56,7 +56,7 @@
       {% endif %}
 
       {# Link #}
-      {% if content.field_link %}
+      {% if content.field_link|render %}
       <div class="slider-link animate__animated animate__fadeInUp scrollto">{{ content.field_link }}</div>
       {% endif %}
       </div>
