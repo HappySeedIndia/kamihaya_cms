@@ -26,6 +26,15 @@ function kamihaya_cms_paragraph_type_theme() {
     'paragraph__drawer' => [
       'base hook' => 'paragraph',
     ],
+    'paragraph__slider_item' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__slider' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__headings' => [
+      'base hook' => 'paragraph',
+    ],
     'paragraph__two_col_table' => [
       'base hook' => 'paragraph',
     ],
