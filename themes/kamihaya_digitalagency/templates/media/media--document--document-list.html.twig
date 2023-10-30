@@ -37,7 +37,7 @@
 <div{{attributes}}>
 	{% if content %}
 		{% if content.field_media_file|render %}
-			{% set file = content.field_media_file.0 %}
+			{% set file = content.field_media_file.0|render|striptags|trim %}
 			<a href="{{ file }}">
 		{% endif %}
 		<div{{preview_attributes.addClass('js-media-library-item-preview')}}>
