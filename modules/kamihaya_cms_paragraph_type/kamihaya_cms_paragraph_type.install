@@ -70,6 +70,8 @@ function kamihaya_cms_paragraph_type_update_10001() {
     'field.field.paragraph.video.field_video_tag.yml',
     'core.entity_form_display.paragraph.video.default.yml',
     'core.entity_view_display.paragraph.video.default.yml',
+    'core.entity_form_display.paragraph.divider.default.yml',
+    'core.entity_form_display.paragraph.link_button.default.yml',
   ], 'install');
 
   _kamihaya_cms_common_save_translation_configs([
