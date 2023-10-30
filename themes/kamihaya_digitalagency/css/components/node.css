@@ -50,3 +50,39 @@
   padding: 10px 20px;
   border: 3px double #ffffff;
 }
+
+.node--type-kamihaya-news .node--view-mode-list {
+  display: flex;
+}
+
+.field--name-field-content {
+  display: flex;
+  flex-wrap: wrap;
+}
+.field--name-field-content > .field__item {
+  max-width: 300px;
+  margin: 5px;
+}
+
+.field--name-field-content .content-information {
+  display: flex;
+  justify-content: space-between;
+  max-width: 250px;
+  margin: 10px auto;
+}
+
+.field--name-field-content .content-information .field--name-field-category {
+  background-color: #535353;
+  color: #ffffff;
+  padding: 2px 3px;
+  padding: 0px 10px;
+  border-radius: 5px;
+}
+
+.field--name-field-content .title {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  color: var(--gin-color-text-light);
+  text-decoration: none;
+}
