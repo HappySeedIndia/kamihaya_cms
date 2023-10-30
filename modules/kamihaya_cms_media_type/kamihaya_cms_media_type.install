@@ -13,11 +13,16 @@ function kamihaya_cms_media_type_update_10001() {
     'field.storage.media.field_media_video_file.yml',
     'field.field.media.document.field_thumbnail_image.yml',
     'field.field.media.video.field_media_video_file.yml',
-    'core.entity_form_display.media.video.default.yml',
     'core.entity_view_mode.media.document_list.yml',
+    'core.entity_form_display.media.video.default.yml',
     'core.entity_form_display.media.video.media_library.yml',
     'core.entity_view_display.media.video.default.yml',
     'core.entity_view_display.media.video.media_library.yml',
+    'core.entity_form_display.media.document.default.yml',
+    'core.entity_form_display.media.document.media_library.yml',
+    'core.entity_view_display.media.document.default.yml',
+    'core.entity_view_display.media.document.document_list.yml',
+    'core.entity_view_display.media.document.media_library.yml',
     'views.view.document_list.yml',
   ], 'install');
 
