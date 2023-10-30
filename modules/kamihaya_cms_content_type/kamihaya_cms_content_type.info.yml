@@ -16,5 +16,6 @@ dependencies:
   - kamihaya_cms_common:kamihaya_cms_common
   - kamihaya_cms_media_type:kamihaya_cms_media_type
   - kamihaya_cms_paragraph_type:kamihaya_cms_paragraph_type
+  - kamihaya_cms_google_map_paragraph:kamihaya_cms_google_map_paragraph
 
 project: 'kamihaya'
