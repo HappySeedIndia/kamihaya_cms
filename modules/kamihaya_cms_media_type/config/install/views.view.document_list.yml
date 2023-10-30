@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.media.media_library
+    - core.entity_view_mode.media.document_list
     - media.type.document
   module:
     - media
@@ -166,9 +166,9 @@ display:
       style:
         type: grid
         options:
-          grouping: {  }
+          uses_fields: false
           columns: 4
-          automatic_width: true
+          automatic_width: false
           alignment: horizontal
           row_class_custom: ''
           row_class_default: true
@@ -178,7 +178,7 @@ display:
         type: 'entity:media'
         options:
           relationship: none
-          view_mode: media_library
+          view_mode: document_list
       query:
         type: views_query
         options:
