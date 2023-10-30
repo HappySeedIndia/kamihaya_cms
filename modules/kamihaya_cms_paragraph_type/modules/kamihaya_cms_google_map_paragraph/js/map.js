@@ -17,17 +17,6 @@
         if (drupalSettings.zoom) {
           map_param.zoom = drupalSettings.zoom;
         }
-/*
-        var map = new google.maps.Map($self.get(0), map_param);
-
-        var marker = new google.maps.Marker({
-          position: latlng,
-          map,
-          title: drupalSettings.title,
-        });
-        marker.description = new google.maps.InfoWindow({
-          content: drupalSettings.description
-        });*/
 
         var geocoder = new google.maps.Geocoder();
         var geo_param = {}
