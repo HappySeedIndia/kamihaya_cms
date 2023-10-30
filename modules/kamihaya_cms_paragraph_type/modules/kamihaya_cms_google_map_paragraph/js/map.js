@@ -1,6 +1,6 @@
 (function ($, Drupal, drupalSettings, once) {
 
-  Drupal.behaviors.syngenta_drone_assist_map = {
+  Drupal.behaviors.kamihaya_cms_google_map = {
 
     attach: function (context) {
       function initMap($self, latlng) {
