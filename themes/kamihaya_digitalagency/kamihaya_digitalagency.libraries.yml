@@ -1,16 +1,18 @@
 global-styling:
-  js:
-    js/menu.js: {}
   css:
     theme:
       css/style.css: {}
-      css/components.css: {}
+      css/components.css: {weight: 15}
+      css/components/header.css: {weight: 16}
+      css/components/footer.css: {weight: 16}
       css/components/page.css:
         weight: -10
       css/components/field.css:
         weight: -10
       css/components/common.css:
         weight: -10
+  js:
+    js/menu.js: {}
 
 node:
   css:
@@ -32,6 +34,11 @@ paragraph:
     theme:
       css/components/paragraph.css: {}
 
+product:
+  css:
+    theme:
+      css/components/product.css: {}
+
 mdb:
   js:
     js/mdb/mdb.min.js: {}
@@ -40,4 +47,3 @@ mdb:
       css/mdb/mdb.min.css: {}
       css/mdb/style.css: {}
       https://use.fontawesome.com/releases/v5.11.2/css/all.css: { type: external, minified: true }
-

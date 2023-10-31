@@ -7,7 +7,7 @@ dependencies:
     - kamihaya_digitalagency
 id: kamihaya_digitalagency_branding
 theme: kamihaya_digitalagency
-region: nav_branding
+region: header_left
 weight: -6
 provider: null
 plugin: system_branding_block

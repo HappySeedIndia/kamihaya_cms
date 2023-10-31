@@ -1,0 +1,57 @@
+<?php
+
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function kamihaya_cms_google_map_paragraph_theme() {
+  return [
+    'paragraph__google_map' => [
+      'base hook' => 'paragraph',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_paragraph().
+ */
+function kamihaya_cms_google_map_paragraph_preprocess_paragraph(&$variables) {
+  $elements = $variables['elements'];
+  $paragraph = $elements['#paragraph'];
+
+  if (!empty($paragraph) && $paragraph->getParagraphType()->id() === 'google_map') {
+    $wargning = t("Please set up <a href='@url'>the configuration for using Google API</a>.", [
+      '@url' => Url::fromRoute('kamihaya_cms_google_map_paragraph.settings'),
+    ]);
+    $config = Drupal::configFactory()->get('kamihaya_cms_google_map_paragraph.settings');
+    if (empty($config)) {
+      Drupal::messenger()->addWarning($wargning);
+      return;
+    }
+    $api_url = $config->get('google_map_api_url');
+    $api_key = $config->get('google_map_api_kay');
+    if (empty($api_url) || empty($api_key)) {
+      Drupal::messenger()->addWarning($wargning);
+      return;
+    }
+    $variables['#attached']['library'][] = 'kamihaya_cms_google_map_paragraph/map';
+    $variables['#attached']['drupalSettings']['address'] = $paragraph->get('field_address')->value;
+    $variables['#attached']['drupalSettings']['lat'] = $paragraph->get('field_latitude')->value;
+    $variables['#attached']['drupalSettings']['lon'] = $paragraph->get('field_longitude')->value;
+    $variables['#attached']['drupalSettings']['title'] = $paragraph->get('field_marker_tooltip')->value;
+    $variables['#attached']['drupalSettings']['description'] = $paragraph->get('field_marker_description')->value;
+    $variables['#attached']['drupalSettings']['map_height'] = $paragraph->get('field_map_height')->value;
+    $variables['#attached']['drupalSettings']['map_width'] = $paragraph->get('field_map_width')->value;
+    $variables['#attached']['drupalSettings']['zoom'] = intval($paragraph->get('field_zoom')->value);
+    $variables['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'script',
+        '#attributes' => ['src' => "{$api_url}?key={$api_key}"],
+      ],
+      // A key, to make it possible to recognize this HTML element when altering.
+      'google-map-api',
+    ];
+  }
+}

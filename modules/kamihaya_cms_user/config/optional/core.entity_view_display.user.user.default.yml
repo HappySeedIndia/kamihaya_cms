@@ -1,0 +1,111 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.user.user.commerce_remote_id
+    - field.field.user.user.field_address
+    - field.field.user.user.field_appeal_point
+    - field.field.user.user.field_birthday
+    - field.field.user.user.field_career
+    - field.field.user.user.field_educational_background
+    - field.field.user.user.field_first_name
+    - field.field.user.user.field_first_name_kana
+    - field.field.user.user.field_gender
+    - field.field.user.user.field_last_name
+    - field.field.user.user.field_last_name_kana
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_license
+    - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_pending_expire_sent
+    - field.field.user.user.field_recruitment_form
+    - field.field.user.user.field_skill
+    - field.field.user.user.field_tel
+    - field.field.user.user.user_picture
+  module:
+    - address
+    - datetime
+    - options
+    - telephone
+    - user
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  field_address:
+    type: address_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_birthday:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: y_m_d
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_first_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_first_name_kana:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_gender:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_last_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_last_name_kana:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_tel:
+    type: telephone_link
+    label: above
+    settings:
+      title: ''
+    third_party_settings: {  }
+    weight: 6
+    region: content
+hidden:
+  commerce_remote_id: true
+  customer_profiles: true
+  field_appeal_point: true
+  field_career: true
+  field_educational_background: true
+  field_license: true
+  field_pending_expire_sent: true
+  field_recruitment_form: true
+  field_skill: true
+  langcode: true
+  mail: true
+  member_for: true
+  user_picture: true

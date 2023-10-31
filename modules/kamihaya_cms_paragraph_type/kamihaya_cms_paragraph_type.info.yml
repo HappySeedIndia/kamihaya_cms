@@ -5,10 +5,21 @@ package: Kamihaya
 description: 'Paragraphs for Kamihaya CMS.'
 
 dependencies:
+  - drupal:entity_reference_revisions
+  - drupal:file
+  - drupal:image
+  - drupal:media
+  - drupal:node
+  - drupal:options
+  - drupal:taxonomy
+  - drupal:views
   - color_field:color_field
+  - entity_browser:entity_browser
   - imce:imce
-  - paragraphs:paragraphs
   - layout_paragraphs:layout_paragraphs
+  - paragraphs:paragraphs
   - string_field_formatter:string_field_formatter
+  - kamihaya_cms_common:kamihaya_cms_common
+  - kamihaya_cms_content_type:kamihaya_cms_content_type
 
 project: 'kamihaya'

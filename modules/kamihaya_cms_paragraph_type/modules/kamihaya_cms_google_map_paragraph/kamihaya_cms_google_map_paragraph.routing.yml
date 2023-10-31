@@ -1,0 +1,7 @@
+kamihaya_cms_google_map_paragraph.settings:
+  path: '/admin/structure/kamihaya_cms_google_map_paragraph/settings'
+  defaults:
+    _form: '\Drupal\kamihaya_cms_google_map_paragraph\Form\Config\GoogleMapSettingsForm'
+    _title: 'Google Map Settings'
+  requirements:
+    _permission: 'administer site configuration'

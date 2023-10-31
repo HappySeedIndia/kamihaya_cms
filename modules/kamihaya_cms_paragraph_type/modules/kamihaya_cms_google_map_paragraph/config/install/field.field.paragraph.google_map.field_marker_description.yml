@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_marker_description
+    - paragraphs.paragraphs_type.google_map
+  module:
+    - text
+id: paragraph.google_map.field_marker_description
+field_name: field_marker_description
+entity_type: paragraph
+bundle: google_map
+label: 'Marker description'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

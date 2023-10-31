@@ -1,0 +1,67 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.list
+    - field.field.node.kamihaya_news.field_body
+    - field.field.node.kamihaya_news.field_category
+    - field.field.node.kamihaya_news.field_description
+    - field.field.node.kamihaya_news.field_direct_link_file
+    - field.field.node.kamihaya_news.field_direct_link_url
+    - field.field.node.kamihaya_news.field_publish_date
+    - field.field.node.kamihaya_news.field_thumbnail_image
+    - field.field.node.kamihaya_news.field_weight
+    - node.type.kamihaya_news
+  module:
+    - datetime
+    - file
+    - link
+    - user
+id: node.kamihaya_news.list
+targetEntityType: node
+bundle: kamihaya_news
+mode: list
+content:
+  field_category:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_direct_link_file:
+    type: file_url_plain
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_direct_link_url:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_publish_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: kamihaya_date
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  field_body: true
+  field_description: true
+  field_thumbnail_image: true
+  field_weight: true
+  langcode: true
+  links: true

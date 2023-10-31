@@ -1,19 +1,21 @@
+uuid: dc7fd1a3-efc8-471a-b856-49d709c133f8
 langcode: en
 status: true
 dependencies:
   config:
     - commerce_product.commerce_product_type.default
+    - field.field.commerce_product.default.body
     - field.field.commerce_product.default.field_body
     - field.field.commerce_product.default.field_category
     - field.field.commerce_product.default.field_description
     - field.field.commerce_product.default.field_thumbnail_image
   module:
     - commerce
-    - datetime
     - field_layout
     - layout_paragraphs
     - media_library
     - path
+    - shs
     - text
 third_party_settings:
   field_layout:
@@ -54,10 +56,14 @@ content:
       empty_message: ''
     third_party_settings: {  }
   field_category:
-    type: options_select
+    type: options_shs
     weight: 4
     region: content
-    settings: {  }
+    settings:
+      display_node_count: false
+      create_new_items: false
+      create_new_levels: false
+      force_deepest: false
     third_party_settings: {  }
   field_description:
     type: text_textarea

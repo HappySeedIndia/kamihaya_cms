@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.two_col_table_row.field_row_data
+    - field.field.paragraph.two_col_table_row.field_row_label
+    - paragraphs.paragraphs_type.two_col_table_row
+  module:
+    - layout_paragraphs
+id: paragraph.two_col_table_row.default
+targetEntityType: paragraph
+bundle: two_col_table_row
+mode: default
+content:
+  field_row_data:
+    type: layout_paragraphs
+    weight: 1
+    region: content
+    settings:
+      preview_view_mode: default
+      nesting_depth: 0
+      require_layouts: 0
+      empty_message: ''
+    third_party_settings: {  }
+  field_row_label:
+    type: string_textarea
+    weight: 0
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

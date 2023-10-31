@@ -1,0 +1,10 @@
+label: 資料一覧
+display:
+  default:
+    display_options:
+      title: 資料一覧
+      pager:
+        options:
+          tags:
+            first: '« 最初へ'
+            last: '最後へ »'

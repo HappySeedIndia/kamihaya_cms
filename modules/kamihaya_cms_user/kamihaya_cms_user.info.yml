@@ -13,6 +13,7 @@ dependencies:
   - 'drupal:telephone'
   - 'drupal:text'
   - 'drupal:views'
-  - 'entity_reference_revisions:entity_reference_revisions'
+  - 'drupal:entity_reference_revisions'
   - 'paragraphs:paragraphs'
+  - 'password_policy:password_policy'
   - 'webform:webform'

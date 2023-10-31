@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_row_label
+    - paragraphs.paragraphs_type.two_col_table_row
+id: paragraph.two_col_table_row.field_row_label
+field_name: field_row_label
+entity_type: paragraph
+bundle: two_col_table_row
+label: 'Row label'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

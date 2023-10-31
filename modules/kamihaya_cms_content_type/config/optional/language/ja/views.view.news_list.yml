@@ -1,0 +1,26 @@
+label: お知らせ一覧
+display:
+  default:
+    display_options:
+      title: お知らせ一覧
+      pager:
+        options:
+          tags:
+            first: '« 最初へ'
+            last: '最後へ »'
+      exposed_form:
+        options:
+          submit_button: 検索
+      filters:
+        term_node_tid_depth:
+          expose:
+            label: カテゴリー
+        combine:
+          expose:
+            label: キーワードteaser'
+  news_block:
+    display_title: お知らせブロック
+  news_image_block:
+    display_title: お知らせブロック（画像表示）
+  news_image_list:
+    display_title: お知らせ一覧（画像表示）
