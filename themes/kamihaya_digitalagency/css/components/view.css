@@ -171,3 +171,19 @@ h1 {
     padding: 20px 0;
   }
 }
+
+/* Products */
+.view-product-list .views-row {
+  padding: 15px 0;
+  border-bottom: 1px dotted #aaa;
+}
+
+.view-product-list .views-row:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 767px) {
+  .view-product-list .views-row {
+    padding: 20px 0;
+  }
+}

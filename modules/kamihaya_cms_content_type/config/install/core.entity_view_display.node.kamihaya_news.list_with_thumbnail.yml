@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.kamihaya_news.field_publish_date
     - field.field.node.kamihaya_news.field_thumbnail_image
     - field.field.node.kamihaya_news.field_weight
+    - image.style.medium
     - node.type.kamihaya_news
   module:
     - datetime
@@ -72,7 +73,7 @@ content:
     label: hidden
     settings:
       image_link: ''
-      image_style: ''
+      image_style: medium
       image_loading:
         attribute: lazy
     third_party_settings: {  }

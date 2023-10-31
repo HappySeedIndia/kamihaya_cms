@@ -34,6 +34,11 @@ paragraph:
     theme:
       css/components/paragraph.css: {}
 
+product:
+  css:
+    theme:
+      css/components/product.css: {}
+
 mdb:
   js:
     js/mdb/mdb.min.js: {}

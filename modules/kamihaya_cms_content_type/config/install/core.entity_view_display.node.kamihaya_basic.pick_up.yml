@@ -13,6 +13,8 @@ dependencies:
     - datetime
     - text
     - user
+_core:
+  default_config_hash: LCortlqYNsZaMT-IRptxhJK0FZPATIDuC4YeX3RcNmo
 id: node.kamihaya_basic.pick_up
 targetEntityType: node
 bundle: kamihaya_basic
