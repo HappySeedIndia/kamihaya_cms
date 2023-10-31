@@ -47,23 +47,3 @@ mdb:
       css/mdb/mdb.min.css: {}
       css/mdb/style.css: {}
       https://use.fontawesome.com/releases/v5.11.2/css/all.css: { type: external, minified: true }
-
-animate-library:
-  header: true
-  css:
-    base:
-      assets/libraries/animate.css/animate.min.css: {}
-
-swiper-library:
-  css:
-    base:
-      assets/libraries/swiper/swiper-bundle.min.css: {}
-      css/components/slider.css: {}
-  js:
-    assets/libraries/swiper/swiper-bundle.min.js: {}
-    js/components/slider.js: {}
-
-heading-css:
-  css:
-    base:
-      css/components/headings.css: {}

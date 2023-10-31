@@ -1,0 +1,19 @@
+animate-library:
+  header: true
+  css:
+    base:
+      assets/libraries/animate/animate.min.css: {}
+
+swiper-library:
+  css:
+    base:
+      assets/libraries/swiper/swiper-bundle.min.css: {}
+      assets/css/slider.css: {}
+  js:
+    assets/libraries/swiper/swiper-bundle.min.js: {}
+    assets/js/slider.js: {}
+
+heading-css:
+  css:
+    base:
+      assets/css/headings.css: {}
