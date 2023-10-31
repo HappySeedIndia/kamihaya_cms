@@ -6,6 +6,7 @@ use Drupal\Component\Serialization\Yaml;
  * Update configs.
  */
 function kamihaya_cms_paragraph_type_update_10001() {
+  \Drupal::service('module_installer')->install(['entity_browser']);
   _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', [
     'paragraphs.paragraphs_type.headings.yml',
     'field.storage.paragraph.field_color.yml',
