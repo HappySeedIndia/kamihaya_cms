@@ -41,6 +41,7 @@
 
 {% block paragraph %}
 {% set bgImage = content.field_slider_image|render|striptags|trim %}
+
 <div class="swiper-slide" style="background-image: url('{{ bgImage }}')">
   <div class="container">
     {% block content %}
