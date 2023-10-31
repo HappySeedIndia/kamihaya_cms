@@ -75,8 +75,8 @@ install:
   - kamihaya_cms_commerce
   - kamihaya_cms_menu_icon
   - kamihaya_cms_media_type
-  - kamihaya_cms_paragraph_type
   - kamihaya_cms_content_type
+  - kamihaya_cms_paragraph_type
 
 # List any themes that should be installed as part of the profile installation.
 # Note that this will not set any theme as the default theme.

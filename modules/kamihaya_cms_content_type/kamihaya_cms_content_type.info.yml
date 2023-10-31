@@ -5,11 +5,12 @@ package: Kamihaya
 description: 'Kamihaya content type for Kamihaya CMS.'
 
 dependencies:
+  - drupal:entity_reference_revisions
   - drupal:node
   - drupal:taxonomy
   - drupal:views
-  - paragraphs:paragraphs
   - layout_paragraphs:layout_paragraphs
+  - paragraphs:paragraphs
   - pathauto:pathauto
   - scheduler:scheduler
   - shs:shs

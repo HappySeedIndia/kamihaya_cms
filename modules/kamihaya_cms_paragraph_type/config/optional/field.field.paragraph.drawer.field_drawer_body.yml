@@ -73,7 +73,7 @@ settings:
         weight: -59
         enabled: false
       embed_tag:
-        weight: -40
+        weight: -41
         enabled: true
       english_skill:
         weight: -58
@@ -84,9 +84,6 @@ settings:
       file_download:
         weight: -47
         enabled: true
-      google_map:
-        weight: -42
-        enabled: false
       groups:
         weight: -57
         enabled: false
@@ -112,34 +109,34 @@ settings:
         weight: -46
         enabled: true
       license:
-        weight: -34
+        weight: -35
         enabled: false
       link_button:
         weight: -48
         enabled: true
       modal_dialog:
-        weight: -38
+        weight: -39
         enabled: false
       other_language:
-        weight: -35
-        enabled: false
-      other_notice:
         weight: -36
         enabled: false
-      q_a:
+      other_notice:
         weight: -37
+        enabled: false
+      q_a:
+        weight: -38
         enabled: false
       right_image_text:
         weight: -45
         enabled: true
       skill:
-        weight: -33
+        weight: -34
         enabled: false
       two_col_table:
-        weight: -41
+        weight: -42
         enabled: true
       two_col_table_row:
-        weight: -39
+        weight: -40
         enabled: false
       video:
         weight: -50

@@ -10,6 +10,9 @@ function kamihaya_cms_content_type_update_10001() {
     'taxonomy.vocabulary.news_category.yml',
     'language.content_settings.taxonomy_term.news_category.yml',
     'core.entity_form_display.taxonomy_term.news_category.default.yml',
+  ], 'install');
+
+  _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', [
     'core.entity_view_mode.node.list.yml',
     'core.entity_view_mode.node.list_with_thumbnail.yml',
     'node.type.kamihaya_news.yml',
@@ -41,7 +44,7 @@ function kamihaya_cms_content_type_update_10001() {
     'pathauto.pattern.kamihaya_news_page.yml',
     'views.view.contents_list_page.yml',
     'views.view.news_list.yml',
-  ], 'install');
+  ], 'optional');
 
   _kamihaya_cms_common_save_translation_configs([
     'taxonomy.vocabulary.news_category.yml',

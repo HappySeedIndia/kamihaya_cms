@@ -54,67 +54,64 @@ settings:
       file_download:
         weight: 41
         enabled: false
-      google_map:
+      groups:
         weight: 42
         enabled: false
-      groups:
+      h2_title:
         weight: 43
         enabled: false
-      h2_title:
+      h3_title:
         weight: 44
         enabled: false
-      h3_title:
+      h4_title:
         weight: 45
         enabled: false
-      h4_title:
+      image:
         weight: 46
         enabled: false
-      image:
+      image_link:
         weight: 47
         enabled: false
-      image_link:
+      layout_paragraph:
         weight: 48
         enabled: false
-      layout_paragraph:
+      left_image_text:
         weight: 49
         enabled: false
-      left_image_text:
+      license:
         weight: 50
         enabled: false
-      license:
+      link_button:
         weight: 51
         enabled: false
-      link_button:
+      modal_dialog:
         weight: 52
         enabled: false
-      modal_dialog:
+      other_language:
         weight: 53
         enabled: false
-      other_language:
+      other_notice:
         weight: 54
         enabled: false
-      other_notice:
+      q_a:
         weight: 55
         enabled: false
-      q_a:
+      right_image_text:
         weight: 56
         enabled: false
-      right_image_text:
+      skill:
         weight: 57
         enabled: false
-      skill:
+      two_col_table:
         weight: 58
         enabled: false
-      two_col_table:
-        weight: 59
-        enabled: false
       two_col_table_row:
-        weight: 60
+        weight: 59
         enabled: true
       video:
-        weight: 61
+        weight: 60
         enabled: false
       wysiwyg_editor:
-        weight: 62
+        weight: 61
         enabled: false
 field_type: entity_reference_revisions
