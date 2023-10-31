@@ -2,9 +2,9 @@ global-styling:
   css:
     theme:
       css/style.css: {}
-      css/components/header.css: {}
-      css/components/footer.css: {}
-      css/components.css: {}
+      css/components.css: {weight: 15}
+      css/components/header.css: {weight: 16}
+      css/components/footer.css: {weight: 16}
       css/components/page.css:
         weight: -10
       css/components/field.css:
