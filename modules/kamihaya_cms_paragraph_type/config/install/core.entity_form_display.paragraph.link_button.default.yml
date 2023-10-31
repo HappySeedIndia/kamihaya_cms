@@ -19,20 +19,32 @@ bundle: link_button
 mode: default
 content:
   field_button_bg_color:
-    type: color_field_widget_default
+    type: color_field_widget_spectrum
     weight: 4
     region: content
     settings:
-      placeholder_color: ''
-      placeholder_opacity: ''
+      show_input: ''
+      show_palette: ''
+      palette: ''
+      show_palette_only: ''
+      show_buttons: ''
+      cancel_text: Cancel
+      choose_text: Choose
+      allow_empty: ''
     third_party_settings: {  }
   field_button_border_color:
-    type: color_field_widget_default
+    type: color_field_widget_spectrum
     weight: 5
     region: content
     settings:
-      placeholder_color: ''
-      placeholder_opacity: ''
+      show_input: ''
+      show_palette: ''
+      palette: ''
+      show_palette_only: ''
+      show_buttons: ''
+      cancel_text: Cancel
+      choose_text: Choose
+      allow_empty: ''
     third_party_settings: {  }
   field_button_border_radius:
     type: number
@@ -58,12 +70,18 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_button_text_color:
-    type: color_field_widget_default
+    type: color_field_widget_spectrum
     weight: 3
     region: content
     settings:
-      placeholder_color: ''
-      placeholder_opacity: ''
+      show_input: ''
+      show_palette: ''
+      palette: ''
+      show_palette_only: ''
+      show_buttons: ''
+      cancel_text: Cancel
+      choose_text: Choose
+      allow_empty: ''
     third_party_settings: {  }
   field_button_text_size:
     type: number

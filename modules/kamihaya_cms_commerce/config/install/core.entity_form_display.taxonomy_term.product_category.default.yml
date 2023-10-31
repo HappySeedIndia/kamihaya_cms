@@ -2,8 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.product_category.field_direct_link
+    - field.field.taxonomy_term.product_category.field_path_name
+    - field.field.taxonomy_term.product_category.field_thumbnail_image
+    - image.style.thumbnail
     - taxonomy.vocabulary.product_category
   module:
+    - image
+    - link
     - path
     - text
 id: taxonomy_term.product_category.default
@@ -12,23 +18,47 @@ bundle: product_category
 mode: default
 content:
   description:
-    type: text_textfield
-    weight: 0
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_direct_link:
+    type: link_default
+    weight: 3
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_path_name:
+    type: string_textfield
+    weight: 4
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_thumbnail_image:
+    type: image_image
+    weight: 2
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 2
+    weight: 5
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   name:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
@@ -36,13 +66,13 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 100
+    weight: 7
     region: content
     settings:
       display_label: true

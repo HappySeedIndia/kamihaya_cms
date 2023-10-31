@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_marker_tooltip
+    - paragraphs.paragraphs_type.google_map
+id: paragraph.google_map.field_marker_tooltip
+field_name: field_marker_tooltip
+entity_type: paragraph
+bundle: google_map
+label: 'Marker tooltip'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

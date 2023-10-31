@@ -9,6 +9,7 @@ dependencies:
   - commerce:commerce
   - commerce:commerce_product
   - commerce:commerce_product
+  - kamihaya_cms_common:kamihaya_cms_common
 
 project: 'kamihaya'
 configure: kamihaya_cms_contentserv_api.settings

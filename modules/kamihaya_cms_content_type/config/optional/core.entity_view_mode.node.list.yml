@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: KCPevDGhLe9Fc0FTiTjb3Q0-vYukUZEYCZElcksfzvw
+id: node.list
+label: List
+targetEntityType: node
+cache: true

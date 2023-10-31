@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: kamihaya_basic_page
+label: 'Kamihaya basic page'
+type: 'canonical_entities:node'
+pattern: 'contents/[node:nid]'
+selection_criteria:
+  59953c5e-cac2-4f30-82f9-e23c50f09185:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 59953c5e-cac2-4f30-82f9-e23c50f09185
+    context_mapping:
+      node: node
+    bundles:
+      kamihaya_basic: kamihaya_basic
+selection_logic: and
+weight: -5
+relationships: {  }

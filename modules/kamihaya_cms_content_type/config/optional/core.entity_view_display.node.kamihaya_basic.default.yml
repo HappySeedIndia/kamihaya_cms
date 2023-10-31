@@ -1,0 +1,54 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.kamihaya_basic.field_body
+    - field.field.node.kamihaya_basic.field_category
+    - field.field.node.kamihaya_basic.field_description
+    - field.field.node.kamihaya_basic.field_publish_date
+    - field.field.node.kamihaya_basic.field_thumbnail_image
+    - node.type.kamihaya_basic
+  module:
+    - datetime
+    - layout_paragraphs
+    - user
+id: node.kamihaya_basic.default
+targetEntityType: node
+bundle: kamihaya_basic
+mode: default
+content:
+  field_body:
+    type: layout_paragraphs
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_category:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_publish_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: kamihaya_date
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  field_description: true
+  field_thumbnail_image: true
+  langcode: true

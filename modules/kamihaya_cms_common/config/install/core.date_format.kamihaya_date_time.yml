@@ -1,0 +1,7 @@
+langcode: und
+status: true
+dependencies: {  }
+id: kamihaya_date_time
+label: 'Kamihaya date time'
+locked: false
+pattern: 'Y.m.d H:i'

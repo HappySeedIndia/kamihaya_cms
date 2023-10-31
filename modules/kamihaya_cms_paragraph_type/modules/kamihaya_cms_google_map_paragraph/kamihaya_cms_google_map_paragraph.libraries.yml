@@ -1,0 +1,9 @@
+map:
+  version: VERSION
+  js:
+    js/map.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/once

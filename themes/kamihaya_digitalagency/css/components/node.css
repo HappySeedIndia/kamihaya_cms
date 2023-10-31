@@ -50,3 +50,133 @@
   padding: 10px 20px;
   border: 3px double #ffffff;
 }
+
+/* Featured contant paragraph */
+.field--name-field-content {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.field--name-field-content>.field__item {
+  max-width: 300px;
+  margin: 5px;
+}
+
+.field--name-field-content .content-information {
+  display: flex;
+  justify-content: space-between;
+  max-width: 250px;
+  margin: 10px auto;
+}
+
+.field--name-field-content .content-information .field--name-field-category {
+  background-color: #535353;
+  color: #ffffff;
+  padding: 2px 3px;
+  padding: 0px 10px;
+  border-radius: 5px;
+}
+
+.field--name-field-content .title {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  color: var(--gin-color-text-light);
+  text-decoration: none;
+}
+
+/* News list */
+.list-link a {
+  text-decoration: none;
+  font-size: 18px;
+  color: var(--gin-color-text-light);
+}
+.list-link a:hover {
+  text-decoration: underline;
+}
+
+.list-image {
+  min-width: 220px;
+}
+
+.list-category {
+  padding: 3px 5px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  text-align: center;
+  min-width: 100px;
+  display: inline-block;
+  font-size: 12px;
+}
+
+.list-date {
+  font-size: 14px;
+}
+
+@media(min-width: 768px) {
+  .node-view-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .list-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-right: 20px;
+    min-width: 180px;
+  }
+  .list-date {
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 767px) {
+  .node-view-list .list-date {
+    margin-bottom: 10px;
+  }
+  .list-info {
+    margin-bottom: 15px;
+  }
+}
+
+/* node-list-thumbnail */
+.node-list-thumbnail .list-details {
+  flex-grow: 1;
+}
+
+.node-list-thumbnail .list-link {
+  margin-bottom: 20px;
+}
+
+.node-list-thumbnail .list-link a {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+@media (min-width: 768px) {
+  .node-list-thumbnail {
+    display: flex;
+    align-items: center;
+  }
+  .node-list-thumbnail .list-info {
+    justify-content: space-between;
+  }
+  .node-list-thumbnail .list-date {
+    margin-right: 0;
+  }
+  .node-list-thumbnail .list-details {
+    padding: 15px 15px 15px 25px;
+  }
+}
+
+@media(max-width: 767px) {
+  .node-list-thumbnail .list-info .list-category {
+    margin-bottom: 10px;
+  }
+  .list-image {
+    margin-bottom: 15px;
+    text-align: center;
+  }
+}

@@ -1,0 +1,67 @@
+<?php
+
+use Drupal\Component\Serialization\Yaml;
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_content_type_update_10001() {
+  _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', [
+    'taxonomy.vocabulary.news_category.yml',
+    'language.content_settings.taxonomy_term.news_category.yml',
+    'core.entity_form_display.taxonomy_term.news_category.default.yml',
+  ], 'install');
+
+  _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', [
+    'core.entity_view_mode.node.list.yml',
+    'core.entity_view_mode.node.list_with_thumbnail.yml',
+    'node.type.kamihaya_news.yml',
+    'language.content_settings.node.kamihaya_news.yml',
+    'field.storage.node.field_direct_link_file.yml',
+    'field.storage.node.field_direct_link_url.yml',
+    'field.storage.node.field_weight.yml',
+    'field.field.node.kamihaya_news.field_body.yml',
+    'field.field.node.kamihaya_news.field_category.yml',
+    'field.field.node.kamihaya_news.field_description.yml',
+    'field.field.node.kamihaya_news.field_direct_link_url.yml',
+    'field.field.node.kamihaya_news.field_direct_link_file.yml',
+    'field.field.node.kamihaya_news.field_publish_date.yml',
+    'field.field.node.kamihaya_news.field_thumbnail_image.yml',
+    'field.field.node.kamihaya_news.field_weight.yml',
+    'core.entity_view_mode.node.pick_up.yml',
+    'core.base_field_override.node.kamihaya_news.promote.yml',
+    'core.entity_form_display.node.kamihaya_news.default.yml',
+    'core.entity_view_display.node.kamihaya_news.default.yml',
+    'core.entity_view_display.node.kamihaya_news.list.yml',
+    'core.entity_view_display.node.kamihaya_news.list_with_thumbnail.yml',
+    'core.entity_view_display.node.kamihaya_news.pick_up.yml',
+    'core.entity_form_display.node.kamihaya_basic.default.yml',
+    'core.entity_view_display.node.kamihaya_basic.default.yml',
+    'core.entity_view_display.node.kamihaya_basic.list_with_thumbnail.yml',
+    'core.entity_view_display.node.kamihaya_basic.pick_up.yml',
+    'field.field.node.kamihaya_basic.field_body.yml',
+    'pathauto.pattern.kamihaya_basic_page.yml',
+    'pathauto.pattern.kamihaya_news_page.yml',
+    'views.view.contents_list_page.yml',
+    'views.view.news_list.yml',
+  ], 'optional');
+
+  _kamihaya_cms_common_save_translation_configs([
+    'taxonomy.vocabulary.news_category.yml',
+    'node.type.kamihaya_news.yml',
+    'field.storage.node.field_direct_link_file.yml',
+    'field.storage.node.field_direct_link_url.yml',
+    'field.storage.node.field_weight.yml',
+    'field.field.node.kamihaya_news.field_body.yml',
+    'field.field.node.kamihaya_news.field_category.yml',
+    'field.field.node.kamihaya_news.field_description.yml',
+    'field.field.node.kamihaya_news.field_direct_link_url.yml',
+    'field.field.node.kamihaya_news.field_direct_link_file.yml',
+    'field.field.node.kamihaya_news.field_publish_date.yml',
+    'field.field.node.kamihaya_news.field_thumbnail_image.yml',
+    'field.field.node.kamihaya_news.field_weight.yml',
+    'views.view.contents_list_page.yml',
+    'views.view.news_list.yml',
+  ], 'ja');
+
+}

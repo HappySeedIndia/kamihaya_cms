@@ -1,0 +1,67 @@
+<?php
+
+use Drupal\Component\Serialization\Yaml;
+
+/**
+ * Change configs.
+ *
+ * @param string $module
+ *   The module name.
+ * @param array $files
+ *   The array of file names to be changed.
+ * @param string $path_name
+ *   The path name under the config directory.
+ */
+function _kamihaya_cms_common_change_configs($module, array $files, $path_name) {
+  $module_path = \Drupal::service('extension.path.resolver')->getPath('module', $module);
+  $config_path = "$module_path/config/$path_name";
+  $config_manager = \Drupal::service('config.manager');
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  foreach ($files as $file) {
+    $filename = $config_path . '/' . $file;
+    $file = file_get_contents($filename);
+    if (!$file) {
+      continue;
+    }
+    $value = Yaml::decode($file);
+    $type = $config_manager->getEntityTypeIdByName(basename($filename));
+
+    $definition = $entity_type_manager->getDefinition($type);
+    $id_key = $definition->getKey('id');
+
+    $id = $value[$id_key];
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityStorage $entity_storage */
+    $entity_storage = $entity_type_manager->getStorage($type);
+    $entity = $entity_storage->load($id);
+    if ($entity) {
+      $entity = $entity_storage->updateFromStorageRecord($entity, $value);
+      $entity->save();
+    }
+    else {
+      $entity = $entity_storage->createFromStorageRecord($value);
+      $entity->save();
+    }
+  }
+}
+
+/**
+ * Save translation configs.
+ *
+ * @param string $module
+ *   The module name.
+ * @param array $files
+ *   The array of file names to be changed.
+ * @param string $lang_code
+ *   The lang code.
+ * @param string $path_name
+ *   The path name under the config directory.
+ */
+function _kamihaya_cms_common_save_translation_configs(array $files, $lang_code) {
+  $config_manager = \Drupal::service('locale.config_manager');
+  $names = [];
+  foreach ($files as $file) {
+    $names[] = basename($file);
+  }
+  $config_manager->updateConfigTranslations($names, [$lang_code]);
+}

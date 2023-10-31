@@ -17,12 +17,18 @@ bundle: divider
 mode: default
 content:
   field_divider_color:
-    type: color_field_widget_default
+    type: color_field_widget_spectrum
     weight: 2
     region: content
     settings:
-      placeholder_color: ''
-      placeholder_opacity: ''
+      show_input: ''
+      show_palette: ''
+      palette: ''
+      show_palette_only: ''
+      show_buttons: ''
+      cancel_text: Cancel
+      choose_text: Choose
+      allow_empty: ''
     third_party_settings: {  }
   field_divider_image:
     type: image_image

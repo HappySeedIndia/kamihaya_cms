@@ -1,0 +1,147 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_drawer_body
+    - paragraphs.paragraphs_type.divider
+    - paragraphs.paragraphs_type.drawer
+    - paragraphs.paragraphs_type.embed_tag
+    - paragraphs.paragraphs_type.featured_content
+    - paragraphs.paragraphs_type.file_download
+    - paragraphs.paragraphs_type.h2_title
+    - paragraphs.paragraphs_type.h3_title
+    - paragraphs.paragraphs_type.h4_title
+    - paragraphs.paragraphs_type.image
+    - paragraphs.paragraphs_type.image_link
+    - paragraphs.paragraphs_type.layout_paragraph
+    - paragraphs.paragraphs_type.left_image_text
+    - paragraphs.paragraphs_type.link_button
+    - paragraphs.paragraphs_type.right_image_text
+    - paragraphs.paragraphs_type.two_col_table
+    - paragraphs.paragraphs_type.video
+    - paragraphs.paragraphs_type.wysiwyg_editor
+  module:
+    - entity_reference_revisions
+id: paragraph.drawer.field_drawer_body
+field_name: field_drawer_body
+entity_type: paragraph
+bundle: drawer
+label: Body
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      layout_paragraph: layout_paragraph
+      h2_title: h2_title
+      h3_title: h3_title
+      h4_title: h4_title
+      wysiwyg_editor: wysiwyg_editor
+      image: image
+      video: video
+      image_link: image_link
+      link_button: link_button
+      file_download: file_download
+      left_image_text: left_image_text
+      right_image_text: right_image_text
+      divider: divider
+      featured_content: featured_content
+      two_col_table: two_col_table
+      embed_tag: embed_tag
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: -63
+        enabled: false
+      accordion_item:
+        weight: -62
+        enabled: false
+      career:
+        weight: -61
+        enabled: false
+      divider:
+        weight: -44
+        enabled: true
+      drawer:
+        weight: -60
+        enabled: false
+      educational_background:
+        weight: -59
+        enabled: false
+      embed_tag:
+        weight: -41
+        enabled: true
+      english_skill:
+        weight: -58
+        enabled: false
+      featured_content:
+        weight: -43
+        enabled: true
+      file_download:
+        weight: -47
+        enabled: true
+      groups:
+        weight: -57
+        enabled: false
+      h2_title:
+        weight: -55
+        enabled: true
+      h3_title:
+        weight: -54
+        enabled: true
+      h4_title:
+        weight: -53
+        enabled: true
+      image:
+        weight: -51
+        enabled: true
+      image_link:
+        weight: -49
+        enabled: true
+      layout_paragraph:
+        weight: -56
+        enabled: true
+      left_image_text:
+        weight: -46
+        enabled: true
+      license:
+        weight: -35
+        enabled: false
+      link_button:
+        weight: -48
+        enabled: true
+      modal_dialog:
+        weight: -39
+        enabled: false
+      other_language:
+        weight: -36
+        enabled: false
+      other_notice:
+        weight: -37
+        enabled: false
+      q_a:
+        weight: -38
+        enabled: false
+      right_image_text:
+        weight: -45
+        enabled: true
+      skill:
+        weight: -34
+        enabled: false
+      two_col_table:
+        weight: -42
+        enabled: true
+      two_col_table_row:
+        weight: -40
+        enabled: false
+      video:
+        weight: -50
+        enabled: true
+      wysiwyg_editor:
+        weight: -52
+        enabled: true
+field_type: entity_reference_revisions

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.embed_tag.field_embed_tag
+    - paragraphs.paragraphs_type.embed_tag
+  module:
+    - kamihaya_cms_paragraph_type
+id: paragraph.embed_tag.default
+targetEntityType: paragraph
+bundle: embed_tag
+mode: default
+content:
+  field_embed_tag:
+    type: htmlembed_formatter
+    label: hidden
+    settings:
+      allowed_tags: 'form script'
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

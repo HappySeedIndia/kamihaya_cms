@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.two_col_table_row.field_row_data
+    - field.field.paragraph.two_col_table_row.field_row_label
+    - paragraphs.paragraphs_type.two_col_table_row
+  module:
+    - layout_paragraphs
+id: paragraph.two_col_table_row.default
+targetEntityType: paragraph
+bundle: two_col_table_row
+mode: default
+content:
+  field_row_data:
+    type: layout_paragraphs
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_row_label:
+    type: basic_string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

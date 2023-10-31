@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.contents_list
+  module:
+    - views
+name: contents_list
+label: 'Contents list'
+display: modal
+display_configuration:
+  width: ''
+  height: ''
+  link_text: 'Select entities'
+  auto_open: false
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: single
+widget_selector_configuration: {  }
+widgets:
+  f5ff84a9-2927-43ea-afd3-199ab732f62f:
+    id: view
+    uuid: f5ff84a9-2927-43ea-afd3-199ab732f62f
+    label: view
+    weight: 1
+    settings:
+      submit_text: 'Select entities'
+      auto_select: false
+      view: contents_list
+      view_display: entity_browser_1

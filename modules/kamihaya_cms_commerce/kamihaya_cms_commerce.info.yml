@@ -26,10 +26,13 @@ dependencies:
   - 'inline_entity_form:inline_entity_form'
   - 'layout_paragraphs:layout_paragraphs'
   - 'metatag:metatag'
+  - 'pathauto:pathauto:'
   - 'profile:profile'
   - 'paragraphs:paragraphs'
   - 'scheduler:scheduler'
+  - 'shs:shs'
   - 'state_machine:state_machine'
+  - 'kamihaya_cms_common:kamihaya_cms_common'
   - 'kamihaya_cms_media_type:kamihaya_cms_media_type'
   - 'kamihaya_cms_paragraph_type:kamihaya_cms_paragraph_type'
 libraries:

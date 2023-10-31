@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_longitude
+    - paragraphs.paragraphs_type.google_map
+id: paragraph.google_map.field_longitude
+field_name: field_longitude
+entity_type: paragraph
+bundle: google_map
+label: Longitude
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: -180
+  max: 180
+  prefix: ''
+  suffix: ''
+field_type: integer
