@@ -8,7 +8,6 @@ dependencies:
     - paragraphs.paragraphs_type.embed_tag
     - paragraphs.paragraphs_type.featured_content
     - paragraphs.paragraphs_type.file_download
-    - paragraphs.paragraphs_type.google_map
     - paragraphs.paragraphs_type.h2_title
     - paragraphs.paragraphs_type.h3_title
     - paragraphs.paragraphs_type.h4_title
@@ -52,7 +51,6 @@ settings:
       divider: divider
       accordion: accordion
       featured_content: featured_content
-      google_map: google_map
       two_col_table: two_col_table
       video: video
       embed_tag: embed_tag
@@ -90,7 +88,7 @@ settings:
         enabled: true
       google_map:
         weight: -37
-        enabled: true
+        enabled: false
       groups:
         weight: -59
         enabled: false

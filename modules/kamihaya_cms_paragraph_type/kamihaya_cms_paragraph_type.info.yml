@@ -14,6 +14,5 @@ dependencies:
   - string_field_formatter:string_field_formatter
   - kamihaya_cms_common:kamihaya_cms_common
   - kamihaya_cms_content_type:kamihaya_cms_content_type
-  - kamihaya_cms_google_map_paragraph:kamihaya_cms_google_map_paragraph
 
 project: 'kamihaya'
