@@ -41,6 +41,7 @@ function kamihaya_cms_commerce_update_10001() {
  * Update configs.
  */
 function kamihaya_cms_commerce_update_10002() {
+  \Drupal::service('module_installer')->install(['shs']);
   _kamihaya_cms_common_change_configs('kamihaya_cms_commerce', [
     'field.storage.taxonomy_term.field_thumbnail_image.yml',
     'field.storage.taxonomy_term.field_path_name.yml',
