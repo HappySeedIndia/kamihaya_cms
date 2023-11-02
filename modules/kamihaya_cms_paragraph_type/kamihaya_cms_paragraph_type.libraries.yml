@@ -13,7 +13,7 @@ swiper-library:
     assets/libraries/swiper/swiper-bundle.min.js: {}
     assets/js/slider.js: {}
 
-heading-css:
-  css:
-    base:
-      assets/css/headings.css: {}
+# heading-css:
+#   css:
+#     base:
+#       assets/css/headings.css: {}

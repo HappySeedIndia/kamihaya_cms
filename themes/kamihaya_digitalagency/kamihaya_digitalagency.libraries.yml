@@ -11,6 +11,7 @@ global-styling:
         weight: -10
       css/components/common.css:
         weight: -10
+      css/components/headings.css: {}
   js:
     js/menu.js: {}
 
@@ -46,4 +47,9 @@ mdb:
     theme:
       css/mdb/mdb.min.css: {}
       css/mdb/style.css: {}
+      https://use.fontawesome.com/releases/v5.11.2/css/all.css: { type: external, minified: true }
+
+font-awesome:
+  css:
+    theme:
       https://use.fontawesome.com/releases/v5.11.2/css/all.css: { type: external, minified: true }

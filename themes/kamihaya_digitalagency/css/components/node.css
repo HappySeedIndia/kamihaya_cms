@@ -113,6 +113,10 @@
   font-size: 14px;
 }
 
+.list-info {
+  margin-bottom: 15px;
+}
+
 @media(min-width: 768px) {
   .node-view-list {
     display: flex;
@@ -135,9 +139,6 @@
 @media (max-width: 767px) {
   .node-view-list .list-date {
     margin-bottom: 10px;
-  }
-  .list-info {
-    margin-bottom: 15px;
   }
 }
 

@@ -38,49 +38,21 @@
  * @ingroup themeable
  */
 #}
-{{ attach_library('kamihaya_cms_paragraph_type/animate-library') }}
-{{ attach_library('kamihaya_cms_paragraph_type/swiper-library') }}
-
+{# {{  attach_library('kamihaya_cms_paragraph_type/heading-css') }} #}
 {%
   set classes = [
     'paragraph',
     'paragraph--type--' ~ paragraph.bundle|clean_class,
     view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
     not paragraph.isPublished() ? 'paragraph--unpublished',
-    'hero',
+    'title-style_seven',
   ]
 %}
+
 {% block paragraph %}
-  <div{{ attributes.addClass(classes).setAttribute('id', 'hero') }}>
-    <div class="swiper">
-      <template class="swiper-config">
-        {
-          "loop": true,
-          "speed" : 600,
-          "autoplay": {
-            "delay": 5000
-          },
-          "slidesPerView": "auto",
-          "pagination": {
-            "el": ".swiper-pagination",
-            "type": "bullets",
-            "clickable": true
-          },
-          "navigation": {
-            "nextEl": ".swiper-button-next",
-            "prevEl": ".swiper-button-prev",
-            "clickable": true
-          }
-        }
-      </template>
-      <div class="swiper-wrapper">
-        {% block content %}
-          {{ content }}
-        {% endblock %}
-      </div>
-      <div class="swiper-pagination"></div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
-    </div>
+  <div{{ attributes.addClass(classes) }}>
+    {% block content %}
+      {{ content }}
+    {% endblock %}
   </div>
 {% endblock paragraph %}

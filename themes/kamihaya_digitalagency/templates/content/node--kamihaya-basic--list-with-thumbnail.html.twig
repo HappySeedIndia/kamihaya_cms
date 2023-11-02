@@ -89,14 +89,19 @@
 
   <div class="list-details">
     <div class="list-info">
+      {# Category #}
+      {% if content.field_category|render %}
       <div class="list-category">
         {{ content.field_category }}
       </div>
+      {% endif %}
 
       {# Date #}
+      {% if content.field_publish_date|render %}
       <div class="list-date">
         {{ content.field_publish_date }}
       </div>
+      {% endif %}
     </div>
 
     <div class="list-link">
