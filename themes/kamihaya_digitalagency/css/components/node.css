@@ -69,12 +69,15 @@
   margin: 10px auto;
 }
 
-.field--name-field-content .content-information .field--name-field-category {
-  background-color: #535353;
-  color: #ffffff;
-  padding: 2px 3px;
-  padding: 0px 10px;
+.field--name-field-content .content-information .content-category {
+  padding: 3px 5px;
+  border: 1px solid #aaa;
   border-radius: 5px;
+  text-align: center;
+  min-width: 75px;
+  display: inline-block;
+  margin: 0 0 3px 2px;
+  font-size: 12px;
 }
 
 .field--name-field-content .title {

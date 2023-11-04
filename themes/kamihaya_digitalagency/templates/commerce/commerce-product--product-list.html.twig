@@ -49,9 +49,12 @@
 					<a href="{{ product_url }}">{{ product.title }}</a>
 				{% endif %}
 			</div>
-			<div class="list-category">
-				{{ product.field_category }}
-			</div>
+			{% if product.field_category|render %}
+				<div class="list-category">
+					{{ product.field_category }}
+				</div>
+			{% endif %}
+
 		</div>
 		<div class="list-desc">
 			{{ product.field_description }}

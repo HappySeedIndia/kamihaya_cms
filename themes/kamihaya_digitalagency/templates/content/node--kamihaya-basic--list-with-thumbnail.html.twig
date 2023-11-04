@@ -89,10 +89,11 @@
 
   <div class="list-details">
     <div class="list-info">
-      <div class="list-category">
-        {{ content.field_category }}
-      </div>
-
+      {% if content.field_category|render %}
+        <div class="list-category">
+          {{ content.field_category }}
+        </div>
+      {% endif %}
       {# Date #}
       <div class="list-date">
         {{ content.field_publish_date }}
@@ -104,7 +105,7 @@
         <a href="{{ url }}">{{ label }}</a>
       {% endif %}
     </div>
-	
+
     <div class="list-desc">
       {{ content.field_description }}
     </div>
