@@ -20,6 +20,7 @@ settings:
   handler_settings:
     target_bundles:
       kamihaya_basic: kamihaya_basic
+      kamihaya_news: kamihaya_news
     sort:
       field: _none
       direction: ASC
