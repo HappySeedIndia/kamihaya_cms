@@ -75,29 +75,14 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'node-list-thumbnail'
+    'node-info'
   ]
 %}
 {{ attach_library('bootstrap5/node') }}
 <div{{attributes.addClass(classes)}}>
 
-  <div class="list-image">
-    {% if content.field_thumbnail_image|render %}
-      {{ content.field_thumbnail_image }}
-    {% else %}
-
-    {% endif %}
-  </div>
-
-  <div class="list-details">
-    {% if content.field_category|render or content.field_publish_date|render %}
+  {% if content.field_category|render or content.field_publish_date|render %}
     <div class="list-info">
-      {# Category #}
-      {% if content.field_category|render %}
-      <div class="list-category">
-        {{ content.field_category }}
-      </div>
-      {% endif %}
 
       {# Date #}
       {% if content.field_publish_date|render %}
@@ -105,31 +90,20 @@
         {{ content.field_publish_date }}
       </div>
       {% endif %}
-    </div>
-    {% endif %}
 
-    <div class="list-link">
-      {% if label %}
-        {% if content.field_direct_link_url|render %}
-          {% set url = content.field_direct_link_url.0['#url'] %}
-        {% elseif content.field_direct_link_file|render %}
-          {% set url = content.field_direct_link_file.0 %}
-        {% endif %}
-        {% if url.external == true %}
-          <a href="{{ url }}" target=" _blank">
-        {% else %}
-          <a href="{{ url }}">
-        {% endif %}
-        {{ label }}</a>
+      {# Category #}
+      {% if content.field_category|render %}
+      <div class="list-category">
+        {{ content.field_category }}
+      </div>
       {% endif %}
     </div>
-	
-    {# Description #}
-    {% if content.field_description|render %}
-    <div class="list-desc">
-      {{ content.field_description }}
-    </div>
-    {% endif %}
-  </div>
-</div>
+  {% endif %}
 
+  {# Node content #}
+  {% if content.field_body|render %}
+  <div class="node-contents">
+    {{ content.field_body }}
+  </div>
+  {% endif %}
+</div>

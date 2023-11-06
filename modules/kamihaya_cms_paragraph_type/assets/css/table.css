@@ -1,0 +1,4 @@
+/* Table */
+.paragraph--type--two-col-table .table th {
+  min-width: 150px;
+}

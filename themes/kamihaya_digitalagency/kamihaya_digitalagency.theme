@@ -185,9 +185,9 @@ function kamihaya_digitalagency_preprocess_menu(array &$variables) {
 /**
  * Implements hook_preprocess_paragraph().
  */
-function kamihaya_digitalagency_preprocess_paragraph(array &$variables) {
-  $variables['#attached']['library'][] = 'kamihaya_digitalagency/paragraph';
-}
+// function kamihaya_digitalagency_preprocess_paragraph(array &$variables) {
+//   $variables['#attached']['library'][] = 'kamihaya_digitalagency/paragraph';
+// }
 
  /**
  * Implements hook_preprocess_commerce_product().

@@ -87,15 +87,6 @@
   max-width: 8rem;
 }
 
-h1 {
-  background-color: #be123f;
-  color: #ffffff;
-  border: 3px double #ffffff;
-  text-align: center;
-  padding: 10px 0;
-  margin-bottom: 2rem;
-}
-
 .view-job-list .views-exposed-form .form--inline {
   display: flex;
   align-items: flex-start;
@@ -159,15 +150,18 @@ h1 {
   }
 }
 /* News */
-.view-news-list .views-row {
+.view-news-list .views-row,
+.view-contents-list-page .views-row {
   padding: 15px 0;
   border-bottom: 1px dotted #aaa;
 }
-.view-news-list .views-row:last-child {
+.view-news-list .views-row:last-child,
+.view-contents-list-page .views-row:last-child {
   border-bottom: none;
 }
 @media (max-width: 767px) {
-  .view-news-list .views-row {
+  .view-news-list .views-row,
+  .view-contents-list-page .views-row {
     padding: 20px 0;
   }
 }
