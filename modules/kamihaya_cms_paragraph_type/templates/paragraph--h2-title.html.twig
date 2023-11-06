@@ -38,7 +38,7 @@
  * @ingroup themeable
  */
 #}
-{# {{  attach_library('kamihaya_cms_paragraph_type/heading-css') }} #}
+{{  attach_library('kamihaya_cms_paragraph_type/heading-css') }}
 {%
   set classes = [
     'paragraph',
@@ -51,9 +51,7 @@
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
     {% block content %}
-      <div class="h2-middle-double-border">
       {{ content }}
-      </div>
     {% endblock %}
   </div>
 {% endblock paragraph %}

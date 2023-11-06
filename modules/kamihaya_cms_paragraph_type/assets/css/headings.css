@@ -263,15 +263,74 @@
 .title-style_seven h4:after,
 .title-style_seven h5:after,
 .title-style_seven h6:after,
-/* .title-style_seven h1:before,
+.title-style_seven h1:before,
 .title-style_seven h2:before,
 .title-style_seven h3:before,
 .title-style_seven h4:before,
 .title-style_seven h5:before,
-.title-style_seven h6:before  */
+.title-style_seven h6:before 
 {
   content: " ";
   display: block;
   border-bottom: 2px solid #ccc;
   background-color:#f8f8f8;
 }
+
+/* H2 Style */
+.paragraph--type--h2-title {
+  position: relative;
+}
+
+.paragraph--type--h2-title h2 {
+  margin-bottom: 20px;
+  position: relative;
+  display: block;
+}
+
+.paragraph--type--h2-title h2:after {
+  content: '';
+  display: block;
+  border-bottom: 5px double #777;
+  width: 30%;
+  padding-top: 10px;
+}
+
+/* H3 Style */
+.paragraph--type--h3-title {
+  position: relative;
+}
+
+.paragraph--type--h3-title h3 {
+  margin-bottom: 20px;
+  position: relative;
+  display: block;
+}
+
+.paragraph--type--h3-title h3:after {
+  content: '';
+  display: block;
+  border-bottom: 1px solid #777;
+  width: 30%;
+  padding-top: 10px;
+}
+
+/* H4 style */
+.paragraph--type--h4-title h4 {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+.paragraph--type--h4-title h4:before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #000;
+  margin-right: 10px;
+  vertical-align: middle;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+ }
