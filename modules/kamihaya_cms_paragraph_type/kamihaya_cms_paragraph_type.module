@@ -47,5 +47,8 @@ function kamihaya_cms_paragraph_type_theme() {
     'paragraph__two_col_table_row' => [
       'base hook' => 'paragraph',
     ],
+    'paragraph__image' => [
+      'base hook' => 'paragraph',
+    ],
   ];
 }
