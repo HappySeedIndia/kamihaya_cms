@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.kamihaya_block
+id: block_content.kamihaya_block
+target_entity_type_id: block_content
+target_bundle: kamihaya_block
+default_langcode: site_default
+language_alterable: false

@@ -72,3 +72,12 @@ function kamihaya_cms_commerce_update_10002() {
     'views.view.product_list.yml',
   ], 'ja');
 }
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_commerce_update_10003() {
+  _kamihaya_cms_common_change_configs('kamihaya_cms_commerce', [
+    'views.view.product_list.yml',
+  ], 'optional');
+}

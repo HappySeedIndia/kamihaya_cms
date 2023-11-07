@@ -1,0 +1,17 @@
+name: Kamihaya CMS Block type
+type: module
+core_version_requirement: ^9 || ^10
+package: Kamihaya
+description: 'Kamihaya block type for Kamihaya CMS.'
+
+dependencies:
+  - drupal/block_content
+  - drupal:entity_reference_revisions
+  - drupal:node
+  - layout_paragraphs:layout_paragraphs
+  - paragraphs:paragraphs
+  - kamihaya_cms_common:kamihaya_cms_common
+  - kamihaya_cms_media_type:kamihaya_cms_media_type
+  - kamihaya_cms_paragraph_type:kamihaya_cms_paragraph_type
+
+project: 'kamihaya'
