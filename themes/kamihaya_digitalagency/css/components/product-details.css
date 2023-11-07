@@ -1,0 +1,21 @@
+/* Product Details */
+
+.product-category ul {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #aaa;
+}
+
+.product-category ul li {
+  padding: 3px 5px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  text-align: center;
+  min-width: 100px;
+  display: inline-block;
+  margin: 0 0 5px 5px;
+  font-size: 12px;
+}

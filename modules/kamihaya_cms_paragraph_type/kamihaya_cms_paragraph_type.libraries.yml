@@ -27,3 +27,8 @@ image-css:
   css:
     base:
       assets/css/image.css: {}
+
+video-css:
+  css:
+    base:
+      assets/css/video.css: {}

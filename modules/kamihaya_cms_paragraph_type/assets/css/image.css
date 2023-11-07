@@ -1,4 +1,12 @@
 /* Image Paragrpah type */
 .paragraph--type--image {
   text-align: center;
+  margin-bottom: 20px;
+}
+@media (min-width: 992px) {
+  .paragraph--type--image img {
+    max-width: 80%;
+    height: auto;
+    margin: 0 auto;
+  }
 }

@@ -5,12 +5,10 @@ global-styling:
       css/components.css: {weight: 15}
       css/components/header.css: {weight: 16}
       css/components/footer.css: {weight: 16}
-      css/components/page.css:
-        weight: -10
-      css/components/field.css:
-        weight: -10
-      css/components/common.css:
-        weight: -10
+      css/components/page.css: {weight: -10}
+      css/components/field.css: {weight: -10}
+      css/components/common.css: {weight: -10}
+      css/components/layout.css: {}
   js:
     js/menu.js: {}
 
@@ -38,6 +36,11 @@ product:
   css:
     theme:
       css/components/product.css: {}
+
+product-details:
+  css:
+    theme:
+      css/components/product-details.css: {}
 
 mdb:
   js:

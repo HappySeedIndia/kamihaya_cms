@@ -1,0 +1,11 @@
+/* Video css */
+.video-tag {
+  margin-bottom: 20px;
+  width: 100%;
+  display: block;
+}
+.video-media video {
+  display: block;
+  width: 80%;
+  margin: 0 auto 20px;
+}
