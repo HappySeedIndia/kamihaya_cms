@@ -43,10 +43,22 @@
 {% block paragraph %}
 
   {# Heading Tag #}
-  {% set headingTag = content.field_title_tag.0|render %}
+  {% set titleTag = content.field_title_tag.0|render %}
+
+  {% if titleTag == '' %}
+    {% set headingTag = 'h2' %}
+  {% else %}
+    {% set headingTag = titleTag %}
+  {% endif %}
 
   {# Heading Style #}
-  {% set headingStyle = content.field_style.0|render %}
+  {% set titleStyle = content.field_style.0|render %}
+
+  {% if titleStyle == '' %}
+    {% set headingStyle = '' %}
+  {% else %}
+    {% set headingStyle = titleStyle %}
+  {% endif %}
 
   {# Title Color #}
   {% if content.field_color|render %}
@@ -56,7 +68,7 @@
   {% endif %}
 
   {# Heading Text #}
-  {% if (headingTag is not empty) and content.field_title_text|render %}
+  {% if headingTag|render and content.field_title_text|render %}
   <div class="title-{{ headingStyle }}">
     <{{ headingTag }} style="color: #{{ titleColor }};">
       {{ content.field_title_text.0 }}

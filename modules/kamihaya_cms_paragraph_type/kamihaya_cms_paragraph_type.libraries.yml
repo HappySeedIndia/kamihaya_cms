@@ -17,3 +17,13 @@ heading-css:
   css:
     base:
       assets/css/headings.css: {}
+
+table-css:
+  css:
+    base:
+      assets/css/table.css: {}
+  
+image-css:
+  css:
+    base:
+      assets/css/image.css: {}
