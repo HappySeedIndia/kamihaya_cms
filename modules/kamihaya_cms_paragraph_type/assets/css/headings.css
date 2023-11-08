@@ -54,6 +54,7 @@
 .title-style_two h6 {
   text-transform: capitalize;
   position: relative;
+  padding-bottom: 15px;
 }
 .title-style_two h1:before,
 .title-style_two h2:before,
@@ -124,7 +125,6 @@
 .title-style_four h5,
 .title-style_four h6 {
   text-align: center;
-  font-size: 22px;
   font-weight: 700;
   text-transform: uppercase;
   word-spacing: 1px; letter-spacing:2px;
@@ -157,7 +157,6 @@
 .title-style_five h5,
 .title-style_five h6 {
   text-align: center;
-  font-size:30px;
   font-weight:400;
   text-transform: uppercase;
   word-spacing: 1px; letter-spacing:2px;
@@ -224,12 +223,12 @@
 .title-style_six h4:after,
 .title-style_six h5:after,
 .title-style_six h6:after,
-/* .title-style_six h1:before,
+.title-style_six h1:before,
 .title-style_six h2:before,
 .title-style_six h3:before,
 .title-style_six h4:before,
 .title-style_six h5:before,
-.title-style_six h6:before  */
+.title-style_six h6:before 
 {
   content: " ";
   display: block;

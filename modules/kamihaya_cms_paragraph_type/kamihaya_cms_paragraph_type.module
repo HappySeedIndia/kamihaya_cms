@@ -53,5 +53,14 @@ function kamihaya_cms_paragraph_type_theme() {
     'paragraph__video' => [
       'base hook' => 'paragraph',
     ],
+    'paragraph__left_image_text' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__right_image_text' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__file_download' => [
+      'base hook' => 'paragraph',
+    ],
   ];
 }

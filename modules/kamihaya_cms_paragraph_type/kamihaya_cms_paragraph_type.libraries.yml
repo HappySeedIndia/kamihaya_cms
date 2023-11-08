@@ -32,3 +32,18 @@ video-css:
   css:
     base:
       assets/css/video.css: {}
+
+image-text-css:
+  css:
+    base:
+      assets/css/image-text.css: {}
+
+image-link-css:
+  css:
+    base:
+      assets/css/image-link.css: {}
+
+file-download-css:
+  css:
+    base:
+      assets/css/file-download.css: {}

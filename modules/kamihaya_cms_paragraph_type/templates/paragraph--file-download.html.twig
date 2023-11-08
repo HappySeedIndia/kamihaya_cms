@@ -38,9 +38,7 @@
  * @ingroup themeable
  */
 #}
-
-{{  attach_library('kamihaya_cms_paragraph_type/heading-css') }}
-
+{{  attach_library('kamihaya_cms_paragraph_type/file-download-css') }}
 {%
   set classes = [
     'paragraph',
@@ -52,38 +50,8 @@
 
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
-    {# Heading Tag #}
-    {% set titleTag = content.field_title_tag.0|render %}
-
-    {% if titleTag == '' %}
-      {% set headingTag = 'h2' %}
-    {% else %}
-      {% set headingTag = titleTag %}
-    {% endif %}
-
-    {# Heading Style #}
-    {% set titleStyle = content.field_style.0|render %}
-
-    {% if titleStyle == '' %}
-      {% set headingStyle = '' %}
-    {% else %}
-      {% set headingStyle = titleStyle %}
-    {% endif %}
-
-    {# Title Color #}
-    {% if content.field_color|render %}
-      {% set titleColor = content.field_color.0|render|striptags|trim %}
-    {% else %}
-      {% set titleColor = '000000' %}
-    {% endif %}
-
-    {# Heading Text #}
-    {% if headingTag|render and content.field_title_text|render %}
-    <div class="title-{{ headingStyle }}">
-      <{{ headingTag }} style="color: #{{ titleColor }};">
-        {{ content.field_title_text.0 }}
-      </{{ headingTag }}>
-    </div>
-    {% endif %}
+    {% block content %}
+      {{ content }}
+    {% endblock %}
   </div>
 {% endblock paragraph %}

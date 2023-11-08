@@ -1,71 +1,10 @@
 .paragraph {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  padding: 15px 0;
   clear: both;
 }
 
-.paragraph--type--image-link {
-  display: flex;
-  justify-content: center;
-}
-
-.paragraph--type--image-link a {
-  text-decoration: none;
-}
-
-.paragraph--type--image-link .image-link-text {
-  padding: 10px;
-  display: flex;
-}
-
-.image-text-halign-left {
-  justify-content: flex-start;
-}
-
-.image-text-halign-center {
-  justify-content: center;
-}
-
-.image-text-halign-right {
-  justify-content: flex-start;
-}
-
-.image-text-halign-justify {
-  justify-content: stretch;
-}
-
-.image-text-valign-top {
-  align-items: flex-start;
-}
-
-.image-text-valign-center {
-  align-items: center;
-}
-
-.image-text-valign-bottom {
-  align-items: flex-end;
-}
-
-.paragraph--type--left-image-text:after,
-.paragraph--type--right-image-text:after {
-  clear: both;
-}
-
-.paragraph--type--left-image-text .field--name-field-image {
-  float: left;
-  margin: 0 auto;
-  padding: 0 15px 15px 0;
-}
-
-.paragraph--type--right-image-text .field--name-field-image {
-  float: right;
-  margin: 0 auto;
-  padding: 0 0 15px 15px;
-}
-
-.paragraph--type--video {
-  display: flex;
-  justify-content: center;
+.link-button {
+  text-align: center;
 }
 
 .paragraph--type--google-map #map {
@@ -80,28 +19,4 @@
 
 .paragraph--type--two-col-table table > tbody > tr > td > .paragraph {
   margin: 0;
-}
-
-@media (max-width: 1199px) {
-
-}
-
-@media (max-width: 991px) {
-
-}
-
-@media (max-width: 767px) {
-  .paragraph--type--left-image-text .field--name-field-image {
-    float: none;
-    padding-right: 0;
-  }
-
-  .paragraph--type--right-image-text .field--name-field-image {
-    float: none;
-    padding-left: 0;
-  }
-}
-
-@media (max-width: 575px) {
-
 }

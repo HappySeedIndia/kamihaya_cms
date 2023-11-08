@@ -1,3 +1,10 @@
 main {
   margin-bottom: 3rem;;
 }
+
+.page-breadcrumbs {
+  padding: 15px 0;
+}
+.page-breadcrumbs .breadcrumb {
+  margin: 0;
+}

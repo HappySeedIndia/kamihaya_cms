@@ -1,0 +1,54 @@
+/* File Download */
+.file-download {
+  text-align: center;
+}
+.btn-list {
+  list-style-type: none;
+  padding-left: 0;
+  text-align: center;
+}
+.btn-list li {
+  margin-bottom: 15px;
+}
+
+@media(min-width: 768px) {
+  .btn-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .btn-list li {
+    margin-right: 15px;
+  }
+}
+
+.btn.btn-file-download {
+  background-color: #999;
+  border: none;
+  color: white;
+  padding: 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn.btn-file-download:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+.btn.btn-file-download span.file {
+  padding: 11px 20px;
+}
+
+.btn.btn-file-download .file a {
+  text-decoration: none;
+  color: #fff;
+}
+.btn.btn-file-download .file a:hover {
+  color: #fff;
+}
+.btn.btn-file-download  span.btn-icon {
+  border-left: 1px solid #ccc;
+  height: 100%;
+  padding: 10px 15px;
+}
