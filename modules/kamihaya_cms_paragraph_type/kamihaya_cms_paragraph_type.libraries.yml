@@ -17,3 +17,9 @@ heading-css:
   css:
     base:
       assets/css/headings.css: {}
+
+lpb-component-list:
+  header: true
+  css:
+    base:
+      assets/lpb_component_list.css: {}

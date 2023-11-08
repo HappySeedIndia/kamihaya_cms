@@ -43,3 +43,10 @@ function kamihaya_cms_paragraph_type_theme() {
     ],
   ];
 }
+
+/**
+ * Implements hook_preprocess_layout_paragraphs_builder_formatter().
+ */
+function kamihaya_cms_paragraph_type_preprocess_layout_paragraphs_builder_formatter(array &$variables) {
+dpm($variables);
+}
