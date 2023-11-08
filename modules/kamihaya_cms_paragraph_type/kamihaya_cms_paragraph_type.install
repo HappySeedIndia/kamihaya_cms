@@ -110,3 +110,15 @@ function kamihaya_cms_paragraph_type_update_10001() {
   ], 'ja');
 
 }
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_paragraph_type_update_10002() {
+  \Drupal::service('module_installer')->install(['entity_browser']);
+  _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', [
+    'core.entity_form_display.paragraph.divider.default.yml',
+    'core.entity_form_display.paragraph.image_link.default.yml',
+    'core.entity_form_display.paragraph.link_button.default.yml',
+  ], 'install');
+}
