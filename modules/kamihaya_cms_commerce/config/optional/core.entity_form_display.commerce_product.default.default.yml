@@ -1,4 +1,3 @@
-uuid: dc7fd1a3-efc8-471a-b856-49d709c133f8
 langcode: en
 status: true
 dependencies:
@@ -22,8 +21,6 @@ third_party_settings:
     id: layout_onecol
     settings:
       label: ''
-_core:
-  default_config_hash: bVqhDE0CBvUi4RPHqKu4sBhUOUwOTgcHVhn5PkfngLU
 id: commerce_product.default.default
 targetEntityType: commerce_product
 bundle: default
