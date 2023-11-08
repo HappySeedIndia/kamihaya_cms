@@ -75,7 +75,7 @@ function kamihaya_cms_update_10002() {
 /**
  * Install custom modules.
  */
-function kamihaya_cms_update_10002() {
+function kamihaya_cms_update_10003() {
   $modules = [];
   if (!\Drupal::moduleHandler()->moduleExists('kamihaya_cms_block_type')) {
     $modules[] = 'kamihaya_cms_block_type';
