@@ -52,7 +52,7 @@
       {% if content.field_open_button_label|render %}
         {% set open_button_label = content.field_open_button_label|render|striptags|trim %}
         <p>
-          <button class="btn btn-primary" type="button" data-mdb-toggle="modal" data-mdb-target="#exampleModal">
+          <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
             {{ content.field_open_button_label.0 }}
           </button>&nbsp;
         </p>
@@ -76,7 +76,7 @@
                 {% endif %}
                 {% if content.field_close_button_label|render %}
                   {% set close_button_label = content.field_close_button_label.0 %}
-                  <button class="btn btn-tertiary" type="button" data-mdb-dismiss="modal">{{ content.field_close_button_label.0 }}</button>
+                  <button class="btn btn-tertiary" type="button" data-bs-dismiss="modal">{{ content.field_close_button_label.0 }}</button>
                 {% endif %}
               </div>
             </div>

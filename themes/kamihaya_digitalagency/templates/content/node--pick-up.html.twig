@@ -80,18 +80,26 @@
 {{ attach_library('bootstrap5/node') }}
 <div{{attributes.addClass(classes)}}>
 	<a href="{{ url }}">
-    {% if content.field_thumbnail_image|render %}
-  	  {{ content.field_thumbnail_image }}
-  {% else %}
+		{% if content.field_thumbnail_image|render %}
+			{{ content.field_thumbnail_image }}
+			{% else %}
 
-  {% endif %}</a>
-  <div class="content-information">
-    {{ content.field_publish_date }}
-    {{ content.field_category }}
-  </div>
-  {% if label %}
-    <h4>
-	    <a class="title" href="{{ url }}">{{ label }}</a>
-    </h4>
-  {% endif %}
+		{% endif %}
+	</a>
+	<div class="content-information">
+		<div class="content-date">
+			{{ content.field_publish_date }}
+		</div>
+    {% if content.field_category|render %}
+      <div class="content-category">
+        {{ content.field_category }}
+      </div>
+    {% endif %}
+	</div>
+	{% if label %}
+		<h4>
+			<a class="title" href="{{ url }}">{{ label }}</a>
+		</h4>
+	{% endif %}
 </div>
+

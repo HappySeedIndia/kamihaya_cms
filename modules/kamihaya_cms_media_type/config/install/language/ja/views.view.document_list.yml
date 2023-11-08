@@ -8,3 +8,16 @@ display:
           tags:
             first: '« 最初へ'
             last: '最後へ »'
+          expose:
+            items_per_page_options_all_label: '- 全て -'
+      exposed_form:
+        options:
+          submit_button: 絞り込み
+      arguments: {  }
+      filters:
+        field_document_type_target_id:
+          expose:
+            label: ドキュメント種別
+        combine:
+          expose:
+            label: キーワード

@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.kamihaya_block
+    - field.field.block_content.kamihaya_block.field_body
+  module:
+    - layout_paragraphs
+id: block_content.kamihaya_block.default
+targetEntityType: block_content
+bundle: kamihaya_block
+mode: default
+content:
+  field_body:
+    type: layout_paragraphs
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  langcode: true
