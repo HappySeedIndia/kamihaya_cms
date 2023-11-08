@@ -1,0 +1,42 @@
+/* Image Link */
+.paragraph--type--image-link {
+  display: flex;
+  justify-content: center;
+}
+
+.paragraph--type--image-link a {
+  text-decoration: none;
+}
+
+.paragraph--type--image-link .image-link-text {
+  padding: 10px;
+  display: flex;
+}
+
+.image-text-halign-left {
+  justify-content: flex-start;
+}
+
+.image-text-halign-center {
+  justify-content: center;
+}
+
+.image-text-halign-right {
+  justify-content: flex-start;
+}
+
+.image-text-halign-justify {
+  justify-content: stretch;
+}
+
+.image-text-valign-top {
+  align-items: flex-start;
+}
+
+.image-text-valign-center {
+  align-items: center;
+}
+
+.image-text-valign-bottom {
+  align-items: flex-end;
+}

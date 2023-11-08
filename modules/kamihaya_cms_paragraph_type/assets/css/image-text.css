@@ -1,0 +1,30 @@
+/* Image text */
+
+.paragraph--type--left-image-text:after,
+.paragraph--type--right-image-text:after {
+  clear: both;
+}
+
+.paragraph--type--left-image-text img {
+  float: left;
+  margin: 0 auto;
+  padding: 0 15px 15px 0;
+}
+
+.paragraph--type--right-image-text img {
+  float: right;
+  margin: 0 auto;
+  padding: 0 0 15px 15px;
+}
+
+@media (max-width: 767px) {
+  .paragraph--type--left-image-text img {
+    float: none;
+    padding-right: 0;
+  }
+
+  .paragraph--type--right-image-text img {
+    float: none;
+    padding-left: 0;
+  }
+}
