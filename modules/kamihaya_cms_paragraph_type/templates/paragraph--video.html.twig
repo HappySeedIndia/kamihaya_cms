@@ -52,19 +52,20 @@
   <div{{ attributes.addClass(classes) }}>
     {% block content %}
 
-      {# Field Tag #}
-      {% if content.field_video_tag|render %}
-      <div class="video-tag">
-        {{ content.field_video_tag }}
-      </div>
-      {% endif %}
-
       {# Video #}
       {% if content.field_video_media|render %}
       <div class="video-media">
         {{ content.field_video_media }}
       </div>
       {% endif %}
+
+       {# Field Tag #}
+      {% if content.field_video_tag|render %}
+      <div class="video-tag">
+        {{ content.field_video_tag }}
+      </div>
+      {% endif %}
+
     {% endblock %}
   </div>
 {% endblock paragraph %}
