@@ -35,18 +35,20 @@ function kamihaya_cms_paragraph_type_theme() {
     'paragraph__headings' => [
       'base hook' => 'paragraph',
     ],
+    'paragraph__h2_title' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__h3_title' => [
+      'base hook' => 'paragraph',
+    ],
     'paragraph__two_col_table' => [
       'base hook' => 'paragraph',
     ],
     'paragraph__two_col_table_row' => [
       'base hook' => 'paragraph',
     ],
+    'paragraph__image' => [
+      'base hook' => 'paragraph',
+    ],
   ];
-}
-
-/**
- * Implements hook_preprocess_layout_paragraphs_builder_formatter().
- */
-function kamihaya_cms_paragraph_type_preprocess_layout_paragraphs_builder_formatter(array &$variables) {
-dpm($variables);
 }

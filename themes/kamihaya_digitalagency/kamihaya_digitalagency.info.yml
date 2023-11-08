@@ -17,7 +17,7 @@ regions:
   footer_top_right: Footer Top Right
   footer_bottom: Footer Bottom
 libraries:
-  # - kamihaya_digitalagency/mdb
+  - kamihaya_digitalagency/font-awesome
   - kamihaya_digitalagency/global-styling
 ckeditor_stylesheets:
   - css/style.css
