@@ -18,20 +18,12 @@ heading-css:
     base:
       assets/css/headings.css: {}
 
-<<<<<<< HEAD
-lpb-component-list:
-  header: true
-  css:
-    base:
-      assets/lpb_component_list.css: {}
-=======
 table-css:
   css:
     base:
       assets/css/table.css: {}
-  
+
 image-css:
   css:
     base:
       assets/css/image.css: {}
->>>>>>> 8d5c534d0670167f72a97f74e902877f0b7d211d
