@@ -46,6 +46,11 @@
 {# Header #}
 {% include '@kamihaya_digitalagency/includes/header.html.twig' %}
 
+{# After Header #}
+{% if page.after_header %}
+  {{ page.after_header }}
+{% endif %}
+
 <main role="main">
   <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
@@ -84,9 +89,14 @@
 
 </main>
 
-{# Buttom Navigation #}
+{# Bottom Navigation #}
 {% if page.bottom_navigation %}
   {{ page.bottom_navigation }}
+{% endif %}
+
+{# Before Footer #}
+{% if page.before_footer %}
+  {{ page.before_footer }}
 {% endif %}
 
 {# Footer #}
