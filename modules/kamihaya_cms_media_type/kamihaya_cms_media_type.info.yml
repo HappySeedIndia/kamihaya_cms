@@ -10,6 +10,7 @@ dependencies:
   - drupal:taxonomy
   - drupal:views
   - imce:imce
+  - scheduler:scheduler
   - kamihaya_cms_common:kamihaya_cms_common
 
 project: 'kamihaya'
