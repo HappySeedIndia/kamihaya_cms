@@ -22,7 +22,7 @@ table-css:
   css:
     base:
       assets/css/table.css: {}
-  
+
 image-css:
   css:
     base:

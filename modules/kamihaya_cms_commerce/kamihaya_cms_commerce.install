@@ -72,3 +72,14 @@ function kamihaya_cms_commerce_update_10002() {
     'views.view.product_list.yml',
   ], 'ja');
 }
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_commerce_update_10003() {
+  _kamihaya_cms_common_change_configs('kamihaya_cms_commerce', [
+    'field.field.commerce_product.default.field_body.yml',
+    'core.entity_form_display.commerce_product.default.default.yml',
+    'views.view.product_list.yml',
+  ], 'optional');
+}

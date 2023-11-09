@@ -87,11 +87,13 @@
       {{ content.field_publish_date }}
     </div>
 
-    <div class="list-category">
-      {{ content.field_category }}
-    </div>
+    {% if content.field_category|render %}
+      <div class="list-category">
+        {{ content.field_category }}
+      </div>
+    {% endif %}
   </div>
-  
+
   <div class="list-link">
     {% if label %}
       {% if content.field_direct_link_url|render %}

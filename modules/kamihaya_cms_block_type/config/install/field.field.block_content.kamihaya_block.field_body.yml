@@ -2,11 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - commerce_product.commerce_product_type.default
-    - field.storage.commerce_product.field_body
+    - block_content.type.kamihaya_block
+    - field.storage.block_content.field_body
     - paragraphs.paragraphs_type.accordion
     - paragraphs.paragraphs_type.divider
-    - paragraphs.paragraphs_type.drawer
     - paragraphs.paragraphs_type.embed_tag
     - paragraphs.paragraphs_type.featured_content
     - paragraphs.paragraphs_type.file_download
@@ -19,7 +18,6 @@ dependencies:
     - paragraphs.paragraphs_type.layout_paragraph
     - paragraphs.paragraphs_type.left_image_text
     - paragraphs.paragraphs_type.link_button
-    - paragraphs.paragraphs_type.modal_dialog
     - paragraphs.paragraphs_type.right_image_text
     - paragraphs.paragraphs_type.slider
     - paragraphs.paragraphs_type.two_col_table
@@ -27,10 +25,10 @@ dependencies:
     - paragraphs.paragraphs_type.wysiwyg_editor
   module:
     - entity_reference_revisions
-id: commerce_product.default.field_body
+id: block_content.kamihaya_block.field_body
 field_name: field_body
-entity_type: commerce_product
-bundle: default
+entity_type: block_content
+bundle: kamihaya_block
 label: Body
 description: ''
 required: false
@@ -49,53 +47,54 @@ settings:
       wysiwyg_editor: wysiwyg_editor
       image: image
       video: video
+      left_image_text: left_image_text
+      right_image_text: right_image_text
       image_link: image_link
       link_button: link_button
       file_download: file_download
-      left_image_text: left_image_text
-      right_image_text: right_image_text
-      divider: divider
       slider: slider
       accordion: accordion
       embed_tag: embed_tag
-      modal_dialog: modal_dialog
       featured_content: featured_content
       two_col_table: two_col_table
-      drawer: drawer
+      divider: divider
     negate: 0
     target_bundles_drag_drop:
       accordion:
-        weight: -54
+        weight: -55
         enabled: true
       accordion_item:
-        weight: -47
+        weight: -39
         enabled: false
       career:
-        weight: -46
+        weight: -40
         enabled: false
       divider:
-        weight: -56
-        enabled: true
-      drawer:
-        weight: -49
-        enabled: true
-      educational_background:
-        weight: -45
-        enabled: false
-      embed_tag:
-        weight: -53
-        enabled: true
-      english_skill:
-        weight: -44
-        enabled: false
-      featured_content:
         weight: -51
         enabled: true
-      file_download:
-        weight: -59
+      drawer:
+        weight: -47
+        enabled: false
+      educational_background:
+        weight: -46
+        enabled: false
+      embed_tag:
+        weight: -54
         enabled: true
+      english_skill:
+        weight: -36
+        enabled: false
+      featured_content:
+        weight: -53
+        enabled: true
+      file_download:
+        weight: -57
+        enabled: true
+      google_map:
+        weight: -38
+        enabled: false
       groups:
-        weight: -43
+        weight: -42
         enabled: false
       h2_title:
         weight: -68
@@ -113,49 +112,49 @@ settings:
         weight: -63
         enabled: true
       image_link:
-        weight: -61
+        weight: -59
         enabled: true
       layout_paragraph:
         weight: -69
         enabled: true
       left_image_text:
-        weight: -58
+        weight: -61
         enabled: true
       license:
-        weight: -42
+        weight: -44
         enabled: false
       link_button:
-        weight: -60
+        weight: -58
         enabled: true
       modal_dialog:
-        weight: -52
-        enabled: true
+        weight: -49
+        enabled: false
       other_language:
-        weight: -41
+        weight: -45
         enabled: false
       other_notice:
-        weight: -40
+        weight: -43
         enabled: false
       q_a:
-        weight: -39
+        weight: -41
         enabled: false
       right_image_text:
-        weight: -57
+        weight: -60
         enabled: true
       skill:
-        weight: -38
+        weight: -37
         enabled: false
       slider:
-        weight: -55
+        weight: -56
         enabled: true
       slider_item:
-        weight: -36
+        weight: -48
         enabled: false
       two_col_table:
-        weight: -50
+        weight: -52
         enabled: true
       two_col_table_row:
-        weight: -48
+        weight: -50
         enabled: false
       video:
         weight: -62

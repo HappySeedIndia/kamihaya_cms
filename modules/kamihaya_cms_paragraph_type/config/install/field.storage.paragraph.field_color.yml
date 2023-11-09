@@ -1,18 +1,16 @@
-uuid: 2f648e1c-8eac-46d7-be0b-16e4b313d559
-langcode: en-gb
+langcode: en
 status: true
 dependencies:
   module:
+    - color_field
     - paragraphs
 id: paragraph.field_color
 field_name: field_color
 entity_type: paragraph
-type: string
+type: color_field_type
 settings:
-  max_length: 6
-  case_sensitive: false
-  is_ascii: false
-module: core
+  format: '#HEXHEX'
+module: color_field
 locked: false
 cardinality: 1
 translatable: true

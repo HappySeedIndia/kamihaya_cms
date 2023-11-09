@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.user.user.commerce_remote_id
     - field.field.user.user.field_address
     - field.field.user.user.field_appeal_point
     - field.field.user.user.field_birthday
@@ -96,7 +95,6 @@ content:
     weight: 6
     region: content
 hidden:
-  commerce_remote_id: true
   customer_profiles: true
   field_appeal_point: true
   field_career: true

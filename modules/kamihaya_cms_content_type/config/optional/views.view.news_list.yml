@@ -1156,7 +1156,7 @@ display:
         fields: false
       display_description: ''
       display_extenders: {  }
-      path: news_list
+      path: news
     cache_metadata:
       max-age: -1
       contexts:
@@ -1194,7 +1194,7 @@ display:
     display_options:
       display_description: ''
       display_extenders: {  }
-      path: news
+      path: news_list
     cache_metadata:
       max-age: -1
       contexts:

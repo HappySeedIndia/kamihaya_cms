@@ -1,22 +1,17 @@
-name: Kamihaya CMS Content type
+name: Kamihaya CMS Block type
 type: module
 core_version_requirement: ^9 || ^10
 package: Kamihaya
-description: 'Kamihaya content type for Kamihaya CMS.'
+description: 'Kamihaya block type for Kamihaya CMS.'
 
 dependencies:
+  - drupal:block_content
   - drupal:entity_reference_revisions
   - drupal:node
-  - drupal:taxonomy
-  - drupal:views
   - layout_paragraphs:layout_paragraphs
   - paragraphs:paragraphs
-  - pathauto:pathauto
-  - scheduler:scheduler
-  - shs:shs
   - kamihaya_cms_common:kamihaya_cms_common
   - kamihaya_cms_media_type:kamihaya_cms_media_type
   - kamihaya_cms_paragraph_type:kamihaya_cms_paragraph_type
-  - kamihaya_cms_media_type:kamihaya_cms_media_type
 
 project: 'kamihaya'

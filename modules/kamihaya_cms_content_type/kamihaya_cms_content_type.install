@@ -65,3 +65,12 @@ function kamihaya_cms_content_type_update_10001() {
   ], 'ja');
 
 }
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_content_type_update_10002() {
+  _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', [
+    'views.view.news_list.yml',
+  ], 'optional');
+}

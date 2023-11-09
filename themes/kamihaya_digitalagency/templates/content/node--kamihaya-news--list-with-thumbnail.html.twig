@@ -92,11 +92,10 @@
   <div class="list-details">
     {% if content.field_category|render or content.field_publish_date|render %}
     <div class="list-info">
-      {# Category #}
       {% if content.field_category|render %}
-      <div class="list-category">
-        {{ content.field_category }}
-      </div>
+        <div class="list-category">
+          {{ content.field_category }}
+        </div>
       {% endif %}
 
       {# Date #}
@@ -123,7 +122,7 @@
         {{ label }}</a>
       {% endif %}
     </div>
-	
+
     {# Description #}
     {% if content.field_description|render %}
     <div class="list-desc">
