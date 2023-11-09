@@ -59,6 +59,11 @@
   
 </main>
 
+{# Bottom Navigation #}
+{% if page.bottom_navigation %}
+  {{ page.bottom_navigation }}
+{% endif %}
+
 {# Before Footer #}
 {% if page.before_footer %}
   {{ page.before_footer }}
