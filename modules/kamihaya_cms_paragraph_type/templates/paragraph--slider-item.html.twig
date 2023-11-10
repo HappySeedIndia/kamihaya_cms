@@ -40,14 +40,24 @@
 #}
 
 {% block paragraph %}
-{% set bgImage = content.field_slider_image|render|striptags|trim %}
+{% set pcImage = content.field_slider_image|render|striptags|trim %}
+
+{% set spImage = content.field_mobile_image|render|striptags|trim %}
 
 {% set imageLink = content.field_image_link.0['#url'] %}
 
 {# <div class="swiper-slide" style="background-image: url('{{ bgImage }}')"> #}
 <div class="swiper-slide">
+
   {% if content.field_image_link|render %}
-  <img src="{{ bgImage }}" />
+
+  {% if content.field_mobile_image|render and content.field_slider_image|render %}
+    <img src="{{ spImage }}" class="d-block d-md-none" />
+    <img src="{{ pcImage }}" class="d-none d-md-block" />
+  {% else %}
+    <img src="{{ pcImage }}" />
+  {% endif %}
+
   <div class="container">
     {% block content %}
       <div class="slide-content">
