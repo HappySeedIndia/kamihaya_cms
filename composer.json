@@ -28,7 +28,9 @@
         "process-timeout": 0,
         "sort-packages": true,
         "allow-plugins": {
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "composer/installers": true,
+            "oomphinc/composer-installers-extender": true
         }
     },
     "extra": {
@@ -97,6 +99,7 @@
         "drupal/default_content": "^2.0@alpha",
         "drupal/diff": "^1.1",
         "drupal/entity_browser": "^2.9",
+        "drupal/eu_cookie_compliance": "^1.24",
         "drupal/fontawesome": "^2.26",
         "drupal/gin": "^3.0@RC",
         "drupal/google_tag": "^2.0",
