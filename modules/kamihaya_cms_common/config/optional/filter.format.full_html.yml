@@ -1,9 +1,10 @@
+langcode: en
 status: true
 dependencies:
   module:
     - editor
 _core:
-  default_config_hash: HvAE4vD_4-nvhwLobIN3k5rTE9zq9AQG8UScfnwuKQo
+  default_config_hash: LEyT01YtGmP5U5ZeHF7r4n_het17qniWQ7MnQX3LWKU
 name: 'フル HTML'
 format: full_html
 weight: 2
@@ -38,3 +39,12 @@ filters:
     status: true
     weight: 11
     settings: {  }
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: false
+    weight: -10
+    settings:
+      allowed_html: ''
+      filter_html_help: true
+      filter_html_nofollow: false

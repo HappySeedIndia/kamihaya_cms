@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.paragraph.slider_item.field_image_link
     - field.field.paragraph.slider_item.field_link
+    - field.field.paragraph.slider_item.field_mobile_image
     - field.field.paragraph.slider_item.field_slider_image
     - field.field.paragraph.slider_item.field_text
     - field.field.paragraph.slider_item.field_title
@@ -27,7 +28,7 @@ content:
       rel: '0'
       target: '0'
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   field_link:
     type: entity_reference_revisions_entity_view
@@ -36,7 +37,15 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 3
+    weight: 5
+    region: content
+  field_mobile_image:
+    type: image_url
+    label: hidden
+    settings:
+      image_style: ''
+    third_party_settings: {  }
+    weight: 1
     region: content
   field_slider_image:
     type: image_url
@@ -51,7 +60,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 4
     region: content
   field_title:
     type: entity_reference_revisions_entity_view
@@ -60,6 +69,6 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 1
+    weight: 3
     region: content
 hidden: {  }

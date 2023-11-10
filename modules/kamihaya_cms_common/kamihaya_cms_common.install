@@ -13,3 +13,13 @@ function kamihaya_cms_common_update_10001() {
   ], 'install');
 
 }
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_common_update_10002() {
+  _kamihaya_cms_common_change_configs('kamihaya_cms_common', [
+    'editor.editor.full_html.yml',
+    'filter.format.full_html.yml',
+  ], 'optional');
+}
