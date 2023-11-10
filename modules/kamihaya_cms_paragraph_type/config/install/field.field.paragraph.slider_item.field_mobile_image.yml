@@ -2,30 +2,30 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_slider_image
+    - field.storage.paragraph.field_mobile_image
     - paragraphs.paragraphs_type.slider_item
   module:
     - image
-id: paragraph.slider_item.field_slider_image
-field_name: field_slider_image
+id: paragraph.slider_item.field_mobile_image
+field_name: field_mobile_image
 entity_type: paragraph
 bundle: slider_item
-label: 'Slider Image'
+label: 'Slider mobile Image'
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:file'
   handler_settings: {  }
-  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_directory: images
   file_extensions: 'png gif jpg jpeg'
   max_filesize: ''
   max_resolution: ''
   min_resolution: ''
   alt_field: true
-  alt_field_required: false
+  alt_field_required: true
   title_field: false
   title_field_required: false
   default_image:

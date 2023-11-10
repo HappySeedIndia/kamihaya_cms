@@ -1,4 +1,3 @@
-uuid: 49464de4-75fc-4776-83b4-67d1793c480f
 langcode: ja
 status: true
 dependencies:
@@ -7,24 +6,33 @@ dependencies:
   module:
     - ckeditor5
 _core:
-  default_config_hash: m3pL_vbOaNdIkaQFbupVk6gUbrQgO6j9KxoL6yw6yNw
+  default_config_hash: 72UYQNC3I0NmdFSE9PzaqVMHMY-CDa76H5qXwa4Lif4
 format: full_html
 editor: ckeditor5
 settings:
   toolbar:
     items:
+      - undo
+      - redo
+      - '|'
       - bold
       - italic
+      - underline
       - strikethrough
       - superscript
       - subscript
       - removeFormat
       - '|'
       - link
+      - imce_image
       - '|'
       - bulletedList
       - numberedList
       - '|'
+      - alignment
+      - outdent
+      - indent
+      - '-'
       - blockQuote
       - drupalInsertImage
       - insertTable
@@ -35,6 +43,12 @@ settings:
       - '|'
       - sourceEditing
   plugins:
+    ckeditor5_alignment:
+      enabled_alignments:
+        - center
+        - justify
+        - left
+        - right
     ckeditor5_codeBlock:
       languages:
         -
