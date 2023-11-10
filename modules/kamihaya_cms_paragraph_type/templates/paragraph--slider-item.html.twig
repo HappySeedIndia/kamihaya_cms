@@ -42,7 +42,12 @@
 {% block paragraph %}
 {% set bgImage = content.field_slider_image|render|striptags|trim %}
 
-<div class="swiper-slide" style="background-image: url('{{ bgImage }}')">
+{% set imageLink = content.field_image_link.0['#url'] %}
+
+{# <div class="swiper-slide" style="background-image: url('{{ bgImage }}')"> #}
+<div class="swiper-slide">
+  {% if content.field_image_link|render %}
+  <img src="{{ bgImage }}" />
   <div class="container">
     {% block content %}
       <div class="slide-content">
@@ -63,5 +68,6 @@
       </div>
     {% endblock %}
   </div>
+  {% endif %}
 </div>
 {% endblock paragraph %}

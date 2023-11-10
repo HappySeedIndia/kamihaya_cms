@@ -72,15 +72,15 @@
 
     {# Title Color #}
     {% if content.field_color|render %}
-      {% set titleColor = content.field_color.0|render|striptags|trim %}
+      {% set titleColor = content.field_color|render|striptags|trim|lower %}
     {% else %}
-      {% set titleColor = '000000' %}
+      {% set titleColor = '(rgba(0,0,0,1))' %}
     {% endif %}
 
     {# Heading Text #}
     {% if headingTag|render and content.field_title_text|render %}
     <div class="title-{{ headingStyle }}">
-      <{{ headingTag }} style="color: #{{ titleColor }};">
+      <{{ headingTag }} style="color: {{ titleColor }};">
         {{ content.field_title_text.0 }}
       </{{ headingTag }}>
     </div>
