@@ -124,5 +124,8 @@ function kamihaya_cms_paragraph_type_update_10002() {
     'core.entity_form_display.paragraph.divider.default.yml',
     'core.entity_form_display.paragraph.image_link.default.yml',
     'core.entity_form_display.paragraph.link_button.default.yml',
+    'field.field.paragraph.slider_item.field_image_link.yml',
+    'core.entity_view_display.paragraph.slider_item.default.yml',
+    'core.entity_form_display.paragraph.slider_item.default',
   ], 'install');
 }
