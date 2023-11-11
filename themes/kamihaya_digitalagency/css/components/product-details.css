@@ -19,3 +19,37 @@
   margin: 0 0 5px 5px;
   font-size: 12px;
 }
+
+.product-overview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.product-overview .product-thumbnail {
+  width: 40%;
+}
+
+.product-overview .product-description {
+  width: 60%;
+  padding: 10px;
+}
+
+.product-thumbnail img {
+  display: block;
+  margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+  .product-overview {
+    flex-wrap: wrap;
+  }
+
+  .product-overview .product-thumbnail {
+    width: 100%;
+  }
+
+  .product-overview .product-description {
+    width: 100%;
+  }
+}
