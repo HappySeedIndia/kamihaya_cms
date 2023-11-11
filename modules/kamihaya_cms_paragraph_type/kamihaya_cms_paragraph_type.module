@@ -68,13 +68,6 @@ function kamihaya_cms_paragraph_type_theme() {
 }
 
 /**
- * Implements hook_field_widget_complete_WIDGET_TYPE_form_alter().
- */
-function kamihaya_cms_paragraph_type_field_widget_complete_layout_paragraphs_form_alter(&$field_widget_complete_form, FormStateInterface $form_state, $context) {
-
-}
-
-/**
  * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  */
 function kamihaya_cms_paragraph_type_field_widget_single_element_layout_paragraphs_form_alter(
@@ -82,5 +75,4 @@ function kamihaya_cms_paragraph_type_field_widget_single_element_layout_paragrap
   FormStateInterface $form_state,
   array $context) {
   $element['#attached']['library'][] = 'kamihaya_cms_paragraph_type/lpb_component_list';
-  dpm($element);
 }
