@@ -32,6 +32,8 @@
   --bs-accordion-body-field-padding: 0rem 0 1rem 0rem;
   --bs-accordion-btn-icon: url(../images/arrow_down.svg);
   --bs-accordion-btn-active-icon: url(../images/arrow_up.svg);
+  max-width:  960px;
+  margin: 0 auto;
 }
 
 .accordion-button {

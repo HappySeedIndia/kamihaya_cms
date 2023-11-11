@@ -75,4 +75,10 @@ function kamihaya_cms_paragraph_type_field_widget_single_element_layout_paragrap
   FormStateInterface $form_state,
   array $context) {
   $element['#attached']['library'][] = 'kamihaya_cms_paragraph_type/lpb_component_list';
+
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $thene_handler */
+  $thene_handler = Drupal::service('theme_handler');
+  if ($thene_handler->themeExists('kamihaya_digitalagency')) {
+    $element['#attached']['library'][] = 'kamihaya_digitalagency/components';
+  }
 }
