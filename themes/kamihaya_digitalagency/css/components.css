@@ -1331,3 +1331,8 @@ header .container {
   border-radius: 18px;
   background: var(--primitive-colors-sea-50);
 }
+
+/* Tab */
+.nav-tabs.nav-pills {
+
+}
