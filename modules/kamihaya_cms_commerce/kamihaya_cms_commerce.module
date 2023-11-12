@@ -38,6 +38,9 @@ function kamihaya_cms_commerce_query_product_list_alter(AlterableInterface $quer
       $field2 = 'taxonomy_term_field_data_taxonomy_term__parent_1.tid = :term_id2';
       $value2 = [':term_id2' => $value];
       $or->where($field2, $value2);
+      $field3 = 'taxonomy_term_field_data_taxonomy_term__parent_2.tid = :term_id3';
+      $value3 = [':term_id3' => $value];
+      $or->where($field3, $value3);
       unset($cons[$idx]);
       $con1['field']->condition($or);
       break;
