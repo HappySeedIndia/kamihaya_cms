@@ -11,15 +11,9 @@ dependencies:
     - field.field.commerce_product.default.field_thumbnail_image
     - image.style.medium
   module:
-    - field_layout
     - media
     - shs
     - text
-third_party_settings:
-  field_layout:
-    id: layout_onecol
-    settings:
-      label: ''
 id: commerce_product.default.product_list
 targetEntityType: commerce_product
 bundle: default
