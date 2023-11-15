@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "711b3466f44a7104802e413a1db74480",
+    "content-hash": "4e056a4896690ebfd1974f016cf48bc8",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1669,6 +1669,50 @@
             "homepage": "https://www.drupal.org/project/ckeditor",
             "support": {
                 "source": "https://git.drupalcode.org/project/ckeditor"
+            }
+        },
+        {
+            "name": "drupal/ckeditor_bs_grid",
+            "version": "2.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/ckeditor_bs_grid.git",
+                "reference": "2.0.10"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/ckeditor_bs_grid-2.0.10.zip",
+                "reference": "2.0.10",
+                "shasum": "862c26bdee7b007a4d71ffce64c8fa5b92f9f4fa"
+            },
+            "require": {
+                "drupal/core": "^9.3 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.10",
+                    "datestamp": "1691075003",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "b_sharpe",
+                    "homepage": "https://www.drupal.org/user/2512258"
+                }
+            ],
+            "description": "Allows creating rows and columns within CKEditor using Bootstrap syntax.",
+            "homepage": "https://www.drupal.org/project/ckeditor_bs_grid",
+            "support": {
+                "source": "https://git.drupalcode.org/project/ckeditor_bs_grid"
             }
         },
         {
