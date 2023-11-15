@@ -2,7 +2,9 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.slider_item.field_image_link
     - field.field.paragraph.slider_item.field_link
+    - field.field.paragraph.slider_item.field_mobile_image
     - field.field.paragraph.slider_item.field_slider_image
     - field.field.paragraph.slider_item.field_text
     - field.field.paragraph.slider_item.field_title
@@ -10,11 +12,24 @@ dependencies:
   module:
     - entity_reference_revisions
     - image
+    - link
 id: paragraph.slider_item.default
 targetEntityType: paragraph
 bundle: slider_item
 mode: default
 content:
+  field_image_link:
+    type: link
+    label: hidden
+    settings:
+      trim_length: null
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    weight: 2
+    region: content
   field_link:
     type: entity_reference_revisions_entity_view
     label: hidden
@@ -22,7 +37,15 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 3
+    weight: 5
+    region: content
+  field_mobile_image:
+    type: image_url
+    label: hidden
+    settings:
+      image_style: ''
+    third_party_settings: {  }
+    weight: 1
     region: content
   field_slider_image:
     type: image_url
@@ -37,7 +60,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 4
     region: content
   field_title:
     type: entity_reference_revisions_entity_view
@@ -46,6 +69,6 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 1
+    weight: 3
     region: content
 hidden: {  }

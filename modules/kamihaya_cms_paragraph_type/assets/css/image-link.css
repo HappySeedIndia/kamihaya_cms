@@ -1,0 +1,59 @@
+/* Image Link */
+
+a.image-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.image-link-text {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 20px;
+}
+
+.image-text-halign-left {
+  justify-content: flex-start;
+}
+
+.image-text-halign-center {
+  justify-content: center;
+}
+
+.image-text-halign-right {
+  justify-content: flex-end;
+}
+
+.image-text-halign-justify {
+  justify-content: stretch;
+}
+
+.image-text-valign-top {
+  align-items: flex-start;
+}
+
+.image-text-valign-center {
+  align-items: center;
+}
+
+.image-text-valign-bottom {
+  align-items: flex-end;
+}
+
+.paragraph--type--image-link .bg-image {
+  position: relative;
+}
+
+.paragraph--type--image-link .bg-image .mask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-attachment: fixed;
+}

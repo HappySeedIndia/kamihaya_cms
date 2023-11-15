@@ -90,16 +90,22 @@
   </div>
 
   <div class="list-details">
+    {% if content.field_category|render or content.field_publish_date|render %}
     <div class="list-info">
-      <div class="list-category">
-        {{ content.field_category }}
-      </div>
+      {% if content.field_category|render %}
+        <div class="list-category">
+          {{ content.field_category }}
+        </div>
+      {% endif %}
 
       {# Date #}
+      {% if content.field_publish_date|render %}
       <div class="list-date">
         {{ content.field_publish_date }}
       </div>
+      {% endif %}
     </div>
+    {% endif %}
 
     <div class="list-link">
       {% if label %}
@@ -116,10 +122,13 @@
         {{ label }}</a>
       {% endif %}
     </div>
-	
+
+    {# Description #}
+    {% if content.field_description|render %}
     <div class="list-desc">
       {{ content.field_description }}
     </div>
+    {% endif %}
   </div>
 </div>
 

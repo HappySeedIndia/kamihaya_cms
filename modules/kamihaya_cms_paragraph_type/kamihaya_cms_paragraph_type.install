@@ -110,3 +110,31 @@ function kamihaya_cms_paragraph_type_update_10001() {
   ], 'ja');
 
 }
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_paragraph_type_update_10002() {
+  \Drupal::service('module_installer')->install(['entity_browser']);
+  _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', [
+    'field.storage.paragraph.field_color.yml',
+    'field.storage.paragraph.field_mobile_image.yml',
+    'field.field.paragraph.headings.field_color.yml',
+    'field.field.paragraph.slider_item.field_mobile_image.yml',
+    'field.field.paragraph.slider_item.field_slider_image.yml',
+    'core.entity_form_display.paragraph.headings.default.yml',
+    'core.entity_view_display.paragraph.headings.default.yml',
+    'core.entity_form_display.paragraph.divider.default.yml',
+    'core.entity_form_display.paragraph.image_link.default.yml',
+    'core.entity_form_display.paragraph.link_button.default.yml',
+    'field.field.paragraph.slider_item.field_image_link.yml',
+    'core.entity_view_display.paragraph.slider_item.default.yml',
+    'core.entity_form_display.paragraph.slider_item.default.yml',
+  ], 'install');
+
+  _kamihaya_cms_common_save_translation_configs([
+    'field.field.paragraph.slider_item.field_image_link.yml',
+    'field.field.paragraph.slider_item.field_mobile_image.yml',
+  ], 'ja');
+
+}

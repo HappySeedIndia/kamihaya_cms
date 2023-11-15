@@ -1,0 +1,78 @@
+/**
+ * @file
+ * Default style for file module.
+ */
+
+/* File icons. */
+
+.file {
+  display: inline-block;
+  min-height: 16px;
+  padding-left: 20px; /* LTR */
+  background-repeat: no-repeat;
+  background-position: left center; /* LTR */
+  background-image: none;
+}
+[dir="rtl"] .file {
+  padding-right: 20px;
+  padding-left: inherit;
+  background-position: right center;
+}
+.file:before {
+  content: '**';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  color: inherit;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  padding-right: 10px;
+}
+
+.file--general,
+.file--application-octet-stream {
+  background-image: url(../../images/icons/application-octet-stream.png);
+}
+.file--package-x-generic {
+  background-image: url(../../images/icons/package-x-generic.png);
+}
+.file--x-office-spreadsheet:before {
+  content: '\f1c3';
+}
+.file--x-office-document:before {
+  content: '\f1c2';
+}
+.file--x-office-presentation {
+  content: '\f1c4';
+}
+.file--text-x-script:before {
+  content: '\f1c9';
+}
+.file--text-html:before {
+  content:'\f121';
+}
+.file--text-plain:before {
+  content: '\f15c';
+}
+.file--application-pdf:before {
+  content: '\f1c1';
+}
+.file--application-x-executable {
+  background-image: url(../../images/icons/application-x-executable.png);
+}
+.file--audio:before {
+  content: '\f1c7';
+}
+.file--video:before {
+  content: '\f1c8';
+}
+.file--text:before {
+  content: '\f15c';
+}
+.file--image:before {
+  content: '\f1c5';
+}

@@ -34,3 +34,18 @@ function kamihaya_cms_media_type_update_10001() {
     'views.view.document_list.yml',
   ], 'ja');
 }
+
+function kamihaya_cms_media_type_update_10002() {
+  _kamihaya_cms_common_change_configs('kamihaya_cms_media_type' , [
+    'taxonomy.vocabulary.document_type.yml',
+    'language.content_settings.taxonomy_term.document_type.yml',
+    'core.entity_form_display.taxonomy_term.document_type.default.yml',
+    'views.view.document_list.yml',
+  ], 'install');
+
+  _kamihaya_cms_common_save_translation_configs([
+    'taxonomy.vocabulary.document_type.yml',
+    'views.view.document_list.yml',
+  ], 'ja');
+}
+

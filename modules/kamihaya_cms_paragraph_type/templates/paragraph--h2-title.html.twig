@@ -38,29 +38,20 @@
  * @ingroup themeable
  */
 #}
+{{  attach_library('kamihaya_cms_paragraph_type/heading-css') }}
+{%
+  set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished',
+  ]
+%}
 
-{{  attach_library('kamihaya_digitalagency/heading-css') }}
 {% block paragraph %}
-
-  {# Heading Tag #}
-  {% set headingTag = content.field_title_tag.0|render %}
-
-  {# Heading Style #}
-  {% set headingStyle = content.field_style.0|render %}
-
-  {# Title Color #}
-  {% if content.field_color|render %}
-    {% set titleColor = content.field_color.0|render|striptags|trim %}
-  {% else %}
-    {% set titleColor = '000000' %}
-  {% endif %}
-
-  {# Heading Text #}
-  {% if (headingTag is not empty) and content.field_title_text|render %}
-  <div class="title-{{ headingStyle }}">
-    <{{ headingTag }} style="color: #{{ titleColor }};">
-      {{ content.field_title_text.0 }}
-    </{{ headingTag }}>
+  <div{{ attributes.addClass(classes) }}>
+    {% block content %}
+      {{ content }}
+    {% endblock %}
   </div>
-  {% endif %}
 {% endblock paragraph %}

@@ -1,0 +1,10 @@
+/* Layout css */
+@media screen and (min-width: 40em) {
+  .layout--twocol > .layout__region--first {
+    padding-right: 10px;
+  }
+
+  .layout--twocol > .layout__region--second {
+    padding-left: 10px;
+  }
+}

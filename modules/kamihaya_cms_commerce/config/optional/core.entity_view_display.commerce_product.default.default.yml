@@ -1,4 +1,3 @@
-uuid: 0e35519b-4b3d-41bf-b71b-3679721cdf8e
 langcode: en
 status: true
 dependencies:
@@ -8,32 +7,18 @@ dependencies:
     - field.field.commerce_product.default.field_body
     - field.field.commerce_product.default.field_category
     - field.field.commerce_product.default.field_description
+    - field.field.commerce_product.default.field_display_description
     - field.field.commerce_product.default.field_thumbnail_image
   module:
     - commerce_product
-    - field_layout
     - layout_paragraphs
     - shs
     - text
-third_party_settings:
-  field_layout:
-    id: layout_onecol
-    settings:
-      label: ''
-_core:
-  default_config_hash: 10qgl6V_HwkrJufzsNCV75OpqOeMzzKDJb3BhaogmzQ
 id: commerce_product.default.default
 targetEntityType: commerce_product
 bundle: default
 mode: default
 content:
-  body:
-    type: text_default
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
-    region: content
   field_body:
     type: layout_paragraphs
     label: hidden
@@ -41,13 +26,39 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 2
+    weight: 4
     region: content
   field_category:
     type: entity_reference_shs
     label: hidden
     settings:
       link: 0
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_display_description:
+    type: boolean
+    label: hidden
+    settings:
+      format: true-false
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_thumbnail_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: true
     third_party_settings: {  }
     weight: 1
     region: content
@@ -65,12 +76,11 @@ content:
     settings:
       combine: true
     third_party_settings: {  }
-    weight: 3
+    weight: 5
     region: content
 hidden:
+  body: true
   created: true
-  field_description: true
-  field_thumbnail_image: true
   langcode: true
   stores: true
   uid: true

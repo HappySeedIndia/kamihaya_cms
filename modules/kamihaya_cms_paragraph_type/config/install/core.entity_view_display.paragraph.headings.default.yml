@@ -8,6 +8,7 @@ dependencies:
     - field.field.paragraph.headings.field_title_text
     - paragraphs.paragraphs_type.headings
   module:
+    - color_field
     - options
 id: paragraph.headings.default
 targetEntityType: paragraph
@@ -15,12 +16,13 @@ bundle: headings
 mode: default
 content:
   field_color:
-    type: string
+    type: color_field_formatter_text
     label: hidden
     settings:
-      link_to_entity: false
+      format: rgb
+      opacity: true
     third_party_settings: {  }
-    weight: 2
+    weight: 4
     region: content
   field_style:
     type: list_key

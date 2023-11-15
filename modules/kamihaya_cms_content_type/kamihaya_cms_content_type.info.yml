@@ -17,5 +17,6 @@ dependencies:
   - kamihaya_cms_common:kamihaya_cms_common
   - kamihaya_cms_media_type:kamihaya_cms_media_type
   - kamihaya_cms_paragraph_type:kamihaya_cms_paragraph_type
+  - kamihaya_cms_media_type:kamihaya_cms_media_type
 
 project: 'kamihaya'

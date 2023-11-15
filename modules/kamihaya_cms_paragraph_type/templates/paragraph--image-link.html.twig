@@ -38,6 +38,7 @@
  * @ingroup themeable
  */
 #}
+{{ attach_library('kamihaya_cms_paragraph_type/image-link-css') }}
 {%
   set classes = [
     'paragraph',
@@ -48,41 +49,54 @@
 %}
 {% block paragraph %}
   {% block content %}
-    {% if content.field_image|render %}
-      <div{{attributes.addClass(classes)}}>
-        {% if content.field_image_link|render %}
-          {% set url = content.field_image_link.0['#url'] %}
-          {% if content.field_image_link.0['#url'].external == true %}
-            <a class="bg-image" href="{{ url }}" target="_blank">
-          {% else %}
-            <a class="bg-image" href="{{ url }}">
-          {% endif %}
-        {% endif %}
-        {{ content.field_image }}
+    <div{{attributes.addClass(classes)}}>
+    {# Image link #}
+    {% set imageLink = content.field_image_link.0['#url'] %}
 
-        {% if content.field_image_text|render %}
-          {%
-            set text_classes = [
-              'mask',
-              'image-link-text',
-              content.field_image_text_halign|render ? 'image-text-halign-' ~ paragraph.field_image_text_halign.0.value,
-              content.field_image_text_valign|render ? 'image-text-valign-' ~ paragraph.field_image_text_valign.0.value,
-            ]
-          %}
-          {% set size = paragraph.field_image_text_size.0.value %}
-          {% set color = content.field_image_text_color|render|striptags|trim|lower %}
-          {%
-            set style = [
-              size ? 'font-size: '  ~  size  ~  'px;' : '',
-              color ? 'color: '  ~ color  ~ ';' : '',
-            ]
-          %}
-          <p class="{{ text_classes|join(' ') }}" style="{{ style|join(' ') }}">{{ content.field_image_text.0}}</p>
+    {# Image url #}
+    {% set imageUrl = file_url(content.field_image.0['#item'].entity.uri.value) %}
+
+      <div class="bg-image">
+        {% if content.field_image_link|render %}
+          <a class="image-link" href="{{ imageLink }}" target="{{ content.field_image_link[0]['#url'].external ? '_blank' : '_self' }}">
         {% endif %}
+
+          {# Image #}
+          {% if content.field_image|render %}
+            {# <div class="image-mask"> #}
+            <img src="{{ imageUrl }}" alt="{{ content.field_image.alt }}" class="w-100" />
+            {# </div> #}
+          {% endif %}
+
+          {# Text #}
+          {% if content.field_image_text|render %}
+            {# Other fields attributes #}
+            {%
+              set text_classes = [
+                'image-link-text',
+                content.field_image_text_halign|render ? 'image-text-halign-' ~ paragraph.field_image_text_halign.0.value,
+                content.field_image_text_valign|render ? 'image-text-valign-' ~ paragraph.field_image_text_valign.0.value,
+              ]
+            %}
+            {% set size = paragraph.field_image_text_size.0.value %}
+            {% set color = content.field_image_text_color|render|striptags|trim|lower %}
+            {%
+              set style = [
+                size ? 'font-size: '  ~  size  ~  'px;' : 'font-size: 16px;',
+                color ? 'color: '  ~ color  ~ ';' : 'color: #fff;',
+              ]
+            %}
+            <div class="mask">
+              <div class="{{ text_classes|join(' ') }}" style="{{ style|join(' ') }}">
+                <p>{{ content.field_image_text }}</p>
+              </div>
+            </div>
+          {% endif %}
+
         {% if content.field_image_link|render %}
           </a>
         {% endif %}
       </div>
-    {% endif %}
+    </div>
   {% endblock %}
 {% endblock paragraph %}

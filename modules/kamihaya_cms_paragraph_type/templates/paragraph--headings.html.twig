@@ -40,27 +40,50 @@
 #}
 
 {{  attach_library('kamihaya_cms_paragraph_type/heading-css') }}
+
+{%
+  set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished',
+  ]
+%}
+
 {% block paragraph %}
+  <div{{ attributes.addClass(classes) }}>
+    {# Heading Tag #}
+    {% set titleTag = content.field_title_tag.0|render %}
 
-  {# Heading Tag #}
-  {% set headingTag = content.field_title_tag.0|render %}
+    {% if titleTag == '' %}
+      {% set headingTag = 'h2' %}
+    {% else %}
+      {% set headingTag = titleTag %}
+    {% endif %}
 
-  {# Heading Style #}
-  {% set headingStyle = content.field_style.0|render %}
+    {# Heading Style #}
+    {% set titleStyle = content.field_style.0|render %}
 
-  {# Title Color #}
-  {% if content.field_color|render %}
-    {% set titleColor = content.field_color.0|render|striptags|trim %}
-  {% else %}
-    {% set titleColor = '000000' %}
-  {% endif %}
+    {% if titleStyle == '' %}
+      {% set headingStyle = '' %}
+    {% else %}
+      {% set headingStyle = titleStyle %}
+    {% endif %}
 
-  {# Heading Text #}
-  {% if (headingTag is not empty) and content.field_title_text|render %}
-  <div class="title-{{ headingStyle }}">
-    <{{ headingTag }} style="color: #{{ titleColor }};">
-      {{ content.field_title_text.0 }}
-    </{{ headingTag }}>
+    {# Title Color #}
+    {% if content.field_color|render %}
+      {% set titleColor = content.field_color|render|striptags|trim|lower %}
+    {% else %}
+      {% set titleColor = '(rgba(0,0,0,1))' %}
+    {% endif %}
+
+    {# Heading Text #}
+    {% if headingTag|render and content.field_title_text|render %}
+    <div class="title-{{ headingStyle }}">
+      <{{ headingTag }} style="color: {{ titleColor }};">
+        {{ content.field_title_text.0 }}
+      </{{ headingTag }}>
+    </div>
+    {% endif %}
   </div>
-  {% endif %}
 {% endblock paragraph %}

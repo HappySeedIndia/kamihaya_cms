@@ -17,10 +17,6 @@
         "assets": {
             "type": "composer",
             "url": "https://asset-packagist.org"
-        },
-        "asset-packagist": {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
         }
     },
     "minimum-stability": "dev",
@@ -32,7 +28,9 @@
         "process-timeout": 0,
         "sort-packages": true,
         "allow-plugins": {
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "composer/installers": true,
+            "oomphinc/composer-installers-extender": true
         }
     },
     "extra": {
@@ -87,19 +85,26 @@
         }
     },
     "require": {
+        "bower-asset/spectrum": "^1.8",
+        "drupal-ckeditor-libraries-group/colorbutton": "^4.22",
+        "drupal-ckeditor-libraries-group/panelbutton": "^4.22",
         "drupal/acquia_dam": "^1.0",
         "drupal/address": "^1.12",
         "drupal/admin_toolbar": "^3.4",
         "drupal/back_to_top": "^3.0",
         "drupal/better_exposed_filters": "^6.0",
         "drupal/bootstrap5": "^3.0",
+        "drupal/ckeditor_bs_grid": "^2.0",
+        "drupal/ckeditor_font": "^2.0@beta",
         "drupal/cloud": "^6.0@beta",
         "drupal/color_field": "^3.0",
+        "drupal/colorbutton": "^1.5",
         "drupal/commerce": "^2.36",
         "drupal/content_access": "^2.0",
         "drupal/default_content": "^2.0@alpha",
         "drupal/diff": "^1.1",
         "drupal/entity_browser": "^2.9",
+        "drupal/eu_cookie_compliance": "^1.24",
         "drupal/fontawesome": "^2.26",
         "drupal/gin": "^3.0@RC",
         "drupal/google_tag": "^2.0",
@@ -112,6 +117,7 @@
         "drupal/password_policy": "^4.0",
         "drupal/pathauto": "^1.11",
         "drupal/quick_node_clone": "^1.16",
+        "drupal/recaptcha": "^3.2",
         "drupal/recreate_block_content": "^3.0",
         "drupal/redirect": "^1.8",
         "drupal/responsive_preview": "^2.1",
@@ -126,7 +132,6 @@
         "drupal/views_custom_cache_tag": "^1.3",
         "drupal/webform": "^6.1",
         "drupal/xmlsitemap": "^1.5",
-        "npm-asset/jquery": "^2.2",
-        "bower-asset/spectrum": "^1.8"
+        "npm-asset/jquery": "^2.2"
     }
 }

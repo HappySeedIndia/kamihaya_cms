@@ -1,5 +1,7 @@
 <?php
 
+use \Drupal\Core\Form\FormStateInterface;
+
 /**
  * Implements hook_theme().
  */
@@ -35,11 +37,48 @@ function kamihaya_cms_paragraph_type_theme() {
     'paragraph__headings' => [
       'base hook' => 'paragraph',
     ],
+    'paragraph__h2_title' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__h3_title' => [
+      'base hook' => 'paragraph',
+    ],
     'paragraph__two_col_table' => [
       'base hook' => 'paragraph',
     ],
     'paragraph__two_col_table_row' => [
       'base hook' => 'paragraph',
     ],
+    'paragraph__image' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__video' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__left_image_text' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__right_image_text' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__file_download' => [
+      'base hook' => 'paragraph',
+    ],
   ];
+}
+
+/**
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
+ */
+function kamihaya_cms_paragraph_type_field_widget_single_element_layout_paragraphs_form_alter(
+  array &$element,
+  FormStateInterface $form_state,
+  array $context) {
+  $element['#attached']['library'][] = 'kamihaya_cms_paragraph_type/lpb_component_list';
+
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $thene_handler */
+  $thene_handler = Drupal::service('theme_handler');
+  if ($thene_handler->themeExists('kamihaya_digitalagency')) {
+    $element['#attached']['library'][] = 'kamihaya_digitalagency/components';
+  }
 }

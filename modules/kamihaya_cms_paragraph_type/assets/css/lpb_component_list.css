@@ -1,0 +1,24 @@
+.lpb-dialog {
+  width: auto !important;
+}
+
+.lpb-component-list__group--layout {
+  margin-bottom: 10px;
+}
+
+.lpb-component-list__group .lpb-component-list__group--content {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: start;
+  grid-gap: 10px;
+}
+
+.lpb-component-list__item a {
+  align-items: start;
+}
+
+@media (max-width: 767px) {
+  .lpb-component-list__group .lpb-component-list__group--content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

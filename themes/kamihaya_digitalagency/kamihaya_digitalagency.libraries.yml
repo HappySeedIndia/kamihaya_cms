@@ -1,18 +1,24 @@
 global-styling:
   css:
     theme:
-      css/style.css: {}
-      css/components.css: {weight: 15}
       css/components/header.css: {weight: 16}
       css/components/footer.css: {weight: 16}
-      css/components/page.css:
-        weight: -10
-      css/components/field.css:
-        weight: -10
-      css/components/common.css:
-        weight: -10
+      css/components/page.css: {weight: -10}
+      css/components/field.css: {weight: -10}
+      css/components/file.css: {weight: -11}
+      css/components/common.css: {weight: -10}
+      css/components/layout.css: {}
+      css/components/paragraph.css: {}
   js:
     js/menu.js: {}
+  dependencies:
+    - kamihaya_digitalagency/components
+
+components:
+  css:
+    theme:
+      css/style.css: {}
+      css/components.css: {}
 
 node:
   css:
@@ -39,6 +45,11 @@ product:
     theme:
       css/components/product.css: {}
 
+product-details:
+  css:
+    theme:
+      css/components/product-details.css: {}
+
 mdb:
   js:
     js/mdb/mdb.min.js: {}
@@ -46,4 +57,9 @@ mdb:
     theme:
       css/mdb/mdb.min.css: {}
       css/mdb/style.css: {}
+      # https://use.fontawesome.com/releases/v5.11.2/css/all.css: { type: external, minified: true }
+
+font-awesome:
+  css:
+    theme:
       https://use.fontawesome.com/releases/v5.11.2/css/all.css: { type: external, minified: true }

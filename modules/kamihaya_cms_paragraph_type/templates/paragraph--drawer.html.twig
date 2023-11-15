@@ -56,7 +56,7 @@
         {% if content.field_open_button_label|render %}
           {% set open_button_label = content.field_open_button_label|render|striptags|trim %}
           <p>
-            <button class="btn btn-primary" type="button" data-mdb-toggle="offcanvas" data-mdb-target="#offcanvasLeft" aria-controls="{{ aria_control }}">
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="{{ aria_control }}">
               {{ content.field_open_button_label.0 }}
             </button>&nbsp;
           </p>
@@ -69,7 +69,7 @@
               </h5>
             {% endif %}
             <p>
-              <button class="btn-close text-reset" type="button" data-mdb-dismiss="offcanvas" aria-label="Close"></button>
+              <button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </p>
           </div>
           <div class="offcanvas-body">
