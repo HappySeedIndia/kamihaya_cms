@@ -154,7 +154,7 @@
 
 .views-exposed-form .form--inline .form-actions {
   margin: 0;
-  padding-top: 20px;
+  padding-top: 25px;
 }
 .views-exposed-form .form--inline .form-actions input[type='submit'] {
   min-width: 120px;
@@ -165,7 +165,8 @@
 @media (min-width: 768px) {
   .views-exposed-form .form--inline {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    align-items: flex-start;
     width: 100%;
   }
 }

@@ -282,6 +282,7 @@ button.link:focus {
   --bs-form-select-bg-img: url(../images/list_arrow.svg);
   --bs-form-select-disabled-bg-img: url(../images/list_arrow_disabled.svg);
   background-size: 24px 24px;
+  padding: 0.75rem 2rem 0.75rem 1rem;
 }
 
 .form-select:disabled {
@@ -1332,7 +1333,68 @@ header .container {
   background: var(--primitive-colors-sea-50);
 }
 
-/* Tab */
-.nav-tabs.nav-pills {
+/* Shs */
+.shs-field-container {
+  display: flex;
+  gap: 0.2rem;
+  flex-wrap: wrap;
+}
 
+/* H2 Style */
+.paragraph--type--h2-title {
+  position: relative;
+}
+
+h2 {
+  margin-bottom: 20px;
+  position: relative;
+  display: block;
+}
+
+h2:after {
+  content: '';
+  display: block;
+  border-bottom: 5px double #777;
+  width: 30%;
+  padding-top: 10px;
+}
+
+/* H3 Style */
+.paragraph--type--h3-title {
+  position: relative;
+}
+
+h3 {
+  margin-bottom: 20px;
+  position: relative;
+  display: block;
+}
+
+h3:after {
+  content: '';
+  display: block;
+  border-bottom: 1px solid #777;
+  width: 30%;
+  padding-top: 10px;
+}
+
+/* H4 style */
+h4 {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+h4:before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #000;
+  margin-right: 10px;
+  vertical-align: middle;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
 }
