@@ -47,3 +47,8 @@ file-download-css:
   css:
     base:
       assets/css/file-download.css: {}
+
+lpb_component_list:
+  css:
+    base:
+      assets/css/lpb_component_list.css: {}

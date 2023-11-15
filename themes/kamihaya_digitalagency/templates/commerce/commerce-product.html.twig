@@ -36,6 +36,29 @@
   </div>
   {% endif %}
 
+  {% set display_description = product.field_display_description|render|striptags|trim|lower %}
+  {% if product.field_thumbnail_image|render or display_description == 'true' and product.field_description|render %}
+    <div class="product-overview">
+  {% endif %}
+
+  {# Thumbnail #}
+  {% if product.field_thumbnail_image|render %}
+    <div class="product-thumbnail">
+      {{- product.field_thumbnail_image -}}
+    </div>
+  {% endif %}
+
+  {# Description #}
+  {% if display_description == 'true' and product.field_description|render %}
+    <div class="product-description">
+     {{- product.field_description -}}
+    </div>
+  {% endif %}
+
+  {% if product.field_thumbnail_image|render or display_description == 'true' and product.field_description|render %}
+	  </div>
+	{% endif %}
+
   {# Product contents #}
   {% if product.field_body|render %}
   <div class="product-contents">

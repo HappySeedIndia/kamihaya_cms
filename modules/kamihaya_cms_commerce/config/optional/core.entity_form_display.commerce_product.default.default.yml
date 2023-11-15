@@ -11,17 +11,11 @@ dependencies:
     - field.field.commerce_product.default.field_thumbnail_image
   module:
     - commerce
-    - field_layout
     - layout_paragraphs
     - media_library
     - path
     - shs
     - text
-third_party_settings:
-  field_layout:
-    id: layout_onecol
-    settings:
-      label: ''
 id: commerce_product.default.default
 targetEntityType: commerce_product
 bundle: default

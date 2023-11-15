@@ -39,6 +39,9 @@ install:
   - admin_toolbar
   - admin_toolbar_tools
   - better_exposed_filters
+  - ckeditor_bs_grid
+  - ckeditor_font
+  - colorbutton
   - color_field
   - content_access
   - entity_browser

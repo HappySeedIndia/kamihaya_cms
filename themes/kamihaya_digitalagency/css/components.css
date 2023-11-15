@@ -32,6 +32,8 @@
   --bs-accordion-body-field-padding: 0rem 0 1rem 0rem;
   --bs-accordion-btn-icon: url(../images/arrow_down.svg);
   --bs-accordion-btn-active-icon: url(../images/arrow_up.svg);
+  max-width:  960px;
+  margin: 0 auto;
 }
 
 .accordion-button {
@@ -1328,4 +1330,9 @@ header .container {
 .region-bottom-navigation .navbar-nav .nav-link.active .menu-icon {
   border-radius: 18px;
   background: var(--primitive-colors-sea-50);
+}
+
+/* Tab */
+.nav-tabs.nav-pills {
+
 }

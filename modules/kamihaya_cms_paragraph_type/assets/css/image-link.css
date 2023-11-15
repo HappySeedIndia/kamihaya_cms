@@ -13,20 +13,6 @@ a.image-link {
   position: relative;
   padding: 20px;
 }
-/* .paragraph--type--image-link {
-  display: flex;
-  justify-content: center;
-  position: relative;
-}
-
-.paragraph--type--image-link a {
-  text-decoration: none;
-}
- */
-/* .paragraph--type--image-link .image-link-text {
-  padding: 10px;
-  display: flex;
-} */
 
 .image-text-halign-left {
   justify-content: flex-start;
@@ -54,4 +40,20 @@ a.image-link {
 
 .image-text-valign-bottom {
   align-items: flex-end;
+}
+
+.paragraph--type--image-link .bg-image {
+  position: relative;
+}
+
+.paragraph--type--image-link .bg-image .mask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-attachment: fixed;
 }

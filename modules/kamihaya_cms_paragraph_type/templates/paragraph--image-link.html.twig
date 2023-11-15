@@ -55,7 +55,7 @@
 
     {# Image url #}
     {% set imageUrl = file_url(content.field_image.0['#item'].entity.uri.value) %}
-    
+
       <div class="bg-image">
         {% if content.field_image_link|render %}
           <a class="image-link" href="{{ imageLink }}" target="{{ content.field_image_link[0]['#url'].external ? '_blank' : '_self' }}">
@@ -86,7 +86,7 @@
                 color ? 'color: '  ~ color  ~ ';' : 'color: #fff;',
               ]
             %}
-            <div class="mask" style="background-color: hsla(0, 0%, 0%, 0.6)">
+            <div class="mask">
               <div class="{{ text_classes|join(' ') }}" style="{{ style|join(' ') }}">
                 <p>{{ content.field_image_text }}</p>
               </div>

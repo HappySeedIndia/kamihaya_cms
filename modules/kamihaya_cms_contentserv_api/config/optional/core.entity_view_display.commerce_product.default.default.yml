@@ -14,13 +14,7 @@ dependencies:
     - field.field.commerce_product.default.field_thumbnail_image
   module:
     - commerce_product
-    - field_layout
     - layout_paragraphs
-third_party_settings:
-  field_layout:
-    id: layout_onecol
-    settings:
-      label: ''
 _core:
   default_config_hash: 10qgl6V_HwkrJufzsNCV75OpqOeMzzKDJb3BhaogmzQ
 id: commerce_product.default.default

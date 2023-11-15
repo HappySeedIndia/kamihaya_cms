@@ -11,14 +11,9 @@ dependencies:
     - field.field.commerce_product.default.field_thumbnail_image
   module:
     - commerce_product
-    - field_layout
     - layout_paragraphs
     - shs
-third_party_settings:
-  field_layout:
-    id: layout_onecol
-    settings:
-      label: ''
+    - text
 id: commerce_product.default.default
 targetEntityType: commerce_product
 bundle: default
@@ -31,13 +26,20 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 3
+    weight: 4
     region: content
   field_category:
     type: entity_reference_shs
     label: hidden
     settings:
       link: 0
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_description:
+    type: text_default
+    label: hidden
+    settings: {  }
     third_party_settings: {  }
     weight: 2
     region: content
@@ -49,12 +51,13 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 5
+    weight: 6
     region: content
   field_thumbnail_image:
-    type: entity_reference_label
+    type: entity_reference_entity_view
     label: hidden
     settings:
+      view_mode: default
       link: true
     third_party_settings: {  }
     weight: 1
@@ -73,12 +76,11 @@ content:
     settings:
       combine: true
     third_party_settings: {  }
-    weight: 4
+    weight: 5
     region: content
 hidden:
   body: true
   created: true
-  field_description: true
   langcode: true
   stores: true
   uid: true
