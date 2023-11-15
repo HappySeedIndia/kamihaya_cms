@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e056a4896690ebfd1974f016cf48bc8",
+    "content-hash": "b503d5487b5e570cef6745594f3516e2",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1008,6 +1008,40 @@
             "time": "2022-12-14T08:49:07+00:00"
         },
         {
+            "name": "drupal-ckeditor-libraries-group/colorbutton",
+            "version": "4.22.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupal-ckeditor-libraries-group/colorbutton.git",
+                "reference": "9ad649835a5dbaf2fbf75194ea23cb520695b7dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drupal-ckeditor-libraries-group/colorbutton/zipball/9ad649835a5dbaf2fbf75194ea23cb520695b7dd",
+                "reference": "9ad649835a5dbaf2fbf75194ea23cb520695b7dd",
+                "shasum": ""
+            },
+            "type": "drupal-library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later",
+                "LGPL-2.1-or-later",
+                "MPL-1.1"
+            ],
+            "description": "CKEditor 4 colorbutton plugin",
+            "homepage": "https://ckeditor.com/cke4/addon/colorbutton",
+            "keywords": [
+                "CKEditor",
+                "colorbutton",
+                "plugin"
+            ],
+            "support": {
+                "issues": "https://github.com/ckeditor/ckeditor4/issues",
+                "source": "https://github.com/ckeditor/ckeditor4/tree/master/plugins/colorbutton"
+            },
+            "time": "2023-02-08T14:53:49+00:00"
+        },
+        {
             "name": "drupal-ckeditor-libraries-group/font",
             "version": "4.22.1",
             "source": {
@@ -1038,6 +1072,40 @@
             "support": {
                 "issues": "https://github.com/ckeditor/ckeditor4/issues",
                 "source": "https://github.com/ckeditor/ckeditor4/tree/master/plugins/font"
+            },
+            "time": "2023-02-08T14:53:49+00:00"
+        },
+        {
+            "name": "drupal-ckeditor-libraries-group/panelbutton",
+            "version": "4.22.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupal-ckeditor-libraries-group/panelbutton.git",
+                "reference": "7cc19dd9dbae5570b031e4d36f084d3ba2710221"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drupal-ckeditor-libraries-group/panelbutton/zipball/7cc19dd9dbae5570b031e4d36f084d3ba2710221",
+                "reference": "7cc19dd9dbae5570b031e4d36f084d3ba2710221",
+                "shasum": ""
+            },
+            "type": "drupal-library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later",
+                "LGPL-2.1-or-later",
+                "MPL-1.1"
+            ],
+            "description": "CKEditor 4 panelbutton plugin",
+            "homepage": "https://ckeditor.com/cke4/addon/panelbutton",
+            "keywords": [
+                "CKEditor",
+                "panelbutton",
+                "plugin"
+            ],
+            "support": {
+                "issues": "https://github.com/ckeditor/ckeditor4/issues",
+                "source": "https://github.com/ckeditor/ckeditor4/tree/master/plugins/panelbutton"
             },
             "time": "2023-02-08T14:53:49+00:00"
         },
@@ -12212,5 +12280,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

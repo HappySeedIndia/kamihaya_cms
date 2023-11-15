@@ -86,6 +86,8 @@
     },
     "require": {
         "bower-asset/spectrum": "^1.8",
+        "drupal-ckeditor-libraries-group/colorbutton": "^4.22",
+        "drupal-ckeditor-libraries-group/panelbutton": "^4.22",
         "drupal/acquia_dam": "^1.0",
         "drupal/address": "^1.12",
         "drupal/admin_toolbar": "^3.4",
