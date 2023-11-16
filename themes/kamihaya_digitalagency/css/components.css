@@ -1398,3 +1398,9 @@ h4:before {
   transform: translateY(-50%);
   left: 0;
 }
+
+/* Bootstrap grid */
+.bs_grid img {
+  max-width: 100%;
+  height: auto;;
+}
