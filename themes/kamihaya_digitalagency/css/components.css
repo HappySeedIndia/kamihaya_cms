@@ -1408,3 +1408,8 @@ h2.accordion-header::after {
   max-width: 100%;
   height: auto;;
 }
+
+.bs_grid a {
+  color: rgb(33, 37, 41);
+  text-decoration: none;
+}
