@@ -11239,13 +11239,13 @@ td > .form-item {
   text-transform: uppercase;
 }
 .navbar-brand img {
-  height: 36px;
+  height: 50px;
   margin: 0 1rem 0 0;
   width: auto;
 }
 @media (min-width: 992px) {
   .navbar-brand img {
-    height: 60px;
+    height: 75px;
   }
 }
 
