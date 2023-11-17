@@ -3,6 +3,21 @@ header {
   box-shadow: 0 2px 6px -1px rgba(0,0,0,.07), 0 6px 18px -1px rgba(0,0,0,.04);
   margin-bottom: 0;
 }
+/* Header Top */
+.header-top {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+.header-top-right .menu--account ul li {
+  padding: 0 10px;
+}
+.header-top-right .menu--account ul li a {
+  text-decoration: none;
+}
+.header-top-right .menu--account ul li a:hover {
+  text-decoration: underline;
+}
+/* Navigation */
 .navbar-toggler {
   border-radius: 0;
   border: none;
