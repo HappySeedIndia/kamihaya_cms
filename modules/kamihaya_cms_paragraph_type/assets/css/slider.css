@@ -31,7 +31,6 @@
 
 .hero .swiper {
   z-index: 1;
-  height: 500px;
   width: 100%;
 }
 
@@ -43,11 +42,21 @@
 
 .hero .swiper-slide img {
   width: 100%;
-  height: 500px;
   object-fit: cover;
   z-index: 2;
   position: relative;
 }
+
+@media (max-width: 1400px) {
+  .hero .swiper {
+    height: 500px;
+  }
+
+  .hero .swiper-slide img {
+    height: 500px;
+  }
+}
+
 .hero .swiper-slide:before {
   content: "";
   background-color: rgba(4, 12, 21, 0.5);
