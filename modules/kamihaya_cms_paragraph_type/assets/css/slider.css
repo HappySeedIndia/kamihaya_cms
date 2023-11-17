@@ -32,6 +32,7 @@
 .hero .swiper {
   z-index: 1;
   width: 100%;
+  max-height: 700px;
 }
 
 .hero .swiper-slide {
@@ -42,6 +43,7 @@
 
 .hero .swiper-slide img {
   width: 100%;
+  max-height: 700px;
   object-fit: cover;
   z-index: 2;
   position: relative;
