@@ -1,0 +1,19 @@
+/* Maintenance page */
+.maintenance .logo {
+  display: flex;
+  align-items: center;
+}
+.maintenance .logo img {
+  height: 50px;
+  margin: 0 1rem 0 0;
+  width: auto;
+}
+@media (min-width: 992px) {
+  .maintenance .logo img {
+    height: 75px;
+  }
+}
+
+.maintenance main {
+  margin-top: 3rem;
+}
