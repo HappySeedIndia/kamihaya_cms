@@ -50,6 +50,11 @@ product-details:
     theme:
       css/components/product-details.css: {}
 
+maintenance:
+  css:
+    theme:
+      css/components/maintenance-page.css: {}
+
 mdb:
   js:
     js/mdb/mdb.min.js: {}
