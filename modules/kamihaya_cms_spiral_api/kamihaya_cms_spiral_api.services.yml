@@ -1,0 +1,21 @@
+services:
+  kamihaya_cms_spiral_api.logger_channel:
+    class: Drupal\Core\Logger\LoggerChannel
+    factory: logger.factory:get
+    arguments: ['kamihaya_cms_spiral_api']
+
+  spiral.api:
+    class: Drupal\kamihaya_cms_spiral_api\Service\SpiralApi
+    arguments: ['@kamihaya_cms_spiral_api.logger_channel', '@config.factory', '@messenger', '@string_translation', '@current_user']
+
+  spiral.controller:
+    class: Drupal\kamihaya_cms_spiral_api\Controller\SpiralController
+    arguments: ['@kamihaya_cms_spiral_api.logger_channel', '@config.factory', '@messenger', '@string_translation', '@current_user', '@session_manager', '@session', '@event_dispatcher', '@spiral.api']
+
+  spiral.login:
+    class: Drupal\kamihaya_cms_spiral_api\Controller\LoginController
+    arguments: ['@kamihaya_cms_spiral_api.logger_channel', '@config.factory', '@messenger', '@string_translation', '@current_user', '@session_manager', '@session', '@event_dispatcher', '@spiral.api']
+
+  spiral.user:
+    class: Drupal\kamihaya_cms_spiral_api\Controller\UserController
+    arguments: ['@kamihaya_cms_spiral_api.factory', '@config.factory', '@messenger', '@string_translation', '@current_user', '@session_manager', '@session', '@event_dispatcher', '@spiral.api']

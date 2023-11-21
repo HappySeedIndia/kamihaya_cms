@@ -1,0 +1,7 @@
+kamihaya_cms_spiral_api.settings:
+  path: '/admin/config/application/spiral_api'
+  defaults:
+    _title: Spiral
+    _form: '\Drupal\kamihaya_cms_spiral_api\Form\Config\SpiralSettings'
+  requirements:
+    _permission: 'manage spiral'
