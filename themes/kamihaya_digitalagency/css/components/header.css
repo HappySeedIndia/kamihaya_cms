@@ -120,6 +120,10 @@ header {
     display: flex;
     justify-content: end;
     align-items: center;
+    flex-wrap: wrap;
+  }
+  .header-right > div {
+    width: 100%;
   }
   .navbar-expand-lg .navbar-nav .nav-link {
     padding: 18px 15px;
