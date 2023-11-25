@@ -23,17 +23,8 @@ class SpiralController {
 
   use StringTranslationTrait;
 
-  // User update DB.
-  const SPIRAL_API_DB_MOD = "user_mod_mail";
-
-  // Temporary member login DB.
-  const SPIRAL_API_DB_TEMPORARY_MEMBER_LOGIN = "temporary_login";
-
   // SPIRAL session key.
   const SPIRAL_API_SESSION_LOGIN_DATA = "login_data";
-
-  // Download limit count.
-  const DOWNLOAD_LIMIT_COUNT = 9999;
 
   // User status.
   // Temporary.
