@@ -12,9 +12,9 @@ use Drupal\Core\StringTranslation\TranslationInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class Spiral Settings.
+ * Class SPIRAL Settings.
  */
-class SpiralSettings extends ConfigFormBase {
+class SPIRALSettings extends ConfigFormBase {
 
   /**
    * The entity field manager.
@@ -31,7 +31,7 @@ class SpiralSettings extends ConfigFormBase {
   protected $stringTranslation;
 
   /**
-   * Constructs a SpiralSettings object.
+   * Constructs a SPIRALSettings object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
@@ -86,37 +86,37 @@ class SpiralSettings extends ConfigFormBase {
 
     $form['spiral']['spiral_api_url'] = [
       '#type' => 'url',
-      '#title' => $this->t('Spiral Api Url'),
+      '#title' => $this->t('SPIRAL API URL'),
       '#default_value' => $config->get('spiral_api_url'),
     ];
 
     $form['spiral']['spiral_api_key'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Spiral Api Key'),
+      '#title' => $this->t('SPIRAL API Key'),
       '#default_value' => $config->get('spiral_api_key'),
     ];
 
     $form['spiral']['spiral_application_id'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Spiral Application ID'),
+      '#title' => $this->t('SPIRAL Application ID'),
       '#default_value' => $config->get('spiral_application_id'),
     ];
 
     $form['spiral']['spiral_db_id'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Spiral DB ID'),
+      '#title' => $this->t('SPIRAL DB ID'),
       '#default_value' => $config->get('spiral_db_id'),
     ];
 
     $form['spiral']['spiral_site_id'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Spiral Site ID'),
+      '#title' => $this->t('SPIRAL Site ID'),
       '#default_value' => $config->get('spiral_site_id'),
     ];
 
     $form['spiral']['spiral_authentication_id'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Spiral Authentication ID'),
+      '#title' => $this->t('SPIRAL Authentication ID'),
       '#default_value' => $config->get('spiral_authentication_id'),
     ];
 

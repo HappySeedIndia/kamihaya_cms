@@ -1,0 +1,17 @@
+# Japanese translation of Kamihaya CMS Contentserv API module
+#
+
+msgid "SPIRAL API Key'"
+msgstr "SPIRAL APIキー"
+msgid "SPIRAL Application ID"
+msgstr "SPIRAL アプリケーションID"
+msgid "SPIRAL DB ID"
+msgstr "SPIRAL データベースID"
+msgid "SPIRAL Site ID'"
+msgstr "SPIRAL サイトID'"
+msgid "SPIRAL Authentication ID"
+msgstr "SPIRAL 認証エリアID"
+msgid "Field mapping'"
+msgstr "項目のマッピング"
+msgid "Enter one value per line, in the format spiral_field_name|drupal_field_name."
+msgstr "一つの値を一行ごとに、SPIRALのフィールド名|DRURALのフィールド名のフォーマットで入力してください。"

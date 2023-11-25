@@ -7,3 +7,6 @@ dependencies:
 
 core_version_requirement: ^9.5 || ^10
 configure: kamihaya_cms_spiral_api.settings
+
+interface translation project: kamihaya_cms_spiral_api
+interface translation server pattern: profiles/contrib/kamihaya_cms/modules/kamihaya_cms_spiral_api/translations/%language.po
