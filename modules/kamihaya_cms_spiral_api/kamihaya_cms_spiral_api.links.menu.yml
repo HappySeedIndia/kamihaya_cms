@@ -1,0 +1,5 @@
+kamihaya_cms_spiral_api.settings:
+  title: 'Kamihaya CMS SPIRAL API Settings'
+  description: 'Kamihaya CMS SPIRAL API Settings.'
+  route_name: kamihaya_cms_spiral_api.settings
+  parent: system.admin_config_services
