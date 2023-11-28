@@ -28,6 +28,7 @@
 
 .product-overview .product-thumbnail {
   width: 40%;
+  margin: 0 auto;
 }
 
 .product-overview .product-description {
