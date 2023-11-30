@@ -7,6 +7,17 @@
 %}
 
 <header>
+  {# Header Top #}
+  {% if page.header_top_right %}
+  <section class="header-top">
+    <div class="container">
+      <div class="header-top-right">
+        {{ page.header_top_right }}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+  
   <nav class="{{ nav_classes }}">
     <div class="container">
       {# Header Left #}

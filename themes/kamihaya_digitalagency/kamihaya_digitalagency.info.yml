@@ -4,6 +4,7 @@ description: 'Kamihaya デジタル庁デザインシステム準拠テーマ su
 core_version_requirement: '^9.4 || ^10'
 'base theme': bootstrap5
 regions:
+  header_top_right: Header Top Right
   header_left: Header Left
   header_right: Header Right
   after_header: After Header

@@ -3,6 +3,38 @@ header {
   box-shadow: 0 2px 6px -1px rgba(0,0,0,.07), 0 6px 18px -1px rgba(0,0,0,.04);
   margin-bottom: 0;
 }
+/* Header Top */
+.header-top {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+.header-top-right .menu--account ul li {
+  padding: 0 10px;
+}
+.header-top-right .menu--account ul li a {
+  color: var(--light-text-body);
+  text-decoration: underline;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 170%;
+  letter-spacing: 0.56px;
+}
+.header-top-right .menu--account ul li a:hover {
+  color: var(--light-text-body);
+  text-decoration: underline;
+  background-color: var(--light-background-secondary);
+}
+.header-top-right .menu--account ul li a:focus {
+  border-radius: 4px;
+  border: 2px solid var(--light-border-focused, #CD820A);
+}
+.header-top-right .menu--account ul li a .menu-icon {
+  margin-right: 4px;
+  display: inline-block;
+}
+
+/* Navigation */
 .navbar-toggler {
   border-radius: 0;
   border: none;
@@ -88,6 +120,10 @@ header {
     display: flex;
     justify-content: end;
     align-items: center;
+    flex-wrap: wrap;
+  }
+  .header-right > div {
+    width: 100%;
   }
   .navbar-expand-lg .navbar-nav .nav-link {
     padding: 18px 15px;

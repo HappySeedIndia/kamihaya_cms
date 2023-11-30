@@ -1,0 +1,105 @@
+<?php
+
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\kamihaya_cms_spiral_api\Controller\SpiralController;
+use Drupal\user\Entity\Role;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function kamihaya_cms_spiral_api_form_user_login_form_alter(array &$form, FormStateInterface &$form_state, $form_id) {
+  if (@in_array('::validateAuthentication', $form['#validate'])) {
+    $key = array_search('::validateAuthentication', $form['#validate']);
+    $form['#validate'][$key] = 'kamihaya_cms_spiral_api_authenticate_validate';
+  }
+}
+
+/**
+ * Validate for the user authentication.
+ *
+ * @param $form
+ *   Nested array of form elements that comprise the form.
+ * @param $form_state
+ *   The current state of the form.
+ */
+function kamihaya_cms_spiral_api_authenticate_validate(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\user\Form\UserLoginForm $original_form */
+  $original_form = $form_state->getFormObject();
+  $original_form->validateAuthentication($form, $form_state);
+
+  if (!empty($form_state->get('uid'))) {
+    if ($form_state->get('uid') == 1) {
+      return;
+    }
+    /** @var \Drupal\Core\Session\AccountInterface $account */
+    $account = \Drupal::entityTypeManager()->getStorage('user')->load($form_state->get('uid'));
+    $roles = Role::loadMultiple($account->getRoles());
+
+    foreach ($roles as $role) {
+      if ($role->isAdmin()) {
+        return;
+      }
+      elseif ($role->id() != 'authenticated' && $role->id() != 'anonymous') {
+        return;
+      }
+    }
+  }
+
+  $name = $form_state->getValue('name');
+  $pass = $form_state->getValue('pass');
+
+  if (!\Drupal::service('email.validator')->isValid($name)) {
+    $form_state->setErrorByName('name', t('The email address %mail is not valid.', ['%mail' => $name]));
+    return;
+  }
+
+  $spiral = \Drupal::service('spiral.login');
+  if ($user = $spiral->loginValidate($name, $pass)) {
+    $auth = \Drupal::service('externalauth.externalauth');
+    $account = $auth->loginRegister($user["sso_uid"], 'kamihaya_cms_spiral_api');
+    $form_state->set('uid', $account->id());
+    $user =User::load($account->id());
+    Cache::invalidateTags($user->getCacheTags());
+  }
+  else {
+    $messages = \Drupal::messenger()->all();
+    if (!empty($messages['error'][0])) {
+      $form_state->setErrorByName('name', $messages['error'][0]);
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_load().
+ */
+function kamihaya_cms_spiral_api_user_load(&$users) {
+  $config = \Drupal::configFactory()->getEditable('kamihaya_cms_spiral_api.settings');
+  $mapping = $config->get('spiral_field_mapping');
+  if (empty($mapping)) {
+    return;
+  }
+  $account = Drupal::currentUser();
+  /** @var \Drupal\user\Entity\UserInterface $current_user */
+  $current_user = null;
+  foreach ($users as $user) {
+    if ($account->id() === $user->id()) {
+      $current_user = $user;
+      break;
+    }
+  }
+  if (empty($current_user)) {
+    return;
+  }
+  $session = Drupal::service('session');
+  $user_data = $session->get(SpiralController::SPIRAL_API_SESSION_LOGIN_DATA);
+  foreach ($mapping as $key => $field) {
+    if (empty($user_data[$key])) {
+      continue;
+    }
+    $current_user->set($field, $user_data[$key]);
+  }
+}
