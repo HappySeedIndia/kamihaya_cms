@@ -73,7 +73,7 @@
           %}
 
           {% if content.field_button_link.0['#url'].external == true %}
-            <a class="btn btn-primary" href="{{ url }}" target=" _blank"{% if style %} style="{{ style|join(' ') }}"{% endif %}>
+            <a class="btn btn-primary" href="{{ url }}" target="_blank"{% if style %} style="{{ style|join(' ') }}"{% endif %}>
           {% else %}
             <a class="btn btn-primary" href="{{ url }}"{% if style %} style="{{ style|join(' ') }}"{% endif %}>
           {% endif %}
