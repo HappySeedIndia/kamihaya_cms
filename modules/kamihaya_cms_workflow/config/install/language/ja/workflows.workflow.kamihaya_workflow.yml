@@ -2,25 +2,25 @@ label: 'Kamihayaワークフロー'
 type_settings:
   states:
     archived:
-      label: Archived
+      label: 公開終了
     draft:
-      label: Draft
+      label: 下書き
     in_review:
-      label: 'In Review'
+      label: 承認中
     published:
-      label: Published
+      label: 公開
   transitions:
     archive:
-      label: Archive
+      label: 公開終了
     create_new_draft:
-      label: 'Create New Draft'
+      label: 下書きとして作成
     publish:
-      label: Publish
+      label: 公開
     re_publish:
-      label: Re-Publish
+      label: 再公開
     reject:
-      label: Reject
+      label: 却下
     save_as_draft:
-      label: 'Save as draft'
+      label: 下書きとして保存
     send_to_review:
-      label: 'Send to review'
+      label: 承認依頼
