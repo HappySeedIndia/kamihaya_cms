@@ -1,0 +1,26 @@
+label: 'Kamihayaワークフロー'
+type_settings:
+  states:
+    archived:
+      label: Archived
+    draft:
+      label: Draft
+    in_review:
+      label: 'In Review'
+    published:
+      label: Published
+  transitions:
+    archive:
+      label: Archive
+    create_new_draft:
+      label: 'Create New Draft'
+    publish:
+      label: Publish
+    re_publish:
+      label: Re-Publish
+    reject:
+      label: Reject
+    save_as_draft:
+      label: 'Save as draft'
+    send_to_review:
+      label: 'Send to review'
