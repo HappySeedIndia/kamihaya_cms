@@ -4,7 +4,7 @@ type: module
 core_version_requirement: '^9.4 || ^10'
 dependencies:
   - drupal:content_moderation
-  - drupal:block_contents
+  - drupal:block_content
   - drupal:content_moderation
   - drupal:media
   - drupal:node
