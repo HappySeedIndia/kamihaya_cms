@@ -1,4 +1,4 @@
-name: Kamihaya CMS Paragraph type
+name: Kamihaya CMS Workflow
 description: 'Workflow for Kamihaya CMS.'
 type: module
 core_version_requirement: '^9.4 || ^10'
