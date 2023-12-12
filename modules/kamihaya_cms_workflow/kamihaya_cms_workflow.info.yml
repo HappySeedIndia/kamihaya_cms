@@ -1,0 +1,20 @@
+name: Kamihaya CMS Paragraph type
+description: 'Workflow for Kamihaya CMS.'
+type: module
+core_version_requirement: '^9.4 || ^10'
+dependencies:
+  - drupal:content_moderation
+  - drupal:block_contents
+  - drupal:content_moderation
+  - drupal:media
+  - drupal:node
+  - drupal:taxonomy
+  - drupal:user
+  - drupal:views
+  - content_access:content_access
+  - entity_browser:entity_browser
+  - moderation_dashboard:moderation_dashboard
+  - quick_node_clone:quick_node_clone
+  - responsive_preview:responsive_preview
+  - scheduler:scheduler
+  - scheduled_transitions:scheduled_transitions
