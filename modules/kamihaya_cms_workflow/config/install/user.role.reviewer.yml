@@ -1,4 +1,3 @@
-langcode: en
 status: true
 dependencies:
   config:
@@ -35,10 +34,6 @@ permissions:
   - 'access media overview'
   - 'access responsive preview'
   - 'access taxonomy overview'
-  - 'add scheduled transitions block_content kamihaya_block'
-  - 'add scheduled transitions media document'
-  - 'add scheduled transitions node kamihaya_basic'
-  - 'add scheduled transitions node kamihaya_news'
   - 'clone kamihaya_basic content'
   - 'clone kamihaya_news content'
   - 'create document media'
@@ -87,10 +82,6 @@ permissions:
   - 'edit terms in news_category'
   - 'grant content access'
   - 'grant own content access'
-  - 'reschedule scheduled transitions block_content kamihaya_block'
-  - 'reschedule scheduled transitions media document'
-  - 'reschedule scheduled transitions node kamihaya_basic'
-  - 'reschedule scheduled transitions node kamihaya_news'
   - 'revert all revisions'
   - 'revert any kamihaya_block block content revisions'
   - 'revert kamihaya_basic revisions'
@@ -120,7 +111,3 @@ permissions:
   - 'view scheduled content'
   - 'view scheduled media'
   - 'view scheduled taxonomy_term'
-  - 'view scheduled transitions block_content kamihaya_block'
-  - 'view scheduled transitions media document'
-  - 'view scheduled transitions node kamihaya_basic'
-  - 'view scheduled transitions node kamihaya_news'
