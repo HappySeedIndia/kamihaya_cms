@@ -50,6 +50,8 @@
 <div class="swiper-slide">
 
   {% if content.field_image_link|render %}
+  	<a class="image-link" href="{{ imageLink }}" target="{{ content.field_image_link[0]['#url'].external ? '_blank' : '_self' }}">
+	{% endif %}
 
   {% if content.field_mobile_image|render and content.field_slider_image|render %}
     <img src="{{ spImage }}" class="d-block d-md-none" />
@@ -78,6 +80,8 @@
       </div>
     {% endblock %}
   </div>
+  {% if content.field_image_link|render %}
+    </a>
   {% endif %}
 </div>
 {% endblock paragraph %}

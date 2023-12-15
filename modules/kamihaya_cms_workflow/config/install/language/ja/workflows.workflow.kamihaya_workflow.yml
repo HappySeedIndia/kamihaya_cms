@@ -1,0 +1,26 @@
+label: 'Kamihayaワークフロー'
+type_settings:
+  states:
+    archived:
+      label: 公開終了
+    draft:
+      label: 下書き
+    in_review:
+      label: 承認中
+    published:
+      label: 公開
+  transitions:
+    archive:
+      label: 公開終了
+    create_new_draft:
+      label: 下書きとして作成
+    publish:
+      label: 公開
+    re_publish:
+      label: 再公開
+    reject:
+      label: 却下
+    save_as_draft:
+      label: 下書きとして保存
+    send_to_review:
+      label: 承認依頼

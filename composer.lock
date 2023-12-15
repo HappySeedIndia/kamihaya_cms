@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e9134eed42c52e0e0783af7bd73ae801",
+    "content-hash": "2e37db51e800ef9f3290fb5501b144fd",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2613,6 +2613,68 @@
             }
         },
         {
+            "name": "drupal/dynamic_entity_reference",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/dynamic_entity_reference.git",
+                "reference": "3.1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/dynamic_entity_reference-3.1.0.zip",
+                "reference": "3.1.0",
+                "shasum": "4672b535acc326320f012033db94b5c0e379362c"
+            },
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "mglaman/phpstan-drupal": "^1.1",
+                "phpstan/phpstan": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "3.1.0",
+                    "datestamp": "1688838762",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Lee Rowlands",
+                    "homepage": "https://www.drupal.org/u/larowlan",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Jibran Ijaz",
+                    "homepage": "https://www.drupal.org/u/jibran",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "larowlan",
+                    "homepage": "https://www.drupal.org/user/395439"
+                }
+            ],
+            "description": "Provides a field that allows an entity-reference field to reference more than one entity type.",
+            "homepage": "http://drupal.org/project/dynamic_entity_reference",
+            "support": {
+                "source": "http://cgit.drupalcode.org/dynamic_entity_reference",
+                "issues": "http://drupal.org/project/dynamic_entity_reference",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
+        },
+        {
             "name": "drupal/entity",
             "version": "1.4.0",
             "source": {
@@ -3898,6 +3960,58 @@
             }
         },
         {
+            "name": "drupal/moderation_dashboard",
+            "version": "2.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/moderation_dashboard.git",
+                "reference": "2.1.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/moderation_dashboard-2.1.5.zip",
+                "reference": "2.1.5",
+                "shasum": "5864fae086ef710cad0615341e6e6214cd2a55a6"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.1.5",
+                    "datestamp": "1694008389",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Samuel Mortenson",
+                    "homepage": "https://www.drupal.org/user/2582268",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Stephen Mustgrave",
+                    "homepage": "https://www.drupal.org/user/3252890",
+                    "email": "smustgrave@gmail.com",
+                    "role": "Co-Maintainer"
+                }
+            ],
+            "description": "Moderation Dashboard provides a per-user dashboard that contains useful blocks related to managing moderated content.",
+            "homepage": "https://drupal.org/project/moderation_dashboard",
+            "support": {
+                "source": "https://git.drupalcode.org/project/moderation_dashboard",
+                "issues": "https://drupal.org/project/issues/moderation_dashboard"
+            }
+        },
+        {
             "name": "drupal/new_relic_rpm",
             "version": "2.1.1",
             "source": {
@@ -4664,6 +4778,68 @@
             "homepage": "https://drupal.org/project/rigel",
             "support": {
                 "source": "https://git.drupalcode.org/project/rigel"
+            }
+        },
+        {
+            "name": "drupal/scheduled_transitions",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/scheduled_transitions.git",
+                "reference": "2.3.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/scheduled_transitions-2.3.0.zip",
+                "reference": "2.3.0",
+                "shasum": "240e389d549141e24ec9d7d7c2223cca7b4357ca"
+            },
+            "require": {
+                "drupal/core": "^9.2 || ^10",
+                "drupal/dynamic_entity_reference": "^1.0 || ^2.0 || ^3.0 || ^4.0",
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "dev-master",
+                "drupal/coder": "^8.3",
+                "drush/drush": "^10 || ^11",
+                "mglaman/phpstan-drupal": "^1",
+                "phpstan/phpstan": "^1",
+                "phpstan/phpstan-deprecation-rules": "*"
+            },
+            "suggest": {
+                "drupal/token": "Shows Token UI on Add Scheduled Transitions form."
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.3.0",
+                    "datestamp": "1670235101",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "dpi",
+                    "homepage": "https://www.drupal.org/user/81431"
+                }
+            ],
+            "description": "Allows users to schedule a revision to change state.",
+            "homepage": "https://www.drupal.org/project/scheduled_transitions",
+            "support": {
+                "source": "https://git.drupalcode.org/project/scheduled_transitions"
             }
         },
         {

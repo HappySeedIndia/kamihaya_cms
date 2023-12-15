@@ -1,0 +1,113 @@
+status: true
+dependencies:
+  config:
+    - block_content.type.kamihaya_block
+    - media.type.document
+    - media.type.image
+    - media.type.video
+    - node.type.kamihaya_basic
+    - node.type.kamihaya_news
+    - taxonomy.vocabulary.document_type
+    - taxonomy.vocabulary.kamihaya_basic_category
+    - taxonomy.vocabulary.news_category
+    - workflows.workflow.kamihaya_workflow
+  module:
+    - block_content
+    - content_access
+    - content_moderation
+    - entity_browser
+    - media
+    - node
+    - quick_node_clone
+    - responsive_preview
+    - scheduled_transitions
+    - scheduler
+    - taxonomy
+id: reviewer
+label: Reviewer
+weight: -7
+is_admin: null
+permissions:
+  - 'access block library'
+  - 'access content overview'
+  - 'access contents_list entity browser pages'
+  - 'access media overview'
+  - 'access responsive preview'
+  - 'access taxonomy overview'
+  - 'clone kamihaya_basic content'
+  - 'clone kamihaya_news content'
+  - 'create document media'
+  - 'create image media'
+  - 'create kamihaya_basic content'
+  - 'create kamihaya_block block content'
+  - 'create kamihaya_news content'
+  - 'create media'
+  - 'create terms in document_type'
+  - 'create terms in kamihaya_basic_category'
+  - 'create terms in news_category'
+  - 'create video media'
+  - 'delete all revisions'
+  - 'delete any document media'
+  - 'delete any image media'
+  - 'delete any kamihaya_basic content'
+  - 'delete any kamihaya_block block content'
+  - 'delete any kamihaya_block block content revisions'
+  - 'delete any kamihaya_news content'
+  - 'delete any media'
+  - 'delete any video media'
+  - 'delete kamihaya_basic revisions'
+  - 'delete kamihaya_news revisions'
+  - 'delete media'
+  - 'delete own document media'
+  - 'delete own image media'
+  - 'delete own kamihaya_basic content'
+  - 'delete own kamihaya_news content'
+  - 'delete own video media'
+  - 'delete terms in document_type'
+  - 'delete terms in kamihaya_basic_category'
+  - 'delete terms in news_category'
+  - 'edit any document media'
+  - 'edit any image media'
+  - 'edit any kamihaya_basic content'
+  - 'edit any kamihaya_block block content'
+  - 'edit any kamihaya_news content'
+  - 'edit any video media'
+  - 'edit own document media'
+  - 'edit own image media'
+  - 'edit own kamihaya_basic content'
+  - 'edit own kamihaya_news content'
+  - 'edit own video media'
+  - 'edit terms in document_type'
+  - 'edit terms in kamihaya_basic_category'
+  - 'edit terms in news_category'
+  - 'grant content access'
+  - 'grant own content access'
+  - 'revert all revisions'
+  - 'revert any kamihaya_block block content revisions'
+  - 'revert kamihaya_basic revisions'
+  - 'revert kamihaya_news revisions'
+  - 'schedule publishing of media'
+  - 'schedule publishing of nodes'
+  - 'schedule publishing of taxonomy_term'
+  - 'update any media'
+  - 'update media'
+  - 'use kamihaya_workflow transition archive'
+  - 'use kamihaya_workflow transition create_new_draft'
+  - 'use kamihaya_workflow transition publish'
+  - 'use kamihaya_workflow transition re_publish'
+  - 'use kamihaya_workflow transition reject'
+  - 'use kamihaya_workflow transition save_as_draft'
+  - 'use kamihaya_workflow transition send_to_review'
+  - 'view all media revisions'
+  - 'view all revisions'
+  - 'view all scheduled transitions'
+  - 'view any kamihaya_block block content history'
+  - 'view any unpublished content'
+  - 'view kamihaya_basic revisions'
+  - 'view kamihaya_news revisions'
+  - 'view latest version'
+  - 'view own unpublished content'
+  - 'view own unpublished media'
+  - 'view scheduled content'
+  - 'view scheduled media'
+  - 'view scheduled taxonomy_term'
