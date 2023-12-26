@@ -1,0 +1,4 @@
+administer deel configuration:
+  title: 'Administer Deel Configurations'
+  description: 'Allow configuring Deel settings.'
+  restrict access: TRUE
