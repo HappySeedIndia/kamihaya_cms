@@ -1,0 +1,6 @@
+kamihaya_cms_deel.settings_form:
+  title: 'Kamihaya CMS Deel'
+  description: 'Configure Kamihaya CMS Deel.'
+  parent: system.admin_config_system
+  route_name: kamihaya_cms_deel.settings_form
+  weight: 10

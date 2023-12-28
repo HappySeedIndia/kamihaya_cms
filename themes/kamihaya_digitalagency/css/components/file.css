@@ -5,7 +5,7 @@
 
 /* File icons. */
 
-.file {
+.file-download .file {
   display: inline-block;
   min-height: 16px;
   padding-left: 20px; /* LTR */
@@ -18,7 +18,7 @@
   padding-left: inherit;
   background-position: right center;
 }
-.file:before {
+.file-download .file:before {
   content: '**';
   display: inline-block;
   width: 16px;
@@ -33,46 +33,46 @@
   padding-right: 10px;
 }
 
-.file--general,
-.file--application-octet-stream {
+.file-download .file--general,
+.file-download .file--application-octet-stream {
   background-image: url(../../images/icons/application-octet-stream.png);
 }
-.file--package-x-generic {
+.file-download .file--package-x-generic {
   background-image: url(../../images/icons/package-x-generic.png);
 }
-.file--x-office-spreadsheet:before {
+.file-download .file--x-office-spreadsheet:before {
   content: '\f1c3';
 }
-.file--x-office-document:before {
+.file-download .file--x-office-document:before {
   content: '\f1c2';
 }
-.file--x-office-presentation {
+.file-download .file--x-office-presentation {
   content: '\f1c4';
 }
-.file--text-x-script:before {
+.file-download .file--text-x-script:before {
   content: '\f1c9';
 }
-.file--text-html:before {
+.file-download .file--text-html:before {
   content:'\f121';
 }
-.file--text-plain:before {
+.file-download .file--text-plain:before {
   content: '\f15c';
 }
-.file--application-pdf:before {
+.file-download .file--application-pdf:before {
   content: '\f1c1';
 }
-.file--application-x-executable {
+.file-download .file--application-x-executable {
   background-image: url(../../images/icons/application-x-executable.png);
 }
-.file--audio:before {
+.file-download .file--audio:before {
   content: '\f1c7';
 }
-.file--video:before {
+.file-download .file--video:before {
   content: '\f1c8';
 }
-.file--text:before {
+.file-download .file--text:before {
   content: '\f15c';
 }
-.file--image:before {
+.file-download .file--image:before {
   content: '\f1c5';
 }
