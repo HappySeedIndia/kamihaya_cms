@@ -1,0 +1,8 @@
+# Schema for the configuration files of the Kamihaya CMS Deel module.
+kamihaya_cms_deel.settings:
+  type: config_object
+  label: 'Kamihaya CMS Deel settings'
+  mapping:
+    example:
+      type: string
+      label: 'Example'

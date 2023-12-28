@@ -1,0 +1,39 @@
+kamihaya_cms_deel.settings_form:
+  path: '/admin/config/system/kamihaya-cms/deel'
+  defaults:
+    _title: 'Kamihaya CMS Deel settings'
+    _form: 'Drupal\kamihaya_cms_deel\Form\SettingsForm'
+  requirements:
+    _permission: 'administer deel configuration'
+  options:  
+    _admin_route: true
+
+kamihaya_cms_deel.people:
+  path: '/admin/config/system/kamihaya-cms/deel/people'
+  defaults:
+    _title: 'People'
+    _controller: '\Drupal\kamihaya_cms_deel\Controller\People::build'
+  requirements:
+    _permission: 'administer deel configuration'
+  options:  
+    _admin_route: true
+
+kamihaya_cms_deel.managers:
+  path: '/admin/config/system/kamihaya-cms/deel/managers'
+  defaults:
+    _title: 'Managers'
+    _controller: '\Drupal\kamihaya_cms_deel\Controller\Managers::build'
+  requirements:
+    _permission: 'administer deel configuration'
+  options:  
+    _admin_route: true
+
+kamihaya_cms_deel.contracts:
+  path: '/admin/config/system/kamihaya-cms/deel/contracts'
+  defaults:
+    _title: 'Contracts'
+    _controller: '\Drupal\kamihaya_cms_deel\Controller\Contracts::build'
+  requirements:
+    _permission: 'administer deel configuration'
+  options:  
+    _admin_route: true
