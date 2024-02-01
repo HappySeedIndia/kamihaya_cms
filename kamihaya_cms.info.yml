@@ -61,6 +61,7 @@ install:
   - quick_node_clone
   - scheduler
   - shs
+  - svg_image
   - string_field_formatter
   - tb_megamenu
   - webform
