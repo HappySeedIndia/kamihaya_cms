@@ -138,3 +138,31 @@ function kamihaya_cms_paragraph_type_update_10002() {
   ], 'ja');
 
 }
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_paragraph_type_update_10003() {
+  $fields = [
+    'field.field.paragraph.divider.field_divider_image',
+    'field.field.paragraph.image_link.field_image',
+    'field.field.paragraph.image.field_image',
+    'field.field.paragraph.left_image_text.field_image',
+    'field.field.paragraph.right_image_text.field_image',
+    'field.field.paragraph.slider_item.field_mobile_image',
+    'field.field.paragraph.slider_item.field_slider_image',
+  ];
+  foreach($fields as $field) {
+    if ($field_config = \Drupal::configFactory()->getEditable($field)) {
+      $value = explode(' ', $field_config->get('settings.file_extensions'));
+      if (!in_array('svg', $value)) {
+        $value[] = 'svg';
+      }
+      if (!in_array('webp', $value)) {
+        $value[] = 'webp';
+      }
+      $field_config->set('settings.file_extensions', implode(' ', $value));
+      $field_config->save(TRUE);
+    }
+  }
+}

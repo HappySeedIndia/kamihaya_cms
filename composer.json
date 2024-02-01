@@ -131,6 +131,7 @@
         "drupal/shs": "^2.0@RC",
         "drupal/smtp": "^1.2",
         "drupal/string_field_formatter": "^2.0",
+        "drupal/svg_image": "^3.0",
         "drupal/tb_megamenu": "^3.0@alpha",
         "drupal/tfa": "^1.4",
         "drupal/views_custom_cache_tag": "^1.3",

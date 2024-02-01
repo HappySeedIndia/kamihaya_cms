@@ -6,6 +6,8 @@ dependencies:
     - media.type.image
   module:
     - image
+_core:
+  default_config_hash: cxcrc8s2fDRjGH8-4waUZr6YJaXuxuDq-4bBppcUq_w
 id: media.image.field_media_image
 field_name: field_media_image
 entity_type: media
@@ -20,7 +22,7 @@ settings:
   handler: 'default:file'
   handler_settings: {  }
   file_directory: media/images
-  file_extensions: 'png gif jpg jpeg'
+  file_extensions: 'png gif jpg jpeg svg webp'
   max_filesize: ''
   max_resolution: ''
   min_resolution: ''
