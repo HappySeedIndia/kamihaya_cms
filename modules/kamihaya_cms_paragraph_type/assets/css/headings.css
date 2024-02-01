@@ -274,3 +274,12 @@
   border-bottom: 2px solid #ccc;
   background-color:#f8f8f8;
 }
+
+.paragraph--type--headings h2:after,
+.paragraph--type--headings h3:after {
+  display: none;
+}
+
+.paragraph--type--headings h4:before {
+  top: unset;
+}

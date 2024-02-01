@@ -71,3 +71,26 @@ function kamihaya_cms_media_type_update_10003() {
     'field.field.media.document.field_document_type.yml',
   ], 'ja');
 }
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_media_type_update_10004() {
+  $fields = [
+    'field.field.media.document.field_thumbnail_image',
+    'field.field.media.image.field_media_image',
+  ];
+  foreach($fields as $field) {
+    if ($field_config = \Drupal::configFactory()->getEditable($field)) {
+      $value = explode(' ', $field_config->get('settings.file_extensions'));
+      if (!in_array('svg', $value)) {
+        $value[] = 'svg';
+      }
+      if (!in_array('webp', $value)) {
+        $value[] = 'webp';
+      }
+      $field_config->set('settings.file_extensions', implode(' ', $value));
+      $field_config->save(TRUE);
+    }
+  }
+}
