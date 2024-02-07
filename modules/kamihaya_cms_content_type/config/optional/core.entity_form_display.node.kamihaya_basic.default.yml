@@ -5,6 +5,7 @@ dependencies:
     - field.field.node.kamihaya_basic.field_body
     - field.field.node.kamihaya_basic.field_category
     - field.field.node.kamihaya_basic.field_description
+    - field.field.node.kamihaya_basic.field_meta_tag
     - field.field.node.kamihaya_basic.field_publish_date
     - field.field.node.kamihaya_basic.field_thumbnail_image
     - node.type.kamihaya_basic
@@ -12,12 +13,11 @@ dependencies:
     - datetime
     - layout_paragraphs
     - media_library
+    - metatag
     - path
     - scheduler
     - shs
     - text
-_core:
-  default_config_hash: s1OgDmj1IwSEx-pDBywnR33Dkx1Jx1DxcGlvlZkD9MQ
 id: node.kamihaya_basic.default
 targetEntityType: node
 bundle: kamihaya_basic
@@ -56,6 +56,14 @@ content:
     settings:
       rows: 5
       placeholder: ''
+    third_party_settings: {  }
+  field_meta_tag:
+    type: metatag_firehose
+    weight: 51
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
     third_party_settings: {  }
   field_publish_date:
     type: datetime_default

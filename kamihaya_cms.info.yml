@@ -59,6 +59,7 @@ install:
   - password_policy_length
   - password_policy_username
   - quick_node_clone
+  - redirect
   - scheduler
   - shs
   - svg_image

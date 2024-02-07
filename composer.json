@@ -121,7 +121,7 @@
         "drupal/quick_node_clone": "^1.16",
         "drupal/recaptcha": "^3.2",
         "drupal/recreate_block_content": "^3.0",
-        "drupal/redirect": "^1.8",
+        "drupal/redirect": "^1.9",
         "drupal/responsive_preview": "^2.1",
         "drupal/scheduled_transitions": "^2.3",
         "drupal/scheduler": "^2.0",
