@@ -1,17 +1,3 @@
 <?php
 
 use Drupal\Component\Serialization\Yaml;
-
-/**
- * Implements hook_install().
- */
-function kamihaya_cms_contentserv_api_install() {
-  _kamihaya_cms_common_change_configs('kamihaya_cms_contentserv_api_',[
-    'field.field.commerce_product.default.field_contentserv_id.yml',
-  ], 'install');
-
-  _kamihaya_cms_common_change_configs('kamihaya_cms_contentserv_api', [
-    'core.entity_form_display.commerce_product.default.default.yml',
-    'core.entity_view_display.commerce_product.default.default.yml',
-  ], 'optional');
-}
