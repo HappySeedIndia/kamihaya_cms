@@ -81,10 +81,14 @@ function kamihaya_cms_content_type_update_10002() {
  * Update configs.
  */
 function kamihaya_cms_content_type_update_10003() {
-  $configs = [
-    'metatag.metatag_defaults.node__kamihaya_basic.yml',
-    'metatag.metatag_defaults.node__kamihaya_news.yml',
-  ];
+  $config_factory = \Drupal::configFactory();
+  $configs = [];
+  if (empty($config_factory->loadMultiple(['metatag.metatag_defaults.node__kamihaya_basic']))) {
+    $configs[] = 'metatag.metatag_defaults.node__kamihaya_basic.yml';
+  }
+  if (empty($config_factory->loadMultiple(['metatag.metatag_defaults.node__kamihaya_news']))) {
+    $configs[] = 'metatag.metatag_defaults.node__kamihaya_news.yml';
+  }
   $field_config = FieldStorageConfig::loadByName('node', 'field_meta_tag');
   if (!$field_config) {
     $configs = array_merge($configs, [
