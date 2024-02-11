@@ -106,11 +106,11 @@ function kamihaya_cms_content_type_update_10003() {
   $bundles = ['kamihaya_basic', 'kamihaya_news'];
   $field_config = FieldStorageConfig::loadByName('node', 'field_meta_tag');
 
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+
   foreach($bundles as $bundle) {
     $field = FieldConfig::loadByName('node', $bundle, 'field_meta_tag');
-
-    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-    $display_repository = \Drupal::service('entity_display.repository');
 
     $display_repository->getFormDisplay('node', $bundle)
       ->setComponent('field_meta_tag', [
