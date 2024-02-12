@@ -10,6 +10,7 @@ dependencies:
   - drupal:taxonomy
   - drupal:views
   - layout_paragraphs:layout_paragraphs
+  - metatag:metatag
   - paragraphs:paragraphs
   - pathauto:pathauto
   - scheduler:scheduler

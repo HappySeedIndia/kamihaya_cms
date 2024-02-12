@@ -1,6 +1,8 @@
 <?php
 
 use Drupal\Component\Serialization\Yaml;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Update configs.
@@ -73,4 +75,60 @@ function kamihaya_cms_content_type_update_10002() {
   _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', [
     'views.view.news_list.yml',
   ], 'optional');
+}
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_content_type_update_10003() {
+  $config_factory = \Drupal::configFactory();
+  $configs = [];
+  if (empty($config_factory->loadMultiple(['metatag.metatag_defaults.node__kamihaya_basic']))) {
+    $configs[] = 'metatag.metatag_defaults.node__kamihaya_basic.yml';
+  }
+  if (empty($config_factory->loadMultiple(['metatag.metatag_defaults.node__kamihaya_news']))) {
+    $configs[] = 'metatag.metatag_defaults.node__kamihaya_news.yml';
+  }
+  $field_config = FieldStorageConfig::loadByName('node', 'field_meta_tag');
+  if (!$field_config) {
+    $configs = array_merge($configs, [
+      'field.storage.node.field_meta_tag.yml',
+      'field.field.node.kamihaya_basic.field_meta_tag.yml',
+      'field.field.node.kamihaya_news.field_meta_tag.yml',
+    ]);
+  }
+  _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', $configs, 'optional');
+
+  if ($field_config) {
+    return;
+  }
+
+  $bundles = ['kamihaya_basic', 'kamihaya_news'];
+  $field_config = FieldStorageConfig::loadByName('node', 'field_meta_tag');
+
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+
+  foreach($bundles as $bundle) {
+    $field = FieldConfig::loadByName('node', $bundle, 'field_meta_tag');
+
+    $display_repository->getFormDisplay('node', $bundle)
+      ->setComponent('field_meta_tag', [
+        'type' => 'metatag_firehose',
+      ])
+      ->save();
+
+    $display_repository->getViewDisplay('node', $bundle)
+      ->setComponent('field_meta_tag', [
+        'label' => 'hidden',
+        'type' => 'metatag_empty_formatter',
+      ])
+      ->save();
+  }
+
+  _kamihaya_cms_common_save_translation_configs([
+    'field.field.node.kamihaya_basic.field_meta_tag.yml',
+    'field.field.node.kamihaya_news.field_meta_tag.yml',
+  ], 'ja');
+
 }

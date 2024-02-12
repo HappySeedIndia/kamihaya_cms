@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: node__kamihaya_news
+label: 'Content: Kamihaya news'
+tags:
+  description: '[node:field_description]'
