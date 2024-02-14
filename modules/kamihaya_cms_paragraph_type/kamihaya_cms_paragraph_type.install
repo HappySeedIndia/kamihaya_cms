@@ -155,8 +155,7 @@ function kamihaya_cms_paragraph_type_update_10003() {
     'field.field.paragraph.slider_item.field_mobile_image',
     'field.field.paragraph.slider_item.field_slider_image',
   ];
-  if ($field_storage = FieldStorageConfig::loadByName('node', 'field_meta_tag')) {
-  }
+
   foreach($fields as $field) {
     if ($field_config = \Drupal::configFactory()->getEditable($field)) {
       $value = explode(' ', $field_config->get('settings.file_extensions'));
