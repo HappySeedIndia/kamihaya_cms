@@ -1,6 +1,9 @@
 <?php
 
 use Drupal\Component\Serialization\Yaml;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+
 
 /**
  * Update configs.
@@ -152,6 +155,8 @@ function kamihaya_cms_paragraph_type_update_10003() {
     'field.field.paragraph.slider_item.field_mobile_image',
     'field.field.paragraph.slider_item.field_slider_image',
   ];
+  if ($field_storage = FieldStorageConfig::loadByName('node', 'field_meta_tag')) {
+  }
   foreach($fields as $field) {
     if ($field_config = \Drupal::configFactory()->getEditable($field)) {
       $value = explode(' ', $field_config->get('settings.file_extensions'));
@@ -165,4 +170,66 @@ function kamihaya_cms_paragraph_type_update_10003() {
       $field_config->save(TRUE);
     }
   }
+}
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_paragraph_type_update_10004() {
+  $config_factory = \Drupal::configFactory();
+  $configs = [];
+  $field_config = FieldStorageConfig::loadByName('paragraph', 'field_image_description');
+  if (!$field_config) {
+    $configs = array_merge($configs, [
+      'field.storage.paragraph.field_image_description.yml',
+      'field.field.paragraph.image_link.field_image_description.yml',
+    ]);
+  }
+  $field_config = FieldStorageConfig::loadByName('paragraph', 'field_image_desc_text_size');
+  if (!$field_config) {
+    $configs = array_merge($configs, [
+      'field.storage.paragraph.field_image_desc_text_size.yml',
+      'field.field.paragraph.image_link.field_image_desc_text_size.yml',
+    ]);
+  }
+  _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $configs, 'install');
+
+  if ($field_config) {
+    return;
+  }
+
+  $fields = [
+    'field_image_description' => [
+      'form' => 'string_textarea',
+      'view' => 'basic_string',
+    ],
+    'field_image_desc_text_size' => [
+      'form' => 'number',
+      'view' => 'number_integer',
+    ],
+  ];
+
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+
+  foreach($fields as $field => $type) {
+    $display_repository->getFormDisplay('paragraph', 'image_link')
+      ->setComponent($field, [
+        'type' => $type['form'],
+      ])
+      ->save();
+
+    $display_repository->getViewDisplay('paragraph', 'image_link')
+      ->setComponent($field, [
+        'label' => 'hidden',
+        'type' => $type['view'],
+      ])
+      ->save();
+  }
+
+  _kamihaya_cms_common_save_translation_configs([
+    'field.field.paragraph.image_link.field_image_description.yml',
+    'field.field.paragraph.image_link.field_meta_tag.yml',
+  ], 'ja');
+
 }

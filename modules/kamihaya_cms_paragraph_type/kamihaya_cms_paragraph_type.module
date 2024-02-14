@@ -64,6 +64,12 @@ function kamihaya_cms_paragraph_type_theme() {
     'paragraph__file_download' => [
       'base hook' => 'paragraph',
     ],
+    'paragraph__tab' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__tab_item' => [
+      'base hook' => 'paragraph',
+    ],
   ];
 }
 

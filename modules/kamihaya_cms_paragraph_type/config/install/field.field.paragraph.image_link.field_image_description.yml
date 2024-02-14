@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_image_description
+    - paragraphs.paragraphs_type.image_link
+id: paragraph.image_link.field_image_description
+field_name: field_image_description
+entity_type: paragraph
+bundle: image_link
+label: 'Image description'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long
