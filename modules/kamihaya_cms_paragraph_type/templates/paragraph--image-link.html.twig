@@ -88,7 +88,12 @@
             %}
             <div class="mask">
               <div class="{{ text_classes|join(' ') }}" style="{{ style|join(' ') }}">
-                <p>{{ content.field_image_text }}</p>
+                <div><p>{{ content.field_image_text }}</p>
+                  {% if content.field_image_description|render %}
+                    {% set size = paragraph.field_image_desc_text_size.0.value %}
+                    <p{% if size %} style="font-size: {{ size }}px;"{% endif %}>{{ content.field_image_description }}</p>
+                  {% endif %}
+                </div>
               </div>
             </div>
           {% endif %}
