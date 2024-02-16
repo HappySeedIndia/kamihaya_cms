@@ -1,0 +1,21 @@
+.site-logo img {
+  height: 40px;
+  width: auto;
+  position: relative;
+}
+
+.heading-no-border::after {
+  display: none;
+}
+h2.text-center:after {
+  margin: 0 auto;
+}
+.layout.layout--twocol .paragraph--type--image img {
+  max-width: 100%;
+}
+
+@media (min-width: 992px) {
+  #block-kamihaya-digitalagency-footerleft ul {
+    float: right;
+  }
+}

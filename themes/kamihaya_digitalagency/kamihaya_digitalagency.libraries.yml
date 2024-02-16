@@ -9,6 +9,7 @@ global-styling:
       css/components/common.css: {weight: -10}
       css/components/layout.css: {}
       css/components/paragraph.css: {}
+      css/common.css: {}
   js:
     js/menu.js: {}
   dependencies:
