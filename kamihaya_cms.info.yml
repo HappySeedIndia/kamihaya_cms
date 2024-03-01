@@ -44,6 +44,7 @@ install:
   - colorbutton
   - color_field
   - content_access
+  - editoria11y
   - entity_browser
   - entity_reference_revisions
   - fontawesome
