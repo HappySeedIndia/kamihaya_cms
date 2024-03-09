@@ -232,3 +232,76 @@ function kamihaya_cms_paragraph_type_update_10004() {
   ], 'ja');
 
 }
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_paragraph_type_update_10005() {
+  $config_factory = \Drupal::configFactory();
+  $storage_configs = [];
+  $field_configs = [];
+  $fields = [
+    'image' => [
+      'field_width' => 'number',
+      'field_width_unit' => 'options_select',
+      'field_height' => 'number',
+      'field_height_unit' => 'options_select',
+    ],
+    'image_link' => [
+      'field_width' => 'number',
+      'field_width_unit' => 'options_select',
+      'field_mobile_height' => 'number',
+    ],
+  ];
+
+  foreach($fields as $type => $para_fields) {
+    foreach($para_fields as $field => $field_type) {
+      $field_config = FieldStorageConfig::loadByName('paragraph', $field);
+      if ($field_config) {
+        continue;
+      }
+      if (!in_array("field.storage.paragraph.{$field}.yml", $storage_configs)) {
+        $storage_configs[] = "field.storage.paragraph.{$field}.yml";
+      }
+      $field_configs[] = "field.field.paragraph.{$type}.{$field}.yml";
+    }
+  }
+  $comfigs = array_merge($storage_configs, $field_configs);
+  _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $comfigs, 'install');
+
+  if (empty($comfigs)) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+
+  foreach($fields as $type => $para_fields) {
+    foreach($para_fields as $field => $field_type) {
+      $display_repository->getFormDisplay('paragraph', $type)
+        ->setComponent($field, [
+          'type' => $field_type,
+         ])
+        ->save();
+
+    $display = $field_type == 'number' ? 'number_integer' : 'list_default';
+    $display_repository->getViewDisplay('paragraph', $type)
+      ->setComponent($field, [
+        'label' => 'hidden',
+        'type' => $display,
+      ])
+      ->save();
+    }
+  }
+
+  _kamihaya_cms_common_save_translation_configs([
+    'field.field.paragraph.image.field_width.yml',
+    'field.field.paragraph.image.field_width_unit.yml',
+    'field.field.paragraph.image.field_height.yml',
+    'field.field.paragraph.image.field_height_unit.yml',
+    'field.field.paragraph.image_link.field_width.yml',
+    'field.field.paragraph.image_link.field_width_unit.yml',
+    'field.field.paragraph.image_link.field_mobile_height.yml',
+  ], 'ja');
+
+}

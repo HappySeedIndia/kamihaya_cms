@@ -51,7 +51,27 @@
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
     {% block content %}
-      {{ content }}
+      {% set height = paragraph.field_height.0.value %}
+      {% set height_unit = paragraph.field_height_unit.0.value %}
+      {% set width = paragraph.field_width.0.value %}
+      {% set width_unit = paragraph.field_width_unit.0.value %}
+      {%
+        set style = [
+          width ? 'width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;') : 'width: auto;',
+          height ? 'height: ' ~ height ~ (height_unit ? height_unit ~ ';' : 'px;') : 'height: auto;',
+        ]
+      %}
+      {% if width_unit == 'vw' %}
+        {%
+          set style = style|merge([
+            'margin-left: calc(-50vw + 50%);',
+            'max-width: none;',
+          ])
+        %}
+      {% endif %}
+      {# Image url #}
+      {% set imageUrl = file_url(content.field_image.0['#item'].entity.uri.value) %}
+      <img src="{{ imageUrl }}" alt="{{ content.field_image.0['#item'].alt }}"{% if style %} style="{{ style|join(' ') }}" {% endif %}/>
     {% endblock %}
   </div>
 {% endblock paragraph %}
