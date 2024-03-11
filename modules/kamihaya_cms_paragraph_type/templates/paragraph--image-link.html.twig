@@ -50,22 +50,45 @@
 {% block paragraph %}
   {% block content %}
     <div{{attributes.addClass(classes)}}>
-    {# Image link #}
-    {% set imageLink = content.field_image_link.0['#url'] %}
+      {# Image link #}
+      {% set imageLink = content.field_image_link.0['#url'] %}
 
-    {# Image url #}
-    {% set imageUrl = file_url(content.field_image.0['#item'].entity.uri.value) %}
+      {# Image url #}
+      {% set imageUrl = file_url(content.field_image.0['#item'].entity.uri.value) %}
 
-      <div class="bg-image">
+      {% set width = paragraph.field_width.0.value %}
+      {% set width_unit = paragraph.field_width_unit.0.value %}
+      {% set mobile_height = paragraph.field_mobile_height.0.value %}
+
+      {% if width %}
+        {% set image_style = ['width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;')] %}
+          {% if width_unit == 'vw' %}
+            {%
+              set image_style = image_style|merge([
+                'margin-left: calc(-50vw + 50%);',
+                'max-width: none;',
+             ])
+          %}
+        {% endif %}
+      {% endif %}
+      {% if mobile_height %}
+        <style>
+          @media(max-width: 767px) {
+          .paragraph--type--image-link img {
+            min-height: {{ mobile_height}}px;
+            object-fit: cover;
+          }
+          }
+        </style>
+      {% endif %}
+      <div class="bg-image" {% if image_style %} style="{{ image_style|join(' ') }}" {% endif %}>
         {% if content.field_image_link|render %}
           <a class="image-link" href="{{ imageLink }}" target="{{ content.field_image_link[0]['#url'].external ? '_blank' : '_self' }}">
         {% endif %}
 
           {# Image #}
           {% if content.field_image|render %}
-            {# <div class="image-mask"> #}
-            <img src="{{ imageUrl }}" alt="{{ content.field_image.alt }}" class="w-100" />
-            {# </div> #}
+            <img src="{{ imageUrl }}" alt="{{ content.field_image.0['#item'].alt }}" class="w-100"/>
           {% endif %}
 
           {# Text #}
