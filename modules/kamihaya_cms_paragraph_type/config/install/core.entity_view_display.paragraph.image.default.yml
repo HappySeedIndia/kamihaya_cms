@@ -2,15 +2,36 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.image.field_height
+    - field.field.paragraph.image.field_height_unit
     - field.field.paragraph.image.field_image
+    - field.field.paragraph.image.field_width
+    - field.field.paragraph.image.field_width_unit
     - paragraphs.paragraphs_type.image
   module:
-    - image
+    - options
+    - svg_image
 id: paragraph.image.default
 targetEntityType: paragraph
 bundle: image
 mode: default
 content:
+  field_height:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_height_unit:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
   field_image:
     type: image
     label: hidden
@@ -19,7 +40,27 @@ content:
       image_style: ''
       image_loading:
         attribute: lazy
+      svg_attributes:
+        width: null
+        height: null
+      svg_render_as_image: true
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_width:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_width_unit:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
     region: content
 hidden: {  }

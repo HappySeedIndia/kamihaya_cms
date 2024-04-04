@@ -11,12 +11,15 @@ dependencies:
     - field.field.paragraph.image_link.field_image_text_halign
     - field.field.paragraph.image_link.field_image_text_size
     - field.field.paragraph.image_link.field_image_text_valign
+    - field.field.paragraph.image_link.field_mobile_height
+    - field.field.paragraph.image_link.field_width
+    - field.field.paragraph.image_link.field_width_unit
     - paragraphs.paragraphs_type.image_link
   module:
     - color_field
-    - image
     - link
     - options
+    - svg_image
 id: paragraph.image_link.default
 targetEntityType: paragraph
 bundle: image_link
@@ -30,6 +33,10 @@ content:
       image_style: ''
       image_loading:
         attribute: lazy
+      svg_attributes:
+        width: null
+        height: null
+      svg_render_as_image: true
     third_party_settings: {  }
     weight: 0
     region: content
@@ -96,6 +103,31 @@ content:
     region: content
   field_image_text_valign:
     type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_mobile_height:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_width:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_width_unit:
+    type: list_default
     label: hidden
     settings: {  }
     third_party_settings: {  }

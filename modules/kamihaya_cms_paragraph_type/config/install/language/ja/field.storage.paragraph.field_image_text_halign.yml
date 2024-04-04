@@ -2,7 +2,7 @@ settings:
   allowed_values:
     -
       value: left
-      label: 右
+      label: 左
     -
       value: center
       label: 中央
