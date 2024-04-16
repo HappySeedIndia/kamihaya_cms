@@ -117,6 +117,7 @@
         "drupal/miniorange_saml": "^3.0",
         "drupal/moderation_dashboard": "^2.1",
         "drupal/new_relic_rpm": "^2.1",
+        "drupal/openai": "^1.0@beta",
         "drupal/paragraphs": "^1.15",
         "drupal/password_policy": "^4.0",
         "drupal/pathauto": "^1.11",
