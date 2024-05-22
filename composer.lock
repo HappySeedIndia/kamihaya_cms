@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff3aed4cf17a8e915aad099e4f291d68",
+    "content-hash": "9f41f8f74b5e5144398bf77f9fbeeeae",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4659,6 +4659,50 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/new_relic_rpm",
                 "issues": "https://drupal.org/project/issues/new_relic_rpm"
+            }
+        },
+        {
+            "name": "drupal/open_ai_metadata",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/open_ai_metadata.git",
+                "reference": "2.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/open_ai_metadata-2.0.0.zip",
+                "reference": "2.0.0",
+                "shasum": "09ebdcc364e7bc08e5b8738f073c04869afe87cc"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.0",
+                    "datestamp": "1702305116",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "vinaymahale",
+                    "homepage": "https://www.drupal.org/user/3680816"
+                }
+            ],
+            "description": "Provides integration with OpenAI to generate meta data for content types.",
+            "homepage": "https://www.drupal.org/project/open_ai_metadata",
+            "support": {
+                "source": "https://git.drupalcode.org/project/open_ai_metadata"
             }
         },
         {
