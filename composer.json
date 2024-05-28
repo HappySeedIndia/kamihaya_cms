@@ -90,6 +90,7 @@
         "drupal-ckeditor-libraries-group/panelbutton": "^4.22",
         "drupal/acquia_dam": "^1.0",
         "drupal/address": "^1.12",
+        "drupal/addtoany": "^2.0",
         "drupal/admin_toolbar": "^3.4",
         "drupal/back_to_top": "^3.0",
         "drupal/better_exposed_filters": "^6.0",
