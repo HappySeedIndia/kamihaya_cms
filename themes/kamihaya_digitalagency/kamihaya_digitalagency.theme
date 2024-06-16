@@ -79,6 +79,16 @@ function kamihaya_digitalagency_theme_suggestions_alter(array &$suggestions, arr
     $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
     $suggestions[] = 'user__' . $sanitized_view_mode;
   }
+  if ($hook === 'node'
+    && !empty($variables['elements']['#node'])
+    && strpos($variables['elements']['#node']->getType(), 'kamihaya') === 0) {
+    $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+    $suggestions[] = 'node__kamihaya';
+    $suggestions[] = "node__{$variables['elements']['#node']->getType()}";
+    $suggestions[] = "node__$sanitized_view_mode";
+    $suggestions[] = "node__kamihaya__$sanitized_view_mode";
+    $suggestions[] = "node__{$variables['elements']['#node']->getType()}__$sanitized_view_mode";
+  }
 }
 
 /**

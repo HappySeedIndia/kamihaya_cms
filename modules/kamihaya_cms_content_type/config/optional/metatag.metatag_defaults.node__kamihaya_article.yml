@@ -1,0 +1,8 @@
+uuid: 66425597-42d1-4b4e-86cc-fb1036b3efba
+langcode: ja
+status: true
+dependencies: {  }
+id: node__kamihaya_article
+label: 'コンテンツ: Kamihaya記事'
+tags:
+  description: '[node:field_description]'

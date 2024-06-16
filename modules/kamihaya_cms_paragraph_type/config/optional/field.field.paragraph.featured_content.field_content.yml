@@ -3,7 +3,9 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_content
+    - node.type.kamihaya_article
     - node.type.kamihaya_basic
+    - node.type.kamihaya_news
     - paragraphs.paragraphs_type.featured_content
 id: paragraph.featured_content.field_content
 field_name: field_content
@@ -19,11 +21,12 @@ settings:
   handler: 'default:node'
   handler_settings:
     target_bundles:
+      kamihaya_article: kamihaya_article
       kamihaya_basic: kamihaya_basic
       kamihaya_news: kamihaya_news
     sort:
       field: _none
       direction: ASC
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: kamihaya_basic
 field_type: entity_reference

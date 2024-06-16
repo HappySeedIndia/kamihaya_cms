@@ -3,6 +3,8 @@
 use Drupal\Component\Serialization\Yaml;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\Entity\NodeType;
+use Drupal\taxonomy\Entity\Vocabulary;
 
 /**
  * Update configs.
@@ -131,4 +133,49 @@ function kamihaya_cms_content_type_update_10003() {
     'field.field.node.kamihaya_news.field_meta_tag.yml',
   ], 'ja');
 
+}
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_content_type_update_10004() {
+  if (!empty(NodeType::load('kamihaya_article'))) {
+    return;
+  }
+
+  if (empty(Vocabulary::load('article_category'))) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', [
+      'taxonomy.vocabulary.article_category.yml',
+      'language.content_settings.taxonomy_term.article_category.yml',
+      'core.entity_form_display.taxonomy_term.article_category.default.yml',
+    ], 'install');
+  }
+  _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', [
+    'node.type.kamihaya_article.yml',
+    'language.content_settings.node.kamihaya_article.yml',
+    'field.field.node.kamihaya_article.field_body.yml',
+    'field.field.node.kamihaya_article.field_category.yml',
+    'field.field.node.kamihaya_article.field_description.yml',
+    'field.field.node.kamihaya_article.field_meta_tag.yml',
+    'field.field.node.kamihaya_article.field_publish_date.yml',
+    'field.field.node.kamihaya_article.field_thumbnail_image.yml',
+    'core.base_field_override.node.kamihaya_article.promote.yml',
+    'core.entity_form_display.node.kamihaya_article.default.yml',
+    'core.entity_view_display.node.kamihaya_article.default.yml',
+    'core.entity_view_display.node.kamihaya_article.list_with_thumbnail.yml',
+    'core.entity_view_display.node.kamihaya_article.pick_up.yml',
+    'pathauto.pattern.kamihaya_article_page.yml',
+    'metatag.metatag_defaults.node__kamihaya_article.yml',
+  ], 'optional');
+
+  _kamihaya_cms_common_save_translation_configs([
+    'taxonomy.vocabulary.news_category.yml',
+    'node.type.kamihaya_article.yml',
+    'field.field.node.kamihaya_article.field_body.yml',
+    'field.field.node.kamihaya_article.field_category.yml',
+    'field.field.node.kamihaya_article.field_description.yml',
+    'field.field.node.kamihaya_article.field_meta_tag.yml',
+    'field.field.node.kamihaya_article.field_publish_date.yml',
+    'field.field.node.kamihaya_article.field_thumbnail_image.yml',
+  ], 'ja');
 }

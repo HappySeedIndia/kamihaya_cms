@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: kamihaya_article_page
+label: 'Kamihaya article page'
+type: 'canonical_entities:node'
+pattern: 'articles/[node:nid]'
+selection_criteria:
+  efc60261-ec1f-41bc-8446-8006818c770f:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: efc60261-ec1f-41bc-8446-8006818c770f
+    context_mapping:
+      node: node
+    bundles:
+      kamihaya_article: kamihaya_article
+selection_logic: and
+weight: -5
+relationships: {  }
