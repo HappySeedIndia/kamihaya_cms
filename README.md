@@ -29,6 +29,8 @@ If you're using [DDEV](https://ddev.com/) for local development, you can quickly
 - Workflow
 - Integration with Deel API
 - TFA module
+- Integration with ChatGPT
+- Social share using AddtoAny module.
 
 ## Want to help contribute?
 
