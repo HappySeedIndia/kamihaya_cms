@@ -1,14 +1,24 @@
 <?php
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Template\Attribute;
+use Drupal\kamihaya_digitalagency\KamihayaSettingsManager;
 use Drupal\user\Entity\User;
 
 /**
  * @file
  * Kamihaya デジタル庁デザインシステム準拠テーマ theme file.
  */
+
+ /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function kamihaya_digitalagency_form_system_theme_settings_alter(&$form, FormStateInterface $form_state, $form_id = NULL) {
+  $settings_manager = new KamihayaSettingsManager(\Drupal::service('theme.manager'));
+  return $settings_manager->themeSettingsAlter($form, $form_state, $form_id);
+}
 
 /**
  * Implements hook_preprocess_pager().
@@ -78,6 +88,16 @@ function kamihaya_digitalagency_theme_suggestions_alter(array &$suggestions, arr
   if ($hook === 'user') {
     $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
     $suggestions[] = 'user__' . $sanitized_view_mode;
+  }
+  if ($hook === 'node'
+    && !empty($variables['elements']['#node'])
+    && strpos($variables['elements']['#node']->getType(), 'kamihaya') === 0) {
+    $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+    $suggestions[] = 'node__kamihaya';
+    $suggestions[] = "node__{$variables['elements']['#node']->getType()}";
+    $suggestions[] = "node__$sanitized_view_mode";
+    $suggestions[] = "node__kamihaya__$sanitized_view_mode";
+    $suggestions[] = "node__{$variables['elements']['#node']->getType()}__$sanitized_view_mode";
   }
 }
 
