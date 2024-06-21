@@ -1,14 +1,24 @@
 <?php
 
-use Drupal\menu_link_content\MenuLinkContentInterface;
-use Drupal\Core\Url;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
+use Drupal\kamihaya_digitalagency\KamihayaSettingsManager;
+use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\user\Entity\User;
 
 /**
  * @file
  * Kamihaya デジタル庁デザインシステム準拠テーマ theme file.
  */
+
+ /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function kamihaya_digitalagency_form_system_theme_settings_alter(&$form, FormStateInterface $form_state, $form_id = NULL) {
+  $settings_manager = new KamihayaSettingsManager(\Drupal::service('theme.manager'));
+  return $settings_manager->themeSettingsAlter($form, $form_state, $form_id);
+}
 
 /**
  * Implements hook_preprocess_pager().
