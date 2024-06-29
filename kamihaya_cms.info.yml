@@ -39,6 +39,7 @@ install:
   - admin_toolbar
   - admin_toolbar_tools
   - better_exposed_filters
+  - block_field
   - ckeditor_bs_grid
   - ckeditor_font
   - colorbutton
@@ -66,6 +67,7 @@ install:
   - svg_image
   - string_field_formatter
   - tb_megamenu
+  - viewsreference
   - webform
   - webform_ui
   - gin_toolbar

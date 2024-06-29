@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_body
-    - node.type.kamihaya_basic
+    - node.type.kamihaya_article
     - paragraphs.paragraphs_type.accordion
     - paragraphs.paragraphs_type.block
     - paragraphs.paragraphs_type.divider
@@ -29,12 +29,10 @@ dependencies:
     - paragraphs.paragraphs_type.wysiwyg_editor
   module:
     - entity_reference_revisions
-_core:
-  default_config_hash: DlvJmh_2tmvL7Q_9Bvg1C1f3hcg2-26t6aPIlH9EHuI
-id: node.kamihaya_basic.field_body
+id: node.kamihaya_article.field_body
 field_name: field_body
 entity_type: node
-bundle: kamihaya_basic
+bundle: kamihaya_article
 label: Body
 description: ''
 required: false

@@ -403,6 +403,10 @@ button.link:focus {
   display: none;
 }
 
+.path-admin [type=checkbox] {
+  display: inline-block;
+}
+
 /* Actions */
 .form-actions {
   clear: both;
@@ -1397,6 +1401,14 @@ h4:before {
   top: 50%;
   transform: translateY(-50%);
   left: 0;
+}
+
+.text-light h4:before {
+  background: rgba(var(--bs-light-rgb), var(--bs-text-opacity));
+}
+
+.text-dark h4:before {
+  background: rgba(var(--bs-dark-rgb), var(--bs-text-opacity));
 }
 
 h2.accordion-header::after {
