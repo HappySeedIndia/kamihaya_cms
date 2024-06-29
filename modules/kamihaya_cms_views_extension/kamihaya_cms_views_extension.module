@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Database\DatabaseExceptionWrapper;
+use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\views\Plugin\views\pager\Full;
 use Drupal\views\Plugin\views\pager\Mini;
 use Drupal\views\Views;
@@ -31,6 +32,10 @@ function kamihaya_cms_views_extension_views_post_execute(ViewExecutable $view) {
   }
 
   $count_query = $view->build_info['count_query'];
+
+  if (!($count_query instanceof SelectInterface)) {
+    return;
+  }
   $count_query->addMetaData('view', $view);
 
   if (empty($view->query->options['disable_sql_rewrite'])) {

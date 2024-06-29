@@ -3,7 +3,7 @@
 use Drupal\Component\Serialization\Yaml;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-
+use Drupal\node\Entity\NodeType;
 
 /**
  * Update configs.
@@ -304,4 +304,22 @@ function kamihaya_cms_paragraph_type_update_10005() {
     'field.field.paragraph.image_link.field_mobile_height.yml',
   ], 'ja');
 
+}
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_paragraph_type_update_10006() {
+  if (empty(NodeType::load('kamihaya_article'))) {
+    return;
+  }
+  if ($field_config = \Drupal::configFactory()->getEditable('field.field.paragraph.featured_content.field_content')) {
+    $value = $field_config->get('settings.handler_settings.target_bundles');
+    if (in_array('kamihaya_article', $value)) {
+      return;
+    }
+    $value['kamihaya_article'] = 'kamihaya_article';
+    $field_config->set('settings.handler_settings.target_bundles', $value);
+    $field_config->save(TRUE);
+  }
 }
