@@ -29,7 +29,7 @@ id: paragraph.drawer.field_drawer_body
 field_name: field_drawer_body
 entity_type: paragraph
 bundle: drawer
-label: 本文
+label: Body
 description: ''
 required: false
 translatable: false

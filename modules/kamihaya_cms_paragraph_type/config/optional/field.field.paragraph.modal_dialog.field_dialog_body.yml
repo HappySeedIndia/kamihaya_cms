@@ -30,7 +30,7 @@ id: paragraph.modal_dialog.field_dialog_body
 field_name: field_dialog_body
 entity_type: paragraph
 bundle: modal_dialog
-label: 本文
+label: Body
 description: ''
 required: false
 translatable: false

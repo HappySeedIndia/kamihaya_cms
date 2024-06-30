@@ -30,7 +30,7 @@ id: paragraph.accordion_item.field_accordion_body
 field_name: field_accordion_body
 entity_type: paragraph
 bundle: accordion_item
-label: 本文
+label: Body
 description: ''
 required: true
 translatable: false
