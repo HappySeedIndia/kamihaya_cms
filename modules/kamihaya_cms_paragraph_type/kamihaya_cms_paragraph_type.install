@@ -350,4 +350,49 @@ function kamihaya_cms_paragraph_type_update_10007() {
 
   _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $configs, 'install');
   _kamihaya_cms_common_save_translation_configs($trans_configs, 'ja');
+
+  $paragraph_types = ['block', 'views'];
+  $paragraph_fields = [
+    'accordion_item' => 'field_accordion_body',
+    'drawer' => 'field_drawer_body',
+    'modal_dialog' => 'field_dialog_body',
+    'two_col_table_row' => 'field_row_data',
+  ];
+
+  foreach($paragraph_fields ?: [] as $paragraph_name => $field) {
+    $field_config = \Drupal::configFactory()->getEditable("field.field.paragraph.{$paragraph_name}.{$field}");
+    if (empty($field_config)) {
+      return;
+    }
+    $dependencies = $field_config->get('dependencies.config');
+    $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
+    $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
+    $max_weight = 0;
+    foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
+      if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
+        continue;
+      }
+      $max_weight = $target_bundle['weight'];
+    }
+
+    foreach($paragraph_types ?: [] as $paragraph_type) {
+      $paragraph = "paragraphs.paragraphs_type.{$paragraph_type}";
+      if (!empty($dependencies) && !in_array($paragraph, $dependencies)) {
+        $dependencies[] = $paragraph;
+      }
+      if (!empty($target_bundles) && !in_array($paragraph_type, $target_bundles)) {
+        $target_bundles[$paragraph_type] = $paragraph_type;
+      }
+      if (!empty($target_bundles_drag_drop) && !in_array($paragraph_type, $target_bundles_drag_drop)) {
+        $target_bundles_drag_drop[$paragraph_type] = [
+          'enabled' => TRUE,
+          'weight' => ++$max_weight,
+        ];
+      }
+    }
+    $field_config->set('dependencies.config', $dependencies);
+    $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
+    $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
+    $field_config->save(TRUE);
+  }
 }

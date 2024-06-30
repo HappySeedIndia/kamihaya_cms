@@ -279,18 +279,16 @@ function kamihaya_cms_content_type_update_10006() {
         $target_bundles[$paragraph_type] = $paragraph_type;
       }
       if (!in_array($paragraph_type, $target_bundles_drag_drop)) {
-        $target_bundles[$paragraph_type] = [
+        $target_bundles_drag_drop[$paragraph_type] = [
           'enabled' => TRUE,
           'weight' => ++$max_weight,
         ];
       }
-
-      $field_config->set('dependencies.config', $dependencies);
-      $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
-      $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
-      $field_config->save(TRUE);
-
     }
+    $field_config->set('dependencies.config', $dependencies);
+    $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
+    $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
+    $field_config->save(TRUE);
   }
 }
 
@@ -298,7 +296,7 @@ function kamihaya_cms_content_type_update_10006() {
  * Implements hook_theme().
  */
 function kamihaya_cms_content_type_update_dependencies() {
-  $dependencies['kamihaya_cms_content_type'][1006] = [
-   'kamihaya_cms_paragraph_type' => 1007,
+  $dependencies['kamihaya_cms_content_type'][10006] = [
+   'kamihaya_cms_paragraph_type' => 10007,
   ];
 }
