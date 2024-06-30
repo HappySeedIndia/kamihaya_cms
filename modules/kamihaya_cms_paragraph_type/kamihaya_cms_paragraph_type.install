@@ -1,9 +1,8 @@
 <?php
 
-use Drupal\Component\Serialization\Yaml;
-use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
+use Drupal\paragraphs\Entity\ParagraphsType;
 
 /**
  * Update configs.
@@ -322,4 +321,33 @@ function kamihaya_cms_paragraph_type_update_10006() {
     $field_config->set('settings.handler_settings.target_bundles', $value);
     $field_config->save(TRUE);
   }
+}
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_paragraph_type_update_10007() {
+  $configs = [];
+  $trans_configs = [];
+  if (empty(ParagraphsType::load('block'))) {
+    $configs[] = 'paragraphs.paragraphs_type.block.yml';
+    $configs[] = 'field.storage.paragraph.field_block.yml';
+    $configs[] = 'field.field.paragraph.block.field_block.yml';
+    $configs[] = 'core.entity_form_display.paragraph.block.default.yml';
+    $configs[] = 'core.entity_view_display.paragraph.block.default.yml';
+    $trans_configs[] = 'paragraphs.paragraphs_type.block.yml';
+    $trans_configs[] = 'field.field.paragraph.block.field_block.yml';
+  }
+  if (empty(ParagraphsType::load('views'))) {
+    $configs[] = 'paragraphs.paragraphs_type.views.yml';
+    $configs[] = 'field.storage.paragraph.field_views.yml';
+    $configs[] = 'field.field.paragraph.views.field_views.yml';
+    $configs[] = 'core.entity_form_display.paragraph.views.default.yml';
+    $configs[] = 'core.entity_view_display.paragraph.views.default.yml';
+    $trans_configs[] = 'paragraphs.paragraphs_type.views.yml';
+    $trans_configs[] = 'field.field.paragraph.views.field_views.yml';
+  }
+
+  _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $configs, 'install');
+  _kamihaya_cms_common_save_translation_configs($trans_configs, 'ja');
 }
