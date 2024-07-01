@@ -293,7 +293,7 @@ function kamihaya_cms_content_type_update_10006() {
 }
 
 /**
- * Implements hook_theme().
+ * Implements hook_update_dependencies().
  */
 function kamihaya_cms_content_type_update_dependencies() {
   $dependencies['kamihaya_cms_content_type'][10006] = [
