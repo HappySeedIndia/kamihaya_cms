@@ -105,3 +105,23 @@ function kamihaya_cms_update_10004() {
   $module_installer = \Drupal::service("module_installer");
   $module_installer->install($modules);
 }
+
+/**
+ * Install Block Field and Views Reference module.
+ */
+function kamihaya_cms_update_10005() {
+  $modules = [];
+  if (!\Drupal::moduleHandler()->moduleExists('block_field')) {
+    $modules[] = 'block_field';
+  }
+  if (!\Drupal::moduleHandler()->moduleExists('viewsreference')) {
+    $modules[] = 'viewsreference';
+  }
+
+  if (empty($modules)) {
+    return;
+  }
+  /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
+  $module_installer = \Drupal::service("module_installer");
+  $module_installer->install($modules);
+}

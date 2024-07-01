@@ -1,0 +1,34 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_views
+    - paragraphs.paragraphs_type.views
+  module:
+    - viewsreference
+id: paragraph.views.field_views
+field_name: field_views
+entity_type: paragraph
+bundle: views
+label: Views
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:view'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+  plugin_types:
+    block: block
+    embed: embed
+  preselect_views: {  }
+  enabled_settings:
+    pager: pager
+    argument: argument
+    limit: limit
+    offset: offset
+    title: title
+field_type: viewsreference

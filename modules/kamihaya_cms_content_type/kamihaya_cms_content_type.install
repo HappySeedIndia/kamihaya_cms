@@ -1,9 +1,9 @@
 <?php
 
-use Drupal\Component\Serialization\Yaml;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
+use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\taxonomy\Entity\Vocabulary;
 
 /**
@@ -178,4 +178,125 @@ function kamihaya_cms_content_type_update_10004() {
     'field.field.node.kamihaya_article.field_publish_date.yml',
     'field.field.node.kamihaya_article.field_thumbnail_image.yml',
   ], 'ja');
+}
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_content_type_update_10005() {
+  if (!empty(NodeType::load('kamihaya_article'))) {
+    return;
+  }
+
+  if (empty(Vocabulary::load('article_category'))) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', [
+      'taxonomy.vocabulary.article_category.yml',
+      'language.content_settings.taxonomy_term.article_category.yml',
+      'core.entity_form_display.taxonomy_term.article_category.default.yml',
+    ], 'install');
+  }
+  _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', [
+    'node.type.kamihaya_article.yml',
+    'language.content_settings.node.kamihaya_article.yml',
+    'field.field.node.kamihaya_article.field_body.yml',
+    'field.field.node.kamihaya_article.field_category.yml',
+    'field.field.node.kamihaya_article.field_description.yml',
+    'field.field.node.kamihaya_article.field_meta_tag.yml',
+    'field.field.node.kamihaya_article.field_publish_date.yml',
+    'field.field.node.kamihaya_article.field_thumbnail_image.yml',
+    'core.base_field_override.node.kamihaya_article.promote.yml',
+    'core.entity_form_display.node.kamihaya_article.default.yml',
+    'core.entity_view_display.node.kamihaya_article.default.yml',
+    'core.entity_view_display.node.kamihaya_article.list_with_thumbnail.yml',
+    'core.entity_view_display.node.kamihaya_article.pick_up.yml',
+    'pathauto.pattern.kamihaya_article_page.yml',
+    'metatag.metatag_defaults.node__kamihaya_article.yml',
+  ], 'optional');
+
+  _kamihaya_cms_common_save_translation_configs([
+    'taxonomy.vocabulary.news_category.yml',
+    'node.type.kamihaya_article.yml',
+    'field.field.node.kamihaya_article.field_body.yml',
+    'field.field.node.kamihaya_article.field_category.yml',
+    'field.field.node.kamihaya_article.field_description.yml',
+    'field.field.node.kamihaya_article.field_meta_tag.yml',
+    'field.field.node.kamihaya_article.field_publish_date.yml',
+    'field.field.node.kamihaya_article.field_thumbnail_image.yml',
+  ], 'ja');
+}
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_content_type_update_10006() {
+  $paragraph_types = [];
+  if (!empty(ParagraphsType::load('block'))) {
+    $paragraph_types[] = 'block';
+  }
+  if (!empty(ParagraphsType::load('views'))) {
+    $paragraph_types[] = 'views';
+  }
+  if (empty($paragraph_types)) {
+    return;
+  }
+
+  $content_types = [];
+  if (!empty(NodeType::load('kamihaya_article'))) {
+    $content_types[] = 'kamihaya_article';
+  }
+  if (!empty(NodeType::load('kamihaya_basic'))) {
+    $content_types[] = 'kamihaya_article';
+  }
+  if (!empty(NodeType::load('kamihaya_news'))) {
+    $content_types[] = 'kamihaya_article';
+  }
+  if (empty($content_types)) {
+    return;
+  }
+
+  foreach($content_types ?: [] as $content_type) {
+    $field_config = \Drupal::configFactory()->getEditable("field.field.node.{$content_type}.field_body");
+    if (empty($field_config)) {
+      return;
+    }
+    $dependencies = $field_config->get('dependencies.config');
+    $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
+    $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
+    $max_weight = 0;
+    foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
+      if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
+        continue;
+      }
+      $max_weight = $target_bundle['weight'];
+    }
+
+    foreach($paragraph_types ?: [] as $paragraph_type) {
+      $paragraph = "paragraphs.paragraphs_type.{$paragraph_type}";
+      if (!in_array($paragraph, $dependencies)) {
+        $dependencies[] = $paragraph;
+      }
+      if (!in_array($paragraph_type, $target_bundles)) {
+        $target_bundles[$paragraph_type] = $paragraph_type;
+      }
+      if (!in_array($paragraph_type, $target_bundles_drag_drop)) {
+        $target_bundles_drag_drop[$paragraph_type] = [
+          'enabled' => TRUE,
+          'weight' => ++$max_weight,
+        ];
+      }
+    }
+    $field_config->set('dependencies.config', $dependencies);
+    $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
+    $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
+    $field_config->save(TRUE);
+  }
+}
+
+/**
+ * Implements hook_update_dependencies().
+ */
+function kamihaya_cms_content_type_update_dependencies() {
+  $dependencies['kamihaya_cms_content_type'][10006] = [
+   'kamihaya_cms_paragraph_type' => 10007,
+  ];
 }

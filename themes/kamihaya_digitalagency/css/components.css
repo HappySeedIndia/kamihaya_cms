@@ -403,6 +403,10 @@ button.link:focus {
   display: none;
 }
 
+.path-admin [type=checkbox] {
+  display: inline-block;
+}
+
 /* Actions */
 .form-actions {
   clear: both;

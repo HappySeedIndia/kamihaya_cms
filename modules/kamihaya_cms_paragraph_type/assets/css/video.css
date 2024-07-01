@@ -4,9 +4,18 @@
   width: 100%;
   display: block;
 }
+
+.video-tag iframe {
+  width: 100%;
+  max-width: 840px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
 .video-media video {
   display: block;
-  width: 80%;
+  width: 100%;
+  max-width: 840px;
   margin: 0 auto 20px;
   height: auto;
 }
