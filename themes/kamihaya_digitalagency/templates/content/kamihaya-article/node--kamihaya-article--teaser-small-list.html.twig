@@ -1,0 +1,59 @@
+{#
+/**
+ * @file
+ * Teaser Style: List Small
+ */
+#}
+
+{%
+  set article_classes =
+  [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'teaser',
+    'teaser--item',
+    'teaser--item--small',
+    'align-items-center',
+    node.teaser_highlighted.getString() ? 'is--highlighted',
+  ]
+%}
+
+{# Teaser Markup #}
+{# ============= #}
+<article{{ attributes.addClass(article_classes) }}>
+
+  {# == Media == #}
+  {# =========== #}
+  <div class="teaser__media">
+    <div class="image image--circular teaser__image">
+      <a href="{{ url }}">
+        {{ content.field_thumbnail_image }}
+      </a>
+    </div>
+  </div>
+
+  <div{{ content_attributes.addClass('teaser__content') }}>
+
+    <header>
+      {# == Teaser title == #}
+      {# ================== #}
+      <h2 class="teaser__headline">
+        <a href="{{ url }}">{{ label }}</a>
+      </h2>
+    </header>
+
+    {# == Meta (author info) == #}
+    {# ======================== #}
+    <footer class="teaser__authored">
+      {% if show_post_date %}
+        <span class="date">{{ content.field_publish_date }}</span>
+      {% endif %}
+
+      {% if show_author_info %}
+        , <span class="author">{{ 'by'|t }} {{ author_name }}</span>
+      {% endif %}
+    </footer>
+
+  </div>
+</article>

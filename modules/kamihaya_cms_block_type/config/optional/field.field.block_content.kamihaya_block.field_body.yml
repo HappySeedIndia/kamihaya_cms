@@ -5,6 +5,7 @@ dependencies:
     - block_content.type.kamihaya_block
     - field.storage.block_content.field_body
     - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.block
     - paragraphs.paragraphs_type.divider
     - paragraphs.paragraphs_type.embed_tag
     - paragraphs.paragraphs_type.featured_content
@@ -22,6 +23,7 @@ dependencies:
     - paragraphs.paragraphs_type.slider
     - paragraphs.paragraphs_type.two_col_table
     - paragraphs.paragraphs_type.video
+    - paragraphs.paragraphs_type.views
     - paragraphs.paragraphs_type.wysiwyg_editor
   module:
     - entity_reference_revisions
@@ -58,6 +60,8 @@ settings:
       featured_content: featured_content
       two_col_table: two_col_table
       divider: divider
+      block: block
+      views: views
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -66,6 +70,9 @@ settings:
       accordion_item:
         weight: -39
         enabled: false
+      block:
+        weight: -50
+        enabled: true
       career:
         weight: -40
         enabled: false
@@ -158,6 +165,9 @@ settings:
         enabled: false
       video:
         weight: -62
+        enabled: true
+      views:
+        weight: -49
         enabled: true
       wysiwyg_editor:
         weight: -64

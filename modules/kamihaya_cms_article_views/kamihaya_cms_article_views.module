@@ -1,0 +1,13 @@
+<?php
+
+use Drupal\Core\Database\DatabaseExceptionWrapper;
+use Drupal\Core\Database\Query\SelectInterface;
+use Drupal\views\Plugin\views\pager\Full;
+use Drupal\views\Plugin\views\pager\Mini;
+use Drupal\views\Views;
+use Drupal\views\ViewExecutable;
+
+/**
+ * @file
+ * Extend the view functions.
+ */

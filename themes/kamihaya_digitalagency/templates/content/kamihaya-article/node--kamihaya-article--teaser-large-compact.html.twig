@@ -1,0 +1,65 @@
+{#
+/**
+ * @file
+ * Teaser Style: Large Compact Card
+ */
+#}
+
+{%
+  set article_classes =
+  [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'teaser',
+    'teaser--compact',
+    'teaser--compact--large',
+    node.teaser_highlighted.getString() ? 'is--highlighted',
+  ]
+%}
+
+
+{%
+set inline_style = 'background-image:url('~ content.field_thumbnail_image[0]['field_media_image'][0]['#markup'] ~');
+  background-position: center;
+  background-size: cover;'
+%}
+
+
+{# Teaser Markup #}
+{# ============= #}
+<article{{ attributes.addClass(article_classes).setAttribute('style', inline_style) }}>
+  <a class="teaser__link" href="{{ url }}"></a>
+
+  <div{{ content_attributes.addClass('teaser__content') }}>
+
+    {# == Teaser title == #}
+    {# ================== #}
+    <header>
+      {% if content.field_category.0 %}
+        <div class="category category--bordered teaser__category">
+          {{ content.field_category }}
+        </div>
+      {% endif %}
+
+      <h2 class="teaser__headline">
+        <a href="{{ url }}">{{ label }}</a>
+      </h2>
+    </header>
+
+    {# == Meta (author info) == #}
+    {# ======================== #}
+    <footer class="teaser__authored">
+      {% if show_post_date %}
+        <span class="date">{{ content.field_publish_date }}</span>
+      {% endif %}
+
+      {% if show_author_info %}
+        , <span class="author">{{ 'by'|t }} {{ author_name }}</span>
+      {% endif %}
+    </footer>
+
+    {{ content.field_description }}
+
+  </div>
+</article>

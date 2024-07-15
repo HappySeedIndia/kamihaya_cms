@@ -42,6 +42,36 @@ class KamihayaSettingsManager extends SettingsManager {
     if (!empty($form['footer_details']['b5_footer_bg_schema']['#options'])) {
       $form['footer_details']['b5_footer_bg_schema']['#options'] = $options_color;
     }
+
+    $subtheme = [];
+    if (!empty($form['subtheme'])) {
+      $subtheme = $form['subtheme'];
+      unset($form['subtheme']);
+    }
+    $form['teaser'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Teaser'),
+      '#group' => 'pd',
+      '#open' => TRUE,
+    ];
+
+    $form['teaser']['teaser_show_author_info'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show author info'),
+      '#description' => '',
+      '#default_value' => theme_get_setting('teaser_show_author_info'),
+    ];
+
+    $form['teaser']['teaser_show_post_date'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show post date'),
+      '#description' => '',
+      '#default_value' => theme_get_setting('teaser_show_post_date'),
+    ];
+
+    if (!empty($subtheme)) {
+      $form['subtheme'] = $subtheme;
+    }
   }
 
 }

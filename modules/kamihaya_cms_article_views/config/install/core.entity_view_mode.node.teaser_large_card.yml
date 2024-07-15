@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.teaser_large_card
+label: 'Large teaser card'
+targetEntityType: node
+cache: true

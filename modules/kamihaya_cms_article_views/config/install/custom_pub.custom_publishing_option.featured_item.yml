@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: featured_item
+label: 'Featured item'
+description: 'Featured items appears at the top of the page, either in a slider or in a hero section.'
+publish_under_promote_options: false
