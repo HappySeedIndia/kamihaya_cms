@@ -15,8 +15,6 @@ dependencies:
     - field_formatter
     - text
     - user
-_core:
-  default_config_hash: nLi-jc1gQJIddAU6b-v9ZPkb3ye49HYMEcSeTpRIdJs
 id: node.kamihaya_article.teaser
 targetEntityType: node
 bundle: kamihaya_article
