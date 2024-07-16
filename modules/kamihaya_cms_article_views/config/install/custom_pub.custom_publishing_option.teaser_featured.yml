@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: teaser_featured
+label: 'Teaser (Featured)'
+description: 'Use featured style teaser for this item.'
+publish_under_promote_options: false

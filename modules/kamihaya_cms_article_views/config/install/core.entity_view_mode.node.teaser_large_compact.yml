@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.teaser_large_compact
+label: 'Large compact teaser'
+targetEntityType: node
+cache: true

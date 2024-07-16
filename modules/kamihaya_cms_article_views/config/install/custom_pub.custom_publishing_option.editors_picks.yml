@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: editors_picks
+label: "Editor's Picks"
+description: "The item will appear in the Editor's Picks block."
+publish_under_promote_options: false

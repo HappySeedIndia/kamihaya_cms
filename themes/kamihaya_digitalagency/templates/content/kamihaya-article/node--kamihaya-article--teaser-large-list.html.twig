@@ -1,0 +1,84 @@
+{#
+/**
+ * @file
+ * Teaser Style: Large Item.
+ */
+#}
+
+{%
+  set article_classes =
+  [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'teaser',
+    'teaser-lg--bordered',
+    'teaser--item',
+    'teaser--item--large',
+    'align-items-center',
+    node.teaser_highlighted.getString() ? 'is--highlighted',
+  ]
+%}
+
+{# Teaser Markup #}
+{# ============= #}
+<article{{ attributes.addClass(article_classes) }}>
+
+  {# == Media == #}
+  {# =========== #}
+  <div class="teaser__media">
+    <div class="relative">
+      <div class="image teaser__image">
+        <a href="{{ url }}">
+          {{ content.field_thumbnail_image }}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div{{ content_attributes.addClass('teaser__content') }}>
+
+    <header>
+      {# == Category == #}
+      {# ================== #}
+      {% if content.field_category.0 %}
+        <div class="category category--bordered teaser__category">
+          {{ content.field_category }}
+        </div>
+      {% endif %}
+
+      {# == Teaser title == #}
+      {# ================== #}
+      <h2 class="teaser__headline">
+        <a href="{{ url }}">{{ label }}</a>
+      </h2>
+    </header>
+
+    {# == Meta (author info) == #}
+    {# ======================== #}
+    <footer class="teaser__authored">
+      {% if show_post_date %}
+        <span class="date">{{ content.field_publish_date }}</span>
+      {% endif %}
+
+      {% if show_author_info %}
+        , <span class="author">{{ 'by'|t }} {{ author_name }}</span>
+      {% endif %}
+    </footer>
+
+    {# == Teaser text (content) == #}
+    {# =========================== #}
+    <div class="teaser__body">
+      {{ content.field_description }}
+    </div>
+
+    {# == Read more link == #}
+    {# ==================== #}
+    <div class="button teaser__link">
+      <a href="{{ url }}">
+        {{ 'Read more'|t }} <i class="fa fa-caret-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+
+</article>

@@ -26,6 +26,18 @@ node:
     theme:
       css/components/node.css: {}
 
+node-kamihaya-article:
+  css:
+    theme:
+      css/node/kamihaya-article-teaser.css: {}
+      css/node/kamihaya-article-views.css: {}
+      css/node/kamihaya-article-featured-views.css: {}
+  js:
+    js/kamihaya_article.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+
 user:
   css:
     theme:

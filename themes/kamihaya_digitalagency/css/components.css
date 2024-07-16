@@ -403,8 +403,16 @@ button.link:focus {
   display: none;
 }
 
-.path-admin [type=checkbox] {
+.path-admin [type=checkbox],
+.path-admin [type=radio] {
   display: inline-block;
+}
+
+.path-admin [type=checkbox]+label:before,
+.path-admin [type=radio]+label:before,
+.path-node [type=checkbox]+label:before,
+.path-node [type=radio]+label:before {
+  display: none;
 }
 
 /* Actions */
