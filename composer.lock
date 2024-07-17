@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "be5a3f78d2fb324b4fa3d26730305781",
+    "content-hash": "d1c2ab46364c040502b96c395ec8a6d5",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -14237,6 +14237,7 @@
         "drupal/ckeditor_font": 10,
         "drupal/cloud": 10,
         "drupal/default_content": 15,
+        "drupal/field_formatter": 5,
         "drupal/gin": 5,
         "drupal/openai": 10,
         "drupal/shs": 5,
@@ -14247,5 +14248,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
