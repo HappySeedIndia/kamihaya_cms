@@ -1,0 +1,178 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_border_box_body
+    - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.block
+    - paragraphs.paragraphs_type.border_box
+    - paragraphs.paragraphs_type.border_box_item
+    - paragraphs.paragraphs_type.divider
+    - paragraphs.paragraphs_type.embed_tag
+    - paragraphs.paragraphs_type.featured_content
+    - paragraphs.paragraphs_type.file_download
+    - paragraphs.paragraphs_type.h2_title
+    - paragraphs.paragraphs_type.h3_title
+    - paragraphs.paragraphs_type.h4_title
+    - paragraphs.paragraphs_type.headings
+    - paragraphs.paragraphs_type.image
+    - paragraphs.paragraphs_type.image_link
+    - paragraphs.paragraphs_type.layout_paragraph
+    - paragraphs.paragraphs_type.left_image_text
+    - paragraphs.paragraphs_type.link_button
+    - paragraphs.paragraphs_type.right_image_text
+    - paragraphs.paragraphs_type.two_col_table
+    - paragraphs.paragraphs_type.video
+    - paragraphs.paragraphs_type.views
+    - paragraphs.paragraphs_type.wysiwyg_editor
+  module:
+    - entity_reference_revisions
+id: paragraph.border_box_item.field_border_box_body
+field_name: field_border_box_body
+entity_type: paragraph
+bundle: border_box_item
+label: Body
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      layout_paragraph: layout_paragraph
+      h2_title: h2_title
+      h3_title: h3_title
+      h4_title: h4_title
+      headings: headings
+      wysiwyg_editor: wysiwyg_editor
+      image: image
+      video: video
+      image_link: image_link
+      link_button: link_button
+      file_download: file_download
+      left_image_text: left_image_text
+      right_image_text: right_image_text
+      divider: divider
+      border_box: border_box
+      accordion: accordion
+      two_col_table: two_col_table
+      embed_tag: embed_tag
+      block: block
+      views: views
+      featured_content: featured_content
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: 15
+        enabled: true
+      accordion_item:
+        weight: 75
+        enabled: false
+      block:
+        weight: 18
+        enabled: true
+      border_box:
+        weight: 14
+        enabled: true
+      border_box_item:
+        weight: 75
+        enabled: false
+      career:
+        weight: 75
+        enabled: false
+      divider:
+        weight: 13
+        enabled: true
+      drawer:
+        weight: 75
+        enabled: false
+      educational_background:
+        weight: 75
+        enabled: false
+      embed_tag:
+        weight: 17
+        enabled: true
+      english_skill:
+        weight: 75
+        enabled: false
+      featured_content:
+        weight: 20
+        enabled: true
+      file_download:
+        weight: 10
+        enabled: true
+      groups:
+        weight: 75
+        enabled: false
+      h2_title:
+        weight: 1
+        enabled: true
+      h3_title:
+        weight: 2
+        enabled: true
+      h4_title:
+        weight: 3
+        enabled: true
+      headings:
+        weight: 4
+        enabled: true
+      image:
+        weight: 6
+        enabled: true
+      image_link:
+        weight: 8
+        enabled: true
+      layout_paragraph:
+        weight: 0
+        enabled: true
+      left_image_text:
+        weight: 11
+        enabled: true
+      license:
+        weight: 75
+        enabled: false
+      link_button:
+        weight: 9
+        enabled: true
+      modal_dialog:
+        weight: 75
+        enabled: false
+      other_language:
+        weight: 75
+        enabled: false
+      other_notice:
+        weight: 75
+        enabled: false
+      q_a:
+        weight: 75
+        enabled: false
+      right_image_text:
+        weight: 12
+        enabled: true
+      skill:
+        weight: 75
+        enabled: false
+      slider:
+        weight: 75
+        enabled: false
+      slider_item:
+        weight: 75
+        enabled: false
+      two_col_table:
+        weight: 16
+        enabled: true
+      two_col_table_row:
+        weight: 75
+        enabled: false
+      video:
+        weight: 7
+        enabled: true
+      views:
+        weight: 19
+        enabled: true
+      wysiwyg_editor:
+        weight: 5
+        enabled: true
+field_type: entity_reference_revisions

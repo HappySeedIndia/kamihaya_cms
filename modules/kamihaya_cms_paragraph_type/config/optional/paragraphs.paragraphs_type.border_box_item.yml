@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: border_box_item
+label: 'Border box item'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

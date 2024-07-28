@@ -396,3 +396,125 @@ function kamihaya_cms_paragraph_type_update_10007() {
     $field_config->save(TRUE);
   }
 }
+
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_paragraph_type_update_10008() {
+  $configs = [];
+  $trans_configs = [];
+  if (empty(ParagraphsType::load('border_box_item'))) {
+    $configs[] = 'paragraphs.paragraphs_type.border_box_item.yml';
+    $configs[] = 'field.storage.paragraph.field_border_box_body.yml';
+    $configs[] = 'field.field.paragraph.border_box_item.field_border_box_body.yml';
+    $configs[] = 'core.entity_form_display.paragraph.border_box_item.default.yml';
+    $configs[] = 'core.entity_view_display.paragraph.border_box_item.default.yml';
+    $trans_configs[] = 'paragraphs.paragraphs_type.border_box_item.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box_item.field_border_box_body.yml';
+  }
+  if (empty(ParagraphsType::load('border_box'))) {
+    $configs[] = 'paragraphs.paragraphs_type.border_box.yml';
+    $configs[] = 'field.storage.paragraph.field_border_box_item.yml';
+    $configs[] = 'field.storage.paragraph.field_bg_color.yml';
+    $configs[] = 'field.storage.paragraph.field_border_top_color.yml';
+    $configs[] = 'field.storage.paragraph.field_border_bottom_color.yml';
+    $configs[] = 'field.storage.paragraph.field_border_left_color.yml';
+    $configs[] = 'field.storage.paragraph.field_border_right_color.yml';
+    $configs[] = 'field.storage.paragraph.field_border_top_width.yml';
+    $configs[] = 'field.storage.paragraph.field_border_bottom_width.yml';
+    $configs[] = 'field.storage.paragraph.field_border_left_width.yml';
+    $configs[] = 'field.storage.paragraph.field_border_right_width.yml';
+    $configs[] = 'field.storage.paragraph.field_border_style.yml';
+    $configs[] = 'field.storage.paragraph.field_radius_type.yml';
+    $configs[] = 'field.storage.paragraph.field_radius_size.yml';
+    $configs[] = 'field.storage.paragraph.field_width.yml';
+    $configs[] = 'field.storage.paragraph.field_width_unit.yml';
+    $configs[] = 'field.storage.paragraph.field_padding.yml';
+    $configs[] = 'field.storage.paragraph.field_align.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_border_box_item.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_bg_color.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_border_top_color.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_border_bottom_color.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_border_left_color.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_border_right_color.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_border_top_width.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_border_bottom_width.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_border_left_width.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_border_right_width.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_border_style.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_radius_type.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_radius_size.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_width.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_width_unit.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_padding.yml';
+    $configs[] = 'field.field.paragraph.border_box.field_align.yml';
+    $configs[] = 'core.entity_form_display.paragraph.border_box.default.yml';
+    $configs[] = 'core.entity_view_display.paragraph.border_box.default.yml';
+    $trans_configs[] = 'paragraphs.paragraphs_type.border_box.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_border_box_item.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_bg_color.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_border_top_color.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_border_bottom_color.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_border_left_color.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_border_right_color.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_border_top_width.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_border_bottom_width.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_border_left_width.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_border_right_width.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_border_style.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_radius_type.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_radius_size.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_width.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_width_unit.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_padding.yml';
+    $trans_configs[] = 'field.field.paragraph.border_box.field_align.yml';
+  }
+
+  _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $configs, 'optional');
+  _kamihaya_cms_common_save_translation_configs($trans_configs, 'ja');
+
+  $paragraph_type = 'border_box';
+  $paragraph_fields = [
+    'accordion_item' => 'field_accordion_body',
+    'drawer' => 'field_drawer_body',
+    'modal_dialog' => 'field_dialog_body',
+    'two_col_table_row' => 'field_row_data',
+  ];
+
+  foreach($paragraph_fields ?: [] as $paragraph_name => $field) {
+    $field_config = \Drupal::configFactory()->getEditable("field.field.paragraph.{$paragraph_name}.{$field}");
+    if (empty($field_config)) {
+      return;
+    }
+    $dependencies = $field_config->get('dependencies.config');
+    $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
+    $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
+    $max_weight = 0;
+    foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
+      if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
+        continue;
+      }
+      $max_weight = $target_bundle['weight'];
+    }
+
+    $paragraph = "paragraphs.paragraphs_type.{$paragraph_type}";
+    if (!empty($dependencies) && !in_array($paragraph, $dependencies)) {
+      $dependencies[] = $paragraph;
+    }
+    if (!empty($target_bundles) && !in_array($paragraph_type, $target_bundles)) {
+      $target_bundles[$paragraph_type] = $paragraph_type;
+    }
+    if (!empty($target_bundles_drag_drop) && !in_array($paragraph_type, $target_bundles_drag_drop)) {
+      $target_bundles_drag_drop[$paragraph_type] = [
+        'enabled' => TRUE,
+        'weight' => ++$max_weight,
+      ];
+    }
+
+    $field_config->set('dependencies.config', $dependencies);
+    $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
+    $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
+    $field_config->save(TRUE);
+  }
+}

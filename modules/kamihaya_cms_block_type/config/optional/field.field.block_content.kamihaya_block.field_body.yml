@@ -6,6 +6,7 @@ dependencies:
     - field.storage.block_content.field_body
     - paragraphs.paragraphs_type.accordion
     - paragraphs.paragraphs_type.block
+    - paragraphs.paragraphs_type.border_box
     - paragraphs.paragraphs_type.divider
     - paragraphs.paragraphs_type.embed_tag
     - paragraphs.paragraphs_type.featured_content
@@ -62,34 +63,41 @@ settings:
       divider: divider
       block: block
       views: views
+      border_box: border_box
     negate: 0
     target_bundles_drag_drop:
       accordion:
         weight: -55
         enabled: true
       accordion_item:
-        weight: -39
+        weight: 11
         enabled: false
       block:
         weight: -50
         enabled: true
+      border_box:
+        weight: -48
+        enabled: true
+      border_box_item:
+        weight: 14
+        enabled: false
       career:
-        weight: -40
+        weight: 10
         enabled: false
       divider:
         weight: -51
         enabled: true
       drawer:
-        weight: -47
+        weight: 3
         enabled: false
       educational_background:
-        weight: -46
+        weight: 4
         enabled: false
       embed_tag:
         weight: -54
         enabled: true
       english_skill:
-        weight: -36
+        weight: 13
         enabled: false
       featured_content:
         weight: -53
@@ -97,11 +105,8 @@ settings:
       file_download:
         weight: -57
         enabled: true
-      google_map:
-        weight: -38
-        enabled: false
       groups:
-        weight: -42
+        weight: 8
         enabled: false
       h2_title:
         weight: -68
@@ -128,40 +133,40 @@ settings:
         weight: -61
         enabled: true
       license:
-        weight: -44
+        weight: 6
         enabled: false
       link_button:
         weight: -58
         enabled: true
       modal_dialog:
-        weight: -49
+        weight: 1
         enabled: false
       other_language:
-        weight: -45
+        weight: 5
         enabled: false
       other_notice:
-        weight: -43
+        weight: 7
         enabled: false
       q_a:
-        weight: -41
+        weight: 9
         enabled: false
       right_image_text:
         weight: -60
         enabled: true
       skill:
-        weight: -37
+        weight: 12
         enabled: false
       slider:
         weight: -56
         enabled: true
       slider_item:
-        weight: -48
+        weight: 2
         enabled: false
       two_col_table:
         weight: -52
         enabled: true
       two_col_table_row:
-        weight: -50
+        weight: 0
         enabled: false
       video:
         weight: -62

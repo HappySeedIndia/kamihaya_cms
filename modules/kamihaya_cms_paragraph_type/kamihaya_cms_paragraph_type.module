@@ -64,6 +64,9 @@ function kamihaya_cms_paragraph_type_theme() {
     'paragraph__file_download' => [
       'base hook' => 'paragraph',
     ],
+    'paragraph__border_box' => [
+      'base hook' => 'paragraph',
+    ],
   ];
 }
 

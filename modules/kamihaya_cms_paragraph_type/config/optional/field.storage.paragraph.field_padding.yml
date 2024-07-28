@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_padding
+field_name: field_padding
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: '1'
+      label: XSmall
+    -
+      value: '2'
+      label: Small
+    -
+      value: '3'
+      label: Medium
+    -
+      value: '4'
+      label: Large
+    -
+      value: '5'
+      label: XLarge
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
