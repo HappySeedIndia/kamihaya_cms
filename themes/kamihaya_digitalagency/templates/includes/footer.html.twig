@@ -1,14 +1,13 @@
 {# Footer Template #}
 {%
-  set footer_classes = 'bg-light text-lg-start' ~
+  set footer_classes = 'text-lg-start' ~
   (b5_footer_schema != 'none' ? " footer-#{b5_footer_schema}" : ' ') ~
   (b5_footer_schema != 'none' ? (b5_footer_schema == 'dark' ? ' text-light' : ' text-dark' ) : ' ') ~
   (b5_footer_bg_schema != 'none' ? " bg-#{b5_footer_bg_schema}" : ' ')
 %}
 
 {% if page.footer_top_left or page.footer_top_right or page.footer_bottom %}
-{# <footer class="{{ footer_classes }}"> #}
-<footer>
+<footer class="{{ footer_classes }}">
   <div class="{{ b5_top_container }}">
     {# Footer Top Left & Right #}
     {% if page.footer_top_left or page.footer_top_right %}

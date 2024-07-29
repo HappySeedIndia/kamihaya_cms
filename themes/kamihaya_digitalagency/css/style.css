@@ -12401,7 +12401,7 @@ footer {
   padding: 2rem 0;
 }
 footer.footer-dark a {
-  color: #f8f9fa;
+  color: var(--bs-link-color);
   text-decoration: none;
 }
 footer.footer-dark a:hover {
@@ -12815,6 +12815,26 @@ em.placeholder {
 
 code {
   overflow-y: auto;
+}
+
+.bg-black .dropdown-menu {
+  --bs-dropdown-bg: var(--bs-black);
+  --bs-dropdown-link-hover-bg: var(--bs-black);
+}
+
+.navbar-dark .dropdown-menu {
+  --bs-dropdown-link-color: var(--bs-nav-link-color);
+  --bs-dropdown-link-hover-color: var(--bs-nav-link-hover-color);
+}
+
+.footer-dark {
+  --bs-link-color: #f8f9fa;
+}
+
+@media (min-width: 992px) {
+  .navbar-dark li.nav-item.dropdown .dropdown-menu {
+    box-shadow: 0px 10px 30px #444444c7;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
