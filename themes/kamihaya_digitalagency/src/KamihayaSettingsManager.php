@@ -312,12 +312,7 @@ class KamihayaSettingsManager extends SettingsManager {
       'choose_text' => $this->t('Choose'),
       'allow_empty' => FALSE,
     ];
-    // $element['color'] = [];
-    // foreach ($element as $key => $value) {
-    //   $element['color'][$key] = $value;
-    //   unset($element[$key]);
-    // }
-    unset($element['#value']);
+
     $element[$name] = $element;
     $element['#type'] = 'container';
 
