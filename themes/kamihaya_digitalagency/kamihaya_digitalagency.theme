@@ -436,8 +436,6 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
     ],
     $theme_name,
   ];
-
-  dpm($page['#attached']['html_head']);
 }
 
 /**
