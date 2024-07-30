@@ -28,6 +28,9 @@ function kamihaya_digitalagency_preprocess_pager(&$variables) {
   /** @var \Drupal\Core\Pager\PagerManagerInterface $pager_manager */
   $pager_manager = \Drupal::service('pager.manager');
   $pager = $pager_manager->getPager($element);
+  if (!$pager) {
+    return;
+  }
   $variables['pager_max'] = $pager->getTotalPages();
  }
 
@@ -242,3 +245,243 @@ function _kamihaya_digitalagency_preprocess_menu_items(array &$items) {
     }
   }
 }
+
+ /**
+ * Implements hook_preprocess_html().
+ */
+function kamihaya_digitalagency_preprocess_html(array &$variables) {
+  if (theme_get_setting('b5_navbar_schema') === 'custom') {
+    $variables['attributes']['class'][] = 'navbar-custom';
+  }
+  // Navbar colour theme.
+  $variables['b5_navbar_schema'] = theme_get_setting('b5_navbar_schema');
+  $variables['b5_navbar_bg_schema'] = theme_get_setting('b5_navbar_bg_schema');
+  // Footer colour theme.
+  $variables['b5_footer_schema'] = theme_get_setting('b5_footer_schema');
+  $variables['b5_footer_bg_schema'] = theme_get_setting('b5_footer_bg_schema');
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function kamihaya_digitalagency_page_attachments_alter(array &$page) {
+  $colors = [];
+  $bg_colors = [];
+  if (theme_get_setting('b5_body_schema') === 'custom') {
+    if (!empty(theme_get_setting('b5_body_text_color'))) {
+      $color = theme_get_setting('b5_body_text_color');
+      $colors[$color] = [
+        'body.text-custom',
+      ];
+    }
+    if (!empty(theme_get_setting('b5_body_link_color'))) {
+      $color = theme_get_setting('b5_body_link_color');
+      if (!empty($colors[$color])) {
+        $colors[$color][] = 'body.text-custom a';
+      } else {
+        $colors[$color] = ['body.text-custom a'];
+      }
+    }
+    if (!empty(theme_get_setting('b5_body_link_hover_color'))) {
+      $color = theme_get_setting('b5_body_link_hover_color');
+      if (!empty($colors[$color])) {
+        $colors[$color][] = 'body.text-custom a:hover';
+        $colors[$color][] = 'body.text-custom a:focus';
+      } else {
+        $colors[$color] = [
+          'body.text-custom a:hover',
+          'body.text-custom a:focus',
+        ];
+      }
+    }
+  }
+  if (theme_get_setting('b5_body_bg_schema') === 'custom' && !empty(theme_get_setting('b5_body_bg_schema_custom'))) {
+    $color = theme_get_setting('b5_body_bg_schema_custom');
+    $bg_colors[$color] = ['body.bg-custom'];
+  }
+  if (theme_get_setting('b5_navbar_schema') === 'custom') {
+    if (!empty(theme_get_setting('b5_navbar_text_color'))) {
+      $color = theme_get_setting('b5_navbar_text_color');
+      $colors[$color] = ['.navbar.text-custom'];
+    }
+    if (!empty(theme_get_setting('b5_navbar_link_color'))) {
+      $color = theme_get_setting('b5_navbar_link_color');
+      if (!empty($colors[$color])) {
+        $colors[$color][] = '.navbar.text-custom a';
+      } else {
+        $colors[$color] = [
+          '.navbar.text-custom a',
+        ];
+      }
+    }
+    if (!empty(theme_get_setting('b5_navbar_link_hover_color'))) {
+      $color = theme_get_setting('b5_navbar_link_hover_color');
+      if (!empty($colors[$color])) {
+        $colors[$color][] = '.navbar.text-custom a:hover';
+        $colors[$color][] = '.navbar.text-custom a:focus';
+      } else {
+        $colors[$color] = [
+          '.navbar.text-custom a:hover',
+          '.navbar.text-custom a:focus',
+        ];
+      }
+    }
+  }
+  if (theme_get_setting('b5_navbar_bg_schema') === 'custom' && !empty(theme_get_setting('b5_navbar_bg_schema_custom'))) {
+    $color = theme_get_setting('b5_navbar_bg_schema_custom');
+    if (!empty($bg_colors[$color])) {
+      $bg_colors[$color][] = '.navbar.bg-custom';
+      $bg_colors[$color][] = '.navbar.bg-custom .dropdown-menu';
+      $bg_colors[$color][] = '.navbar.bg-custom .dropdown-item:hover';
+      $bg_colors[$color][] = '.navbar.bg-custom .dropdown-item:focus';
+    } else {
+      $bg_colors[$color] = [
+        '.navbar.bg-custom',
+        '.navbar.bg-custom .dropdown-menu',
+        '.navbar.bg-custom .dropdown-item:hover',
+        '.navbar.bg-custom .dropdown-item:focus',
+      ];
+    }
+
+  }
+  if (theme_get_setting('b5_footer_schema') === 'custom') {
+    if (!empty(theme_get_setting('b5_footer_text_color'))) {
+      $color = theme_get_setting('b5_footer_text_color');
+      $colors[$color] = ['footer.text-custom'];
+    }
+    if (!empty(theme_get_setting('b5_footer_link_color'))) {
+      $color = theme_get_setting('b5_footer_link_color');
+    if (!empty($colors[$color])) {
+        $colors[$color][] = 'footer.text-custom a';
+      } else {
+        $colors[$color] = [
+          'footer.text-custom a',
+        ];
+      }
+    }
+    if (!empty(theme_get_setting('b5_footer_link_hover_color'))) {
+      $color = theme_get_setting('b5_footer_link_hover_color');
+      if (!empty($colors[$color])) {
+        $colors[$color][] = 'footer.text-custom a:hover';
+        $colors[$color][] = 'footer.text-custom a:focus';
+      } else {
+        $colors[$color] = [
+          'footer.text-custom a:hover',
+          'footer.text-custom a:focus',
+        ];
+      }
+    }
+
+  }
+  if (theme_get_setting('b5_footer_bg_schema') === 'custom' && !empty(theme_get_setting('b5_footer_bg_schema_custom'))) {
+    $color = theme_get_setting('b5_footer_bg_schema_custom');
+    if (!empty($bg_colors[$color])) {
+      $bg_colors[$color][] = 'footer.bg-custom';
+    } else {
+      $bg_colors[$color] = [
+        'footer.bg-custom',
+      ];
+    }
+  }
+
+  $css_vars = [
+    'primary' => [],
+    'secondary' => [],
+  ];
+  foreach(array_keys($css_vars) as $button) {
+    foreach(['text', 'bg', 'bd'] as $type) {
+      $field = "{$button}_button_{$type}_color";
+      $hover_field = "{$button}_button_hover_{$type}_color";
+      if (!empty(theme_get_setting($field))) {
+        $color = theme_get_setting($field);
+        if ($type === 'text') {
+          $css_vars[$button]['color'] = $color;
+        }
+        if ($type === 'bg') {
+          $css_vars[$button]['bg'] = $color;
+        }
+        if ($type === 'bd') {
+          $css_vars[$button]['border-color'] = $color;
+        }
+      }
+      if (!empty(theme_get_setting($hover_field))) {
+        $color = theme_get_setting($hover_field);
+        if ($type === 'text') {
+          $css_vars[$button]['hover-color'] = $color;
+          $css_vars[$button]['active-color'] = $color;
+        }
+        if ($type === 'bg') {
+          $css_vars[$button]['hover-bg'] = $color;
+          $css_vars[$button]['active-bg'] = $color;
+        }
+        if ($type === 'bd') {
+          $css_vars[$button]['hover-border-color'] = $color;
+          $css_vars[$button]['active-border-color'] = $color;
+        }
+      }
+    }
+  }
+
+  $theme_name = \Drupal::config('system.theme')->get('default');
+
+  // Add CSS color variables.
+  $page['#attached']['html_head'][] = [
+    [
+      '#tag' => 'style',
+      '#attributes' => [
+        'type' => 'text/css',
+      ],
+      '#value' => kamihaya_digitalagency_create_css_vars($colors, $bg_colors) .
+        (!empty($css_vars) ? PHP_EOL . kamihaya_digitalagency_create_css_custom_vars($css_vars) : ''),
+    ],
+    $theme_name,
+  ];
+}
+
+/**
+ * Color palette as root css variables.
+ *
+ * @param array $colors
+ *   Color definition.
+ *
+ * @return string
+ *   CSS code.
+ */
+function kamihaya_digitalagency_create_css_vars(array $colors, array $bg_colors) : string {
+  $css = [];
+  foreach ($colors as $color => $selectors) {
+    $selector = implode(', ', $selectors);
+    $css[] = "$selector { color: $color !important; }";
+  }
+  foreach ($bg_colors as $color => $selectors) {
+    $selector = implode(', ', $selectors);
+    $css[] = "$selector { background-color: $color !important; }";
+  }
+  return implode(PHP_EOL, $css);
+}
+
+/**
+ * Create custom css variables.
+ *
+ * @param array $vars
+ *   Color vars definition.
+ *
+ * @return string
+ *   CSS code.
+*/
+function kamihaya_digitalagency_create_css_custom_vars(array $css_vars) : string {
+  $css = [];
+  foreach ($css_vars as $button => $values) {
+    $vars = [];
+    foreach ($values as $key => $value) {
+      $vars[] = "--bs-btn-$key: $value !important;";
+    }
+    if (empty($vars)) {
+      continue;
+    }
+    $value = implode(PHP_EOL, $vars);
+    $css[] = ".btn-$button { $value }";
+  }
+  return implode(PHP_EOL, $css);
+}
+
