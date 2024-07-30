@@ -224,7 +224,6 @@ class KamihayaSettingsManager extends SettingsManager {
     ];
 
     if (\Drupal::moduleHandler()->moduleExists('color_field')) {
-      $form['#attached']['library'][] = 'color_field/color-field-widget-spectrum';
 
       foreach ($form as &$children) {
         if (!is_array($children) || empty($children['#type'])) {
@@ -313,7 +312,13 @@ class KamihayaSettingsManager extends SettingsManager {
       'choose_text' => $this->t('Choose'),
       'allow_empty' => FALSE,
     ];
-    $element['color'] = $element;
+    // $element['color'] = [];
+    // foreach ($element as $key => $value) {
+    //   $element['color'][$key] = $value;
+    //   unset($element[$key]);
+    // }
+    unset($element['#value']);
+    $element[$name] = $element;
     $element['#type'] = 'container';
 
     $element['opacity'] = [
@@ -324,8 +329,10 @@ class KamihayaSettingsManager extends SettingsManager {
     $element['#attributes']['id'] = $element['#uid'];
     $element['#attributes']['class'][] = 'js-color-field-widget-spectrum';
     $element['#attached']['drupalSettings']['color_field']['color_field_widget_spectrum'][$element['#uid']] = $settings;
-    $element['color']['#attributes']['class'][] = 'js-color-field-widget-spectrum__color';
+    $element['#attached']['library'][] = 'color_field/color-field-widget-spectrum';
+    $element[$name]['#attributes']['class'][] = 'js-color-field-widget-spectrum__color';
     $element['opacity']['#attributes']['class'][] = 'js-color-field-widget-spectrum__opacity';
+
   }
 
 }

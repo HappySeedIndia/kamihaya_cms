@@ -2,7 +2,7 @@
 {%
   set footer_classes = 'text-lg-start' ~
   (b5_footer_schema != 'none' ? " footer-#{b5_footer_schema}" : ' ') ~
-  (b5_footer_schema != 'none' ? (b5_footer_schema == 'dark' ? ' text-light' : ' text-dark' ) : ' ') ~
+  (b5_footer_schema != 'none' ? (b5_footer_schema == 'custom' ? ' text-custom' : (b5_footer_schema == 'dark' ? ' text-light' : ' text-dark' )) : ' ') ~
   (b5_footer_bg_schema != 'none' ? " bg-#{b5_footer_bg_schema}" : ' ')
 %}
 
