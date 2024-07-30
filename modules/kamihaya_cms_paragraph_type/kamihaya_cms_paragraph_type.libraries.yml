@@ -52,3 +52,8 @@ lpb_component_list:
   css:
     base:
       assets/css/lpb_component_list.css: {}
+
+border-box-css:
+  css:
+    base:
+      assets/css/border-box.css: {}

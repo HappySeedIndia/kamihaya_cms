@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_radius_type
+field_name: field_radius_type
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: all
+      label: All
+    -
+      value: top
+      label: Top
+    -
+      value: end
+      label: End
+    -
+      value: bottom
+      label: Bottom
+    -
+      value: start
+      label: Start
+    -
+      value: circle
+      label: Circle
+    -
+      value: pill
+      label: Pill
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -5,6 +5,8 @@ dependencies:
     - commerce_product.commerce_product_type.default
     - field.storage.commerce_product.field_body
     - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.block
+    - paragraphs.paragraphs_type.border_box
     - paragraphs.paragraphs_type.divider
     - paragraphs.paragraphs_type.drawer
     - paragraphs.paragraphs_type.embed_tag
@@ -24,6 +26,7 @@ dependencies:
     - paragraphs.paragraphs_type.slider
     - paragraphs.paragraphs_type.two_col_table
     - paragraphs.paragraphs_type.video
+    - paragraphs.paragraphs_type.views
     - paragraphs.paragraphs_type.wysiwyg_editor
   module:
     - entity_reference_revisions
@@ -62,16 +65,28 @@ settings:
       featured_content: featured_content
       two_col_table: two_col_table
       drawer: drawer
+      block: block
+      border_box: border_box
+      views: views
     negate: 0
     target_bundles_drag_drop:
       accordion:
         weight: -54
         enabled: true
       accordion_item:
-        weight: -47
+        weight: -37
+        enabled: false
+      block:
+        weight: -48
+        enabled: true
+      border_box:
+        weight: -46
+        enabled: true
+      border_box_item:
+        weight: -35
         enabled: false
       career:
-        weight: -46
+        weight: -36
         enabled: false
       divider:
         weight: -56
@@ -155,10 +170,13 @@ settings:
         weight: -50
         enabled: true
       two_col_table_row:
-        weight: -48
+        weight: -38
         enabled: false
       video:
         weight: -62
+        enabled: true
+      views:
+        weight: -47
         enabled: true
       wysiwyg_editor:
         weight: -64

@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_align
+    - paragraphs.paragraphs_type.border_box
+  module:
+    - options
+id: paragraph.border_box.field_align
+field_name: field_align
+entity_type: paragraph
+bundle: border_box
+label: Align
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
