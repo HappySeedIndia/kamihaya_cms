@@ -223,6 +223,143 @@ class KamihayaSettingsManager extends SettingsManager {
       ],
     ];
 
+    $text_formats = [];
+    if (!empty($form['text_formats'])) {
+      $text_formats = $form['text_formats'];
+      unset($form['text_formats']);
+    }
+
+    $form['button_details'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Button colors'),
+      '#description' => $this->t("Customize the colors of the buttons."),
+      '#open' => FALSE,
+    ];
+
+    $form['button_details']['primary_button'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Primary button:'),
+      '#open' => FALSE,
+    ];
+
+    $form['button_details']['primary_button']['primary_button_text_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Primary button text color:'),
+      '#default_value' => theme_get_setting('primary_button_text_color'),
+      '#description' => $this->t("Custom text color of the primary button."),
+    ];
+
+    $form['button_details']['primary_button']['primary_button_bg_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Primary button background color:'),
+      '#default_value' => theme_get_setting('primary_button_bg_color'),
+      '#description' => $this->t("Custom background color of the primary button."),
+    ];
+
+    $form['button_details']['primary_button']['primary_button_bd_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Primary button border color:'),
+      '#default_value' => theme_get_setting('primary_button_bd_color'),
+      '#description' => $this->t("Custom border color of the primary button."),
+    ];
+
+    $form['button_details']['primary_button']['primary_button_hover_text_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Primary button hover text color:'),
+      '#default_value' => theme_get_setting('primary_button_hover_text_color'),
+      '#description' => $this->t("Custom hover text color of the primary button."),
+    ];
+
+    $form['button_details']['primary_button']['primary_button_hover_bg_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Primary button hover color:'),
+      '#default_value' => theme_get_setting('primary_button_hover_bg_color'),
+      '#description' => $this->t("Custom hover color of the primary button."),
+    ];
+
+    $form['button_details']['primary_button']['primary_button_hover_bd_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Primary button hover border color:'),
+      '#default_value' => theme_get_setting('primary_button_hover_bd_color'),
+      '#description' => $this->t("Custom hover border color of the primary button."),
+    ];
+
+    $form['button_details']['secondary_button'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Secondary button:'),
+      '#open' => FALSE,
+    ];
+
+    $form['button_details']['secondary_button']['secondary_button_text_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Secondary button text color:'),
+      '#default_value' => theme_get_setting('secondary_button_text_color'),
+      '#description' => $this->t("Custom text color of the secondary button."),
+    ];
+
+    $form['button_details']['secondary_button']['secondary_button_bg_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Secondary button background color:'),
+      '#default_value' => theme_get_setting('secondary_button_bg_color'),
+      '#description' => $this->t("Custom background color of the secondary button."),
+    ];
+
+    $form['button_details']['secondary_button']['secondary_button_bd_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Secondary button border color:'),
+      '#default_value' => theme_get_setting('secondary_button_bd_color'),
+      '#description' => $this->t("Custom border color of the secondary button."),
+    ];
+
+    $form['button_details']['secondary_button']['secondary_button_hover_text_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Secondary button hover text color:'),
+      '#default_value' => theme_get_setting('secondary_button_hover_text_color'),
+      '#description' => $this->t("Custom hover text color of the secondary button."),
+    ];
+
+    $form['button_details']['secondary_button']['secondary_button_hover_bg_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Secondary button hover color:'),
+      '#default_value' => theme_get_setting('secondary_button_hover_bg_color'),
+      '#description' => $this->t("Custom hover color of the secondary button."),
+    ];
+
+    $form['button_details']['secondary_button']['secondary_button_hover_bd_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Secondary button hover border color:'),
+      '#default_value' => theme_get_setting('secondary_button_hover_bd_color'),
+      '#description' => $this->t("Custom hover border color of the secondary button."),
+    ];
+
+    if (!empty($text_formats)) {
+      $form['text_formats'] = $text_formats;
+    }
+
     if (\Drupal::moduleHandler()->moduleExists('color_field')) {
 
       foreach ($form as &$children) {

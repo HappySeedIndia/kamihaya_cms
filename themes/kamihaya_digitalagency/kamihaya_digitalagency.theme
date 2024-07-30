@@ -383,6 +383,45 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
       ];
     }
   }
+
+  $css_vars = [
+    'primary' => [],
+    'secondary' => [],
+  ];
+  foreach(array_keys($css_vars) as $button) {
+    foreach(['text', 'bg', 'bd'] as $type) {
+      $field = "{$button}_button_{$type}_color";
+      $hover_field = "{$button}_button_hover_{$type}_color";
+      if (!empty(theme_get_setting($field))) {
+        $color = theme_get_setting($field);
+        if ($type === 'text') {
+          $css_vars[$button]['color'] = $color;
+        }
+        if ($type === 'bg') {
+          $css_vars[$button]['bg'] = $color;
+        }
+        if ($type === 'bd') {
+          $css_vars[$button]['border-color'] = $color;
+        }
+      }
+      if (!empty(theme_get_setting($hover_field))) {
+        $color = theme_get_setting($hover_field);
+        if ($type === 'text') {
+          $css_vars[$button]['hover-color'] = $color;
+          $css_vars[$button]['active-color'] = $color;
+        }
+        if ($type === 'bg') {
+          $css_vars[$button]['hover-bg'] = $color;
+          $css_vars[$button]['active-bg'] = $color;
+        }
+        if ($type === 'bd') {
+          $css_vars[$button]['hover-border-color'] = $color;
+          $css_vars[$button]['active-border-color'] = $color;
+        }
+      }
+    }
+  }
+
   $theme_name = \Drupal::config('system.theme')->get('default');
 
   // Add CSS color variables.
@@ -392,10 +431,13 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
       '#attributes' => [
         'type' => 'text/css',
       ],
-      '#value' => kamihaya_digitalagency_create_css_vars($colors, $bg_colors),
+      '#value' => kamihaya_digitalagency_create_css_vars($colors, $bg_colors) .
+        (!empty($css_vars) ? PHP_EOL . kamihaya_digitalagency_create_css_custom_vars($css_vars) : ''),
     ],
     $theme_name,
   ];
+
+  dpm($page['#attached']['html_head']);
 }
 
 /**
@@ -419,3 +461,29 @@ function kamihaya_digitalagency_create_css_vars(array $colors, array $bg_colors)
   }
   return implode(PHP_EOL, $css);
 }
+
+/**
+ * Create custom css variables.
+ *
+ * @param array $vars
+ *   Color vars definition.
+ *
+ * @return string
+ *   CSS code.
+*/
+function kamihaya_digitalagency_create_css_custom_vars(array $css_vars) : string {
+  $css = [];
+  foreach ($css_vars as $button => $values) {
+    $vars = [];
+    foreach ($values as $key => $value) {
+      $vars[] = "--bs-btn-$key: $value !important;";
+    }
+    if (empty($vars)) {
+      continue;
+    }
+    $value = implode(PHP_EOL, $vars);
+    $css[] = ".btn-$button { $value }";
+  }
+  return implode(PHP_EOL, $css);
+}
+
