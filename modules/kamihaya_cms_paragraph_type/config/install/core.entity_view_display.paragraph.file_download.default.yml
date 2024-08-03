@@ -8,8 +8,6 @@ dependencies:
   module:
     - file
     - options
-_core:
-  default_config_hash: JLKLebMjKIc5amI5mSHMBk69q2V6EmmUDDtvye0BK4Y
 id: paragraph.file_download.default
 targetEntityType: paragraph
 bundle: file_download
@@ -30,5 +28,4 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-hidden:
-  search_api_excerpt: true
+hidden: {  }
