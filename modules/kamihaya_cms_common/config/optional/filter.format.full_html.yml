@@ -1,14 +1,25 @@
 langcode: en
 status: true
 dependencies:
+  config:
+    - core.entity_view_mode.media.document_list
+    - core.entity_view_mode.media.full
+    - core.entity_view_mode.media.media_library
   module:
+    - blazy
     - editor
-_core:
-  default_config_hash: LEyT01YtGmP5U5ZeHF7r4n_het17qniWQ7MnQX3LWKU
-name: 'フル HTML'
+    - media
+    - slick
+name: 'Full HTML'
 format: full_html
 weight: 2
 filters:
+  editor_file_reference:
+    id: editor_file_reference
+    provider: editor
+    status: true
+    weight: 11
+    settings: {  }
   filter_align:
     id: filter_align
     provider: filter
@@ -21,6 +32,15 @@ filters:
     status: true
     weight: 9
     settings: {  }
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: false
+    weight: -10
+    settings:
+      allowed_html: ''
+      filter_html_help: true
+      filter_html_nofollow: false
   filter_htmlcorrector:
     id: filter_htmlcorrector
     provider: filter
@@ -33,18 +53,77 @@ filters:
     status: true
     weight: 15
     settings: {  }
-  editor_file_reference:
-    id: editor_file_reference
-    provider: editor
-    status: true
-    weight: 11
-    settings: {  }
-  filter_html:
-    id: filter_html
-    provider: filter
+  blazy_filter:
+    id: blazy_filter
+    provider: blazy
     status: false
-    weight: -10
+    weight: 3
     settings:
-      allowed_html: ''
-      filter_html_help: true
-      filter_html_nofollow: false
+      media_switch: ''
+      hybrid_style: ''
+      box_style: ''
+      box_media_style: ''
+      box_caption: ''
+      filter_tags:
+        img: img
+        iframe: iframe
+      use_data_uri: '0'
+  slick_filter:
+    id: slick_filter
+    provider: slick
+    status: false
+    weight: 4
+    settings:
+      caption:
+        alt: '0'
+        title: '0'
+      optionset: default
+      layout: ''
+      background: false
+      box_caption: ''
+      box_caption_custom: ''
+      box_media_style: ''
+      loading: ''
+      box_style: ''
+      image_style: ''
+      media_switch: ''
+      ratio: ''
+      thumbnail_style: ''
+      grid: ''
+      grid_medium: ''
+      grid_small: ''
+      style: ''
+      skin: ''
+      overridables:
+        arrows: '0'
+        autoplay: '0'
+        dots: '0'
+        draggable: '0'
+        infinite: '0'
+        mouseWheel: '0'
+        randomize: '0'
+        variableWidth: '0'
+      optionset_thumbnail: ''
+      skin_thumbnail: ''
+      thumbnail_caption: ''
+      thumbnail_effect: ''
+      thumbnail_position: ''
+      override: false
+      preserve_keys: false
+      visible_items: null
+  media_embed:
+    id: media_embed
+    provider: media
+    status: true
+    weight: 100
+    settings:
+      default_view_mode: default
+      allowed_view_modes:
+        default: default
+        document_list: document_list
+        full: full
+        media_library: media_library
+      allowed_media_types:
+        document: document
+        image: image
+        video: video
