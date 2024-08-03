@@ -334,12 +334,14 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
       $bg_colors[$color][] = '.navbar.bg-custom .dropdown-menu';
       $bg_colors[$color][] = '.navbar.bg-custom .dropdown-item:hover';
       $bg_colors[$color][] = '.navbar.bg-custom .dropdown-item:focus';
+      $bg_colors[$color][] = '.navbar.bg-custom .dropdown-item.active';
     } else {
       $bg_colors[$color] = [
         '.navbar.bg-custom',
         '.navbar.bg-custom .dropdown-menu',
         '.navbar.bg-custom .dropdown-item:hover',
         '.navbar.bg-custom .dropdown-item:focus',
+        '.navbar.bg-custom .dropdown-item.active',
       ];
     }
 
