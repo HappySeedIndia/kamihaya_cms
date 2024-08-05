@@ -1433,3 +1433,10 @@ h2.accordion-header::after {
   color: rgb(33, 37, 41);
   text-decoration: none;
 }
+
+@media screen and (min-width: 40em) {
+  .layout--threecol-33-34-33>.layout__region--second {
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+  }
+}
