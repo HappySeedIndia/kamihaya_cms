@@ -181,6 +181,9 @@
   .node-info .list-date {
     margin-right: 0;
   }
+  .node-list-thumbnail .list-date {
+    text-align: right;
+  }
   .node-list-thumbnail .list-details {
     padding: 15px 15px 15px 25px;
   }
