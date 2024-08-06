@@ -1435,8 +1435,14 @@ h2.accordion-header::after {
 }
 
 @media screen and (min-width: 40em) {
-  .layout--threecol-33-34-33>.layout__region--second {
-    padding-left: 0.5%;
+  .layout--threecol-33-34-33>.layout__region--first {
     padding-right: 0.5%;
+  }
+  .layout--threecol-33-34-33>.layout__region--third {
+    padding-left: 0.5%;
+  }
+  .layout--threecol-33-34-33 > .layout__region--second {
+    padding-left: 0.75%;
+    padding-right: 0.75%;
   }
 }
