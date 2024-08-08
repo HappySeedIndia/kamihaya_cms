@@ -525,6 +525,7 @@ function kamihaya_cms_paragraph_type_update_10009() {
   $install_configs = [];
   $option_configs = [];
   $paragraphs = [
+    'divider',
     'image',
     'image_link',
     'link_button',
@@ -538,6 +539,16 @@ function kamihaya_cms_paragraph_type_update_10009() {
     $storage_configs[] = "field.storage.paragraph.field_align.yml";
   }
   foreach($paragraphs as $paragraph) {
+    if ($paragraph === 'divider') {
+      $field_config = FieldConfig::loadByName('paragraph', $paragraph, 'field_width');
+      if (!$field_config) {
+        $install_configs[] = "field.field.paragraph.{$paragraph}.field_width.yml";
+      }
+      $field_config = FieldConfig::loadByName('paragraph', $paragraph, 'field_width_unit');
+      if (!$field_config) {
+        $install_configs[] = "field.field.paragraph.{$paragraph}.field_width_unit.yml";
+      }
+    }
     $field_config = FieldConfig::loadByName('paragraph', $paragraph, 'field_align');
     if ($field_config) {
       continue;
@@ -566,6 +577,26 @@ function kamihaya_cms_paragraph_type_update_10009() {
   $display_repository = \Drupal::service('entity_display.repository');
 
   foreach($paragraphs as $paragraph) {
+    if ($paragraph === 'divider') {
+      $display_repository->getFormDisplay('paragraph', $paragraph)
+        ->setComponent('field_width', [
+          'type' => 'number',
+        ])
+        ->setComponent('field_width_unit', [
+          'type' => 'options_select',
+        ])
+        ->save();
+      $display_repository->getViewDisplay('paragraph', $paragraph)
+        ->setComponent('field_width', [
+          'label' => 'hidden',
+          'type' => 'number_integer',
+        ])
+        ->setComponent('field_width_unit', [
+          'label' => 'hidden',
+          'type' => 'list_key',
+        ])
+        ->save();
+    }
     $display_repository->getFormDisplay('paragraph', $paragraph)
       ->setComponent('field_align', [
         'type' => 'options_select',
