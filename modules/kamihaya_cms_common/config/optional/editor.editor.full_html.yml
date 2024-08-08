@@ -1,13 +1,10 @@
-uuid: 49464de4-75fc-4776-83b4-67d1793c480f
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
     - filter.format.full_html
   module:
     - ckeditor5
-_core:
-  default_config_hash: 72UYQNC3I0NmdFSE9PzaqVMHMY-CDa76H5qXwa4Lif4
 format: full_html
 editor: ckeditor5
 settings:
@@ -16,6 +13,10 @@ settings:
       - undo
       - redo
       - '|'
+      - fontSize
+      - fontFamily
+      - fontBackgroundColor
+      - fontColor
       - bold
       - italic
       - underline
@@ -37,6 +38,7 @@ settings:
       - bootstrapGrid
       - blockQuote
       - drupalInsertImage
+      - drupalMedia
       - insertTable
       - horizontalLine
       - '|'
@@ -132,6 +134,21 @@ settings:
         - lg
         - xl
         - xxl
+    ckeditor_font_font:
+      supportAllSizeValues: false
+      supportAllFamilyValues: false
+      font_names: {  }
+      font_sizes: {  }
+    ckeditor_font_font_background_color:
+      font_backgroundcolors: "#000|Color\r\n#444|Color\r\n#666|Color\L\r\n#999|Color\r\n#ccc|Color\r\n#eee|Color\r\n#f3f3f3|Color\r\n#fff|Color\r\n#f00|Color\r\n#f90|Color\L\r\n#ff0|Color\r\n#0f0|Color\r\n#0ff|Color\r\n#00f|Color\r\n#90f|Color\r\n#f0f|Color\r\n#f4cccc|Color\r\n#fce5cd|Color\r\n#fff2cc|Color\r\n#d9ead3|Color\r\n#d0e0e3|Color\r\n#cfe2f3|Color\r\n#d9d2e9|Color\r\n#ead1dc|Color\r\n#ea9999|Color\r\n#f9cb9c|Color\r\n#ffe599|Color\r\n#b6d7a8|Color\r\n#a2c4c9|Color\r\n#9fc5e8|Color\r\n#b4a7d6|Color\r\n#d5a6bd|Color\r\n#e06666|Color\r\n#f6b26b|Color\r\n#ffd966|Color\r\n#93c47d|Color\r\n#76a5af|Color\r\n#6fa8dc|Color\r\n#8e7cc3|Color\r\n#c27ba0|Color\r\n#c00|Color\r\n#e69138|Color\r\n#f1c232|Color\r\n#6aa84f|Color\r\n#45818e|Color\r\n#3d85c6|Color\r\n#674ea7|Color\r\n#a64d79|Color\r\n#900|Color\r\n#b45f06|Color\r\n#bf9000|Color\r\n#38761d|Color\r\n#134f5c|Color\r\n#0b5394|Color\r\n#351c75|Color\r\n#741b47|Color\r\n#600|Color\r\n#783f04|Color\r\n#7f6000|Color\r\n#274e13|Color\r\n#0c343d|Color\r\n#073763|Color\r\n#20124d|Color\r\n#4c1130|Color"
+      columns: 8
+      documentColors: 0
+    ckeditor_font_font_color:
+      font_colors: "#000|Color\r\n#444|Color\r\n#666|Color\L\r\n#999|Color\r\n#ccc|Color\r\n#eee|Color\r\n#f3f3f3|Color\r\n#fff|Color\r\n#f00|Color\r\n#f90|Color\L\r\n#ff0|Color\r\n#0f0|Color\r\n#0ff|Color\r\n#00f|Color\r\n#90f|Color\r\n#f0f|Color\r\n#f4cccc|Color\r\n#fce5cd|Color\r\n#fff2cc|Color\r\n#d9ead3|Color\r\n#d0e0e3|Color\r\n#cfe2f3|Color\r\n#d9d2e9|Color\r\n#ead1dc|Color\r\n#ea9999|Color\r\n#f9cb9c|Color\r\n#ffe599|Color\r\n#b6d7a8|Color\r\n#a2c4c9|Color\r\n#9fc5e8|Color\r\n#b4a7d6|Color\r\n#d5a6bd|Color\r\n#e06666|Color\r\n#f6b26b|Color\r\n#ffd966|Color\r\n#93c47d|Color\r\n#76a5af|Color\r\n#6fa8dc|Color\r\n#8e7cc3|Color\r\n#c27ba0|Color\r\n#c00|Color\r\n#e69138|Color\r\n#f1c232|Color\r\n#6aa84f|Color\r\n#45818e|Color\r\n#3d85c6|Color\r\n#674ea7|Color\r\n#a64d79|Color\r\n#900|Color\r\n#b45f06|Color\r\n#bf9000|Color\r\n#38761d|Color\r\n#134f5c|Color\r\n#0b5394|Color\r\n#351c75|Color\r\n#741b47|Color\r\n#600|Color\r\n#783f04|Color\r\n#7f6000|Color\r\n#274e13|Color\r\n#0c343d|Color\r\n#073763|Color\r\n#20124d|Color\r\n#4c1130|Color"
+      columns: 8
+      documentColors: 0
+    media_media:
+      allow_view_mode_override: false
 image_upload:
   status: true
   scheme: public
