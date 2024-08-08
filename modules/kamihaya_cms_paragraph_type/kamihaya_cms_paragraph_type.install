@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
 use Drupal\paragraphs\Entity\ParagraphsType;
@@ -174,7 +175,6 @@ function kamihaya_cms_paragraph_type_update_10003() {
  * Update configs.
  */
 function kamihaya_cms_paragraph_type_update_10004() {
-  $config_factory = \Drupal::configFactory();
   $configs = [];
   $field_config = FieldStorageConfig::loadByName('paragraph', 'field_image_description');
   if (!$field_config) {
@@ -236,7 +236,6 @@ function kamihaya_cms_paragraph_type_update_10004() {
  * Update configs.
  */
 function kamihaya_cms_paragraph_type_update_10005() {
-  $config_factory = \Drupal::configFactory();
   $storage_configs = [];
   $field_configs = [];
   $fields = [
@@ -397,7 +396,6 @@ function kamihaya_cms_paragraph_type_update_10007() {
   }
 }
 
-
 /**
  * Update configs.
  */
@@ -517,4 +515,102 @@ function kamihaya_cms_paragraph_type_update_10008() {
     $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
     $field_config->save(TRUE);
   }
+}
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_paragraph_type_update_10009() {
+  $storage_configs = [];
+  $install_configs = [];
+  $option_configs = [];
+  $paragraphs = [
+    'divider',
+    'image',
+    'image_link',
+    'link_button',
+    'file_download',
+    'two_col_table',
+    'video',
+  ];
+
+  $field_config = FieldStorageConfig::loadByName('paragraph', 'field_align');
+  if (!$field_config) {
+    $storage_configs[] = "field.storage.paragraph.field_align.yml";
+  }
+  foreach($paragraphs as $paragraph) {
+    if ($paragraph === 'divider') {
+      $field_config = FieldConfig::loadByName('paragraph', $paragraph, 'field_width');
+      if (!$field_config) {
+        $install_configs[] = "field.field.paragraph.{$paragraph}.field_width.yml";
+      }
+      $field_config = FieldConfig::loadByName('paragraph', $paragraph, 'field_width_unit');
+      if (!$field_config) {
+        $install_configs[] = "field.field.paragraph.{$paragraph}.field_width_unit.yml";
+      }
+    }
+    $field_config = FieldConfig::loadByName('paragraph', $paragraph, 'field_align');
+    if ($field_config) {
+      continue;
+    }
+    if ($paragraph === 'two_col_table') {
+      $option_configs[] = "field.field.paragraph.{$paragraph}.field_align.yml";
+      continue;
+    }
+    $install_configs[] = "field.field.paragraph.{$paragraph}.field_align.yml";
+  }
+
+  if (empty($storage_configs) &&empty($option_configs) && empty($install_configs)) {
+    return;
+  }
+  if (!empty($storage_configs)) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $storage_configs, 'optional');
+  }
+  if (!empty($option_configs)) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $option_configs, 'optional');
+  }
+  if (!empty($install_configs)) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $install_configs, 'install');
+  }
+
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+
+  foreach($paragraphs as $paragraph) {
+    if ($paragraph === 'divider') {
+      $display_repository->getFormDisplay('paragraph', $paragraph)
+        ->setComponent('field_width', [
+          'type' => 'number',
+        ])
+        ->setComponent('field_width_unit', [
+          'type' => 'options_select',
+        ])
+        ->save();
+      $display_repository->getViewDisplay('paragraph', $paragraph)
+        ->setComponent('field_width', [
+          'label' => 'hidden',
+          'type' => 'number_integer',
+        ])
+        ->setComponent('field_width_unit', [
+          'label' => 'hidden',
+          'type' => 'list_key',
+        ])
+        ->save();
+    }
+    $display_repository->getFormDisplay('paragraph', $paragraph)
+      ->setComponent('field_align', [
+        'type' => 'options_select',
+        ])
+      ->save();
+
+    $display_repository->getViewDisplay('paragraph', $paragraph)
+      ->setComponent('field_align', [
+        'label' => 'hidden',
+        'type' => 'list_key',
+      ])
+      ->save();
+  }
+
+  _kamihaya_cms_common_save_translation_configs(array_merge($install_configs, $option_configs), 'ja');
+
 }

@@ -17,6 +17,10 @@
     flex-wrap: wrap;
     justify-content: center;
   }
+  .align-left .btn-list,
+  .align-right .btn-list {
+    display: block;
+  }
   .btn-list li {
     margin-right: 15px;
   }
@@ -26,7 +30,7 @@
   background-color: #999;
   border: none;
   color: white;
-  padding: 0;
+  padding: 0 0 0 10px;
   cursor: pointer;
   font-size: 16px;
 }

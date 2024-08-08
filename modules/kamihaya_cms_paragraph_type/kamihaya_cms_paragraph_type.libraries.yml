@@ -57,3 +57,8 @@ border-box-css:
   css:
     base:
       assets/css/border-box.css: {}
+
+divider-css:
+  css:
+    base:
+      assets/css/divider.css: {}
