@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.file_download.field_align
     - field.field.paragraph.file_download.field_file
     - paragraphs.paragraphs_type.file_download
   module:
@@ -11,6 +12,12 @@ targetEntityType: paragraph
 bundle: file_download
 mode: default
 content:
+  field_align:
+    type: options_select
+    weight: 16
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_file:
     type: file_generic
     weight: 0

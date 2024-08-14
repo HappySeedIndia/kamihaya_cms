@@ -19,3 +19,29 @@
   margin: 0 auto 20px;
   height: auto;
 }
+
+.paragraph--type--video.align-left,
+.paragraph--type--video.align-right {
+  float: none;
+}
+
+.align-left .video-media video {
+  margin-left: 0;
+}
+
+.align-right .video-media video {
+  margin-right: 0;
+}
+
+.align-left .video-tag {
+  text-align: left;
+}
+
+.align-right .video-tag {
+  text-align: right;
+}
+
+.align-center .video-tag {
+  text-align: center;
+}
+

@@ -39,23 +39,25 @@
  */
 #}
 {{  attach_library('kamihaya_cms_paragraph_type/table-css') }}
-{%
-  set classes = [
-    'paragraph',
-    'paragraph--type--' ~ paragraph.bundle|clean_class,
-    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
-    not paragraph.isPublished() ? 'paragraph--unpublished'
-  ]
-%}
 {% block paragraph %}
-	<div{{attributes.addClass(classes)}}>
-		{% block content %}
+  {% block content %}
+    {% set align = content.field_align|render|striptags|trim|lower %}
+    {%
+      set classes = [
+        'paragraph',
+        'paragraph--type--' ~ paragraph.bundle|clean_class,
+        view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+        not paragraph.isPublished() ? 'paragraph--unpublished',
+        align ? 'align-' ~ align,
+      ]
+    %}
+    <div{{attributes.addClass(classes)}}>
       <table class="table table-bordered">
         <tbody>
-          {{ content }}
+          {{ content.field_table_rows }}
         </tbody>
       </table>
-		{% endblock %}
-	</div>
+  	</div>
+	{% endblock %}
 {% endblock paragraph %}
 
