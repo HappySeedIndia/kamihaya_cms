@@ -297,12 +297,20 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
   }
   if (theme_get_setting('b5_body_bg_schema') === 'custom' && !empty(theme_get_setting('b5_body_bg_schema_custom'))) {
     $color = theme_get_setting('b5_body_bg_schema_custom');
-    $bg_colors[$color] = ['body.bg-custom'];
+    if (!empty($bg_colors[$color])) {
+      $bg_colors[$color][] = 'body.bg-custom';
+    } else {
+      $bg_colors[$color] = ['body.bg-custom'];
+    }
   }
   if (theme_get_setting('b5_navbar_schema') === 'custom') {
     if (!empty(theme_get_setting('b5_navbar_text_color'))) {
       $color = theme_get_setting('b5_navbar_text_color');
-      $colors[$color] = ['.navbar.text-custom'];
+      if (!empty($colors[$color])) {
+        $colors[$color][] = '.navbar.text-custom';
+      } else {
+        $colors[$color] = ['.navbar.text-custom'];
+      }
     }
     if (!empty(theme_get_setting('b5_navbar_link_color'))) {
       $color = theme_get_setting('b5_navbar_link_color');
@@ -334,12 +342,14 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
       $bg_colors[$color][] = '.navbar.bg-custom .dropdown-menu';
       $bg_colors[$color][] = '.navbar.bg-custom .dropdown-item:hover';
       $bg_colors[$color][] = '.navbar.bg-custom .dropdown-item:focus';
+      $bg_colors[$color][] = '.navbar.bg-custom .dropdown-item.active';
     } else {
       $bg_colors[$color] = [
         '.navbar.bg-custom',
         '.navbar.bg-custom .dropdown-menu',
         '.navbar.bg-custom .dropdown-item:hover',
         '.navbar.bg-custom .dropdown-item:focus',
+        '.navbar.bg-custom .dropdown-item.active',
       ];
     }
 
@@ -347,7 +357,11 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
   if (theme_get_setting('b5_footer_schema') === 'custom') {
     if (!empty(theme_get_setting('b5_footer_text_color'))) {
       $color = theme_get_setting('b5_footer_text_color');
-      $colors[$color] = ['footer.text-custom'];
+      if (!empty($colors[$color])) {
+        $colors[$color][] = 'footer.text-custom';
+      } else {
+        $colors[$color] = ['footer.text-custom'];
+      }
     }
     if (!empty(theme_get_setting('b5_footer_link_color'))) {
       $color = theme_get_setting('b5_footer_link_color');
