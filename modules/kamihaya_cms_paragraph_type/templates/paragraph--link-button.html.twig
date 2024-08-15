@@ -38,19 +38,17 @@
  * @ingroup themeable
  */
 #}
+{%
+  set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished',
+    'link-button'
+  ]
+%}
 {% block paragraph %}
   {% block content %}
-    {% set align = content.field_align|render|striptags|trim|lower %}
-    {%
-      set classes = [
-        'paragraph',
-        'paragraph--type--' ~ paragraph.bundle|clean_class,
-        view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
-        not paragraph.isPublished() ? 'paragraph--unpublished',
-        'link-button',
-        align ? 'align-' ~ align,
-      ]
-    %}
     {% if content.field_button_link|render and content.field_button_text|render %}
       <div{{attributes.addClass(classes)}}>
         {% if content.field_button_link|render %}

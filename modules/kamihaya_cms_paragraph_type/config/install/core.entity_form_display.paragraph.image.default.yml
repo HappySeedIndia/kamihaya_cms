@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.image.field_align
     - field.field.paragraph.image.field_height
     - field.field.paragraph.image.field_height_unit
     - field.field.paragraph.image.field_image
@@ -18,12 +17,6 @@ targetEntityType: paragraph
 bundle: image
 mode: default
 content:
-  field_align:
-    type: options_select
-    weight: 16
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_height:
     type: number
     weight: 1

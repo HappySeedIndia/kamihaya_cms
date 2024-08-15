@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.image_link.field_align
     - field.field.paragraph.image_link.field_image
     - field.field.paragraph.image_link.field_image_desc_text_size
     - field.field.paragraph.image_link.field_image_description
@@ -27,12 +26,6 @@ targetEntityType: paragraph
 bundle: image_link
 mode: default
 content:
-  field_align:
-    type: options_select
-    weight: 16
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_image:
     type: image_image
     weight: 0

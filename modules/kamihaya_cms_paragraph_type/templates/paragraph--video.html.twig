@@ -39,20 +39,19 @@
  */
 #}
 {{  attach_library('kamihaya_cms_paragraph_type/video-css') }}
-{% block paragraph %}
-  {% block content %}
-    {% set align = content.field_align|render|striptags|trim|lower %}
-    {%
-      set classes = [
-        'paragraph',
-        'paragraph--type--' ~ paragraph.bundle|clean_class,
-        view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
-        not paragraph.isPublished() ? 'paragraph--unpublished',
-        align ? 'align-' ~ align,
-      ]
-    %}
+{%
+  set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished',
+  ]
+%}
 
-    <div{{ attributes.addClass(classes) }}>
+{% block paragraph %}
+  <div{{ attributes.addClass(classes) }}>
+    {% block content %}
+
       {# Video #}
       {% if content.field_video_media|render %}
       <div class="video-media">
@@ -66,6 +65,7 @@
         {{ content.field_video_tag }}
       </div>
       {% endif %}
-     </div>
-  {% endblock %}
+
+    {% endblock %}
+  </div>
 {% endblock paragraph %}

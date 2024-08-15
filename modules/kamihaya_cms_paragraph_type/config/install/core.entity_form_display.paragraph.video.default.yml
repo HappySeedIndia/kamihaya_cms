@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.video.field_align
     - field.field.paragraph.video.field_video_media
     - field.field.paragraph.video.field_video_tag
     - paragraphs.paragraphs_type.video
@@ -13,12 +12,6 @@ targetEntityType: paragraph
 bundle: video
 mode: default
 content:
-  field_align:
-    type: options_select
-    weight: 16
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_video_media:
     type: media_library_widget
     weight: 1
