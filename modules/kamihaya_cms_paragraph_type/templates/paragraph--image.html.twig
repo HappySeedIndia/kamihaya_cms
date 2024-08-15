@@ -39,28 +39,25 @@
  */
 #}
 {{  attach_library('kamihaya_cms_paragraph_type/image-css') }}
+{%
+  set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished',
+  ]
+%}
 
 {% block paragraph %}
-  {% block content %}
-    {% set align = content.field_align|render|striptags|trim|lower %}
-    {%
-      set classes = [
-        'paragraph',
-        'paragraph--type--' ~ paragraph.bundle|clean_class,
-        view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
-        not paragraph.isPublished() ? 'paragraph--unpublished',
-        align ? 'align-' ~ align,
-      ]
-    %}
-
-    <div{{ attributes.addClass(classes) }}>
+  <div{{ attributes.addClass(classes) }}>
+    {% block content %}
       {% set height = paragraph.field_height.0.value %}
       {% set height_unit = paragraph.field_height_unit.0.value %}
       {% set width = paragraph.field_width.0.value %}
       {% set width_unit = paragraph.field_width_unit.0.value %}
       {%
         set style = [
-          width ? 'width: 100%; max-width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;') : 'width: auto;',
+          width ? 'width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;') : 'width: auto;',
           height ? 'height: ' ~ height ~ (height_unit ? height_unit ~ ';' : 'px;') : 'height: auto;',
         ]
       %}
@@ -75,6 +72,6 @@
       {# Image url #}
       {% set imageUrl = file_url(content.field_image.0['#item'].entity.uri.value) %}
       <img src="{{ imageUrl }}" alt="{{ content.field_image.0['#item'].alt }}"{% if style %} style="{{ style|join(' ') }}" {% endif %}/>
-    </div>
-  {% endblock %}
+    {% endblock %}
+  </div>
 {% endblock paragraph %}

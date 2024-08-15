@@ -2,24 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.two_col_table.field_align
     - field.field.paragraph.two_col_table.field_table_rows
     - paragraphs.paragraphs_type.two_col_table
   module:
     - entity_reference_revisions
-    - options
 id: paragraph.two_col_table.default
 targetEntityType: paragraph
 bundle: two_col_table
 mode: default
 content:
-  field_align:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 16
-    region: content
   field_table_rows:
     type: entity_reference_revisions_entity_view
     label: hidden

@@ -2,24 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.two_col_table.field_align
     - field.field.paragraph.two_col_table.field_table_rows
     - paragraphs.paragraphs_type.two_col_table
   module:
     - paragraphs
-_core:
-  default_config_hash: 87KTcTFs1Hj6QQfnSQ8Qzpv5OWHRXR59wmI2vJYeBKo
 id: paragraph.two_col_table.default
 targetEntityType: paragraph
 bundle: two_col_table
 mode: default
 content:
-  field_align:
-    type: options_select
-    weight: 16
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_table_rows:
     type: paragraphs
     weight: 0

@@ -39,36 +39,35 @@
  */
 #}
 {{ attach_library('kamihaya_cms_paragraph_type/image-link-css') }}
+{%
+  set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished',
+  ]
+%}
 {% block paragraph %}
   {% block content %}
-    {% set align = content.field_align|render|striptags|trim|lower %}
-    {%
-      set classes = [
-        'paragraph',
-        'paragraph--type--' ~ paragraph.bundle|clean_class,
-        view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
-        not paragraph.isPublished() ? 'paragraph--unpublished',
-        align ? 'align-' ~ align,
-      ]
-    %}
     <div{{attributes.addClass(classes)}}>
       {# Image link #}
       {% set imageLink = content.field_image_link.0['#url'] %}
 
       {# Image url #}
       {% set imageUrl = file_url(content.field_image.0['#item'].entity.uri.value) %}
+
       {% set width = paragraph.field_width.0.value %}
       {% set width_unit = paragraph.field_width_unit.0.value %}
       {% set mobile_height = paragraph.field_mobile_height.0.value %}
 
       {% if width %}
-        {% set image_style = ['width: 100%; max-width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;')] %}
-        {% if width_unit == 'vw' %}
-          {%
-            set image_style = image_style|merge([
-              'margin-left: calc(-50vw + 50%);',
-              'max-width: none;',
-          ])
+        {% set image_style = ['width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;')] %}
+          {% if width_unit == 'vw' %}
+            {%
+              set image_style = image_style|merge([
+                'margin-left: calc(-50vw + 50%);',
+                'max-width: none;',
+             ])
           %}
         {% endif %}
       {% endif %}
