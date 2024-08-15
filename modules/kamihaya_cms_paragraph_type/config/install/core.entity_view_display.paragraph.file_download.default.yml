@@ -2,15 +2,24 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.file_download.field_align
     - field.field.paragraph.file_download.field_file
     - paragraphs.paragraphs_type.file_download
   module:
     - file
+    - options
 id: paragraph.file_download.default
 targetEntityType: paragraph
 bundle: file_download
 mode: default
 content:
+  field_align:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 16
+    region: content
   field_file:
     type: file_default
     label: hidden
