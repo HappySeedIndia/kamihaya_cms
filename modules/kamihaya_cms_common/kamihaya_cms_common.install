@@ -1,6 +1,6 @@
 <?php
 
-use Drupal\Component\Serialization\Yaml;
+use Drupal\Core\Site\Settings;
 
 /**
  * Update configs.
@@ -22,4 +22,77 @@ function kamihaya_cms_common_update_10002() {
     'editor.editor.full_html.yml',
     'filter.format.full_html.yml',
   ], 'optional');
+}
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_common_update_10003() {
+  $editor_config = \Drupal::configFactory()->getEditable('editor.editor.full_html');
+  $file_config = _kamihaya_cms_common_load_config_file('kamihaya_cms_common', 'editor.editor.full_html.yml', 'optional');
+  if (!empty($editor_config) && !empty($file_config)) {
+    $items = !empty($file_config['settings']['toolbar']['items']) ? $file_config['settings']['toolbar']['items'] : [];
+    $plugins = !empty($file_config['settings']['plugins']) ? $file_config['settings']['plugins'] : [];
+    if (!empty($items)) {
+      $editor_config->set('settings.toolbar.items', _kamihaya_cms_common_merge_config($editor_config->get('settings.toolbar.items') ?: [], $items));
+    }
+    if (!empty($plugins)) {
+      $editor_config->set('settings.plugins', _kamihaya_cms_common_merge_config($editor_config->get('settings.plugins') ?: [], $plugins));
+    }
+    $editor_config->save(TRUE);
+  }
+
+  $filter_config = \Drupal::configFactory()->getEditable('filter.format.full_html');
+  $file_config = _kamihaya_cms_common_load_config_file('kamihaya_cms_common', 'filter.format.full_html.yml', 'optional');
+  if (!empty($filter_config) && !empty($file_config)) {
+    $dep_config = !empty($file_config['dependencies']['config']) ? $file_config['dependencies']['config'] : [];
+    $dep_module = !empty($file_config['dependencies']['module']) ? $file_config['dependencies']['module'] : [];
+    $filters = !empty($file_config['filters']) ? $file_config['filters'] : [];
+    if (!empty($dep_config)) {
+      $filter_config->set('dependencies.config', _kamihaya_cms_common_merge_config($filter_config->get('dependencies.config') ?: [], $dep_config));
+    }
+    if (!empty($dep_module)) {
+      $filter_config->set('dependencies.module', _kamihaya_cms_common_merge_config($filter_config->get('dependencies.module') ?: [], $dep_module));
+    }
+    if (!empty($filters)) {
+      $filter_config->set('filters', _kamihaya_cms_common_merge_config($filter_config->get('filters') ?: [], $filters));
+    }
+    $filter_config->save(TRUE);
+  }
+
+  if (!\Drupal::moduleHandler()->moduleExists('imce')) {
+    return;
+  }
+  $admin_profile = \Drupal::configFactory()->getEditable('imce.profile.admin');
+  if (empty($admin_profile)) {
+    return;
+  }
+  $imce_config = \Drupal::configFactory()->getEditable('imce.settings');
+  $imce_config->set('roles_profiles.administrator.public', 'admin');
+
+  if (!empty(Settings::get('file_private_path'))) {
+    $imce_config->set('roles_profiles.administrator.private', 'admin');
+  }
+  $imce_config->save(TRUE);
+}
+
+/**
+ * Merge config array.
+ *
+ * @param array $base_config
+ *   The base config.
+ * @param array $new_config
+ *   T¥he new config.
+ *
+ * @return array
+ *   The merged config.
+ */
+function _kamihaya_cms_common_merge_config(array $base_config, array $new_config) {
+  foreach ($new_config as $key => $value) {
+    if ((is_string($key) && empty($base_config[$key]))
+      || (is_int($key) && !in_array($value, $base_config))) {
+      $base_config[$key] = $value;
+    }
+  }
+  return $base_config;
 }
