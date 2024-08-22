@@ -2,29 +2,20 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.divider.field_align
     - field.field.paragraph.divider.field_divider_color
     - field.field.paragraph.divider.field_divider_image
     - field.field.paragraph.divider.field_divider_style
     - field.field.paragraph.divider.field_divider_width
-    - field.field.paragraph.divider.field_width
-    - field.field.paragraph.divider.field_width_unit
     - image.style.thumbnail
     - paragraphs.paragraphs_type.divider
   module:
     - color_field
-    - svg_image
+    - image
 id: paragraph.divider.default
 targetEntityType: paragraph
 bundle: divider
 mode: default
 content:
-  field_align:
-    type: options_select
-    weight: 16
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_divider_color:
     type: color_field_widget_spectrum
     weight: 2
@@ -46,9 +37,7 @@ content:
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
-    third_party_settings:
-      imce:
-        enabled: true
+    third_party_settings: {  }
   field_divider_style:
     type: options_select
     weight: 1
@@ -61,19 +50,6 @@ content:
     region: content
     settings:
       placeholder: ''
-    third_party_settings: {  }
-  field_width:
-    type: number
-    weight: 13
-    region: content
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-  field_width_unit:
-    type: options_select
-    weight: 14
-    region: content
-    settings: {  }
     third_party_settings: {  }
 hidden:
   created: true

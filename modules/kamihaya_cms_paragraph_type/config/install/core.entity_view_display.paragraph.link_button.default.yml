@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.link_button.field_align
     - field.field.paragraph.link_button.field_button_bg_color
     - field.field.paragraph.link_button.field_button_border_color
     - field.field.paragraph.link_button.field_button_border_radius
@@ -14,19 +13,11 @@ dependencies:
   module:
     - color_field
     - link
-    - options
 id: paragraph.link_button.default
 targetEntityType: paragraph
 bundle: link_button
 mode: default
 content:
-  field_align:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 16
-    region: content
   field_button_bg_color:
     type: color_field_formatter_text
     label: hidden

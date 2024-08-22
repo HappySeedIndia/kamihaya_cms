@@ -2,16 +2,3 @@
 .paragraph--type--two-col-table .table th {
   min-width: 150px;
 }
-
-.paragraph--type--two-col-table.align-left,
-.paragraph--type--two-col-table.align-right {
-  float: none;
-}
-
-.align-left table {
-  margin-left: 0 !important;
-}
-
-.align-right table {
-  margin-right: 0 !important;
-}

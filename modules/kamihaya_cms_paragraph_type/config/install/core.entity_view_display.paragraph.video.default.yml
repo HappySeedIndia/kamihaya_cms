@@ -2,25 +2,16 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.video.field_align
     - field.field.paragraph.video.field_video_media
     - field.field.paragraph.video.field_video_tag
     - paragraphs.paragraphs_type.video
   module:
     - kamihaya_cms_paragraph_type
-    - options
 id: paragraph.video.default
 targetEntityType: paragraph
 bundle: video
 mode: default
 content:
-  field_align:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 16
-    region: content
   field_video_media:
     type: entity_reference_entity_view
     label: hidden
