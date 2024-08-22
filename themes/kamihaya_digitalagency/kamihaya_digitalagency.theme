@@ -169,6 +169,8 @@ function kamihaya_digitalagency_preprocess_breadcrumb(&$variables){
     $variables['breadcrumb'][] = [
       'text' => $node->getTitle()
     ];
+    $variables['#cache']['contexts'][] = 'url.path';
+    $variables['#cache']['tags'][] = 'node:' . $node->id();
   }
 }
 
