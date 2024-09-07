@@ -1,9 +1,9 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   module:
     - node
 id: node.apply_form
-label: 応募フォーム
+label: "Application Form"
 targetEntityType: node
 cache: true

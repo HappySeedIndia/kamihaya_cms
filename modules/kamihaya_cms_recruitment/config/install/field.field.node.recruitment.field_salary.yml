@@ -1,4 +1,3 @@
-langcode: ja
 status: true
 dependencies:
   config:
@@ -8,7 +7,7 @@ id: node.recruitment.field_salary
 field_name: field_salary
 entity_type: node
 bundle: recruitment
-label: 給与
+label: Salary
 description: ''
 required: false
 translatable: false

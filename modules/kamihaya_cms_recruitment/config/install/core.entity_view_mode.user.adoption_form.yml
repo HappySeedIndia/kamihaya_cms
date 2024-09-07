@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.adoption_form
+label: "Adoption form"
+targetEntityType: user
+cache: true

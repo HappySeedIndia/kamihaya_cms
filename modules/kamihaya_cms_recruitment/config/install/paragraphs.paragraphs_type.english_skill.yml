@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: english_skill
+label: 英語スキル
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

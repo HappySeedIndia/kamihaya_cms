@@ -3,7 +3,7 @@ _meta:
   entity_type: taxonomy_term
   uuid: 28703da2-e44a-4365-b880-753fb043d419
   bundle: recruitment_tag
-  default_langcode: ja
+  default_langcode: en
 default:
   status:
     -
@@ -34,5 +34,5 @@ default:
   path:
     -
       alias: ''
-      langcode: ja
+      langcode: en
       pathauto: 0

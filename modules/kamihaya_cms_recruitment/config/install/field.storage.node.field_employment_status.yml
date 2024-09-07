@@ -1,4 +1,4 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   module:
@@ -11,20 +11,20 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: 正社員
-      label: 正社員
+      value: 'Permanent Employee'
+      label: 'Permanent Employee'
     -
-      value: 契約社員
-      label: 契約社員
+      value: 'Contract Employee'
+      label: 'Contract Employee'
     -
-      value: 派遣社員
-      label: 派遣社員
+      value: 'Temporary Employee'
+      label: 'Temporary Employee'
     -
-      value: 業務委託
-      label: 業務委託
+      value: 'Freelance Work'
+      label: 'Freelance Work'
     -
-      value: アルバイト･パート
-      label: アルバイト･パート
+      value: 'Part-time Job'
+      label: 'Part-time Job'
   allowed_values_function: ''
 module: options
 locked: false

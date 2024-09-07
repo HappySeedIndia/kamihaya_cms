@@ -1,4 +1,4 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
@@ -11,7 +11,7 @@ id: node.recruitment.field_apply_form
 field_name: field_apply_form
 entity_type: node
 bundle: recruitment
-label: 応募フォーム
+label: "Application Form"
 description: ''
 required: false
 translatable: false

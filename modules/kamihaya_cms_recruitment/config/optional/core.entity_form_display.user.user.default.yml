@@ -1,0 +1,106 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.user.user.commerce_remote_id
+    - field.field.user.user.field_address
+    - field.field.user.user.field_appeal_point
+    - field.field.user.user.field_birthday
+    - field.field.user.user.field_career
+    - field.field.user.user.field_educational_background
+    - field.field.user.user.field_first_name
+    - field.field.user.user.field_first_name_kana
+    - field.field.user.user.field_gender
+    - field.field.user.user.field_last_name
+    - field.field.user.user.field_last_name_kana
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_license
+    - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_pending_expire_sent
+    - field.field.user.user.field_recruitment_form
+    - field.field.user.user.field_skill
+    - field.field.user.user.field_source_code
+    - field.field.user.user.field_tel
+    - field.field.user.user.user_picture
+  module:
+    - datetime
+    - paragraphs
+    - path
+    - user
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  account:
+    weight: -10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_last_password_reset:
+    type: datetime_default
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_password_expiration:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_source_code:
+    type: paragraphs
+    weight: 31
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+      features:
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
+  language:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  timezone:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  commerce_remote_id: true
+  customer_profiles: true
+  field_address: true
+  field_appeal_point: true
+  field_birthday: true
+  field_career: true
+  field_educational_background: true
+  field_first_name: true
+  field_first_name_kana: true
+  field_gender: true
+  field_last_name: true
+  field_last_name_kana: true
+  field_license: true
+  field_pending_expire_sent: true
+  field_recruitment_form: true
+  field_skill: true
+  field_tel: true
+  langcode: true
+  user_picture: true

@@ -1,9 +1,0 @@
-langcode: ja
-status: true
-dependencies:
-  module:
-    - user
-id: user.resume
-label: 履歴
-targetEntityType: user
-cache: true

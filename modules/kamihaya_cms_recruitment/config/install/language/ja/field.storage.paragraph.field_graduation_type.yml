@@ -1,0 +1,15 @@
+settings:
+  allowed_values:
+    -
+      value: 卒業・終了
+      label: 卒業・終了
+    -
+      value: 卒業・終了見込み
+      label: 卒業・終了見込み
+    -
+      value: 中退
+      label: 中退
+    -
+      value: 満期退学
+      label: 満期退学
+  allowed_values_function: ''

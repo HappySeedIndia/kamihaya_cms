@@ -1,9 +1,0 @@
-langcode: ja
-status: true
-dependencies: {  }
-id: other_notice
-label: その他特記事項
-icon_uuid: null
-icon_default: null
-description: ''
-behavior_plugins: {  }

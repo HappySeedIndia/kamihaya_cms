@@ -2,18 +2,3 @@ name: ユーザー
 description: 'Provide ユーザー related configuration.'
 type: module
 core_version_requirement: '^9.4 || ^10'
-dependencies:
-  - 'address:address'
-  - 'drupal:datetime'
-  - 'drupal:datetime_range'
-  - 'drupal:field'
-  - 'drupal:file'
-  - 'drupal:image'
-  - 'drupal:options'
-  - 'drupal:telephone'
-  - 'drupal:text'
-  - 'drupal:views'
-  - 'drupal:entity_reference_revisions'
-  - 'paragraphs:paragraphs'
-  - 'password_policy:password_policy'
-  - 'webform:webform'

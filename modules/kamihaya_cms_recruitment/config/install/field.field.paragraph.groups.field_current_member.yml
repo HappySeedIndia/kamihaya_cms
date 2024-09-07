@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_current_member
+    - paragraphs.paragraphs_type.groups
+id: paragraph.groups.field_current_member
+field_name: field_current_member
+entity_type: paragraph
+bundle: groups
+label: "Current Member"
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: On
+  off_label: Off
+field_type: boolean

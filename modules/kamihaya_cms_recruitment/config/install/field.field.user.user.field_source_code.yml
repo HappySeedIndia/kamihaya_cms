@@ -1,0 +1,144 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_source_code
+    - paragraphs.paragraphs_type.source_code
+  module:
+    - entity_reference_revisions
+    - user
+id: user.user.field_source_code
+field_name: field_source_code
+entity_type: user
+bundle: user
+label: 'Source code'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      source_code: source_code
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: 40
+        enabled: false
+      accordion_item:
+        weight: 41
+        enabled: false
+      block:
+        weight: 42
+        enabled: false
+      border_box:
+        weight: 43
+        enabled: false
+      border_box_item:
+        weight: 44
+        enabled: false
+      career:
+        weight: 45
+        enabled: false
+      divider:
+        weight: 46
+        enabled: false
+      drawer:
+        weight: 47
+        enabled: false
+      educational_background:
+        weight: 48
+        enabled: false
+      embed_tag:
+        weight: 49
+        enabled: false
+      english_skill:
+        weight: 50
+        enabled: false
+      featured_content:
+        weight: 51
+        enabled: false
+      file_download:
+        weight: 52
+        enabled: false
+      groups:
+        weight: 53
+        enabled: false
+      h2_title:
+        weight: 54
+        enabled: false
+      h3_title:
+        weight: 55
+        enabled: false
+      h4_title:
+        weight: 56
+        enabled: false
+      headings:
+        weight: 57
+        enabled: false
+      image:
+        weight: 58
+        enabled: false
+      image_link:
+        weight: 59
+        enabled: false
+      layout_paragraph:
+        weight: 60
+        enabled: false
+      left_image_text:
+        weight: 61
+        enabled: false
+      license:
+        weight: 62
+        enabled: false
+      link_button:
+        weight: 63
+        enabled: false
+      mask_image:
+        weight: 64
+        enabled: false
+      modal_dialog:
+        weight: 65
+        enabled: false
+      other_language:
+        weight: 66
+        enabled: false
+      other_notice:
+        weight: 67
+        enabled: false
+      q_a:
+        weight: 68
+        enabled: false
+      right_image_text:
+        weight: 69
+        enabled: false
+      skill:
+        weight: 70
+        enabled: false
+      slider:
+        weight: 71
+        enabled: false
+      slider_item:
+        weight: 72
+        enabled: false
+      source_code:
+        weight: 73
+        enabled: true
+      two_col_table:
+        weight: 74
+        enabled: false
+      two_col_table_row:
+        weight: 75
+        enabled: false
+      video:
+        weight: 76
+        enabled: false
+      views:
+        weight: 77
+        enabled: false
+      wysiwyg_editor:
+        weight: 78
+        enabled: false
+field_type: entity_reference_revisions

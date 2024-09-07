@@ -1,9 +1,9 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   module:
     - node
 id: node.list
-label: リスト
+label: List
 targetEntityType: node
 cache: true

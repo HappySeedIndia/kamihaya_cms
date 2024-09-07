@@ -1,11 +1,10 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
     - field.field.node.recruitment.body
     - field.field.node.recruitment.field_apply_form
     - field.field.node.recruitment.field_company
-    - field.field.node.recruitment.field_company_url
     - field.field.node.recruitment.field_employment_status
     - field.field.node.recruitment.field_holiday
     - field.field.node.recruitment.field_min_annual_income
@@ -19,7 +18,6 @@ dependencies:
     - field.field.node.recruitment.field_working_hours
     - node.type.recruitment
   module:
-    - link
     - options
     - text
     - user
@@ -36,24 +34,12 @@ content:
     weight: 1
     region: content
   field_company:
-    type: string
+    type: entity_reference_label
     label: above
     settings:
-      link_to_entity: false
+      link: true
     third_party_settings: {  }
-    weight: 2
-    region: content
-  field_company_url:
-    type: link
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    weight: 3
+    weight: 12
     region: content
   field_employment_status:
     type: list_default
@@ -78,9 +64,10 @@ content:
     weight: 7
     region: content
   field_required_skill:
-    type: basic_string
+    type: entity_reference_label
     label: above
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
     weight: 8
     region: content
@@ -100,9 +87,10 @@ content:
     weight: 0
     region: content
   field_welcome_skill:
-    type: basic_string
+    type: entity_reference_label
     label: above
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
     weight: 9
     region: content

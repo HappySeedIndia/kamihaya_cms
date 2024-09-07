@@ -1,0 +1,85 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.user.profile
+    - field.field.user.user.commerce_remote_id
+    - field.field.user.user.field_address
+    - field.field.user.user.field_appeal_point
+    - field.field.user.user.field_birthday
+    - field.field.user.user.field_career
+    - field.field.user.user.field_educational_background
+    - field.field.user.user.field_first_name
+    - field.field.user.user.field_first_name_kana
+    - field.field.user.user.field_gender
+    - field.field.user.user.field_last_name
+    - field.field.user.user.field_last_name_kana
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_license
+    - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_pending_expire_sent
+    - field.field.user.user.field_recruitment_form
+    - field.field.user.user.field_skill
+    - field.field.user.user.field_source_code
+    - field.field.user.user.field_tel
+    - field.field.user.user.user_picture
+  module:
+    - user
+id: user.user.profile
+targetEntityType: user
+bundle: user
+mode: profile
+content:
+  field_first_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_first_name_kana:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_last_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_last_name_kana:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  commerce_remote_id: true
+  customer_profiles: true
+  field_address: true
+  field_appeal_point: true
+  field_birthday: true
+  field_career: true
+  field_educational_background: true
+  field_gender: true
+  field_last_password_reset: true
+  field_license: true
+  field_password_expiration: true
+  field_pending_expire_sent: true
+  field_recruitment_form: true
+  field_skill: true
+  field_source_code: true
+  field_tel: true
+  langcode: true
+  mail: true
+  member_for: true
+  user_picture: true

@@ -1,4 +1,4 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
@@ -8,7 +8,7 @@ id: node.recruitment.field_occupation
 field_name: field_occupation
 entity_type: node
 bundle: recruitment
-label: 職種
+label: "Job Title"
 description: ''
 required: false
 translatable: false

@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_recruitment_form
+  module:
+    - user
+    - webform
+_core:
+  default_config_hash: TLr-b_Ef07uEhovYwE2VKakk43Y6fEA82DpG73-NpcE
+id: user.user.field_recruitment_form
+field_name: field_recruitment_form
+entity_type: user
+bundle: user
+label: 'Recruitment form'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    target_uuid: 45a697cc-2c66-43ce-92ba-a55e18d1f9d5
+    default_data: ''
+    status: open
+    open: ''
+    close: ''
+default_value_callback: ''
+settings:
+  handler: 'default:webform'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: webform

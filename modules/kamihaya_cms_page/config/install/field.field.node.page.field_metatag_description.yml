@@ -1,4 +1,4 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:

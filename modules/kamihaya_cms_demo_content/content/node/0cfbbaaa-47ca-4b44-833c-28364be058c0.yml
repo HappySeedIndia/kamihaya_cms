@@ -39,7 +39,7 @@ default:
   path:
     -
       alias: ''
-      langcode: ja
+      langcode: en
       pathauto: 0
   field_q_a:
     -
@@ -49,7 +49,7 @@ default:
           entity_type: paragraph
           uuid: e0769acf-53e3-4cd5-92d9-164f0758c7af
           bundle: q_a
-          default_langcode: ja
+          default_langcode: en
         default:
           status:
             -
@@ -77,7 +77,7 @@ default:
           entity_type: paragraph
           uuid: 3ed50e2a-7ebe-4fed-83f8-9859745a57df
           bundle: q_a
-          default_langcode: ja
+          default_langcode: en
         default:
           status:
             -
@@ -105,7 +105,7 @@ default:
           entity_type: paragraph
           uuid: 2ab38e08-111d-4a78-b8e4-4cf754003af2
           bundle: q_a
-          default_langcode: ja
+          default_langcode: en
         default:
           status:
             -
@@ -133,7 +133,7 @@ default:
           entity_type: paragraph
           uuid: e2de6f4f-5728-41e9-89e9-0326c7ef6085
           bundle: q_a
-          default_langcode: ja
+          default_langcode: en
         default:
           status:
             -
@@ -161,7 +161,7 @@ default:
           entity_type: paragraph
           uuid: 68ea81f3-2d1f-46ab-b39e-18e9658ca1a0
           bundle: q_a
-          default_langcode: ja
+          default_langcode: en
         default:
           status:
             -
@@ -189,7 +189,7 @@ default:
           entity_type: paragraph
           uuid: 592b879e-4f7b-43e6-841a-9c92558f2643
           bundle: q_a
-          default_langcode: ja
+          default_langcode: en
         default:
           status:
             -

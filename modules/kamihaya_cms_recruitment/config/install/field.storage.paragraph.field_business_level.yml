@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_business_level
+field_name: field_business_level
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: 文書マニュアル読解
+      label: 文書マニュアル読解
+    -
+      value: メール交換
+      label: メール交換
+    -
+      value: ビジネス文書作成
+      label: ビジネス文書作成
+    -
+      value: 電話での会話
+      label: 電話での会話
+    -
+      value: 会議
+      label: 会議
+    -
+      value: 商談・交渉
+      label: 商談・交渉
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

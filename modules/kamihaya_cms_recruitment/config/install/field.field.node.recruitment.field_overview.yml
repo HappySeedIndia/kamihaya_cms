@@ -1,4 +1,4 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
@@ -8,7 +8,7 @@ id: node.recruitment.field_overview
 field_name: field_overview
 entity_type: node
 bundle: recruitment
-label: 募集概要
+label: "Recruitment Overview"
 description: ''
 required: false
 translatable: false

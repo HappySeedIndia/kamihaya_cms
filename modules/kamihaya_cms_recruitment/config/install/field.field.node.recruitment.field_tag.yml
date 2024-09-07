@@ -1,4 +1,4 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
@@ -9,7 +9,7 @@ id: node.recruitment.field_tag
 field_name: field_tag
 entity_type: node
 bundle: recruitment
-label: タグ
+label: Tag
 description: ''
 required: false
 translatable: false

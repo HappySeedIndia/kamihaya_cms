@@ -1,0 +1,82 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.career.field_company
+    - field.field.paragraph.career.field_company_address
+    - field.field.paragraph.career.field_country
+    - field.field.paragraph.career.field_description
+    - field.field.paragraph.career.field_enrollment
+    - field.field.paragraph.career.field_join_date
+    - field.field.paragraph.career.field_leave_date
+    - field.field.paragraph.career.field_occupation
+    - paragraphs.paragraphs_type.career
+  module:
+    - address
+    - datetime
+    - text
+id: paragraph.career.default
+targetEntityType: paragraph
+bundle: career
+mode: default
+content:
+  field_company:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_company_address:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_country:
+    type: address_country_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_description:
+    type: text_textarea
+    weight: 7
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_enrollment:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_join_date:
+    type: datetime_default
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_leave_date:
+    type: datetime_default
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_occupation:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

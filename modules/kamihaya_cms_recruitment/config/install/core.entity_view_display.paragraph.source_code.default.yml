@@ -1,0 +1,53 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.source_code.field_coding_language
+    - field.field.paragraph.source_code.field_repository_url
+    - field.field.paragraph.source_code.field_score
+    - field.field.paragraph.source_code.field_source_code
+    - paragraphs.paragraphs_type.source_code
+  module:
+    - link
+id: paragraph.source_code.default
+targetEntityType: paragraph
+bundle: source_code
+mode: default
+content:
+  field_coding_language:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_repository_url:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_score:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_source_code:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {  }

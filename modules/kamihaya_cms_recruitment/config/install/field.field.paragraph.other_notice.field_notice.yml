@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_notice
+    - paragraphs.paragraphs_type.other_notice
+  module:
+    - text
+id: paragraph.other_notice.field_notice
+field_name: field_notice
+entity_type: paragraph
+bundle: other_notice
+label: "Other notice"
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

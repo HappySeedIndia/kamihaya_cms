@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_school_type
+    - paragraphs.paragraphs_type.educational_background
+  module:
+    - options
+id: paragraph.educational_background.field_school_type
+field_name: field_school_type
+entity_type: paragraph
+bundle: educational_background
+label: "School Type"
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

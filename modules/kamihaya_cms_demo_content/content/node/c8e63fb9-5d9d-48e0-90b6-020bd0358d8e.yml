@@ -39,7 +39,7 @@ default:
   path:
     -
       alias: ''
-      langcode: ja
+      langcode: en
       pathauto: 0
   body:
     -

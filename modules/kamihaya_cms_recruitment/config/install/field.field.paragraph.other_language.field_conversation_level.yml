@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_conversation_level
+    - paragraphs.paragraphs_type.other_language
+  module:
+    - options
+id: paragraph.other_language.field_conversation_level
+field_name: field_conversation_level
+entity_type: paragraph
+bundle: other_language
+label: "Conversation Level"
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

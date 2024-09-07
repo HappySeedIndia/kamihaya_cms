@@ -1,9 +1,0 @@
-langcode: ja
-status: true
-dependencies:
-  module:
-    - user
-id: user.list
-label: リスト
-targetEntityType: user
-cache: true
