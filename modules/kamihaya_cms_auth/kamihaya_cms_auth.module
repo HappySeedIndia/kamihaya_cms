@@ -15,7 +15,7 @@ function kamihaya_cms_auth_form_user_login_form_alter(&$form, FormStateInterface
   if ($route_name === 'kamihaya_cms_auth.general_login') {
     $validation = 'kamihaya_cms_auth_validate_as_user';
   }
-  if ($route_name === 'kamihaya_cms_auth.admin_login') {
+  if ($route_name === 'user.login') {
     $validation = 'kamihaya_cms_auth_validate_as_admin';
   }
   if (empty($validation)) {

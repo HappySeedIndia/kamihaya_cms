@@ -2,7 +2,6 @@
 
 namespace Drupal\kamihaya_cms_auth\Routing;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\RouteSubscriberBase;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -16,7 +15,7 @@ class KamihayaRouteSubscriber extends RouteSubscriberBase {
    */
   protected function alterRoutes(RouteCollection $collection): void {
     if ($route = $collection->get('user.login')) {
-      $route->setRequirement('_access', 'FALSE');
+      $route->setPath('/kanrisha/login');
     }
   }
 
