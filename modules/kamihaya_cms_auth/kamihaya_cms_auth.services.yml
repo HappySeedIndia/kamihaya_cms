@@ -1,6 +1,5 @@
 services:
   kamihaya_cms_auth.route_subscriber:
     class: Drupal\kamihaya_cms_auth\Routing\KamihayaRouteSubscriber
-    arguments: ['@config.factory']
     tags:
       - { name: event_subscriber }
