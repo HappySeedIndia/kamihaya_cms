@@ -127,7 +127,7 @@ function kamihaya_cms_update_10005() {
 }
 
 /**
- * Install Blazy Field and Slick modules.
+ * Install Blazy and Slick modules.
  */
 function kamihaya_cms_update_10006() {
   $modules = [];
