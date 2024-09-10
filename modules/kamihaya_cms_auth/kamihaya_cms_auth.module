@@ -1,0 +1,75 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_form_alter().
+ */
+function kamihaya_cms_auth_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  $validations = $form['#validate'];
+  $idx = array_search('::validateFinal', $validations);
+  $validation = '';
+  if ($route_name === 'kamihaya_cms_auth.general_login') {
+    $validation = 'kamihaya_cms_auth_validate_as_user';
+  }
+  if ($route_name === 'user.login') {
+    $validation = 'kamihaya_cms_auth_validate_as_admin';
+  }
+  if (empty($validation)) {
+    return;
+  }
+  $form['#validate'] = array_merge(array_slice($validations, 0, $idx), [$validation], array_slice($validations, $idx));
+}
+
+/**
+ * The validation whether the user is administartor or not.
+ *
+ * @param array $form
+ *   The form.
+ * @param FormStateInterface $form_state
+ *   The form state.
+ *
+ */
+function kamihaya_cms_auth_validate_as_user(array &$form, FormStateInterface $form_state) {
+  $uid = $form_state->get('uid');
+  Drupal::logger('kamihaya_cms_auth_user')->notice('uid: ' . $uid);
+  if (empty($uid)) {
+    return false;
+  }
+  $user = User::load($uid);
+
+  if (empty($user) || $user->isAnonymous()) {
+    return false;
+  }
+  if ($user->hasRole('administrator')) {
+    $form_state->setErrorByName('mail', t("You can't login from this form."));
+  }
+}
+
+/**
+ * The validation whether the user is not administartor.
+ *
+ * @param array $form
+ *   The form.
+ * @param FormStateInterface $form_state
+ *   The form state.
+ *
+ */
+function kamihaya_cms_auth_validate_as_admin(array &$form, FormStateInterface $form_state) {
+  $uid = $form_state->get('uid');
+  Drupal::logger('kamihaya_cms_auth_admin')->notice('uid: ' . $uid);
+  if (empty($uid)) {
+    return false;
+  }
+  $user = User::load($uid);
+
+  if (empty($user)) {
+    return false;
+  }
+  if (!$user->hasRole('administrator')) {
+    $form_state->setErrorByName('mail', t("You can't login from this form."));
+  }
+}

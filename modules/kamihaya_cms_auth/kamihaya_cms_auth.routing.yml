@@ -1,0 +1,9 @@
+kamihaya_cms_auth.general_login:
+  path: '/ippan/login'
+  defaults:
+    _title: 'Kamihaya CMS General Login'
+    _form: '\Drupal\user\Form\UserLoginForm'
+  requirements:
+    _user_is_logged_in: 'FALSE'
+  options:
+    _maintenance_access: TRUE
