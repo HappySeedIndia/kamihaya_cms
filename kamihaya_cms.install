@@ -125,3 +125,23 @@ function kamihaya_cms_update_10005() {
   $module_installer = \Drupal::service("module_installer");
   $module_installer->install($modules);
 }
+
+/**
+ * Install Blazy and Slick modules.
+ */
+function kamihaya_cms_update_10006() {
+  $modules = [];
+  if (!\Drupal::moduleHandler()->moduleExists('blazy')) {
+    $modules[] = 'blazy';
+  }
+  if (!\Drupal::moduleHandler()->moduleExists('slick')) {
+    $modules[] = 'slick';
+  }
+
+  if (empty($modules)) {
+    return;
+  }
+  /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
+  $module_installer = \Drupal::service("module_installer");
+  $module_installer->install($modules);
+}

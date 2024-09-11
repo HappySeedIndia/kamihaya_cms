@@ -39,6 +39,7 @@ install:
   - admin_toolbar
   - admin_toolbar_tools
   - better_exposed_filters
+  - blazy
   - block_field
   - ckeditor_bs_grid
   - ckeditor_font
@@ -64,6 +65,7 @@ install:
   - redirect
   - scheduler
   - shs
+  - slick
   - svg_image
   - string_field_formatter
   - tb_megamenu
