@@ -186,6 +186,34 @@
   max-width: 1140px;
   margin: 20px auto 30px;
 }
+
+/* HTML list */
+.view .item-list a {
+  --bs-link-color: #696969;
+  --bs-link-color-rgb: 105, 105, 105;
+  --bs-link-decoration: none;
+  --bs-link-hover-color: #202020;
+  --bs-link-hover-color-rgb: 32, 32, 32;
+}
+
+.view .item-list ul li {
+  list-style-type: none;
+  margin-left: 0;
+}
+
+.view .item-list ul li a {
+  text-decoration: var(--bs-link-decoration);
+}
+
+.view .item-list ul li a:hover {
+  color: var(--bs-link-hover-color);
+}
+
+.view .item-list ul li a:before {
+  content: '▶︎';
+  margin-right: 5px;
+}
+
 @media (max-width: 767px) {
   .view-news-list .views-row,
   .view-contents-list-page .views-row,
