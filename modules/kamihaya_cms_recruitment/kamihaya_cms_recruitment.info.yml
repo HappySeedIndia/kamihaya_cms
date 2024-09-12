@@ -20,6 +20,8 @@ dependencies:
   - 'drupal:select_or_other'
   - 'drupal:views'
   - 'drupal:entity_reference_revisions'
+  - 'drupal:datetime_range'
+  - 'drupal:content_moderation'
   - 'address:address'
   - 'paragraphs:paragraphs'
   - 'password_policy:password_policy'
