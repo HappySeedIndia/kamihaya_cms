@@ -1,4 +1,4 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
@@ -7,7 +7,7 @@ id: node.recruitment.promote
 field_name: promote
 entity_type: node
 bundle: recruitment
-label: フロントページへ掲載
+label: 'Promote to front page'
 description: ''
 required: false
 translatable: true
@@ -16,6 +16,6 @@ default_value:
     value: 0
 default_value_callback: ''
 settings:
-  on_label: オン
-  off_label: オフ
+  on_label: On
+  off_label: Off
 field_type: boolean

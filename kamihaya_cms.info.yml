@@ -75,7 +75,6 @@ install:
   - gin_toolbar
   - kamihaya_cms_faq
   - kamihaya_cms_page
-  - kamihaya_cms_recruitment
   - kamihaya_cms_user
   - kamihaya_cms_webform
   - kamihaya_cms_common

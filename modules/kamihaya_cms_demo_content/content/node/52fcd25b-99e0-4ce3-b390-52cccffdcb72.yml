@@ -52,7 +52,7 @@ default:
   path:
     -
       alias: /jobs/5
-      langcode: ja
+      langcode: en
       pathauto: 1
   body:
     -

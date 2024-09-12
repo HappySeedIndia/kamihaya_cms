@@ -1,9 +1,0 @@
-langcode: ja
-status: true
-dependencies:
-  module:
-    - user
-id: user.adoption_form
-label: 採用フォーム
-targetEntityType: user
-cache: true

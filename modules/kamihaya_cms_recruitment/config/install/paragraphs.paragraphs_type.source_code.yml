@@ -1,0 +1,10 @@
+uuid: 4bb41251-0d53-46fc-aecf-3b28f8c5ac60
+langcode: en
+status: true
+dependencies: {  }
+id: source_code
+label: 'Source code'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

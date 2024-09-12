@@ -1,4 +1,4 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
@@ -6,7 +6,6 @@ dependencies:
     - field.field.node.recruitment.body
     - field.field.node.recruitment.field_apply_form
     - field.field.node.recruitment.field_company
-    - field.field.node.recruitment.field_company_url
     - field.field.node.recruitment.field_employment_status
     - field.field.node.recruitment.field_holiday
     - field.field.node.recruitment.field_min_annual_income
@@ -36,17 +35,9 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-  field_company:
-    type: string
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 0
-    region: content
 hidden:
   body: true
-  field_company_url: true
+  field_company: true
   field_employment_status: true
   field_holiday: true
   field_min_annual_income: true

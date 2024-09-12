@@ -1,0 +1,62 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_school_type
+field_name: field_school_type
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: 大学院（博士）
+      label: 大学院（博士）
+    -
+      value: 大学院（修士）
+      label: 大学院（修士）
+    -
+      value: 大学院（MBA/MOT）
+      label: 大学院（MBA/MOT）
+    -
+      value: 大学院（法科）
+      label: 大学院（法科）
+    -
+      value: 大学院（その他専門職）
+      label: 大学院（その他専門職）
+    -
+      value: 4年制大学
+      label: 4年制大学
+    -
+      value: 6年制大学
+      label: 6年制大学
+    -
+      value: 専門職大学
+      label: 専門職大学
+    -
+      value: 専門職短期大学
+      label: 専門職短期大学
+    -
+      value: 高等専門学校
+      label: 高等専門学校
+    -
+      value: 短期大学
+      label: 短期大学
+    -
+      value: 専門学校
+      label: 専門学校
+    -
+      value: 高等学校
+      label: 高等学校
+    -
+      value: その他
+      label: その他
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

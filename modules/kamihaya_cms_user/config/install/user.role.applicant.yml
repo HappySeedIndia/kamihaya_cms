@@ -1,7 +1,0 @@
-langcode: ja
-status: true
-dependencies: {  }
-id: applicant
-label: 求職者
-weight: 4
-is_admin: null

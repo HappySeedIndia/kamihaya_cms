@@ -1,9 +1,11 @@
-name: 求人情報
-description: 'Provides 求人情報 コンテンツタイプ and related configuration. '
+name: Kamihaya CMS Recruitment
+description: 'Provides eecruitment content type and related configuration.'
 type: module
 core_version_requirement: '^9.4 || ^10'
 dependencies:
+  - 'drupal:entity_reference_revisions'
   - 'drupal:field'
+  - 'drupal:image'
   - 'drupal:language'
   - 'drupal:link'
   - 'drupal:menu_ui'
@@ -11,8 +13,16 @@ dependencies:
   - 'drupal:options'
   - 'drupal:path'
   - 'drupal:taxonomy'
+  - 'drupal:telephone'
   - 'drupal:text'
   - 'drupal:user'
   - 'drupal:views'
   - 'drupal:select_or_other'
-  - 'drupal:webform'
+  - 'drupal:views'
+  - 'drupal:entity_reference_revisions'
+  - 'drupal:datetime_range'
+  - 'drupal:content_moderation'
+  - 'address:address'
+  - 'paragraphs:paragraphs'
+  - 'password_policy:password_policy'
+  - 'webform:webform'

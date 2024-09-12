@@ -1,0 +1,54 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_license
+    - paragraphs.paragraphs_type.license
+  module:
+    - entity_reference_revisions
+    - user
+id: user.user.field_license
+field_name: field_license
+entity_type: user
+bundle: user
+label: 'License'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      license: license
+    negate: 0
+    target_bundles_drag_drop:
+      career:
+        weight: 10
+        enabled: false
+      educational_background:
+        weight: 11
+        enabled: false
+      english_skill:
+        weight: 12
+        enabled: false
+      groups:
+        weight: 13
+        enabled: false
+      license:
+        weight: 14
+        enabled: true
+      other_language:
+        weight: 15
+        enabled: false
+      other_notice:
+        weight: 16
+        enabled: false
+      q_a:
+        weight: 17
+        enabled: false
+      skill:
+        weight: 18
+        enabled: false
+field_type: entity_reference_revisions

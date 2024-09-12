@@ -1,0 +1,52 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.source_code.field_coding_language
+    - field.field.paragraph.source_code.field_repository_url
+    - field.field.paragraph.source_code.field_score
+    - field.field.paragraph.source_code.field_source_code
+    - paragraphs.paragraphs_type.source_code
+  module:
+    - link
+id: paragraph.source_code.default
+targetEntityType: paragraph
+bundle: source_code
+mode: default
+content:
+  field_coding_language:
+    type: entity_reference_autocomplete
+    weight: 3
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_repository_url:
+    type: link_default
+    weight: 0
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_score:
+    type: number
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_source_code:
+    type: string_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

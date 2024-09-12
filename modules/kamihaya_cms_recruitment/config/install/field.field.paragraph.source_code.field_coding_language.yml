@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_coding_language
+    - paragraphs.paragraphs_type.source_code
+    - taxonomy.vocabulary.skill
+id: paragraph.source_code.field_coding_language
+field_name: field_coding_language
+entity_type: paragraph
+bundle: source_code
+label: 'Coding language'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      skill: skill
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

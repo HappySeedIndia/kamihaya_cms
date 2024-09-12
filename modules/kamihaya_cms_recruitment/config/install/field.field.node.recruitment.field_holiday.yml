@@ -1,4 +1,4 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
@@ -8,7 +8,7 @@ id: node.recruitment.field_holiday
 field_name: field_holiday
 entity_type: node
 bundle: recruitment
-label: 休日・休暇
+label: Holiday
 description: ''
 required: false
 translatable: false

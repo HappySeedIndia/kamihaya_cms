@@ -1,9 +1,0 @@
-langcode: ja
-status: true
-dependencies: {  }
-id: other_language
-label: その他語学スキル
-icon_uuid: null
-icon_default: null
-description: ''
-behavior_plugins: {  }

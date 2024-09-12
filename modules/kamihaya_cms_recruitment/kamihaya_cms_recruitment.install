@@ -1,0 +1,131 @@
+<?php
+
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\Entity\NodeType;
+use Drupal\paragraphs\Entity\ParagraphsType;
+use Drupal\taxonomy\Entity\Vocabulary;
+
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_recruitment_update_10001() {
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+
+  if (empty(Vocabulary::load('skill'))) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+      'taxonomy.vocabulary.skill.yml',
+    ], 'install');
+
+    _kamihaya_cms_common_save_translation_configs([
+      'taxonomy.vocabulary.skill.yml',
+    ], 'ja');
+  }
+
+  if (empty(Vocabulary::load('company_info'))) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+      'taxonomy.vocabulary.company_info.yml',
+      'field.storage.taxonomy_term.field_company_url.yml',
+      'field.field.taxonomy_term.company_info.field_company_url.yml',
+    ], 'install');
+
+    _kamihaya_cms_common_save_translation_configs([
+      'taxonomy.vocabulary.company_info.yml',
+      'field.field.taxonomy_term.company_info.field_company_url.yml',
+    ], 'ja');
+  }
+
+  if (!empty(NodeType::load('recruitment'))) {
+    $fields = [
+      'field_required_skill',
+      'field_welcome_skill',
+    ];
+
+    $form_display = $display_repository->getFormDisplay('node', 'recruitment');
+    $view_display = $display_repository->getViewDisplay('node', 'recruitment');
+
+    foreach($fields as $field) {
+      $field_config = FieldConfig::loadByName('node', 'recruitment', $field);
+      if (!empty($field_config) && $field_config->get('field_type') === 'entity_reference') {
+        continue;
+      }
+      $form_component = $form_display->getComponent($field);
+      $forn_weight = !empty($form_component) ? $form_component['weight'] : $form_display->getHeighestWeight() + 1;
+      $view_component = $view_display->getComponent($field);
+      $view_weight = !empty($view_component) ? $view_component['weight'] : $view_display->getHeighestWeight() + 1;
+
+      if (!empty($field_config)) {
+        $field_config->delete();
+      }
+      $field_storage = FieldStorageConfig::loadByName('node', $field);
+      if (!empty($field_storage)) {
+        $field_storage->delete();
+      }
+      _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+        "field.storage.node.{$field}.yml",
+        "field.field.node.recruitment.{$field}.yml",
+      ], 'install');
+
+      _kamihaya_cms_common_save_translation_configs([
+        "field.field.node.recruitment.{$field}.yml",
+      ], 'ja');
+
+      foreach($fields as $field) {
+        $form_display->setComponent($field, [
+            'type' => 'options_select',
+            'weight' => $forn_weight,
+          ])
+          ->save();
+
+        $view_display->setComponent($field, [
+            'label' => 'hidden',
+            'type' => 'entity_reference_label',
+            'weight' => $view_weight,
+            'settings' => [
+              'link' => FALSE,
+            ],
+          ])
+          ->save();
+      }
+    }
+  }
+
+  if (!empty(ParagraphsType::load('source_code'))) {
+    return;
+  }
+
+  _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+    'paragraphs.paragraphs_type.source_code.yml',
+    'field.storage.paragraph.field_source_code.yml',
+    'field.storage.paragraph.field_repository_url.yml',
+    'field.storage.paragraph.field_score.yml',
+    'field.storage.paragraph.field_coding_language.yml',
+    'field.field.paragraph.source_code.field_source_code.yml',
+    'field.field.paragraph.source_code.field_repository_url.yml',
+    'field.field.paragraph.source_code.field_score.yml',
+    'field.field.paragraph.source_code.field_coding_language.yml',
+    'core.entity_view_display.paragraph.source_code.default.yml',
+    'core.entity_form_display.paragraph.source_code.default.yml',
+    'field.storage.user.field_source_code.yml',
+    'field.field.user.user.field_source_code.yml',
+  ], 'install');
+
+  _kamihaya_cms_common_save_translation_configs([
+    'paragraphs.paragraphs_type.source_code.yml',
+    'field.field.paragraph.source_code.field_code.yml',
+    'field.field.paragraph.source_code.field_repository_url.yml',
+    'field.field.paragraph.source_code.field_score.yml',
+    'field.field.paragraph.source_code.field_coding_language.yml',
+    'field.field.user.user.field_source_code.yml',
+  ], 'ja');
+
+  $display_repository->getFormDisplay('user', 'user')
+    ->removeComponent('field_source_code')
+    ->save();
+
+  $display_repository->getViewDisplay('user', 'user')
+    ->removeComponent('field_source_code')
+    ->save();
+}

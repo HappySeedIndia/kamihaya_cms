@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_license_name
+    - paragraphs.paragraphs_type.license
+id: paragraph.license.field_license_name
+field_name: field_license_name
+entity_type: paragraph
+bundle: license
+label: "License Name"
+description: "Example: Driver' liscense, Nursing License"
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

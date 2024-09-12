@@ -1,5 +1,4 @@
-uuid: 66425597-42d1-4b4e-86cc-fb1036b3efba
-langcode: ja
+langcode: en
 status: true
 dependencies: {  }
 id: node__kamihaya_article

@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overview
+    - node.type.recruitment
+id: node.recruitment.field_overview
+field_name: field_overview
+entity_type: node
+bundle: recruitment
+label: 募集概要
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

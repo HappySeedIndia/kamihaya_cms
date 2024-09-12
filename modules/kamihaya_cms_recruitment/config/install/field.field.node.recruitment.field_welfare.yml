@@ -1,4 +1,4 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
@@ -8,7 +8,7 @@ id: node.recruitment.field_welfare
 field_name: field_welfare
 entity_type: node
 bundle: recruitment
-label: 福利厚生
+label: Welfare
 description: ''
 required: false
 translatable: false

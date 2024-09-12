@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+_core:
+  default_config_hash: BSMl_H4avHquJuIElh6_JYu21vDEPsOacU-Zx7ETmAw
+id: user.list
+label: List
+targetEntityType: user
+cache: true

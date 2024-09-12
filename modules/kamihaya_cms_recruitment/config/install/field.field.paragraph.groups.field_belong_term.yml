@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_belong_term
+    - paragraphs.paragraphs_type.groups
+  module:
+    - datetime_range
+id: paragraph.groups.field_belong_term
+field_name: field_belong_term
+entity_type: paragraph
+bundle: groups
+label: "Belong Term"
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: daterange

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_experience_term
+    - paragraphs.paragraphs_type.skill
+id: paragraph.skill.field_experience_term
+field_name: field_experience_term
+entity_type: paragraph
+bundle: skill
+label: "Experience Term"
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: 年
+field_type: integer

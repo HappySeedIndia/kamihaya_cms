@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_graduate_ym
+    - paragraphs.paragraphs_type.educational_background
+  module:
+    - datetime
+id: paragraph.educational_background.field_graduate_ym
+field_name: field_graduate_ym
+entity_type: paragraph
+bundle: educational_background
+label: "Graduate Year and Month"
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

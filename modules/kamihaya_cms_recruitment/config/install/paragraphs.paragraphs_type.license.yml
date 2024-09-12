@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: license
+label: 資格・免許
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

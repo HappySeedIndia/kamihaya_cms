@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_group_name
+    - paragraphs.paragraphs_type.groups
+id: paragraph.groups.field_group_name
+field_name: field_group_name
+entity_type: paragraph
+bundle: groups
+label: "Group Name"
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

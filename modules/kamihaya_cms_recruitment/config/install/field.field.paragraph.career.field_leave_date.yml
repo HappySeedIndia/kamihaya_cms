@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_leave_date
+    - paragraphs.paragraphs_type.career
+  module:
+    - datetime
+id: paragraph.career.field_leave_date
+field_name: field_leave_date
+entity_type: paragraph
+bundle: career
+label: "Leave Date"
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

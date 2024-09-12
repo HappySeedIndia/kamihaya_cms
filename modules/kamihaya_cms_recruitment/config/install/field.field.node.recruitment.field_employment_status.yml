@@ -1,4 +1,4 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
@@ -10,7 +10,7 @@ id: node.recruitment.field_employment_status
 field_name: field_employment_status
 entity_type: node
 bundle: recruitment
-label: 雇用形態
+label: "Employment Status"
 description: ''
 required: true
 translatable: false

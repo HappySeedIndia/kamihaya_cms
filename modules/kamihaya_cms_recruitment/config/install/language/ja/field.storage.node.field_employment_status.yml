@@ -1,0 +1,17 @@
+settings:
+  allowed_values:
+    -
+      value: 正社員
+      label: 正社員
+    -
+      value: 契約社員
+      label: 契約社員
+    -
+      value: 派遣社員
+      label: 派遣社員
+    -
+      value: 業務委託
+      label: 業務委託
+    -
+      value: アルバイト･パート
+      label: アルバイト･パート

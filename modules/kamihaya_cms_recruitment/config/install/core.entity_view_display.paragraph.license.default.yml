@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.license.field_license_name
+    - field.field.paragraph.license.field_licensed_date
+    - paragraphs.paragraphs_type.license
+  module:
+    - datetime
+id: paragraph.license.default
+targetEntityType: paragraph
+bundle: license
+mode: default
+content:
+  field_license_name:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_licensed_date:
+    type: datetime_default
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {  }

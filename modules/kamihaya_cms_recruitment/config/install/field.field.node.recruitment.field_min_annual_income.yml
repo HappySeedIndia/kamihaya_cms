@@ -1,4 +1,4 @@
-langcode: ja
+langcode: en
 status: true
 dependencies:
   config:
@@ -8,7 +8,7 @@ id: node.recruitment.field_min_annual_income
 field_name: field_min_annual_income
 entity_type: node
 bundle: recruitment
-label: 最低年収
+label: "Minimum Annual Income"
 description: ''
 required: false
 translatable: false
