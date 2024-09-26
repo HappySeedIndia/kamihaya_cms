@@ -1,5 +1,5 @@
 name: Kamihaya CMS Recruitment
-description: 'Provides eecruitment content type and related configuration.'
+description: 'Provides recruitment content type and related configuration.'
 type: module
 core_version_requirement: '^9.4 || ^10'
 dependencies:
@@ -25,4 +25,5 @@ dependencies:
   - 'address:address'
   - 'paragraphs:paragraphs'
   - 'password_policy:password_policy'
+  - 'svg_image:svg_image'
   - 'webform:webform'
