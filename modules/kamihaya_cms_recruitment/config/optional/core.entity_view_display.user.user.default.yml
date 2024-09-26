@@ -7,7 +7,7 @@ dependencies:
     - field.field.user.user.field_appeal_point
     - field.field.user.user.field_birthday
     - field.field.user.user.field_career
-    - field.field.user.user.field_caompany
+    - field.field.user.user.field_company
     - field.field.user.user.field_educational_background
     - field.field.user.user.field_first_name
     - field.field.user.user.field_first_name_kana
