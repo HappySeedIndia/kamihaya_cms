@@ -1,0 +1,8 @@
+<?php
+
+  /**
+   * Implements hook_entity_type_alter().
+   */
+  function kamihaya_cms_recruitment_entity_type_alter(array &$entity_types) {
+    $entity_types['user']->setFormClass('recruitment_register', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserRegisterForm');
+  }

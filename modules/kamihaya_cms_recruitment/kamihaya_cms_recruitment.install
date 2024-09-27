@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\Core\Entity\Entity\EntityFormMode;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
@@ -128,4 +129,50 @@ function kamihaya_cms_recruitment_update_10001() {
   $display_repository->getViewDisplay('user', 'user')
     ->removeComponent('field_source_code')
     ->save();
+}
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_recruitment_update_10002() {
+  foreach(['field_first_name_kana', 'field_last_name_kana'] ?: [] as $field) {
+    $field_config = \Drupal::configFactory()->getEditable("field.field.user.user.{$field}");
+    if (empty($field_config)) {
+      return;
+    }
+    $field_config->set('required', FALSE);
+    $field_config->save(TRUE);
+  }
+
+  $field_storage = FieldStorageConfig::loadByName('user', 'field_company');
+  if (empty($field_storage)) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+      "field.storage.user.field_company.yml",
+      "field.field.user.user.field_company.yml",
+    ], 'install');
+    _kamihaya_cms_common_save_translation_configs([
+      "field.field.user.user.field_company.yml",
+    ], 'ja');
+  }
+
+  $form_mode = \Drupal::entityTypeManager()->getStorage('entity_form_mode')->load('user.recruitment_register');
+  if (empty($form_mode)) {
+    $form_mode = EntityFormMode::create([
+      'id' => 'user.recruitment_register',
+      'targetEntityType' => 'user',
+      'label' => t('Recruitment register'),
+      'status' => TRUE,
+    ]);
+    $form_mode->save();
+  }
+
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+  $form_display = $display_repository->getFormDisplay('user', 'recruitment_register');
+
+  if (empty($form_display) || $form_display->isNew()) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+      'core.entity_form_display.user.user.recruitment_register.yml',
+    ], 'install');
+  }
 }

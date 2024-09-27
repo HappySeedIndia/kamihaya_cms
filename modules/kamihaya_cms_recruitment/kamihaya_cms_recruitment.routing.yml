@@ -1,0 +1,7 @@
+kamihaya_cms_recruitment.user.register:
+  path: '/user/register'
+  defaults:
+    _title: 'User registeration'
+    _entity_form: 'user.recruitment_register'
+  requirements:
+    _entity_create_access: 'user'

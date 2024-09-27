@@ -5,15 +5,13 @@ dependencies:
     - field.storage.user.field_last_name_kana
   module:
     - user
-_core:
-  default_config_hash: HbBi7HGSbNprUjHTHQoiHdMlAEXSl6CSDU8sM4aOTbw
 id: user.user.field_last_name_kana
 field_name: field_last_name_kana
 entity_type: user
 bundle: user
 label: 'Last name kana'
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
