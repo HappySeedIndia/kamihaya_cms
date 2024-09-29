@@ -1,10 +1,58 @@
 <?php
 
-  /**
-   * Implements hook_entity_type_alter().
-   */
-  function kamihaya_cms_recruitment_entity_type_alter(array &$entity_types) {
-    $entity_types['user']->setFormClass('recruitment_register', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserRegisterForm');
-    $entity_types['user']->setFormClass('applicant_edit', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserEditForm');
+use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function kamihaya_cms_recruitment_entity_type_alter(array &$entity_types) {
+  $entity_types['user']->setFormClass('recruitment_register', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserRegisterForm');
+  $entity_types['user']->setFormClass('applicant_edit', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserEditForm');
     $entity_types['user']->setFormClass('recruiter_edit', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserEditForm');
   }
+
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function kamihaya_cms_recruitment_query_job_match_alter(AlterableInterface $query) {
+  $current_user = User::load(Drupal::currentUser()->id());
+  $skill_paragraphs = $current_user->get('field_skill')->referencedEntities();
+
+  $skills = [];
+  foreach($skill_paragraphs as $paragraph) {
+    if (empty($paragraph->get('field_skill')->target_id)) {
+      continue;
+    }
+    $skills[] = $paragraph->get('field_skill')->target_id;
+  }
+
+  if (empty($skills)) {
+    return;
+  }
+  foreach ($query->conditions() as &$conditions) {
+    if (is_array($conditions) && is_object($conditions['field'])) {
+      $conditions1 = &$conditions['field']->conditions();
+      foreach ($conditions1 as $idx => &$condition) {
+        if (is_array($condition) && is_object($condition['field']) && is_array($condition['field']->conditions())) {
+          foreach ($condition['field']->conditions() as &$con) {
+            if (is_array($con)) {
+       //       dpm($con);
+              if ($con['field'] == 'node__field_required_skill.field_required_skill_target_id') {
+                $con['value'] = $skills;
+                $con['operator'] = 'IN';
+              }
+              if ($con['field'] == 'node__field_welcome_skill.field_welcome_skill_target_id') {
+                $con['value'] = $skills;
+                $con['operator'] = 'IN';
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+}
