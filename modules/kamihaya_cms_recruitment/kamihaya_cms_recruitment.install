@@ -154,10 +154,12 @@ function kamihaya_cms_recruitment_update_10002() {
   if (!empty(ParagraphsType::load('skill'))) {
     $field_config = FieldConfig::loadByName('paragraph', 'skill', 'field_skill');
     $form_display = $display_repository->getFormDisplay('paragraph', 'skill');
+    $form_weight = 0;
     $view_display = $display_repository->getViewDisplay('paragraph', 'skill');
+    $view_weight = 0;
     if (!empty($field_config) && $field_config->get('field_type') !== 'entity_reference') {
       $form_component = $form_display->getComponent('field_skill');
-      $forn_weight = !empty($form_component) ? $form_component['weight'] : $form_display->getHeighestWeight() + 1;
+      $form_weight = !empty($form_component) ? $form_component['weight'] : $form_display->getHeighestWeight() + 1;
       $view_component = $view_display->getComponent('field_skill');
       $view_weight = !empty($view_component) ? $view_component['weight'] : $view_display->getHeighestWeight() + 1;
 
@@ -179,20 +181,20 @@ function kamihaya_cms_recruitment_update_10002() {
     ], 'ja');
 
     $form_display->setComponent('field_skill', [
-        'type' => 'options_select',
-        'weight' => $forn_weight,
-      ])
-      ->save();
+      'type' => 'options_select',
+      'weight' => $form_weight,
+    ])
+    ->save();
 
     $view_display->setComponent('field_skill', [
-        'label' => 'inline',
-        'type' => 'entity_reference_label',
-        'weight' => $view_weight,
-        'settings' => [
-          'link' => FALSE,
-        ],
-      ])
-      ->save();
+      'label' => 'inline',
+      'type' => 'entity_reference_label',
+      'weight' => $view_weight,
+      'settings' => [
+        'link' => FALSE,
+      ],
+    ])
+    ->save();
   }
 
   // Set field_first_name_kana and field_last_name_kana of user entity to not required.
@@ -235,7 +237,7 @@ function kamihaya_cms_recruitment_update_10002() {
       $form_mode->save();
     }
 
-    $form_display = $display_repository->getFormDisplay('user', $mode);
+    $form_display = $display_repository->getFormDisplay('user', 'user', $mode);
     if (empty($form_display) || $form_display->isNew()) {
       _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
         "core.entity_form_display.user.user.{$mode}.yml",
@@ -256,10 +258,7 @@ function kamihaya_cms_recruitment_update_10002() {
       $view_mode->save();
     }
 
-    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-    $display_repository = \Drupal::service('entity_display.repository');
-    $view_display = $display_repository->getViewDisplay('taxonomy_term', 'recruitment');
-
+    $view_display = $display_repository->getViewDisplay('taxonomy_term', 'company_info', 'recruitment');
     if (empty($view_display) || $view_display->isNew()) {
       _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
         'core.entity_view_display.taxonomy_term.company_info.recruitment.yml',
@@ -267,8 +266,30 @@ function kamihaya_cms_recruitment_update_10002() {
     }
   }
 
-  // Update job list view.
+  // Create job match list view mode to recruitment node.
+  if (!empty(NodeType::load('recruitment'))) {
+    $view_mode = \Drupal::entityTypeManager()->getStorage('entity_view_mode')->load('node.job_match_list');
+    if (empty($view_mode)) {
+      $view_mode = EntityViewMode::create([
+        'id' => 'node.job_match_list',
+        'targetEntityType' => 'node',
+        'label' => t('Job match list'),
+        'status' => TRUE,
+      ]);
+      $view_mode->save();
+    }
+
+    $view_display = $display_repository->getViewDisplay('node', 'recruitment', 'job_match_list');
+    if (empty($view_display) || $view_display->isNew()) {
+      _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+        'core.entity_view_display.node.recruitment.job_match_list.yml',
+      ], 'install');
+    }
+  }
+
+  // Create or uidate job list views.
   _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
     'views.view.job_list.yml',
+    'views.view.matching_result_dashboard.yml',
   ], 'install');
 }

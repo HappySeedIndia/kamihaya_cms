@@ -114,6 +114,12 @@
   padding: 15px 5px;
 }
 
+.views-view-grid .views-col .field__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.5rem;
+}
+
 .view-id-talent_list .views-field-uid {
   background-color: #ad5c76;
   color: #ffffff;
