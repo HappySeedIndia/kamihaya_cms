@@ -53,6 +53,4 @@ function kamihaya_cms_recruitment_query_job_match_alter(AlterableInterface $quer
       }
     }
   }
-
-
 }
