@@ -3,6 +3,7 @@
 namespace Drupal\kamihaya_cms_recruitment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\kamihaya_cms_recruitment\Traits\KamihayaUserTrait;
 use Drupal\user\RegisterForm;
 
 /**
@@ -12,29 +13,27 @@ use Drupal\user\RegisterForm;
  */
 class KamihayaUserRegisterForm extends RegisterForm {
 
+  use KamihayaUserTrait;
+
   /**
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-    $form = parent::form($form, $form_state);
-    if (!empty($form['account']['status'])) {
-      $form['account']['status']['#access'] = FALSE;
-    }
-    if (!empty($form['account']['notify'])) {
-      $form['account']['notify']['#access'] = FALSE;
-    }
-    if (!empty($form['account']['roles'])) {
-      $options = &$form['account']['roles']['#options'];
-      foreach ($options as $key => $value) {
-        if ($key === 'applicant' || $key === 'recruiter') {
-          continue;
-        }
-        unset($options[$key]);
-      }
-      $form['account']['roles']['#type'] = 'radios';
-      $form['account']['roles']['#required'] = TRUE;
-    }
-    return $form;
+    return $this->alterForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $this->alterSubmitForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildEntity(array $form, FormStateInterface $form_state) {
+    return $this->alterBuildEntity($form, $form_state);
   }
 
 }

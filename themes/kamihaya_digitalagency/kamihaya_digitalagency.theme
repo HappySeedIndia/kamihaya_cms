@@ -102,6 +102,11 @@ function kamihaya_digitalagency_theme_suggestions_alter(array &$suggestions, arr
     $suggestions[] = "node__kamihaya__$sanitized_view_mode";
     $suggestions[] = "node__{$variables['elements']['#node']->getType()}__$sanitized_view_mode";
   }
+  if ($hook === 'taxonomy_term') {
+    $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+    $suggestions[] = "taxonomy_term__$sanitized_view_mode";
+    $suggestions[] = "taxonomy_term__{$variables['elements']['#taxonomy_term']->bundle()}__$sanitized_view_mode";
+  }
 }
 
 /**
@@ -120,7 +125,7 @@ function kamihaya_digitalagency_theme_suggestions_page_alter(array &$suggestions
           continue;
         }
         $suggest .= "_$path";
-       $suggestions[] = 'page__' . $content_type . '_' . $suggest;
+        $suggestions[] = 'page__' . $content_type . '_' . $suggest;
       }
     }
   }

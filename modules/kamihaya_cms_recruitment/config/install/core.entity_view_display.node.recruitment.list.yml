@@ -26,6 +26,15 @@ targetEntityType: node
 bundle: recruitment
 mode: list
 content:
+  field_company:
+    type: entity_reference_entity_view
+    label: inline
+    settings:
+      view_mode: recruitment
+      link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
   field_employment_status:
     type: list_default
     label: inline
@@ -66,7 +75,6 @@ content:
 hidden:
   body: true
   field_apply_form: true
-  field_company: true
   field_holiday: true
   field_min_annual_income: true
   field_required_skill: true

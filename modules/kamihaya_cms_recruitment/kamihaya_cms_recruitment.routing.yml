@@ -5,3 +5,19 @@ kamihaya_cms_recruitment.user.register:
     _entity_form: 'user.recruitment_register'
   requirements:
     _entity_create_access: 'user'
+
+kamihaya_cms_recruitment.user.applicant_edit:
+  path: '/user/profile/applicant_edit'
+  defaults:
+    _title: 'User profile edit'
+    _entity_form: 'user.applicant_edit'
+  requirements:
+    _role: 'administrator+applicant'
+
+kamihaya_cms_recruitment.user.recruiter_edit:
+  path: '/user/profile/recruiter_edit'
+  defaults:
+    _title: 'User profile edit'
+    _entity_form: 'user.recruiter_edit'
+  requirements:
+    _role: 'administrator+recruiter'

@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.user.field_company
-    - taxonomy.vocabulary.skill
+    - taxonomy.vocabulary.company_info
   module:
     - user
 id: user.user.field_company
@@ -20,7 +20,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      skill: skill
+      company_info: company_info
     sort:
       field: name
       direction: asc

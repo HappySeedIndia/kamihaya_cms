@@ -5,4 +5,6 @@
    */
   function kamihaya_cms_recruitment_entity_type_alter(array &$entity_types) {
     $entity_types['user']->setFormClass('recruitment_register', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserRegisterForm');
+    $entity_types['user']->setFormClass('applicant_edit', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserEditForm');
+    $entity_types['user']->setFormClass('recruiter_edit', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserEditForm');
   }
