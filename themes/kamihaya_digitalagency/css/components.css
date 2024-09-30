@@ -80,7 +80,8 @@ button.link {
   margin: 0;
 }
 
-.btn-primary {
+.btn-primary,
+.button--small {
   --bs-btn-color: #fff;
   --bs-btn-bg: #0017C1;
   --bs-btn-border-color: #000082;
@@ -95,6 +96,11 @@ button.link {
   --bs-btn-disabled-color: #fff;
   --bs-btn-disabled-bg: #949497;
   --bs-btn-disabled-border-color: #949497;
+}
+
+.button--small {
+  --bs-btn-padding-x: 0.5rem;
+  --bs-btn-padding-y: 0.5em;
 }
 
 .btn-secondary {
@@ -1417,6 +1423,10 @@ h4:before {
 
 .text-dark h4:before {
   background: rgba(var(--bs-dark-rgb), var(--bs-text-opacity));
+}
+
+h4.label:before {
+  display: none;
 }
 
 h2.accordion-header::after {

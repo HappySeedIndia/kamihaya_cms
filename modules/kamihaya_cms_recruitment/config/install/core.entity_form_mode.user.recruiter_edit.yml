@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.recruiter_edit
+label: 'Recruiter edit'
+description: ''
+targetEntityType: user
+cache: true

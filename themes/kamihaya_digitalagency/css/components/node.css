@@ -18,24 +18,35 @@
 }
 
 .node--type-recruitment.node--view-mode-full .field--label-above {
-  border: 1px solid #cabfab;
+  border: 1px solid #7b98a3;
   border-bottom: 0;
 }
 
 .node--type-recruitment.node--view-mode-full .field--label-above:nth-last-child(1) {
   border-bottom: 1px;
-  border-bottom-color: #cabfab;
+  border-bottom-color: #7b98a3;
   border-bottom-style: solid;
 }
 
 .node--type-recruitment.node--view-mode-full .field--label-above .field__label {
-  background-color: #cabfab;
+  background-color: #7b98a3;
   color: #ffffff;
   padding: 5px;
 }
 
-.node--type-recruitment.node--view-mode-full .field--label-above .field__item {
+.node--type-recruitment.node--view-mode-full .field--label-above .field__item,
+.node--type-recruitment.node--view-mode-full .field--label-above .field__items {
   padding: 10px;
+}
+
+.node--type-recruitment.node--view-mode-full .field--label-above .field__items {
+  display: flex;
+  gap: 0 1rem;
+  flex-wrap: wrap;
+}
+
+.node--type-recruitment.node--view-mode-full .field--label-above .field__items .field__item {
+  padding: 0;
 }
 
 .node--type-recruitment.node--view-mode-full .apply_link {
@@ -45,10 +56,15 @@
 
 .node--type-recruitment.node--view-mode-full .apply_link a {
   text-decoration: none;
-  background-color: #be123f;
+  background-color: var(--bs-link-color);
   color: #ffffff;
   padding: 10px 20px;
   border: 3px double #ffffff;
+}
+
+.node--type-recruitment .matching-skill {
+  font-weight: bold;
+  color: var(--bs-primary);
 }
 
 /* Featured contant paragraph */

@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Entity\Entity\EntityFormMode;
+use Drupal\Core\Entity\Entity\EntityViewMode;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
@@ -135,6 +136,68 @@ function kamihaya_cms_recruitment_update_10001() {
  * Update configs.
  */
 function kamihaya_cms_recruitment_update_10002() {
+    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+
+  // Delete field_source_code from source_code paragraph type.
+  if (!empty(ParagraphsType::load('source_code'))) {
+    $field_config = FieldConfig::loadByName('paragraph', 'source_code', 'field_source_code');
+    if (!empty($field_config)) {
+      $field_config->delete();
+    }
+    $field_storage = FieldStorageConfig::loadByName('paragraph', 'source_code');
+    if (!empty($field_storage)) {
+      $field_storage->delete();
+    }
+  }
+
+  if (!empty(ParagraphsType::load('skill'))) {
+    $field_config = FieldConfig::loadByName('paragraph', 'skill', 'field_skill');
+    $form_display = $display_repository->getFormDisplay('paragraph', 'skill');
+    $form_weight = 0;
+    $view_display = $display_repository->getViewDisplay('paragraph', 'skill');
+    $view_weight = 0;
+    if (!empty($field_config) && $field_config->get('field_type') !== 'entity_reference') {
+      $form_component = $form_display->getComponent('field_skill');
+      $form_weight = !empty($form_component) ? $form_component['weight'] : $form_display->getHeighestWeight() + 1;
+      $view_component = $view_display->getComponent('field_skill');
+      $view_weight = !empty($view_component) ? $view_component['weight'] : $view_display->getHeighestWeight() + 1;
+
+      if (!empty($field_config)) {
+        $field_config->delete();
+      }
+      $field_storage = FieldStorageConfig::loadByName('paragraph', 'field_skill');
+      if (!empty($field_storage)) {
+        $field_storage->delete();
+      }
+    }
+    _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+      "field.storage.paragraph.field_skill.yml",
+      "field.field.paragraph.skill.field_skill.yml",
+    ], 'install');
+
+    _kamihaya_cms_common_save_translation_configs([
+      "field.field.paragraph.skill.field_skill.yml",
+    ], 'ja');
+
+    $form_display->setComponent('field_skill', [
+      'type' => 'options_select',
+      'weight' => $form_weight,
+    ])
+    ->save();
+
+    $view_display->setComponent('field_skill', [
+      'label' => 'inline',
+      'type' => 'entity_reference_label',
+      'weight' => $view_weight,
+      'settings' => [
+        'link' => FALSE,
+      ],
+    ])
+    ->save();
+  }
+
+  // Set field_first_name_kana and field_last_name_kana of user entity to not required.
   foreach(['field_first_name_kana', 'field_last_name_kana'] ?: [] as $field) {
     $field_config = \Drupal::configFactory()->getEditable("field.field.user.user.{$field}");
     if (empty($field_config)) {
@@ -144,6 +207,7 @@ function kamihaya_cms_recruitment_update_10002() {
     $field_config->save(TRUE);
   }
 
+  // Add filed_company to user entity.
   $field_storage = FieldStorageConfig::loadByName('user', 'field_company');
   if (empty($field_storage)) {
     _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
@@ -155,24 +219,77 @@ function kamihaya_cms_recruitment_update_10002() {
     ], 'ja');
   }
 
-  $form_mode = \Drupal::entityTypeManager()->getStorage('entity_form_mode')->load('user.recruitment_register');
-  if (empty($form_mode)) {
-    $form_mode = EntityFormMode::create([
-      'id' => 'user.recruitment_register',
-      'targetEntityType' => 'user',
-      'label' => t('Recruitment register'),
-      'status' => TRUE,
-    ]);
-    $form_mode->save();
+  // Create recruitment_register form mode to user entity.
+  $form_modes = [
+    'recruitment_register',
+    'applicant_edit',
+    'recruiter_edit',
+  ];
+  foreach ($form_modes as $mode) {
+    $form_mode = \Drupal::entityTypeManager()->getStorage('entity_form_mode')->load("user.{$mode}");
+    if (empty($form_mode)) {
+      $form_mode = EntityFormMode::create([
+        'id' => "user.{$mode}",
+        'targetEntityType' => 'user',
+        'label' => t(ucfirst(str_replace('_', ' ', $mode))),
+        'status' => TRUE,
+      ]);
+      $form_mode->save();
+    }
+
+    $form_display = $display_repository->getFormDisplay('user', 'user', $mode);
+    if (empty($form_display) || $form_display->isNew()) {
+      _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+        "core.entity_form_display.user.user.{$mode}.yml",
+      ], 'install');
+    }
   }
 
-  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-  $display_repository = \Drupal::service('entity_display.repository');
-  $form_display = $display_repository->getFormDisplay('user', 'recruitment_register');
+  // Create recruitment view mode to company_info taxonomy.
+  if (!empty(Vocabulary::load('company_info'))) {
+    $view_mode = \Drupal::entityTypeManager()->getStorage('entity_view_mode')->load('taxonomy_term.recruitment');
+    if (empty($view_mode)) {
+      $view_mode = EntityViewMode::create([
+        'id' => 'taxonomy_term.recruitment',
+        'targetEntityType' => 'taxonomy_term',
+        'label' => t('Recruitment'),
+        'status' => TRUE,
+      ]);
+      $view_mode->save();
+    }
 
-  if (empty($form_display) || $form_display->isNew()) {
-    _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
-      'core.entity_form_display.user.user.recruitment_register.yml',
-    ], 'install');
+    $view_display = $display_repository->getViewDisplay('taxonomy_term', 'company_info', 'recruitment');
+    if (empty($view_display) || $view_display->isNew()) {
+      _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+        'core.entity_view_display.taxonomy_term.company_info.recruitment.yml',
+      ], 'install');
+    }
   }
+
+  // Create job match list view mode to recruitment node.
+  if (!empty(NodeType::load('recruitment'))) {
+    $view_mode = \Drupal::entityTypeManager()->getStorage('entity_view_mode')->load('node.job_match_list');
+    if (empty($view_mode)) {
+      $view_mode = EntityViewMode::create([
+        'id' => 'node.job_match_list',
+        'targetEntityType' => 'node',
+        'label' => t('Job match list'),
+        'status' => TRUE,
+      ]);
+      $view_mode->save();
+    }
+
+    $view_display = $display_repository->getViewDisplay('node', 'recruitment', 'job_match_list');
+    if (empty($view_display) || $view_display->isNew()) {
+      _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+        'core.entity_view_display.node.recruitment.job_match_list.yml',
+      ], 'install');
+    }
+  }
+
+  // Create or uidate job list views.
+  _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+    'views.view.job_list.yml',
+    'views.view.matching_result_dashboard.yml',
+  ], 'install');
 }

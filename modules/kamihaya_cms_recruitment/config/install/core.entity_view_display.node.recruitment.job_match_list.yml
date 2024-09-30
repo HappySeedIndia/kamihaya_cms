@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.job_match_list
     - field.field.node.recruitment.body
     - field.field.node.recruitment.field_apply_form
     - field.field.node.recruitment.field_company
@@ -21,36 +21,76 @@ dependencies:
   module:
     - text
     - user
-id: node.recruitment.teaser
+id: node.recruitment.job_match_list
 targetEntityType: node
 bundle: recruitment
-mode: teaser
+mode: job_match_list
 content:
   body:
     type: text_summary_or_trimmed
-    label: hidden
+    label: inline
     settings:
-      trim_length: 600
+      trim_length: 300
     third_party_settings: {  }
-    weight: 0
+    weight: 6
     region: content
-  links:
-    settings: {  }
+  field_company:
+    type: entity_reference_entity_view
+    label: inline
+    settings:
+      view_mode: recruitment
+      link: false
     third_party_settings: {  }
     weight: 1
     region: content
+  field_occupation:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_required_skill:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_salary:
+    type: basic_string
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_tag:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_welcome_skill:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
 hidden:
+  addtoany: true
   field_apply_form: true
-  field_company: true
   field_employment_status: true
   field_holiday: true
   field_min_annual_income: true
-  field_occupation: true
   field_overview: true
-  field_required_skill: true
-  field_salary: true
-  field_tag: true
-  field_welcome_skill: true
   field_welfare: true
   field_working_hours: true
   langcode: true
+  links: true
+  search_api_excerpt: true

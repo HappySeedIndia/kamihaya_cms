@@ -35,14 +35,46 @@
     font-size: 18px;
 }
 
+.views-view-grid .views-col .views-field-rendered-entity article {
+  position: relative;
+  height: 100%;
+  padding-bottom: 2rem;
+}
+
 .views-view-grid .views-col .views-field-rendered-entity h2 {
   font-size: 1.3rem;
+}
+
+.views-view-grid .views-col .views-field-rendered-entity h2:after {
+  display: none;
 }
 
 .views-view-grid .views-col .views-field-rendered-entity h2 a {
   color: var(--bs-body-color);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: bold;
+}
+
+.views-view-grid .views-col .views-field .more-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 1rem;
+  position: absolute;
+  bottom: 0;
+}
+
+.views-view-grid .views-col .views-field .more-link a {
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #7b98a3;
+  padding: 3px 10px;
+}
+
+.views-view-grid .views-col .views-field .more-link a:hover {
+  background-color: #567c8a;
 }
 
 .views-view-grid .views-col .views-field-view-node,
@@ -80,6 +112,12 @@
 
 .views-view-grid .views-col .field--type-entity-reference-revisions > .field__items {
   padding: 15px 5px;
+}
+
+.views-view-grid .views-col .field__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.5rem;
 }
 
 .view-id-talent_list .views-field-uid {
