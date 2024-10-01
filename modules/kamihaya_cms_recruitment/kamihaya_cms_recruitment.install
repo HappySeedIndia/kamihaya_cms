@@ -303,7 +303,6 @@ function kamihaya_cms_recruitment_update_10003() {
   if (!empty(ParagraphsType::load('source_code'))) {
     // Disable link title of field_repository_url on source_code paragraph type.
     $field_config = \Drupal::configFactory()->getEditable("field.field.paragraph.source_code.field_repository_url");
-    Drupal::logger('kamihaya_cms_recruitment')->notice('field_repository_url: ' . $field_config->get('settings.title'));
     $field_config->set('settings.title', DRUPAL_DISABLED);
     $field_config->save(TRUE);
 
