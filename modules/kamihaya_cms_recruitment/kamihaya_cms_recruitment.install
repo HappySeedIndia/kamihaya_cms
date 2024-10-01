@@ -293,3 +293,38 @@ function kamihaya_cms_recruitment_update_10002() {
     'views.view.matching_result_dashboard.yml',
   ], 'install');
 }
+
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_recruitment_update_10003() {
+
+  if (!empty(ParagraphsType::load('source_code'))) {
+    // Disable link title of field_repository_url on source_code paragraph type.
+    $field_config = \Drupal::configFactory()->getEditable("field.field.paragraph.source_code.field_repository_url");
+    Drupal::logger('kamihaya_cms_recruitment')->notice('field_repository_url: ' . $field_config->get('settings.title'));
+    $field_config->set('settings.title', DRUPAL_DISABLED);
+    $field_config->save(TRUE);
+
+    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+    $display_repository = \Drupal::service('entity_display.repository');
+     // Hide field_score on source_code paragraph type.
+    $display_repository->getFormDisplay('paragraph', 'source_code')
+      ->removeComponent('field_score')
+      ->save();
+
+    $display_repository->getViewDisplay('paragraph', 'source_code')
+      ->removeComponent('field_score')
+      ->save();
+  }
+
+  // Make field_skill required on skill paragraph type.
+  if (!empty(ParagraphsType::load('skill'))) {
+    $field_config = FieldConfig::loadByName('paragraph', 'skill', 'field_skill');
+    if (!empty($field_config)) {
+      $field_config->set('required', TRUE);
+      $field_config->save(TRUE);
+    }
+  }
+}
