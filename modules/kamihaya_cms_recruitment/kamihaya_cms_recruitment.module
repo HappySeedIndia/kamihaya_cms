@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 
 /**
@@ -9,8 +10,8 @@ use Drupal\user\Entity\User;
 function kamihaya_cms_recruitment_entity_type_alter(array &$entity_types) {
   $entity_types['user']->setFormClass('recruitment_register', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserRegisterForm');
   $entity_types['user']->setFormClass('applicant_edit', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserEditForm');
-    $entity_types['user']->setFormClass('recruiter_edit', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserEditForm');
-  }
+  $entity_types['user']->setFormClass('recruiter_edit', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserEditForm');
+}
 
 
 /**
@@ -50,6 +51,111 @@ function kamihaya_cms_recruitment_query_job_match_alter(AlterableInterface $quer
           }
         }
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function kamihaya_cms_recruitment_query_applicant_search_alter(AlterableInterface $query) {
+  $tables = &$query->getTables();
+  foreach ($tables as $key => &$table) {
+    if ($key === 'field_skill_paragraphs_item_field_data'
+      && strpos($table['condition'], 'field_skill_paragraphs_item_field_data.') !== FALSE
+      && strpos($table['condition'], 'field_skill_paragraphs_item_field_data.uid') === FALSE) {
+      $table['condition'] = str_replace('field_skill_paragraphs_item_field_data.', 'field_skill_paragraphs_item_field_data.uid', $table['condition']);
+    }
+    if ($key === 'field_skill_taxonomy_term_field_data__user__field_skill'
+      && strpos($table['condition'], 'field_skill_target_revision_id') !== FALSE) {
+      $table['condition'] = str_replace('field_skill_target_revision_id', 'field_skill_target_id', $table['condition']);
+    }
+  }
+  $fields = &$query->getFields();
+  foreach($fields as $name => $field) {
+    if (strpos($name, 'skill_tid') === FALSE
+      && strpos($name, 'field_skill_taxonomy_term_field_data_id') === FALSE
+      && strpos($name, 'paragraphs_item_field_data_user__field_source_code_id') === FALSE
+      && strpos($name, 'langcode') === FALSE) {
+      continue;
+    }
+    unset($fields[$name]);
+  }
+  if (array_key_exists('paragraphs_item_field_data_user__field_source_code__paragrap', $fields)) {
+    unset($fields['paragraphs_item_field_data_user__field_source_code__paragrap']);
+    $group_by = array_keys(($fields));
+    foreach ($group_by as $field) {
+      $query->groupBy($field);
+    }
+    $query->addExpression('MAX(paragraphs_item_field_data_user__field_source_code__paragraph__field_score.field_score_value)', 'paragraphs_item_field_data_user__field_source_code__paragrap');
+  }
+
+  $current_user = User::load(Drupal::currentUser()->id());
+  $company = $current_user->get('field_company')->target_id;
+  if (empty($company)) {
+    return;
+  }
+  foreach ($query->conditions() as &$conditions) {
+    if (is_array($conditions) && is_object($conditions['field'])) {
+      $conditions1 = &$conditions['field']->conditions();
+      foreach ($conditions1 as $idx => &$condition) {
+        if (is_array($condition) && is_object($condition['field']) && is_array($condition['field']->conditions())) {
+          foreach ($condition['field']->conditions() as &$con) {
+            if (is_array($con)) {
+              if ($con['field'] == 'node__field_company.field_company_target_id') {
+                $con['value'] = $company;
+                $con['operator'] = '=';
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+//  $query->addField('field_skill_taxonomy_term_field_data__paragraph__field_score', 'field_score_value', 'score_order');
+  $orders = &$query->getOrderBy();
+  $tmp_orders = $orders['paragraphs_item_field_data_user__field_source_code__paragrap'];
+  unset($orders['paragraphs_item_field_data_user__field_source_code__paragrap']);
+  $orders['paragraphs_item_field_data_user__field_source_code__paragraph__field_score.field_score_value'] = 'IS NULL ASC';
+  $query->orderBy('paragraphs_item_field_data_user__field_source_code__paragrap', $tmp_orders);
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function kamihaya_cms_recruitment_preprocess_field(&$variables, $hook) {
+  $current_user = User::load(Drupal::currentUser()->id());
+  if (!$current_user->hasRole('applicant') ) {
+    return;
+  }
+  $name = $variables['element']['#field_name'];
+
+  if ($variables['element']['#object']->getEntityTypeId() === 'node') {
+    $node = $variables['element']['#object'];
+  }
+
+  if (isset($node) && $name === "field_required_skill" || $name === "field_welcome_skill") {
+    $skill_paragraphs = $current_user->get('field_skill')->referencedEntities();
+    $target_ids = [];
+    foreach($skill_paragraphs as $paragraph) {
+      if (empty($paragraph->get('field_skill')->target_id)) {
+        continue;
+      }
+      $target_ids[] = $paragraph->get('field_skill')->target_id;
+    }
+    if (empty($target_ids)) {
+      return;
+    }
+    $terms = Term::loadMultiple($target_ids);
+    $skils = [];
+    foreach ($terms as $terms) {
+      $skils[] = $terms->label();
+    }
+    foreach ($variables['items'] as &$item) {
+      if (empty($item['content']['#plain_text']) || empty($item['attributes']) || !in_array($item['content']['#plain_text'], $skils)) {
+        continue;
+      }
+      $item['attributes']->addClass('matching-skill');
     }
   }
 }

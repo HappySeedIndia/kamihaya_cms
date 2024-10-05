@@ -393,7 +393,7 @@ display:
     display_options:
       rendering_language: '***LANGUAGE_entity_translation***'
       display_extenders: {  }
-      path: job/applicant/search
+      path: job/matching_result
     cache_metadata:
       max-age: -1
       contexts:
