@@ -112,12 +112,6 @@ function kamihaya_cms_recruitment_query_applicant_search_alter(AlterableInterfac
       }
     }
   }
-//  $query->addField('field_skill_taxonomy_term_field_data__paragraph__field_score', 'field_score_value', 'score_order');
-  $orders = &$query->getOrderBy();
-  $tmp_orders = $orders['paragraphs_item_field_data_user__field_source_code__paragrap'];
-  unset($orders['paragraphs_item_field_data_user__field_source_code__paragrap']);
-  $orders['paragraphs_item_field_data_user__field_source_code__paragraph__field_score.field_score_value'] = 'IS NULL ASC';
-  $query->orderBy('paragraphs_item_field_data_user__field_source_code__paragrap', $tmp_orders);
 }
 
 /**
