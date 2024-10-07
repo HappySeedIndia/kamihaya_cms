@@ -2,20 +2,30 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.divider.field_align
     - field.field.paragraph.divider.field_divider_color
     - field.field.paragraph.divider.field_divider_image
     - field.field.paragraph.divider.field_divider_style
     - field.field.paragraph.divider.field_divider_width
+    - field.field.paragraph.divider.field_width
+    - field.field.paragraph.divider.field_width_unit
     - paragraphs.paragraphs_type.divider
   module:
     - color_field
-    - image
     - options
+    - svg_image
 id: paragraph.divider.default
 targetEntityType: paragraph
 bundle: divider
 mode: default
 content:
+  field_align:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 16
+    region: content
   field_divider_color:
     type: color_field_formatter_text
     label: hidden
@@ -33,6 +43,10 @@ content:
       image_style: ''
       image_loading:
         attribute: lazy
+      svg_attributes:
+        width: null
+        height: null
+      svg_render_as_image: true
     third_party_settings: {  }
     weight: 3
     region: content
@@ -52,4 +66,21 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-hidden: {  }
+  field_width:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_width_unit:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 13
+    region: content
+hidden:
+  search_api_excerpt: true

@@ -38,33 +38,48 @@
  * @ingroup themeable
  */
 #}
+{{  attach_library('kamihaya_cms_paragraph_type/divider-css') }}
 {%
   set classes = [
     'paragraph',
     'paragraph--type--' ~ paragraph.bundle|clean_class,
     view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
-    not paragraph.isPublished() ? 'paragraph--unpublished'
+    not paragraph.isPublished() ? 'paragraph--unpublished',
   ]
 %}
 {% block paragraph %}
-{% block content %}
+  {% block content %}
     {% if content.field_divider_image|render %}
       <div{{attributes.addClass(classes)}}>
         {{ content.field_divider_image }}
       </div>
     {% elseif content.field_divider_width|render %}
       {% set width = paragraph.field_divider_width.0.value %}
+      {% set h_width = paragraph.field_width.0.value %}
+      {% set width_unit = paragraph.field_width_unit.0.value %}
       {% set color = content.field_divider_color|render|striptags|trim|lower %}
       {% set border_style = paragraph.field_divider_style.0.value %}
+
       {%
         set style = [
           width ? 'border: 0; border-top-width: '  ~  width  ~  'px;' : '',
           color ? 'border-color: '  ~ color  ~ ';' : '',
           border_style ? 'border-style: '  ~ border_style  ~ ';' : '',
+          h_width ? (width_unit == 'px' ? ('width: 100%; max-width: ' ~ h_width ~ width_unit ~ ';') : ('width: ' ~ h_width ~ (width_unit ? width_unit ~ ';' : 'px;'))) : 'width: 100%;',
         ]
       %}
+
+      {% if h_width and width_unit == 'vw' %}
+        {%
+          set style = style|merge([
+            'margin-left: calc(-50vw + 50%);',
+            'max-width: none;',
+          ])
+        %}
+      {% endif %}
       <div{{attributes.addClass(classes)}}>
-        <hr style="{{ style|join(' ') }}"/>
+        {% set align = content.field_align|render|striptags|trim|lower %}
+        <hr style="{{ style|join(' ') }}"{% if align %} class="align-{{ align }}"{% endif %}/>
       </div>
     {% endif %}
   {% endblock %}
