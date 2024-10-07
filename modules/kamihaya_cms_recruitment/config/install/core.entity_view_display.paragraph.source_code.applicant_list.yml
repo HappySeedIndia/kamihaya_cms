@@ -2,37 +2,35 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.paragraph.applicant_list
     - field.field.paragraph.source_code.field_coding_language
     - field.field.paragraph.source_code.field_repository_url
     - field.field.paragraph.source_code.field_score
     - paragraphs.paragraphs_type.source_code
-  module:
-    - link
-id: paragraph.source_code.default
+id: paragraph.source_code.applicant_list
 targetEntityType: paragraph
 bundle: source_code
-mode: default
+mode: applicant_list
 content:
   field_coding_language:
     type: entity_reference_label
-    label: above
+    label: inline
     settings:
-      link: true
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  field_repository_url:
-    type: link
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
+      link: false
     third_party_settings: {  }
     weight: 0
     region: content
+  field_score:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
 hidden:
-  field_score: true
+  field_repository_url: true
   search_api_excerpt: true

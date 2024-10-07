@@ -6,10 +6,10 @@ dependencies:
 id: paragraph.field_score
 field_name: field_score
 entity_type: paragraph
-type: integer
+type: decimal
 settings:
-  unsigned: false
-  size: normal
+  precision: 10
+  scale: 2
 module: core
 locked: false
 cardinality: 1

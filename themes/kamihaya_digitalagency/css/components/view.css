@@ -1,3 +1,13 @@
+.view .view-content caption h2:after {
+  display: none;
+}
+
+.view .view-content caption .field__items {
+  display: flex;
+  gap: 0 1rem;
+  flex-wrap: wrap;
+}
+
 .views-view-grid {
   margin-top: 20px;
 }
@@ -118,6 +128,40 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0 0.5rem;
+}
+
+.view .view-content .table-responsive {
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--light-border-divider);
+}
+
+.view .view-content .table-responsive:last-child {
+  border-bottom: 0;
+}
+
+.views-table tr td a {
+  color: var(--bs-table-color-state, var(--bs-table-color-type, var(--bs-table-color)));
+  text-decoration: none;
+}
+
+.views-table tr td ul {
+  margin-bottom: 0;
+}
+
+.views-table tr td ul li {
+  border-bottom: 1px solid var(--bs-table-border-color);
+}
+
+.views-table tr td ul li:last-child {
+  border-bottom: 0;
+}
+
+.views-table tr td ul li .paragraph {
+  padding: 0;
+}
+
+.views-table tr td ul li .paragraph .field__label {
+  font-weight: normal;
 }
 
 .view-id-talent_list .views-field-uid {

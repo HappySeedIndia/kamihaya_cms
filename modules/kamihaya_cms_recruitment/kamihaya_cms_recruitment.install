@@ -136,7 +136,7 @@ function kamihaya_cms_recruitment_update_10001() {
  * Update configs.
  */
 function kamihaya_cms_recruitment_update_10002() {
-    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
   $display_repository = \Drupal::service('entity_display.repository');
 
   // Delete field_source_code from source_code paragraph type.
@@ -292,4 +292,102 @@ function kamihaya_cms_recruitment_update_10002() {
     'views.view.job_list.yml',
     'views.view.matching_result_dashboard.yml',
   ], 'install');
+}
+
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_recruitment_update_10003() {
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+
+  if (!empty(ParagraphsType::load('source_code'))) {
+    $field_config = FieldConfig::loadByName('paragraph', 'source_code', 'field_score');
+    if (!empty($field_config) && $field_config->get('field_type') !== 'decimal') {
+      // Change field_score type to decimal.
+      $form_display = $display_repository->getFormDisplay('paragraph', 'source_code');
+      $view_display = $display_repository->getViewDisplay('paragraph', 'source_code');
+
+      if (!empty($field_config)) {
+        $field_config->delete();
+      }
+      $field_storage = FieldStorageConfig::loadByName('paragraph', 'field_score');
+      if (!empty($field_storage)) {
+        $field_storage->delete();
+      }
+      _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+        "field.storage.paragraph.field_score.yml",
+        "field.field.paragraph.source_code.field_score.yml",
+      ], 'install');
+
+      _kamihaya_cms_common_save_translation_configs([
+        "field.field.paragraph.source_code.field_score.yml",
+      ], 'ja');
+    }
+
+    // Disable link title of field_repository_url on source_code paragraph type.
+    $field_config = \Drupal::configFactory()->getEditable("field.field.paragraph.source_code.field_repository_url");
+    $field_config->set('settings.title', DRUPAL_DISABLED);
+    $field_config->save(TRUE);
+  }
+
+  // Make field_skill required on skill paragraph type.
+  if (!empty(ParagraphsType::load('skill'))) {
+    $field_config = FieldConfig::loadByName('paragraph', 'skill', 'field_skill');
+    if (!empty($field_config)) {
+      $field_config->set('required', TRUE);
+      $field_config->save(TRUE);
+    }
+  }
+
+  // Create applicant list view mode to recruitment node.
+  if (!empty(NodeType::load('recruitment'))) {
+    $view_mode = \Drupal::entityTypeManager()->getStorage('entity_view_mode')->load('node.applicant_list');
+    if (empty($view_mode)) {
+      $view_mode = EntityViewMode::create([
+        'id' => 'node.applicant_list',
+        'targetEntityType' => 'node',
+        'label' => t('Applicant list'),
+        'status' => TRUE,
+      ]);
+      $view_mode->save();
+    }
+    $view_display = $display_repository->getViewDisplay('node', 'recruitment', 'applicant_list');
+    if (empty($view_display) || $view_display->isNew()) {
+      _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+        'core.entity_view_display.node.recruitment.applicant_list.yml',
+      ], 'install');
+    }
+  }
+
+  if (!empty(ParagraphsType::load('source_code'))) {
+    $view_mode = \Drupal::entityTypeManager()->getStorage('entity_view_mode')->load('paragraph.applicant_list');
+    if (empty($view_mode)) {
+      $view_mode = EntityViewMode::create([
+        'id' => 'paragraph.applicant_list',
+        'targetEntityType' => 'paragraph',
+        'label' => t('Applicant list'),
+        'status' => TRUE,
+      ]);
+      $view_mode->save();
+    }
+    $view_display = $display_repository->getViewDisplay('paragraph', 'source_code', 'applicant_list');
+    if (empty($view_display) || $view_display->isNew()) {
+      _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+        'core.entity_view_display.paragraph.source_code.applicant_list.yml',
+      ], 'install');
+    }
+  }
+
+  // Create applicant search view.
+  _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
+    'views.view.applicant_search.yml',
+  ], 'install');
+
+  // Change the path of matching_result_dashboard view.
+  $view = \Drupal::entityTypeManager()->getStorage('view')->load('matching_result_dashboard');
+  $display =& $view->getDisplay('page_1');
+  $display['display_options']['path'] = 'job/matching_result';
+  $view->save();
 }
