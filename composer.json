@@ -30,7 +30,8 @@
         "allow-plugins": {
             "php-http/discovery": true,
             "composer/installers": true,
-            "oomphinc/composer-installers-extender": true
+            "oomphinc/composer-installers-extender": true,
+            "cweagans/composer-patches": true
         }
     },
     "extra": {
@@ -82,10 +83,16 @@
         ],
         "patchLevel": {
             "drupal/core": "-p2"
+        },
+        "patches": {
+            "drupal/views_infinite_scroll": {
+                "https://www.drupal.org/project/views_infinite_scroll/issues/2899705": "https://www.drupal.org/files/issues/2022-12-19/2899705-53.patch"
+            }
         }
     },
     "require": {
         "bower-asset/spectrum": "^1.8",
+        "cweagans/composer-patches": "^1.7",
         "drupal-ckeditor-libraries-group/colorbutton": "^4.22",
         "drupal-ckeditor-libraries-group/panelbutton": "^4.22",
         "drupal/acquia_dam": "^1.0",
