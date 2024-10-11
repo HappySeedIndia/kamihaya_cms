@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Database\DatabaseExceptionWrapper;
+use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\views\Plugin\views\pager\Full;
 use Drupal\views\Plugin\views\pager\Mini;
@@ -82,3 +83,17 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
   }
   $view->pager->options['quantity'] = 7;
 }
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function kamihaya_cms_views_extension_query_reduce_duplicate_term_alter(AlterableInterface $query) {
+  $fields = &$query->getFields();
+  foreach($fields as $name => $field) {
+    if (strpos($name, '_tid') === FALSE || ($field['field'] !== 'tid')) {
+      continue;
+    };
+    unset($fields[$name]);
+  }
+}
+
