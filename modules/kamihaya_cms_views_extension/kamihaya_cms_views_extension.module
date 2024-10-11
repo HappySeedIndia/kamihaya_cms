@@ -90,7 +90,7 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
 function kamihaya_cms_views_extension_query_reduce_duplicate_term_alter(AlterableInterface $query) {
   $fields = &$query->getFields();
   foreach($fields as $name => $field) {
-    if (strpos($name, '_tid') === FALSE || ($field['field'] !== 'tid')) {
+    if (strpos($name, 'parent_tid') !== FALSE || strpos($name, '_tid') === FALSE || ($field['field'] !== 'tid')) {
       continue;
     };
     unset($fields[$name]);
