@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.kamihaya_basic.field_category
     - field.field.node.kamihaya_basic.field_description
     - field.field.node.kamihaya_basic.field_meta_tag
+    - field.field.node.kamihaya_basic.field_not_display_title
     - field.field.node.kamihaya_basic.field_publish_date
     - field.field.node.kamihaya_basic.field_thumbnail_image
     - node.type.kamihaya_basic
@@ -55,5 +56,6 @@ content:
 hidden:
   field_body: true
   field_meta_tag: true
+  field_not_display_title: true
   langcode: true
   links: true

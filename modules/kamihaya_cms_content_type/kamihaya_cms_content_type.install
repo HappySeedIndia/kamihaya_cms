@@ -353,6 +353,58 @@ function kamihaya_cms_content_type_update_10007() {
 }
 
 /**
+ * Update configs.
+ */
+function kamihaya_cms_content_type_update_10008() {
+  $content_types = [];
+  if (!empty(NodeType::load('kamihaya_article'))) {
+    $content_types[] = 'kamihaya_article';
+  }
+  if (!empty(NodeType::load('kamihaya_basic'))) {
+    $content_types[] = 'kamihaya_basic';
+  }
+  if (!empty(NodeType::load('kamihaya_news'))) {
+    $content_types[] = 'kamihaya_news';
+  }
+  if (empty($content_types)) {
+    return;
+  }
+  $field_storage = FieldStorageConfig::loadByName('node', 'field_not_display_title');
+  if (empty($field_storage)) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', ['field.storage.node.field_not_display_title.yml'], 'optional');
+  }
+
+  $configs = [];
+  foreach($content_types ?: [] as $content_type) {
+    $field_config = FieldConfig::loadByName('node', '$content_type', 'field_not_display_title');
+    if (empty($field_config)) {
+      $configs[] = "field.field.node.{$content_type}.field_not_display_title.yml";
+    }
+  }
+  if (empty($configs)) {
+    return;
+  }
+  _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', $configs, 'optional');
+  _kamihaya_cms_common_save_translation_configs($configs, 'ja');
+
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+
+  foreach($content_types ?: [] as $content_type) {
+    $form_display = $display_repository->getFormDisplay('node', $content_type);
+    $form_component = $form_display->getComponent('langcode');
+    $form_weight = !empty($form_component) ? $form_component['weight'] - 1 : $form_display->getHeighestWeight() + 1;
+    $display_repository->getFormDisplay('node', $content_type)
+      ->setComponent('field_not_display_title', [
+        'type' => 'boolean_checkbox',
+        'weight' => $form_weight,
+      ])
+      ->save();
+  }
+}
+
+
+/**
  * Implements hook_update_dependencies().
  */
 function kamihaya_cms_content_type_update_dependencies() {

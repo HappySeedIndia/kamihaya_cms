@@ -142,7 +142,6 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    flex-wrap: wrap;
     margin-bottom: 15px;
   }
   .list-info {
@@ -164,8 +163,12 @@
   }
 }
 
+.node-view-list .list-info {
+  display: flex;
+}
+
 /* Node details page */
-.node-info .list-info {
+.node-info > .list-info {
   padding-bottom: 15px;
   border-bottom: 1px solid #ccc;
 }

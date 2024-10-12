@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.kamihaya_news.field_direct_link_file
     - field.field.node.kamihaya_news.field_direct_link_url
     - field.field.node.kamihaya_news.field_meta_tag
+    - field.field.node.kamihaya_news.field_not_display_title
     - field.field.node.kamihaya_news.field_publish_date
     - field.field.node.kamihaya_news.field_thumbnail_image
     - field.field.node.kamihaya_news.field_weight
@@ -30,7 +31,7 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -39,7 +40,9 @@ content:
     weight: 5
     region: content
     settings:
+      view_mode: default
       preview_view_mode: default
+      form_display_mode: default
       nesting_depth: 0
       require_layouts: 0
       empty_message: ''
@@ -79,11 +82,18 @@ content:
     third_party_settings: {  }
   field_meta_tag:
     type: metatag_firehose
-    weight: 51
+    weight: 21
     region: content
     settings:
       sidebar: true
       use_details: true
+    third_party_settings: {  }
+  field_not_display_title:
+    type: boolean_checkbox
+    weight: 8
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_publish_date:
     type: datetime_default
@@ -100,52 +110,52 @@ content:
     third_party_settings: {  }
   field_weight:
     type: number
-    weight: 8
+    weight: 9
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 9
+    weight: 10
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 14
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 12
+    weight: 13
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 17
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
   scheduler_settings:
-    weight: 16
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 15
+    weight: 16
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 13
+    weight: 14
     region: content
     settings:
       display_label: true
@@ -160,7 +170,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 10
+    weight: 11
     region: content
     settings:
       match_operator: CONTAINS
@@ -170,12 +180,12 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 18
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 50
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }

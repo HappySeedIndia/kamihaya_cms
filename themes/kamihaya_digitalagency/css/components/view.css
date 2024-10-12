@@ -255,13 +255,17 @@
 /* News */
 .view-news-list .views-row,
 .view-contents-list-page .views-row,
-.contents-list .views-row {
+.contents-list .views-row,
+.views-html-list .views-row,
+.view-default .views-row {
   padding: 15px 0;
   border-bottom: 1px dotted #aaa;
 }
 .view-news-list .views-row:last-child,
 .view-contents-list-page .views-row:last-child,
-.contents-list .views-row:last-child {
+.contents-list .views-row:last-child,
+.views-html-list .views-row:last-child,
+.view-default .views-row:last-child {
   border-bottom: none;
 }
 .view-news-list.view-display-id-news_block {
