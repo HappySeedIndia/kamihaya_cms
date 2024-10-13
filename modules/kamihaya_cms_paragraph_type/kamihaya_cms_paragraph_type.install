@@ -614,3 +614,67 @@ function kamihaya_cms_paragraph_type_update_10009() {
   _kamihaya_cms_common_save_translation_configs(array_merge($install_configs, $option_configs), 'ja');
 
 }
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_paragraph_type_update_10010() {
+  $storage_configs = [];
+  $install_configs = [];
+
+  $fields = [
+    'field_link_text',
+    'field_link_text_halign',
+    'field_link_text_valign',
+    'field_image_desc_text_align',
+  ];
+
+  foreach($fields as $field) {
+    $field_config = FieldStorageConfig::loadByName('paragraph', $field);
+    if ($field_config) {
+      continue;
+    }
+    $storage_configs[] = "field.storage.paragraph.{$field}.yml";
+    $install_configs[] = "field.field.paragraph.image_link.{$field}.yml";
+  }
+
+  if (empty($storage_configs) && empty($install_configs)) {
+    return;
+  }
+  if (!empty($storage_configs)) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $storage_configs, 'install');
+  }
+  if (!empty($install_configs)) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $install_configs, 'install');
+    _kamihaya_cms_common_save_translation_configs($install_configs, 'ja');
+  }
+
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+  $form_display = $display_repository->getFormDisplay('paragraph', 'image_link');
+  $view_display = $display_repository->getViewDisplay('paragraph', 'image_link');
+
+  foreach($fields as $field) {
+    if ($field === 'field_link_text') {
+      $form_display->setComponent($field, [
+        'type' => 'paragraphs',
+      ])
+      ->save();
+      $view_display->setComponent($field, [
+        'label' => 'hidden',
+        'type' => 'entity_reference_revisions_entity_view',
+      ])
+      ->save();
+      continue;
+    }
+    $form_display->setComponent($field, [
+      'type' => 'options_select',
+    ])
+    ->save();
+    $view_display->setComponent($field, [
+      'label' => 'hidden',
+      'type' => 'list_key',
+    ])
+    ->save();
+  }
+}
