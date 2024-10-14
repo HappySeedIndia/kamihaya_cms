@@ -1456,3 +1456,26 @@ h2.accordion-header::after {
     padding-right: 0.75%;
   }
 }
+
+/** Flag */
+.flag.action-flag a,
+.flag.action-unflag a {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.flag.action-flag a:before,
+.flag.action-unflag a:before {
+  font-family: "Font Awesome 5 Free";
+}
+
+.flag.action-flag a:before {
+  content: "\f004";
+  font-weight: 900;
+}
+
+.flag.action-unflag a:before {
+  content: "\f004";
+  font-weight: 400;
+}
