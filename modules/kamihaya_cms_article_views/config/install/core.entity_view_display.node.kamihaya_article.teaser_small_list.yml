@@ -3,14 +3,17 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser_small_list
+    - field.field.node.kamihaya_article.feeds_item
     - field.field.node.kamihaya_article.field_body
     - field.field.node.kamihaya_article.field_category
     - field.field.node.kamihaya_article.field_description
     - field.field.node.kamihaya_article.field_meta_tag
+    - field.field.node.kamihaya_article.field_not_display_title
     - field.field.node.kamihaya_article.field_publish_date
     - field.field.node.kamihaya_article.field_thumbnail_image
     - node.type.kamihaya_article
   module:
+    - datetime
     - field_formatter
     - user
 id: node.kamihaya_article.teaser_small_list
@@ -18,6 +21,15 @@ targetEntityType: node
 bundle: kamihaya_article
 mode: teaser_small_list
 content:
+  field_publish_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: short
+    third_party_settings: {  }
+    weight: 0
+    region: content
   field_thumbnail_image:
     type: field_formatter_with_inline_settings
     label: hidden
@@ -49,20 +61,11 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-  field_publish_date:
-    type: datetime_default
-    label: hidden
-    settings:
-      timezone_override: ''
-      format_type: short
-    third_party_settings: {  }
-    weight: 0
-    region: content
 hidden:
   field_body: true
   field_category: true
   field_description: true
   field_meta_tag: true
+  field_not_display_title: true
   langcode: true
   links: true
-  search_api_excerpt: true

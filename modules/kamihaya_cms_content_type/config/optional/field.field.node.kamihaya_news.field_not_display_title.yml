@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_not_display_title
+    - node.type.kamihaya_news
+id: node.kamihaya_news.field_not_display_title
+field_name: field_not_display_title
+entity_type: node
+bundle: kamihaya_news
+label: 'Not display title'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: On
+  off_label: Off
+field_type: boolean

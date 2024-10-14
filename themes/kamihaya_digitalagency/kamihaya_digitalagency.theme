@@ -165,6 +165,10 @@ function kamihaya_digitalagency_preprocess_user(array &$variables) {
  */
 function kamihaya_digitalagency_preprocess_views_view(array &$variables) {
   $variables['#attached']['library'][] = 'kamihaya_digitalagency/view';
+  $view = $variables['view'];
+  if (!empty($view->getStyle()->getPluginId())) {
+    $variables['format'] = str_replace('_', '-', $view->getStyle()->getPluginId());
+  }
 }
 
 /**
@@ -303,6 +307,22 @@ function kamihaya_digitalagency_preprocess_field(&$variables, $hook) {
       }
       $item['attributes']->addClass('matching-skill');
     }
+  }
+}
+
+ /**
+ * Implements hook_preprocess_block().
+ */
+function kamihaya_digitalagency_preprocess_block(array &$variables) {
+  if (!empty($variables['plugin_id']) && $variables['plugin_id'] === 'page_title_block') {
+    /** @var \Drupal\Entity\FieldableEntityInterface $entity */
+    $entity = !empty(\Drupal::routeMatch()->getParameter('node'))
+      ? \Drupal::routeMatch()->getParameter('node')
+      : \Drupal::routeMatch()->getParameter('taxonomy_term');
+    if (empty($entity) || !$entity->hasField('field_not_display_title') || empty($entity->get('field_not_display_title')->value)) {
+      return;
+    }
+    $variables['content']['#access'] = FALSE;
   }
 }
 

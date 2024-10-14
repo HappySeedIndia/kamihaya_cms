@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.kamihaya_news.field_direct_link_file
     - field.field.node.kamihaya_news.field_direct_link_url
     - field.field.node.kamihaya_news.field_meta_tag
+    - field.field.node.kamihaya_news.field_not_display_title
     - field.field.node.kamihaya_news.field_publish_date
     - field.field.node.kamihaya_news.field_thumbnail_image
     - field.field.node.kamihaya_news.field_weight
@@ -65,5 +66,6 @@ hidden:
   field_direct_link_file: true
   field_direct_link_url: true
   field_meta_tag: true
+  field_not_display_title: true
   field_weight: true
   langcode: true
