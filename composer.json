@@ -86,7 +86,7 @@
         },
         "patches": {
             "drupal/views_infinite_scroll": {
-                "https://www.drupal.org/project/views_infinite_scroll/issues/2899705": "https://www.drupal.org/files/issues/2022-12-19/2899705-53.patch"
+                "https://www.drupal.org/project/views_infinite_scroll/issues/2899705": "./patches/views_infinite_scroll.patch"
             }
         }
     },

@@ -1,0 +1,24 @@
+diff --git a/js/infinite-scroll.js b/js/infinite-scroll.js
+index 31af211..02b3f79 100644
+--- a/js/infinite-scroll.js
++++ b/js/infinite-scroll.js
+@@ -56,9 +56,16 @@
+     view.$view.find(contentWrapperSelector)
+       // Trigger a jQuery event on the wrapper to inform that new content was
+       // loaded and allow other scripts to respond to the event.
+-      .trigger('views_infinite_scroll.new_content', $newRows.clone())
+-      // Add the new rows to existing view.
+-      .append($newRows);
++      .trigger('views_infinite_scroll.new_content', $newRows.clone());
++
++    // Kamihaya: fix the bug of loading rows.
++    // Add the new rows to existing view.
++    if (view.$view.find(contentWrapperSelector).find('tbody').length) {
++      view.$view.find(contentWrapperSelector).find('tbody').append($newRows.find('tbody').children());
++    }
++    else {
++      view.$view.find(contentWrapperSelector).append($newRows);
++    }
+ 
+     // Replace the pager link with the new link and ajaxPageState values.
+     $existingPager.replaceWith($newPager);
