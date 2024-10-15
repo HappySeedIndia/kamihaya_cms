@@ -86,7 +86,7 @@
         },
         "patches": {
             "drupal/views_infinite_scroll": {
-                "https://www.drupal.org/project/views_infinite_scroll/issues/2899705": "./patches/views_infinite_scroll.patch"
+                "https://www.drupal.org/project/views_infinite_scroll/issues/2899705": "https://raw.githubusercontent.com/HappySeedIndia/kamihaya_cms/refs/heads/master/patches/views_infinite_scroll.patch"
             }
         }
     },
