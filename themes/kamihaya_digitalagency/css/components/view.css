@@ -354,18 +354,18 @@
 }
 
 /** Flepped table */
-.views-flipped-table {
+.view-flipped-table {
   width: 100%;
   overflow-x: auto;
 }
 
-.views-flipped-table .table {
+.view-flipped-table .table {
   width: auto;
   min-width: 100%;
   margin-bottom: 0;
 }
 
-.views-flipped-table .table.sticky-enabled tr th {
+.view-flipped-table .table.sticky-enabled tr th {
   position: -webkit-sticky;
   /* Safari */
   position: sticky;
@@ -373,8 +373,8 @@
   z-index: 1;
 }
 
-.views-flipped-table .table tr th,
-.views-flipped-table .table tr td {
+.view-flipped-table .table tr th,
+.view-flipped-table .table tr td {
   width: 175px;
 }
 
