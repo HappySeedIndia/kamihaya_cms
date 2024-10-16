@@ -83,7 +83,7 @@
 
   <div class="list-image">
     {% if content.field_thumbnail_image|render %}
-      {{ content.field_thumbnail_image }}
+      <a href="{{ url }}">{{ content.field_thumbnail_image }}</a>
     {% endif %}
   </div>
 
@@ -94,7 +94,7 @@
           {{ content.field_category }}
         </div>
       {% endif %}
- 
+
       {# Date #}
       {% if content.field_publish_date|render %}
       <div class="list-date">

@@ -79,13 +79,22 @@
   ]
 %}
 {{ attach_library('bootstrap5/node') }}
+{% if content.field_direct_link_url|render %}
+	{% set url = content.field_direct_link_url.0['#url'] %}
+{% elseif content.field_direct_link_file|render %}
+	{% set url = content.field_direct_link_file.0 %}
+{% endif %}
 <div{{attributes.addClass(classes)}}>
 
   <div class="list-image">
     {% if content.field_thumbnail_image|render %}
+      {% if url.external == true %}
+        <a href="{{ url }}" target=" _blank">
+      {% else %}
+        <a href="{{ url }}">
+      {% endif %}
       {{ content.field_thumbnail_image }}
-    {% else %}
-
+      </a>
     {% endif %}
   </div>
 
@@ -109,11 +118,6 @@
 
     <div class="list-link">
       {% if label %}
-        {% if content.field_direct_link_url|render %}
-          {% set url = content.field_direct_link_url.0['#url'] %}
-        {% elseif content.field_direct_link_file|render %}
-          {% set url = content.field_direct_link_file.0 %}
-        {% endif %}
         {% if url.external == true %}
           <a href="{{ url }}" target=" _blank">
         {% else %}
