@@ -430,13 +430,11 @@
   margin: 1em 0;
   text-align: right;
   padding: 0.5rem;
-  ;
   background: var(--light-background-primary);
   border-radius: 0.5rem;
   box-shadow: 0 1px 2px rgb(20 45 82 / 2%),
     0 3px 4px rgb(20 45 82 / 3%),
     0 5px 8px rgb(20 45 82 / 4%);
-  ;
 }
 
 .display-switch-view .view-header .views-display-link-table_page,
@@ -465,4 +463,8 @@
 .display-switch-view .view-header .views-display-link-grid_page.is-active {
   font-weight: bold;
   background-color: var(--light-background-secondary);
+}
+
+.display-switch-view .pager[data-once="infinite-scroll"] {
+  position: static !important;
 }
