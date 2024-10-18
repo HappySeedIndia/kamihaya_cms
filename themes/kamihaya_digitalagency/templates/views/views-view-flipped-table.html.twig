@@ -1,0 +1,141 @@
+{#
+/**
+ * @file
+ * Template to display a view as a table with rows and columns flipped.
+ *
+ * @see template_preprocess_views_flipped_table()
+ *
+ * @ingroup themeable
+ */
+#}
+{%
+  set classes = [
+    'table',
+    'table-bordered',
+    'views-table',
+    'views-view-table',
+    'cols-' ~ flipped_header|length,
+    responsive ? 'responsive-enabled',
+    sticky ? 'sticky-enabled',
+  ]
+%}
+<table{{ attributes.addClass(classes) }}>
+  {% if caption_needed %}
+    <caption>
+    {% if caption %}
+      {{ caption }}
+    {% else %}
+      {{ title }}
+    {% endif %}
+    {% if (summary is not empty) or (description is not empty) %}
+      <details>
+        {% if summary is not empty %}
+          <summary>{{ summary }}</summary>
+        {% endif %}
+        {% if description is not empty %}
+          {{ description }}
+        {% endif %}
+      </details>
+    {% endif %}
+    </caption>
+  {% endif %}
+  {% if first_row_header %}
+    <thead>
+      <tr>
+        {% if show_labels %}
+            {% if header[flipped_header_field_name].default_classes %}
+              {%
+                set column_classes = [
+                  'views-field',
+                  'views-field-' ~ flipped_header_field_name,
+                ]
+              %}
+            {% endif %}
+            <th{{ header[flipped_header_field_name].attributes.addClass(column_classes).setAttribute('scope', 'row') }}>
+              {{ header[flipped_header_field_name].content }}
+            </th>
+        {% endif %}
+        {% for key, column in flipped_header %}
+          {% if column.default_classes %}
+            {%
+              set column_classes = [
+                'views-field'
+              ]
+            %}
+            {% for field in column.fields %}
+              {% set column_classes = column_classes|merge(['views-field-' ~ field]) %}
+            {% endfor %}
+          {% endif %}
+          <th{{ column.attributes.addClass(column_classes) }}>
+            {%- if column.wrapper_element -%}
+              <{{ column.wrapper_element }}>
+                {%- if column.url -%}
+                  <a href="{{ column.url }}" title="{{ column.title }}">{{ column.content }}{{ column.sort_indicator }}</a>
+                {%- else -%}
+                  {{ column.content }}{{ column.sort_indicator }}
+                {%- endif -%}
+              </{{ column.wrapper_element }}>
+            {%- else -%}
+              {%- if column.url -%}
+                <a href="{{ column.url }}" title="{{ column.title }}">{{ column.content }}{{ column.sort_indicator }}</a>
+              {%- else -%}
+                {{- column.content }}{{ column.sort_indicator }}
+              {%- endif -%}
+            {%- endif -%}
+          </th>
+        {% endfor %}
+      </tr>
+    </thead>
+  {% endif %}
+  <tbody>
+    {% for field_name, row in rows_flipped %}
+      <tr>
+        {% if header[field_name] and show_labels %}
+          {% set header_column = header[field_name] %}
+          {% if header_column.default_classes %}
+            {%
+              set column_classes = [
+                'views-field',
+                'views-field-' ~ field_name,
+              ]
+            %}
+          {% endif %}
+          <th{{ header_column.attributes.addClass(column_classes).setAttribute('scope', 'row') }}>
+            {%- if header_column.wrapper_element -%}
+              <{{ header_column.wrapper_element }}>
+              {%- if header_column.url -%}
+                <a href="{{ header_column.url }}" title="{{ header_column.title }}">{{ header_column.content }}{{ header_column.sort_indicator }}</a>
+              {%- else -%}
+                {{ header_column.content }}{{ header_column.sort_indicator }}
+              {%- endif -%}
+              </{{ header_column.wrapper_element }}>
+            {%- else -%}
+              {%- if header_column.url -%}
+                <a href="{{ header_column.url }}" title="{{ header_column.title }}">{{ header_column.content }}{{ header_column.sort_indicator }}</a>
+              {%- else -%}
+                {{- header_column.content }}{{ header_column.sort_indicator }}
+              {%- endif -%}
+            {%- endif -%}
+          </th>
+        {% endif %}
+        {% for index, item in row.columns %}
+          {% if item.default_classes %}
+            {%
+              set column_classes = [
+                'views-field'
+              ]
+            %}
+            {% for field in column.fields %}
+              {% set column_classes = column_classes|merge(['views-field-' ~ field]) %}
+            {% endfor %}
+          {% endif %}
+          <td{{ item.attributes.addClass(column_classes) }}>
+            {% for content in item.content %}
+              {{ content.field_output }}
+            {% endfor %}
+          </td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

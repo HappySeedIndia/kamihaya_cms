@@ -43,7 +43,7 @@
   {% block content %}
     {% set align = content.field_align|render|striptags|trim|lower %}
     {%
-      set classes = [
+    set classes = [
         'paragraph',
         'paragraph--type--' ~ paragraph.bundle|clean_class,
         view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
@@ -75,15 +75,15 @@
       {% if mobile_height %}
         <style>
           @media(max-width: 767px) {
-          .paragraph--type--image-link img {
-            min-height: {{ mobile_height}}px;
-            object-fit: cover;
-          }
+            .paragraph--type--image-link img {
+              min-height: {{mobile_height}}px;
+              object-fit: cover;
+            }
           }
         </style>
       {% endif %}
       <div class="bg-image" {% if image_style %} style="{{ image_style|join(' ') }}" {% endif %}>
-        {% if content.field_image_link|render %}
+        {% if content.field_image_link|render and content.field_link_text is empty %}
           <a class="image-link" href="{{ imageLink }}" target="{{ content.field_image_link[0]['#url'].external ? '_blank' : '_self' }}">
         {% endif %}
 
@@ -102,6 +102,7 @@
                 content.field_image_text_valign|render ? 'image-text-valign-' ~ paragraph.field_image_text_valign.0.value,
               ]
             %}
+
             {% set size = paragraph.field_image_text_size.0.value %}
             {% set color = content.field_image_text_color|render|striptags|trim|lower %}
             {%
@@ -112,17 +113,34 @@
             %}
             <div class="mask">
               <div class="{{ text_classes|join(' ') }}" style="{{ style|join(' ') }}">
-                <div><p>{{ content.field_image_text }}</p>
+                <div>
+                  <p>{{ content.field_image_text }}</p>
                   {% if content.field_image_description|render %}
                     {% set size = paragraph.field_image_desc_text_size.0.value %}
-                    <p{% if size %} style="font-size: {{ size }}px;"{% endif %}>{{ content.field_image_description }}</p>
+                    {% set dec_align = paragraph.field_image_desc_text_align.0.value %}
+                    <p {% if size %} style="font-size: {{ size }}px;" {% endif %} class="image-description{% if dec_align %} text-align-{{ dec_align }}{% endif %}">{{ content.field_image_description }}</p>
                   {% endif %}
                 </div>
               </div>
             </div>
           {% endif %}
+          {# Text #}
+          {% if content.field_link_text|render %}
+            {%
+              set link_text_classes = [
+                'link-text',
+                content.field_link_text_halign|render ? 'link-text-halign-' ~ paragraph.field_link_text_halign.0.value,
+                content.field_link_text_valign|render ? 'link-text-valign-' ~ paragraph.field_link_text_valign.0.value,
+              ]
+            %}
+            <div class="link-text-mask">
+              <div class="{{ link_text_classes|join(' ') }}">
+                {{ content.field_link_text }}
+              </div>
+            </div>
+          {% endif %}
 
-        {% if content.field_image_link|render %}
+          {% if content.field_image_link|render and content.field_link_text is empty %}
           </a>
         {% endif %}
       </div>

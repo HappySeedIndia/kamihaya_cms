@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_image_desc_text_align
+    - paragraphs.paragraphs_type.image_link
+  module:
+    - options
+id: paragraph.image_link.field_image_desc_text_align
+field_name: field_image_desc_text_align
+entity_type: paragraph
+bundle: image_link
+label: 'Image description text align'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
