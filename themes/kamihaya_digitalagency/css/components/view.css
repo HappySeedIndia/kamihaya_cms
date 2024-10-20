@@ -468,3 +468,8 @@
 .display-switch-view .pager[data-once="infinite-scroll"] {
   position: static !important;
 }
+
+/** Sidebar exposed form */
+.order-1 .views-exposed-form .form-control {
+  width: 100%;
+}
