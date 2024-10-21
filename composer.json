@@ -86,7 +86,7 @@
         },
         "patches": {
             "drupal/views_infinite_scroll": {
-                "https://www.drupal.org/project/views_infinite_scroll/issues/2899705": "./patches/views_infinite_scroll.patch"
+                "https://www.drupal.org/project/views_infinite_scroll/issues/2899705": "https://raw.githubusercontent.com/HappySeedIndia/kamihaya_cms/refs/heads/master/patches/views_infinite_scroll.patch"
             }
         }
     },
@@ -100,7 +100,7 @@
         "drupal/addtoany": "^2.0",
         "drupal/admin_toolbar": "^3.4",
         "drupal/back_to_top": "^3.0",
-        "drupal/better_exposed_filters": "^6.0",
+        "drupal/better_exposed_filters": "^7.0",
         "drupal/blazy": "^3.0",
         "drupal/block_field": "^1.0@RC",
         "drupal/bootstrap5": "^3.0",
