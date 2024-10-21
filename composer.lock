@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b8574d78bd12e195bd6fda5c8cdbbf4",
+    "content-hash": "07f9619cff5ae198a60379835fa86831",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -6754,6 +6754,51 @@
             "homepage": "https://www.drupal.org/project/token",
             "support": {
                 "source": "https://git.drupalcode.org/project/token"
+            }
+        },
+        {
+            "name": "drupal/token_views_filter",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/token_views_filter.git",
+                "reference": "2.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/token_views_filter-2.0.0.zip",
+                "reference": "2.0.0",
+                "shasum": "a87e7e417620c6378bc0a8d820fd4f07d42e4654"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10",
+                "drupal/token": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.0",
+                    "datestamp": "1693560324",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "validoll",
+                    "homepage": "https://www.drupal.org/user/144206"
+                }
+            ],
+            "description": "This is module allow to use tokens in views filter criteria values.",
+            "homepage": "https://www.drupal.org/project/token_views_filter",
+            "support": {
+                "source": "https://git.drupalcode.org/project/token_views_filter"
             }
         },
         {
