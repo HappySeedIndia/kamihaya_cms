@@ -421,7 +421,9 @@ button.link:focus {
 .path-admin [type=checkbox]+label:before,
 .path-admin [type=radio]+label:before,
 .path-node [type=checkbox]+label:before,
-.path-node [type=radio]+label:before {
+.path-node [type=radio]+label:before,
+.path-taxonomy [type=checkbox]+label:before,
+.path-taxonomy [type=radio]+label:before {
   display: none;
 }
 
