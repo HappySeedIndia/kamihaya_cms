@@ -140,7 +140,7 @@
         "drupal/recreate_block_content": "^3.0",
         "drupal/redirect": "^1.9",
         "drupal/responsive_preview": "^2.1",
-        "drupal/scheduled_transitions": "^2.3",
+        "drupal/scheduled_transitions": "^2.5",
         "drupal/scheduler": "^2.0",
         "drupal/seckit": "^2.0",
         "drupal/select_or_other": "^4.1",
