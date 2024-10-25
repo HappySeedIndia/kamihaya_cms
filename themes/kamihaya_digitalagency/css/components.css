@@ -1264,7 +1264,7 @@ header .container {
 
 @media (max-width: 991px) {
   .tbm.tbm--mobile .tbm-nav {
-    background-color: transparent;;
+    background-color: transparent;
   }
 
   .tbm-item.level-1.open>.tbm-submenu {
@@ -1439,7 +1439,7 @@ h2.accordion-header::after {
 /* Bootstrap grid */
 .bs_grid img {
   max-width: 100%;
-  height: auto;;
+  height: auto;
 }
 
 .bs_grid a {
