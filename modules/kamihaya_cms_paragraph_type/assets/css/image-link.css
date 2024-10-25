@@ -6,6 +6,7 @@ a.image-link {
   height: 100%;
 }
 
+.link-text,
 .image-link-text {
   display: flex;
   width: 100%;
@@ -14,15 +15,18 @@ a.image-link {
   padding: 20px;
 }
 
+.link-text-halign-left,
 .image-text-halign-left {
   justify-content: flex-start;
 }
 
+.link-text-halign-center,
 .image-text-halign-center {
   justify-content: center;
   text-align: center;
 }
 
+.link-text-halign-right,
 .image-text-halign-right {
   justify-content: flex-end;
   text-align: right;
@@ -32,14 +36,17 @@ a.image-link {
   justify-content: stretch;
 }
 
+.link-text-valign-top,
 .image-text-valign-top {
   align-items: flex-start;
 }
 
+.link-text-valign-center,
 .image-text-valign-center {
   align-items: center;
 }
 
+.link-text-valign-bottom,
 .image-text-valign-bottom {
   align-items: flex-end;
 }
@@ -50,7 +57,8 @@ a.image-link {
   max-width: 100%;
 }
 
-.paragraph--type--image-link .bg-image .mask {
+.paragraph--type--image-link .bg-image .mask,
+.paragraph--type--image-link .bg-image .link-text-mask {
   position: absolute;
   top: 0;
   right: 0;
@@ -60,4 +68,13 @@ a.image-link {
   height: 100%;
   overflow: hidden;
   background-attachment: fixed;
+}
+
+.paragraph--type--image-link .paragraph--type--link-button .btn {
+  --bs-btn-padding-x: 0.5rem;
+  --bs-btn-padding-y: 0.2rem;
+}
+
+.paragraph--type--image-link .image-description {
+  word-break: break-all;
 }
