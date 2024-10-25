@@ -32,7 +32,7 @@
   --bs-accordion-body-field-padding: 0rem 0 1rem 0rem;
   --bs-accordion-btn-icon: url(../images/arrow_down.svg);
   --bs-accordion-btn-active-icon: url(../images/arrow_up.svg);
-  max-width: 960px;
+  max-width:  960px;
   margin: 0 auto;
 }
 
@@ -179,13 +179,12 @@ button.link:focus {
 
 /* Form control */
 .form-control,
-.form-element {
+ .form-element {
   --bs-border-radius: 8px;
   --bs-border-color: #1A1A1C;
   padding: 0.75rem 1rem;
   width: auto;
-  max-width: 100%;
-  ;
+  max-width: 100%;;
 }
 
 .form-required {
@@ -200,10 +199,14 @@ button.link:focus {
   line-height: 170%;
   letter-spacing: 0.24px;
   background: none;
-  content: "必須";
+  content: "Required";
   width: auto;
   height: auto;
   vertical-align: unset;
+}
+
+html[lang='ja'] .form-required:after {
+  content: "必須";
 }
 
 .form-control:focus,
@@ -236,8 +239,7 @@ button.link:focus {
 }
 
 .form-composite>legend,
-.form-item label,
-.label {
+.form-item label, .label {
   font-weight: 500;
   margin-bottom: 8px;
   line-height: 1;
@@ -247,8 +249,7 @@ button.link:focus {
 .form-item .description {
   color: var(--light-text-description);
   font-family: Noto Sans JP;
-  font-size: 0.75rem;
-  ;
+  font-size: 0.75rem;;
   font-weight: 400;
   line-height: 170%;
   letter-spacing: 0.24px;
@@ -271,8 +272,7 @@ button.link:focus {
 .form-type-textarea .text-count-wrapper {
   float: right;
   color: var(--light-text-description);
-  font-size: 0.75rem;
-  ;
+  font-size: 0.75rem;;
   font-weight: 400;
   line-height: 150%;
   letter-spacing: 0.15px;
@@ -436,7 +436,7 @@ button.link:focus {
 .table {
   --bs-table-bg: #F8F8FB;
   --bs-table-bg-white: #FFFFFF;
-  --bs-table-border-color: #D8D8DB;
+  --bs-table-border-color:#D8D8DB;
 }
 
 .table> :not(caption)>*>* {
@@ -508,7 +508,7 @@ button.link:focus {
   background-image: var(--bs-pagination-first-arrow-image);
   background-repeat: no-repeat;
   background-position: center;
-  text-indent: -9999px;
+  text-indent:-9999px;
 }
 
 .pager__item--previous .page-link {
@@ -533,7 +533,7 @@ button.link:focus {
 }
 
 .page-item.disabled {
-  display: flex;
+  display:  flex;
   align-items: center;
 }
 
@@ -1263,8 +1263,7 @@ header .container {
 
 @media (max-width: 991px) {
   .tbm.tbm--mobile .tbm-nav {
-    background-color: transparent;
-    ;
+    background-color: transparent;;
   }
 
   .tbm-item.level-1.open>.tbm-submenu {
@@ -1277,7 +1276,9 @@ header .container {
     gap: 0;
   }
 
-  .tbm-item.level-1.open .tbm-column {}
+  .tbm-item.level-1.open .tbm-column {
+
+  }
 
   .tbm-item.level-1.open .tbm-column.submenu-title-box {
     display: none;
@@ -1441,8 +1442,7 @@ h2.accordion-header::after {
 /* Bootstrap grid */
 .bs_grid img {
   max-width: 100%;
-  height: auto;
-  ;
+  height: auto;;
 }
 
 .bs_grid a {
@@ -1454,36 +1454,11 @@ h2.accordion-header::after {
   .layout--threecol-33-34-33>.layout__region--first {
     padding-right: 0.5%;
   }
-
   .layout--threecol-33-34-33>.layout__region--third {
     padding-left: 0.5%;
   }
-
-  .layout--threecol-33-34-33>.layout__region--second {
+  .layout--threecol-33-34-33 > .layout__region--second {
     padding-left: 0.75%;
     padding-right: 0.75%;
   }
-}
-
-/** Flag */
-.flag.action-flag a,
-.flag.action-unflag a {
-  text-indent: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.flag.action-flag a:before,
-.flag.action-unflag a:before {
-  font-family: "Font Awesome 5 Free";
-}
-
-.flag.action-flag a:before {
-  content: "\f004";
-  font-weight: 900;
-}
-
-.flag.action-unflag a:before {
-  content: "\f004";
-  font-weight: 400;
 }
