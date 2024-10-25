@@ -185,7 +185,6 @@ button.link:focus {
   padding: 0.75rem 1rem;
   width: auto;
   max-width: 100%;
-  ;
 }
 
 .form-required {
@@ -200,10 +199,14 @@ button.link:focus {
   line-height: 170%;
   letter-spacing: 0.24px;
   background: none;
-  content: "必須";
+  content: "Required";
   width: auto;
   height: auto;
   vertical-align: unset;
+}
+
+html[lang='ja'] .form-required:after {
+  content: "必須";
 }
 
 .form-control:focus,
@@ -248,7 +251,6 @@ button.link:focus {
   color: var(--light-text-description);
   font-family: Noto Sans JP;
   font-size: 0.75rem;
-  ;
   font-weight: 400;
   line-height: 170%;
   letter-spacing: 0.24px;
@@ -272,7 +274,6 @@ button.link:focus {
   float: right;
   color: var(--light-text-description);
   font-size: 0.75rem;
-  ;
   font-weight: 400;
   line-height: 150%;
   letter-spacing: 0.15px;
@@ -1264,7 +1265,6 @@ header .container {
 @media (max-width: 991px) {
   .tbm.tbm--mobile .tbm-nav {
     background-color: transparent;
-    ;
   }
 
   .tbm-item.level-1.open>.tbm-submenu {
@@ -1276,8 +1276,6 @@ header .container {
     flex-direction: column;
     gap: 0;
   }
-
-  .tbm-item.level-1.open .tbm-column {}
 
   .tbm-item.level-1.open .tbm-column.submenu-title-box {
     display: none;
@@ -1442,7 +1440,6 @@ h2.accordion-header::after {
 .bs_grid img {
   max-width: 100%;
   height: auto;
-  ;
 }
 
 .bs_grid a {
@@ -1451,15 +1448,13 @@ h2.accordion-header::after {
 }
 
 @media screen and (min-width: 40em) {
-  .layout--threecol-33-34-33>.layout__region--first {
+  .layout--threecol-33-34-33 > .layout__region--first {
     padding-right: 0.5%;
   }
-
-  .layout--threecol-33-34-33>.layout__region--third {
+  .layout--threecol-33-34-33 > .layout__region--third {
     padding-left: 0.5%;
   }
-
-  .layout--threecol-33-34-33>.layout__region--second {
+  .layout--threecol-33-34-33 > .layout__region--second {
     padding-left: 0.75%;
     padding-right: 0.75%;
   }
