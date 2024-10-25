@@ -184,7 +184,7 @@ button.link:focus {
   --bs-border-color: #1A1A1C;
   padding: 0.75rem 1rem;
   width: auto;
-  max-width: 100%;;
+  max-width: 100%;
 }
 
 .form-required {
@@ -239,7 +239,8 @@ html[lang='ja'] .form-required:after {
 }
 
 .form-composite>legend,
-.form-item label, .label {
+.form-item label,
+.label {
   font-weight: 500;
   margin-bottom: 8px;
   line-height: 1;
