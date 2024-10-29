@@ -422,7 +422,7 @@
 
 /** Table / Grid switcher */
 .display-switch-view {
-  display: flex;
+  display: flex !important;
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-between;
