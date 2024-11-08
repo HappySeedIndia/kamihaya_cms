@@ -87,6 +87,9 @@
         "patches": {
             "drupal/views_infinite_scroll": {
                 "https://www.drupal.org/project/views_infinite_scroll/issues/2899705": "https://raw.githubusercontent.com/HappySeedIndia/kamihaya_cms/refs/heads/master/patches/views_infinite_scroll.patch"
+            },
+            "drupal/core": {
+                "https://www.drupal.org/project/drupal/issues/2842525": "https://www.drupal.org/files/issues/2024-05-21/2842525-134-ajax-for-exposed-views-media-library-quickfix.patch"
             }
         }
     },

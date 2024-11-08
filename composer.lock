@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "481078d41edebb3a8af9d575c0f8ad92",
+    "content-hash": "834b7994555ba837f9d4a93b68fbf5e4",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1874,7 +1874,7 @@
                     "homepage": "https://www.drupal.org/user/1001934"
                 },
                 {
-                    "name": "Nitesh Sethia",
+                    "name": "nitesh sethia",
                     "homepage": "https://www.drupal.org/user/2474982"
                 },
                 {
@@ -2775,7 +2775,7 @@
             ],
             "authors": [
                 {
-                    "name": "Centarro",
+                    "name": "centarro",
                     "homepage": "https://www.drupal.org/user/3661446"
                 },
                 {
@@ -3824,7 +3824,7 @@
                     "homepage": "https://www.drupal.org/user/471638"
                 },
                 {
-                    "name": "Primsi",
+                    "name": "primsi",
                     "homepage": "https://www.drupal.org/user/282629"
                 },
                 {
@@ -4069,7 +4069,7 @@
             ],
             "authors": [
                 {
-                    "name": "Anybody",
+                    "name": "anybody",
                     "homepage": "https://www.drupal.org/user/291091"
                 },
                 {
@@ -4489,6 +4489,10 @@
                     "name": "Sascha Eggenberger (saschaeggi)",
                     "homepage": "https://www.drupal.org/u/saschaeggi",
                     "role": "Maintainer"
+                },
+                {
+                    "name": "saschaeggi",
+                    "homepage": "https://www.drupal.org/user/1999056"
                 }
             ],
             "description": "Gin Toolbar for Frontend use",
@@ -5127,12 +5131,12 @@
                     "homepage": "https://www.drupal.org/user/3288491"
                 },
                 {
-                    "name": "shashank_thigale",
-                    "homepage": "https://www.drupal.org/user/3632808"
+                    "name": "shrishail hiremath",
+                    "homepage": "https://www.drupal.org/user/3669372"
                 },
                 {
-                    "name": "Shrishail Hiremath",
-                    "homepage": "https://www.drupal.org/user/3669372"
+                    "name": "sudhanshu0542",
+                    "homepage": "https://www.drupal.org/user/3723916"
                 }
             ],
             "description": "Login to Drupal site through an external IdP using the SAML 2.0 Protocol",
@@ -5782,6 +5786,10 @@
                     "name": "Neslee Canil Pinto",
                     "homepage": "https://www.drupal.org/u/neslee-canil-pinto",
                     "role": "Maintainer"
+                },
+                {
+                    "name": "neslee canil pinto",
+                    "homepage": "https://www.drupal.org/user/3580850"
                 }
             ],
             "description": "Quickly clone a node with regular fields.",
@@ -6490,7 +6498,7 @@
                     "homepage": "https://www.drupal.org/user/1321830"
                 },
                 {
-                    "name": "stBorchert",
+                    "name": "stborchert",
                     "homepage": "https://www.drupal.org/user/36942"
                 }
             ],
@@ -7395,7 +7403,7 @@
                     "homepage": "https://www.drupal.org/user/48424"
                 },
                 {
-                    "name": "KarlShea",
+                    "name": "karlshea",
                     "homepage": "https://www.drupal.org/user/294283"
                 },
                 {
