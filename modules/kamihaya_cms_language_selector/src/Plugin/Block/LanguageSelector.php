@@ -3,27 +3,30 @@
 namespace Drupal\kamihaya_cms_language_selector\Plugin\Block;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\kamihaya_cms_language_selector\Plugin\Derivative\LanguageSelector as LanguageSelectorDerivative;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Provides an alternative language switcher block.
- *
- * @Block(
- *   id = "kamihaya_language_selector",
- *   admin_label = @Translation("Kamihaya Language Selector"),
- *   category = @Translation("Kamihaya Blocks"),
- *   deriver = "Drupal\kamihaya_cms_language_selector\Plugin\Derivative\LanguageSelector"
- * )
  */
+#[Block(
+  id: "kamihaya_language_selector",
+  admin_label: new TranslatableMarkup("Kamihaya Language Selector"),
+  category: new TranslatableMarkup("Kamihaya Blocks"),
+  deriver: LanguageSelectorDerivative::class
+)]
 class LanguageSelector extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
@@ -91,7 +94,40 @@ class LanguageSelector extends BlockBase implements ContainerFactoryPluginInterf
   public function defaultConfiguration() {
     return [
       'label_display' => FALSE,
+      'selector_icon' => 'globe',
+      'selector_label' => $this->t('Language'),
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockForm($form, FormStateInterface $form_state) {
+    $form['selector_label'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Selector label'),
+      '#maxlength' => 255,
+      '#default_value' => $this->configuration['selector_label'],
+      '#required' => TRUE,
+    ];
+    $form['selector_icon'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Selector icon'),
+      '#options' => [
+        'globe' => $this->t('Globe'),
+        'language' => $this->t('Language'),
+      ],
+      '#default_value' => $this->configuration['selector_icon'],
+    ];
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockSubmit($form, FormStateInterface $form_state) {
+    $this->configuration['selector_label'] = $form_state->getValue('selector_label');
+    $this->configuration['selector_icon'] = $form_state->getValue('selector_icon');
   }
 
   /**
@@ -156,27 +192,32 @@ class LanguageSelector extends BlockBase implements ContainerFactoryPluginInterf
           $access_translation = ($this_translation && method_exists($this_translation, 'access') && $this_translation->access('view')) ? TRUE : FALSE;
           if (!$this_translation || !$access_translation) {
             unset($links[$lid]);
+            continue;
           }
         }
+        if (empty($links[$lid]['attributes']['class'])) {
+          $links[$lid]['attributes']['class'] = [];
+        }
+        $links[$lid]['attributes']['class'][] = 'dropdown-item';
       }
 
       $container = [
         '#type' => 'container',
         '#attributes' => [
-          'class' => ['dropdown', 'language-selector'],
+          'class' => ['dropdown', 'nav-item', 'language-selector'],
         ],
       ];
       $header = [
-        'level' => 'a',
+        'level' => 'span',
         'attributes' => [
-          'class' => ['dropdown-toggle'],
+          'class' => ['dropdown-toggle', 'nav-link', $this->configuration['selector_icon']],
           'role' => 'button',
           'id' => 'dropdownMenuLink',
           'href' => '#',
-          'data-mdb-toggle' => 'dropdown',
+          'data-bs-toggle' => 'dropdown',
           'aria-expanded' => FALSE,
         ],
-        'text' => 'Language',
+        'text' => $this->configuration['selector_label'],
       ];
       $dropdown = [
         '#theme' => 'links',

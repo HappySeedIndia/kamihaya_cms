@@ -3,25 +3,47 @@
   set footer_classes = 'text-lg-start' ~
   (b5_footer_schema != 'none' ? " footer-#{b5_footer_schema}" : ' ') ~
   (b5_footer_schema != 'none' ? (b5_footer_schema == 'custom' ? ' text-custom' : (b5_footer_schema == 'dark' ? ' text-light' : ' text-dark' )) : ' ') ~
-  (b5_footer_bg_schema != 'none' ? " bg-#{b5_footer_bg_schema}" : ' ')
+  (b5_footer_bg_schema != 'none' ? " bg-#{b5_footer_bg_schema}" : ' ') ~
+  (footer_pc_align ? " pc-align-#{footer_pc_align}" : ' ') ~
+  (footer_sp_align ? " sp-align-#{footer_sp_align}" : ' ')
 %}
 
 {% if page.footer_top_left or page.footer_top_right or page.footer_bottom %}
 <footer class="{{ footer_classes }}">
   <div class="{{ b5_top_container }}">
     {# Footer Top Left & Right #}
-    {% if page.footer_top_left or page.footer_top_right %}
+    {% if page.footer_top_left or page.footer_top_center or page.footer_top_right %}
     <div class="footer-top">
       <div class="row">
+        {% if footer_width_ratio is not defined or footer_width_ratio is empty or footer_width_ratio == '3:7' %}
+          {% set footer_top_left_class = 'col-lg-4' %}
+          {% set footer_top_right_class = 'col-lg-8' %}
+        {% elseif footer_width_ratio == '4:6' %}
+          {% set footer_top_left_class = 'col-lg-5' %}
+          {% set footer_top_right_class = 'col-lg-7' %}
+        {% elseif footer_width_ratio == '5:5' %}
+          {% set footer_top_left_class = 'col-lg-6' %}
+          {% set footer_top_right_class = 'col-lg-6' %}
+        {% elseif footer_width_ratio == '6:4' %}
+          {% set footer_top_left_class = 'col-lg-7' %}
+          {% set footer_top_right_class = 'col-lg-5' %}
+        {% elseif footer_width_ratio == '7:3' %}
+          {% set footer_top_left_class = 'col-lg-8' %}
+          {% set footer_top_right_class = 'col-lg-4' %}
+        {% endif %}
         {# Footer Top left #}
-        <div class="col-lg-4 footer-left">
-          {{ page.footer_top_left }}
-        </div>
+        {% if page.footer_top_left %}
+          <div class="{{ footer_top_left_class }} footer-left">
+            {{ page.footer_top_left }}
+          </div>
+        {% endif %}
 
         {# Footer Top Right #}
-        <div class="col-lg-8 footer-right">
-          {{ page.footer_top_right }}
-        </div>
+        {% if page.footer_top_right %}
+          <div class="{{ footer_top_right_class }} footer-right">
+            {{ page.footer_top_right }}
+          </div>
+        {% endif %}
       </div>
     </div>
     {% endif %}

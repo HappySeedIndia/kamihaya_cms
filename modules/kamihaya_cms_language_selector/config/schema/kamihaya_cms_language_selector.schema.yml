@@ -1,0 +1,7 @@
+block.settings.kamihaya_language_selector:*:
+  type: block_settings
+  label: 'Selector label of language selector'
+  mapping:
+    selector_label:
+      type: label
+      label: 'Selector label'

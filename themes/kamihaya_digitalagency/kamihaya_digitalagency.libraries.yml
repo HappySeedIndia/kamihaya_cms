@@ -68,15 +68,6 @@ maintenance:
     theme:
       css/components/maintenance-page.css: {}
 
-mdb:
-  js:
-    js/mdb/mdb.min.js: {}
-  css:
-    theme:
-      css/mdb/mdb.min.css: {}
-      css/mdb/style.css: {}
-      # https://use.fontawesome.com/releases/v5.11.2/css/all.css: { type: external, minified: true }
-
 font-awesome:
   css:
     theme:

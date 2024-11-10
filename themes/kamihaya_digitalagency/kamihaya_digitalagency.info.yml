@@ -7,6 +7,7 @@ regions:
   header_top_right: Header Top Right
   header_left: Header Left
   header_right: Header Right
+  header_bottom: Header Bottom
   after_header: After Header
   breadcrumb: Breadcrumbs
   content: 'Main content'
