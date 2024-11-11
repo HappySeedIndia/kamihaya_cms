@@ -125,6 +125,7 @@
         "drupal/field_formatter": "^3.0@RC",
         "drupal/field_group_table": "^1.1",
         "drupal/fontawesome": "^2.26",
+        "drupal/fontyourface": "^4.0",
         "drupal/gin": "^3.0@RC",
         "drupal/google_tag": "^2.0",
         "drupal/imce": "^3.0",
