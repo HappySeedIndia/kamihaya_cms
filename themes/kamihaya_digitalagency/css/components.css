@@ -1485,6 +1485,7 @@ h2.accordion-header::after {
 .flag.action-flag a,
 .flag.action-unflag a {
   display: inline-block;
+  width: 100%;
   text-indent: 100%;
   white-space: nowrap;
   overflow: hidden;
