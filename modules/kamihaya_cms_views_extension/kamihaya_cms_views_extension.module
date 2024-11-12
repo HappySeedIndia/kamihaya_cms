@@ -106,6 +106,7 @@ function kamihaya_cms_views_extension_preprocess_views_view_table(&$variables) {
   $rows = &$variables['rows'];
 
   if ($view->getStyle()->getPluginId() === 'kamihaya_responsive_table') {
+    $variables['#attached']['library'][] = 'kamihaya_cms_views_extension/responsive_table';
     foreach ($rows as $idx => &$row) {
       foreach ($row['columns'] as $field_name=>&$col) {
         $label = $variables['header'][$field_name]['content'];
@@ -118,6 +119,15 @@ function kamihaya_cms_views_extension_preprocess_views_view_table(&$variables) {
             $text =$col['content'][0]['field_output']['#markup'];
             $col['content'][0]['field_output']['#markup'] = "<b class='responsive_label'>$label</b><div class='field_value'>$text</div>";
           }
+        }
+        else {
+          $col['content'] = [
+            [
+              'field_output' => [
+                '#markup' => "<b class='responsive_label'>$label</b><div class='field_value'></div>",
+              ]
+            ],
+          ];
         }
       }
     }

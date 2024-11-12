@@ -132,6 +132,23 @@ function kamihaya_digitalagency_theme_suggestions_page_alter(array &$suggestions
   }
 }
 
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function kamihaya_digitalagency_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
+  if (isset($variables['attributes']['data-block']['region'])) {
+    $region = $variables['attributes']['data-block']['region'];
+    foreach ($suggestions as $key => $suggestion) {
+      if ($suggestion === "menu__$region") {
+        unset($suggestions[$key]);
+        $suggestions = array_merge(["menu__$region"], $suggestions);
+        break;
+      }
+    }
+  }
+}
+
+
  /**
  * Implements hook_preprocess_node().
  */
@@ -273,10 +290,37 @@ function kamihaya_digitalagency_preprocess_html(array &$variables) {
   $variables['b5_footer_bg_schema'] = theme_get_setting('b5_footer_bg_schema');
 }
 
+ /**
+ * Implements hook_preprocess_page().
+ */
+function kamihaya_digitalagency_preprocess_page(array &$variables) {
+  if (!empty(theme_get_setting('b5_navbar_sp_position'))) {
+    $variables['menu_sp_position'] = theme_get_setting('b5_navbar_sp_position');
+  }
+  if (!empty(theme_get_setting('b5_footer_width_ratio'))) {
+    $variables['footer_width_ratio'] = theme_get_setting('b5_footer_width_ratio');
+  }
+  if (!empty(theme_get_setting('b5_navbar_sp_revert'))) {
+    $variables['navbar_sp_revert'] = theme_get_setting('b5_navbar_sp_revert');
+  }
+  if (!empty($variables['page']['header_left'])) {
+    foreach ($variables['page']['header_left'] as $key => $value) {
+      if (strpos($key, '#') === 0) {
+        continue;
+      }
+      if (strpos($key, 'branding') === FALSE) {
+        break;
+      }
+      $variables['header_left_logo_only'] = TRUE;
+      break;
+    }
+  }
+}
+
 /**
  * Implements hook_preprocess_field().
  */
-function kamihaya_digitalagency_preprocess_field(&$variables, $hook) {
+function old_kamihaya_digitalagency_preprocess_field(&$variables, $hook) {
   $name = $variables['element']['#field_name'];
 
   if ($variables['element']['#object']->getEntityTypeId() === 'node') {
@@ -324,181 +368,196 @@ function kamihaya_digitalagency_preprocess_block(array &$variables) {
     }
     $variables['content']['#access'] = FALSE;
   }
+  if (!empty($variables['plugin_id']) && $variables['plugin_id'] === 'system_branding_block' && !empty(theme_get_setting('logo_url'))) {
+    $variables['logo_url'] = theme_get_setting('logo_url');
+   }
 }
 
 /**
  * Implements hook_page_attachments_alter().
  */
 function kamihaya_digitalagency_page_attachments_alter(array &$page) {
-  $colors = [];
-  $bg_colors = [];
+  $css_vars = [
+    ':root' => [],
+    '.navbar' => [],
+    '.navbar .dropdown-menu' => [],
+    'footer' => [],
+  ];
   if (theme_get_setting('b5_body_schema') === 'custom') {
     if (!empty(theme_get_setting('b5_body_text_color'))) {
-      $color = theme_get_setting('b5_body_text_color');
-      $colors[$color] = [
-        'body.text-custom',
-      ];
+      $css_vars[':root']['--bs-body-color'] = theme_get_setting('b5_body_text_color');
     }
     if (!empty(theme_get_setting('b5_body_link_color'))) {
-      $color = theme_get_setting('b5_body_link_color');
-      if (!empty($colors[$color])) {
-        $colors[$color][] = 'body.text-custom a';
-      } else {
-        $colors[$color] = ['body.text-custom a'];
-      }
+      $css_vars[':root']['--bs-link-color'] = theme_get_setting('b5_body_link_color');
     }
     if (!empty(theme_get_setting('b5_body_link_hover_color'))) {
-      $color = theme_get_setting('b5_body_link_hover_color');
-      if (!empty($colors[$color])) {
-        $colors[$color][] = 'body.text-custom a:hover';
-        $colors[$color][] = 'body.text-custom a:focus';
-      } else {
-        $colors[$color] = [
-          'body.text-custom a:hover',
-          'body.text-custom a:focus',
-        ];
+      $css_vars[':root']['--bs-link-hover-color'] = theme_get_setting('b5_body_link_hover_color');
+      if (empty(theme_get_setting('b5_body_link_active_color'))) {
+        $css_vars[':root']['--bs-link-active-color'] = theme_get_setting('b5_body_link_hover_color');
       }
     }
   }
-  if (theme_get_setting('b5_body_bg_schema') === 'custom' && !empty(theme_get_setting('b5_body_bg_schema_custom'))) {
-    $color = theme_get_setting('b5_body_bg_schema_custom');
-    if (!empty($bg_colors[$color])) {
-      $bg_colors[$color][] = 'body.bg-custom';
-    } else {
-      $bg_colors[$color] = ['body.bg-custom'];
+  if (theme_get_setting('body_schema_custom_bg') === 'custom') {
+    if (!empty(theme_get_setting('b5_body_bg_schema_custom'))) {
+      $css_vars[':root']['--bs-body-bg'] = theme_get_setting('b5_body_bg_schema_custom');
+    }
+    if (!empty(theme_get_setting('b5_body_secondary_bg_schema_custom'))) {
+      $css_vars[':root']['--bs-secondary-bg'] = theme_get_setting('b5_body_secondary_bg_schema_custom');
     }
   }
+
+  if (!empty(theme_get_setting('site_max_width'))) {
+    $css_vars[':root']['--bs-site-max-width'] = theme_get_setting('site_max_width') . 'px';
+  }
+
   if (theme_get_setting('b5_navbar_schema') === 'custom') {
     if (!empty(theme_get_setting('b5_navbar_text_color'))) {
-      $color = theme_get_setting('b5_navbar_text_color');
-      if (!empty($colors[$color])) {
-        $colors[$color][] = '.navbar.text-custom';
-      } else {
-        $colors[$color] = ['.navbar.text-custom'];
-      }
+      $css_vars['.navbar']['--bs-navbar-color'] = theme_get_setting('b5_navbar_text_color');
     }
     if (!empty(theme_get_setting('b5_navbar_link_color'))) {
-      $color = theme_get_setting('b5_navbar_link_color');
-      if (!empty($colors[$color])) {
-        $colors[$color][] = '.navbar.text-custom a';
-      } else {
-        $colors[$color] = [
-          '.navbar.text-custom a',
-        ];
-      }
+      $css_vars['.navbar']['--bs-navbar-link-color'] = theme_get_setting('b5_navbar_link_color');
+      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-color'] = theme_get_setting('b5_navbar_link_color');
     }
     if (!empty(theme_get_setting('b5_navbar_link_hover_color'))) {
-      $color = theme_get_setting('b5_navbar_link_hover_color');
-      if (!empty($colors[$color])) {
-        $colors[$color][] = '.navbar.text-custom a:hover';
-        $colors[$color][] = '.navbar.text-custom a:focus';
-      } else {
-        $colors[$color] = [
-          '.navbar.text-custom a:hover',
-          '.navbar.text-custom a:focus',
-        ];
+      $css_vars['.navbar']['--bs-navbar-hover-color'] = theme_get_setting('b5_navbar_link_hover_color');
+      $css_vars['.navbar']['--bs-navbar-link-hover-color'] = theme_get_setting('b5_navbar_link_hover_color');
+      if (empty(theme_get_setting('b5_navbar_link_active_color'))) {
+        $css_vars['.navbar']['--bs-navbar-link-active-color'] = theme_get_setting('b5_navbar_dropdown_hover_color');
+      }
+      if (empty(theme_get_setting('b5_navbar_dropdown_hover_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-hover-color'] = theme_get_setting('b5_navbar_dropdown_hover_color');
+      }
+      if (empty(theme_get_setting('b5_navbar_dropdown_active_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-color'] = theme_get_setting('b5_navbar_dropdown_hover_color');
       }
     }
-  }
-  if (theme_get_setting('b5_navbar_bg_schema') === 'custom' && !empty(theme_get_setting('b5_navbar_bg_schema_custom'))) {
-    $color = theme_get_setting('b5_navbar_bg_schema_custom');
-    if (!empty($bg_colors[$color])) {
-      $bg_colors[$color][] = '.navbar.bg-custom';
-      $bg_colors[$color][] = '.navbar.bg-custom .dropdown-menu';
-      $bg_colors[$color][] = '.navbar.bg-custom .dropdown-item:hover';
-      $bg_colors[$color][] = '.navbar.bg-custom .dropdown-item:focus';
-      $bg_colors[$color][] = '.navbar.bg-custom .dropdown-item.active';
-    } else {
-      $bg_colors[$color] = [
-        '.navbar.bg-custom',
-        '.navbar.bg-custom .dropdown-menu',
-        '.navbar.bg-custom .dropdown-item:hover',
-        '.navbar.bg-custom .dropdown-item:focus',
-        '.navbar.bg-custom .dropdown-item.active',
-      ];
+    if (!empty(theme_get_setting('b5_navbar_link_active_color'))) {
+      $css_vars['.navbar']['--bs-navbar-active-color'] = theme_get_setting('b5_navbar_link_active_color');
+      $css_vars['.navbar']['--bs-navbar-link-active-color'] = theme_get_setting('b5_navbar_link_active_color');
+      if (empty(theme_get_setting('b5_navbar_dropdown_active_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-color'] = theme_get_setting('b5_navbar_dropdown_hover_color');
+      }
     }
+    if (!empty(theme_get_setting('b5_navbar_dropdown_hover_color'))) {
+      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-hover-color'] = theme_get_setting('b5_navbar_dropdown_hover_color');
+      if (empty(theme_get_setting('b5_navbar_dropdown_active_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-color'] = theme_get_setting('b5_navbar_dropdown_hover_color');
+      }
+    }
+    if (!empty(theme_get_setting('b5_navbar_dropdown_hover_bk_color'))) {
+      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-hover-bg'] = theme_get_setting('b5_navbar_dropdown_hover_bk_color');
+      if (!empty(theme_get_setting('b5_navbar_dropdown_active_bg_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-bg'] = theme_get_setting('b5_navbar_dropdown_hover_bk_color');
+      }
+    }
+    if (!empty(theme_get_setting('b5_navbar_dropdown_active_color'))) {
+      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-color'] = theme_get_setting('b5_navbar_dropdown_active_color');
+    }
+    if (!empty(theme_get_setting('b5_navbar_dropdown_active_bg_color'))) {
+      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-bg'] = theme_get_setting('b5_navbar_dropdown_active_bg_color');
+    }
+  }
 
+  if (theme_get_setting('b5_navbar_bg_schema') === 'custom') {
+    if (!empty(theme_get_setting('b5_navbar_bg_schema_custom'))) {
+      $css_vars['.navbar']['--bs-navbar-bg'] = theme_get_setting('b5_navbar_bg_schema_custom');
+      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-bg'] = theme_get_setting('b5_navbar_bg_schema_custom');
+      if (empty(theme_get_setting('b5_navbar_dropdown_hover_bk_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-hover-bg'] = theme_get_setting('b5_navbar_dropdown_hover_bk_color');
+      }
+      if (empty(theme_get_setting('b5_navbar_dropdown_active_bg_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-bg'] = theme_get_setting('b5_navbar_dropdown_hover_bk_color');
+      }
+    }
+    if (!empty(theme_get_setting('b5_navbar_secondary_bg_schema_custom'))) {
+      $css_vars['.navbar']['--bs-navbar-secondary-bg'] = theme_get_setting('b5_navbar_secondary_bg_schema_custom');
+    }
   }
   if (theme_get_setting('b5_footer_schema') === 'custom') {
     if (!empty(theme_get_setting('b5_footer_text_color'))) {
-      $color = theme_get_setting('b5_footer_text_color');
-      if (!empty($colors[$color])) {
-        $colors[$color][] = 'footer.text-custom';
-      } else {
-        $colors[$color] = ['footer.text-custom'];
-      }
+      $css_vars['footer']['--bs-footer-color'] = theme_get_setting('b5_footer_text_color');
     }
     if (!empty(theme_get_setting('b5_footer_link_color'))) {
-      $color = theme_get_setting('b5_footer_link_color');
-    if (!empty($colors[$color])) {
-        $colors[$color][] = 'footer.text-custom a';
-      } else {
-        $colors[$color] = [
-          'footer.text-custom a',
-        ];
-      }
+      $css_vars['footer']['--bs-footer-link-color'] = theme_get_setting('b5_footer_link_color');
     }
     if (!empty(theme_get_setting('b5_footer_link_hover_color'))) {
-      $color = theme_get_setting('b5_footer_link_hover_color');
-      if (!empty($colors[$color])) {
-        $colors[$color][] = 'footer.text-custom a:hover';
-        $colors[$color][] = 'footer.text-custom a:focus';
-      } else {
-        $colors[$color] = [
-          'footer.text-custom a:hover',
-          'footer.text-custom a:focus',
-        ];
+      $css_vars['footer']['--bs-footer-link-hover-color'] = theme_get_setting('b5_footer_link_hover_color');
+      if (empty(theme_get_setting('b5_footer_link_active_color'))) {
+        $css_vars['footer']['--bs-footer-link-active-color'] = theme_get_setting('b5_footer_link_hover_color');;
       }
     }
-
+    if (!empty(theme_get_setting('b5_footer_link_active_color'))) {
+      $css_vars['footer']['--bs-footer-link-active-color'] = theme_get_setting('b5_footer_link_active_color');
+    }
   }
-  if (theme_get_setting('b5_footer_bg_schema') === 'custom' && !empty(theme_get_setting('b5_footer_bg_schema_custom'))) {
-    $color = theme_get_setting('b5_footer_bg_schema_custom');
-    if (!empty($bg_colors[$color])) {
-      $bg_colors[$color][] = 'footer.bg-custom';
-    } else {
-      $bg_colors[$color] = [
-        'footer.bg-custom',
-      ];
+  if (theme_get_setting('b5_footer_bg_schema') === 'custom') {
+    if(!empty(theme_get_setting('b5_footer_bg_schema_custom'))) {
+      $css_vars['footer']['--bs-footer-bg'] = theme_get_setting('b5_footer_bg_schema_custom');
+    }
+    if(!empty(theme_get_setting('b5_footer_secondary_bg_schema_custom'))) {
+      $css_vars['footer']['--bs-footer-secondary-bg'] = theme_get_setting('b5_footer_secondary_bg_schema_custom');
     }
   }
 
-  $css_vars = [
-    'primary' => [],
-    'secondary' => [],
+  if (theme_get_setting('button_radius') !== NULL) {
+    $css_vars['.btn']['--bs-btn-border-radius'] = theme_get_setting('button_radius');
+  }
+
+  $buttons = [
+    'primary' => '.btn-primary, .button--small',
+    'secondary' => 'btn-secondary',
   ];
-  foreach(array_keys($css_vars) as $button) {
+
+  foreach($buttons as $button => $selector) {
     foreach(['text', 'bg', 'bd'] as $type) {
       $field = "{$button}_button_{$type}_color";
       $hover_field = "{$button}_button_hover_{$type}_color";
+      $active_field = "{$button}_button_active_{$type}_color";
       if (!empty(theme_get_setting($field))) {
         $color = theme_get_setting($field);
         if ($type === 'text') {
-          $css_vars[$button]['color'] = $color;
+          $css_vars[$selector]['--bs-btn-color'] = $color;
         }
         if ($type === 'bg') {
-          $css_vars[$button]['bg'] = $color;
+          $css_vars[$selector]['--bs-btn-bg'] = $color;
+          if ($button === 'primary') {
+            $css_vars['.form-checkbox']=
+            [
+              '--bs-form-check-checked-bg' => $color,
+              '--bs-form-check-checked-border-color' => $color
+            ];
+          }
         }
         if ($type === 'bd') {
-          $css_vars[$button]['border-color'] = $color;
+          $css_vars[$selector]['--bs-btn-border-color'] = $color;
         }
       }
       if (!empty(theme_get_setting($hover_field))) {
         $color = theme_get_setting($hover_field);
         if ($type === 'text') {
-          $css_vars[$button]['hover-color'] = $color;
-          $css_vars[$button]['active-color'] = $color;
+          $css_vars[$selector]['--bs-btn-hover-color'] = $color;
+          if (empty(theme_get_setting($active_field))) {
+            $css_vars[$selector]['--bs-btn-active-color'] = $color;
+          }
         }
         if ($type === 'bg') {
-          $css_vars[$button]['hover-bg'] = $color;
-          $css_vars[$button]['active-bg'] = $color;
+          $css_vars[$selector]['--bs-btn-hover-bg'] = $color;
+          if (empty(theme_get_setting($active_field))) {
+            $css_vars[$selector]['--bs-btn-active-bg'] = $color;
+          }
         }
         if ($type === 'bd') {
-          $css_vars[$button]['hover-border-color'] = $color;
-          $css_vars[$button]['active-border-color'] = $color;
+          $css_vars[$selector]['--bs-btn-hover-border-color'] = $color;
+          if (empty(theme_get_setting($active_field))) {
+            $css_vars[$selector]['--bs-btn-active-border-color'] = $color;
+          }
         }
       }
     }
+  }
+
+  if (empty($css_vars)) {
+    return;
   }
 
   $theme_name = \Drupal::config('system.theme')->get('default');
@@ -510,8 +569,7 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
       '#attributes' => [
         'type' => 'text/css',
       ],
-      '#value' => kamihaya_digitalagency_create_css_vars($colors, $bg_colors) .
-        (!empty($css_vars) ? PHP_EOL . kamihaya_digitalagency_create_css_custom_vars($css_vars) : ''),
+      '#value' => kamihaya_digitalagency_create_css_custom_vars($css_vars),
     ],
     $theme_name,
   ];
@@ -550,17 +608,38 @@ function kamihaya_digitalagency_create_css_vars(array $colors, array $bg_colors)
 */
 function kamihaya_digitalagency_create_css_custom_vars(array $css_vars) : string {
   $css = [];
-  foreach ($css_vars as $button => $values) {
+  foreach ($css_vars as $selector => $values) {
     $vars = [];
     foreach ($values as $key => $value) {
-      $vars[] = "--bs-btn-$key: $value !important;";
+      $vars[] = "$key: $value !important;";
+      if (strpos($key, 'color') === FALSE && str_ends_with($key, 'bg') === FALSE) {
+        continue;
+      }
+
+      $rgp = _kamihaya_digitalagency_get_rgb_color(hexdec(substr($value, 1)));
+      $vars[] = "$key-rgb: $rgp !important;";
     }
     if (empty($vars)) {
       continue;
     }
     $value = implode(PHP_EOL, $vars);
-    $css[] = ".btn-$button { $value }";
+    $css[] = "$selector { $value }";
   }
   return implode(PHP_EOL, $css);
 }
 
+/**
+ * Helper function to get RGB color from hex.
+ *
+ * @param string $color
+ *   Hex color.
+ *
+ * @return string
+ *   RGB color.
+ */
+function _kamihaya_digitalagency_get_rgb_color($color) {
+  $red = (($color & 0xFF0000) >> 16);
+  $green = (($color & 0x00FF00) >> 8);
+  $blue = (($color & 0x0000FF));
+  return "$red, $green, $blue";
+}

@@ -1,0 +1,5 @@
+responsive_table:
+  header: true
+  css:
+    base:
+      assets/css/responsive_table.css: {}

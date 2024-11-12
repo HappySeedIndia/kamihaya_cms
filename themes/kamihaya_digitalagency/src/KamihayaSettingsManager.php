@@ -2,8 +2,8 @@
 
 namespace Drupal\kamihaya_digitalagency;
 
-use Drupal\bootstrap5\SettingsManager;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\bootstrap5\SettingsManager;
 
 /**
  * Kamihaya theme settings manager.
@@ -24,6 +24,18 @@ class KamihayaSettingsManager extends SettingsManager {
    */
   public function themeSettingsAlter(array &$form, FormStateInterface $form_state, $form_id) {
     parent::themeSettingsAlter($form, $form_state, $form_id);
+    if (!empty($form['logo']['#title'])) {
+      $form['logo']['#title'] = t('Logo');
+    }
+
+    if (!empty($form['logo']['settings'])) {
+      $form['logo']['settings']['logo_url'] = [
+        '#type' => 'url',
+        '#title' => $this->t('Logo URL'),
+        '#default_value' => theme_get_setting('logo_url'),
+        '#description' => $this->t("The URL of the logo. Please leave it empty if you want to link to the front page."),
+      ];
+    }
     if (empty($form['body_details']['b5_body_bg_schema']['#options']) || empty($form['body_details']['b5_body_schema']['#options'])) {
       return;
     }
@@ -95,18 +107,33 @@ class KamihayaSettingsManager extends SettingsManager {
 
     $form['body_details']['b5_body_bg_schema'] = $tmp_field;
 
-    $form['body_details']['b5_body_bg_schema_custom'] = [
+    $form['body_details']['body_schema_custom_bg'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Body custom theme'),
+      '#open' => FALSE,
+      '#states' => [
+        'visible' => [
+          'select[name="b5_body_bg_schema"]' => ['value' => 'custom'],
+        ],
+      ],
+    ];
+
+    $form['body_details']['body_schema_custom_bg']['b5_body_bg_schema_custom'] = [
       '#type' => 'textfield',
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Body custom background:'),
       '#default_value' => theme_get_setting('b5_body_bg_schema_custom'),
       '#description' => $this->t("Custom background color of the body."),
-      '#states' => [
-        'visible' => [
-          'select[name="b5_body_bg_schema"]' => ['value' => 'custom'],
-        ],
-      ],
+    ];
+
+    $form['body_details']['body_schema_custom_bg']['b5_body_secondary_bg_schema_custom'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Body custom secondary background:'),
+      '#default_value' => theme_get_setting('b5_body_secondary_bg_schema_custom'),
+      '#description' => $this->t("Custom secondary background color of the body."),
     ];
 
     $tmp_field = $form['nav_details']['b5_navbar_bg_schema'];
@@ -150,20 +177,98 @@ class KamihayaSettingsManager extends SettingsManager {
       '#description' => $this->t("Custom link hover color of the navbar."),
     ];
 
+    $form['nav_details']['navbar_schema_custom_theme']['b5_navbar_link_active_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Navbar link active color:'),
+      '#default_value' => theme_get_setting('b5_navbar_link_active_color'),
+      '#description' => $this->t("Custom link active color of the navbar."),
+    ];
+
+    $form['nav_details']['navbar_schema_custom_theme']['b5_navbar_dropdown_hover_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Navbar dropdown hover color:'),
+      '#default_value' => theme_get_setting('b5_navbar_dropdown_hover_color'),
+      '#description' => $this->t("Custom dropdown hover color of the navbar."),
+    ];
+
+    $form['nav_details']['navbar_schema_custom_theme']['b5_navbar_dropdown_hover_bk_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Navbar dropdown hover background color:'),
+      '#default_value' => theme_get_setting('b5_navbar_dropdown_hover_bk_color'),
+      '#description' => $this->t("Custom dropdown background hover color of the navbar."),
+    ];
+
+    $form['nav_details']['navbar_schema_custom_theme']['b5_navbar_dropdown_active_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Navbar dropdown active color:'),
+      '#default_value' => theme_get_setting('b5_navbar_dropdown_active_color'),
+      '#description' => $this->t("Custom dropdown active color of the navbar."),
+    ];
+
+    $form['nav_details']['navbar_schema_custom_theme']['b5_navbar_dropdown_active_bg_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Navbar dropdown active background color:'),
+      '#default_value' => theme_get_setting('b5_navbar_dropdown_active_bg_color'),
+      '#description' => $this->t("Custom dropdown background active color of the navbar."),
+    ];
+
     $form['nav_details']['b5_navbar_bg_schema'] = $tmp_field;
 
-    $form['nav_details']['b5_navbar_bg_schema_custom'] = [
+    $form['nav_details']['navbar_schema_custom_bg'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Navbar custom theme'),
+      '#open' => FALSE,
+      '#states' => [
+        'visible' => [
+          'select[name="b5_navbar_bg_schema"]' => ['value' => 'custom'],
+        ],
+      ],
+    ];
+
+    $form['nav_details']['navbar_schema_custom_bg']['b5_navbar_bg_schema_custom'] = [
       '#type' => 'textfield',
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Navbar custom background:'),
       '#default_value' => theme_get_setting('b5_navbar_bg_schema_custom'),
       '#description' => $this->t("Custom background color of the navbar."),
-      '#states' => [
-        'visible' => [
-          'select[name="b5_navbar_bg_schema"]' => ['value' => 'custom'],
-        ],
+    ];
+
+    $form['nav_details']['navbar_schema_custom_bg']['b5_navbar_secondary_bg_schema_custom'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Navbar custom secondary background:'),
+      '#default_value' => theme_get_setting('b5_navbar_secondary_bg_schema_custom'),
+      '#description' => $this->t("Custom background secondary color of the navbar."),
+    ];
+
+    $form['nav_details']['b5_navbar_sp_position'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Navbar mobile menu position:'),
+      '#default_value' => theme_get_setting('b5_navbar_sp_position'),
+      '#description' => $this->t("Position of mobile menu."),
+      '#options' => [
+        'left' => $this->t('Left'),
+        'right' => $this->t('Right'),
       ],
+    ];
+
+    $form['nav_details']['b5_navbar_sp_revert'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Navbar mobile revert position'),
+      '#default_value' => theme_get_setting('b5_navbar_sp_revert'),
+      '#description' => $this->t("Revert the position in the mobile display."),
     ];
 
     $tmp_field = $form['footer_details']['b5_footer_bg_schema'];
@@ -207,19 +312,57 @@ class KamihayaSettingsManager extends SettingsManager {
       '#description' => $this->t("Custom link hover color of the footer."),
     ];
 
+    $form['footer_details']['footer_schema_custom_theme']['b5_footer_link_active_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Footer link active color:'),
+      '#default_value' => theme_get_setting('b5_footer_link_active_color'),
+      '#description' => $this->t("Custom link active color of the footer."),
+    ];
+
     $form['footer_details']['b5_footer_bg_schema'] = $tmp_field;
 
-    $form['footer_details']['b5_footer_bg_schema_custom'] = [
+    $form['footer_details']['footer_schema_custom_bg'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Footer custom theme'),
+      '#open' => FALSE,
+      '#states' => [
+        'visible' => [
+          'select[name="b5_footer_bg_schema"]' => ['value' => 'custom'],
+        ],
+      ],
+    ];
+
+    $form['footer_details']['footer_schema_custom_bg']['b5_footer_bg_schema_custom'] = [
       '#type' => 'textfield',
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Footer custom background:'),
       '#default_value' => theme_get_setting('b5_footer_bg_schema_custom'),
       '#description' => $this->t("Custom background color of the footer."),
-      '#states' => [
-        'visible' => [
-          'select[name="b5_footer_bg_schema"]' => ['value' => 'custom'],
-        ],
+    ];
+
+    $form['footer_details']['footer_schema_custom_bg']['b5_footer_secondary_bg_schema_custom'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Footer custom secondary background:'),
+      '#default_value' => theme_get_setting('b5_footer_secondary_bg_schema_custom'),
+      '#description' => $this->t("Custom background secondary color of the footer."),
+    ];
+
+    $form['footer_details']['b5_footer_width_ratio'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Footer width ratio:'),
+      '#default_value' => theme_get_setting('b5_footer_width_ratio'),
+      '#description' => $this->t("Footer left and right width ratio."),
+      '#options' => [
+        '3:7' => $this->t('3:7'),
+        '4:6' => $this->t('4:6'),
+        '5:5' => $this->t('5:5'),
+        '6:4' => $this->t('6:4'),
+        '7:3' => $this->t('7:3'),
       ],
     ];
 
@@ -229,11 +372,31 @@ class KamihayaSettingsManager extends SettingsManager {
       unset($form['text_formats']);
     }
 
+    $form['site_width'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Site width'),
+      '#group' => 'sw',
+      '#open' => TRUE,
+    ];
+
+    $form['site_width']['site_max_width'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Site max width(px)'),
+      '#default_value' => theme_get_setting('site_max_width'),
+    ];
+
     $form['button_details'] = [
       '#type' => 'details',
       '#title' => $this->t('Button colors'),
       '#description' => $this->t("Customize the colors of the buttons."),
-      '#open' => FALSE,
+      '#open' => TRUE,
+    ];
+
+    $form['button_details']['button_radius'] = [
+      '#type' => 'number',
+      '#minimum' => 0,
+      '#title' => $this->t('Button radius:'),
+      '#default_value' => theme_get_setting('button_radius'),
     ];
 
     $form['button_details']['primary_button'] = [
@@ -296,6 +459,33 @@ class KamihayaSettingsManager extends SettingsManager {
       '#description' => $this->t("Custom hover border color of the primary button."),
     ];
 
+    $form['button_details']['primary_button']['primary_button_active_text_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Primary button active text color:'),
+      '#default_value' => theme_get_setting('primary_button_active_text_color'),
+      '#description' => $this->t("Custom active text color of the primary button."),
+    ];
+
+    $form['button_details']['primary_button']['primary_button_active_bg_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Primary button active color:'),
+      '#default_value' => theme_get_setting('primary_button_active_bg_color'),
+      '#description' => $this->t("Custom active color of the primary button."),
+    ];
+
+    $form['button_details']['primary_button']['primary_button_active_bd_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Primary button active border color:'),
+      '#default_value' => theme_get_setting('primary_button_active_bd_color'),
+      '#description' => $this->t("Custom active border color of the primary button."),
+    ];
+
     $form['button_details']['secondary_button'] = [
       '#type' => 'details',
       '#title' => $this->t('Secondary button:'),
@@ -356,6 +546,33 @@ class KamihayaSettingsManager extends SettingsManager {
       '#description' => $this->t("Custom hover border color of the secondary button."),
     ];
 
+    $form['button_details']['secondary_button']['secondary_button_active_text_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Secondary button active text color:'),
+      '#default_value' => theme_get_setting('secondary_button_active_text_color'),
+      '#description' => $this->t("Custom active text color of the secondary button."),
+    ];
+
+    $form['button_details']['secondary_button']['secondary_button_active_bg_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Secondary button active color:'),
+      '#default_value' => theme_get_setting('secondary_button_active_bg_color'),
+      '#description' => $this->t("Custom active color of the secondary button."),
+    ];
+
+    $form['button_details']['secondary_button']['secondary_button_active_bd_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Secondary button active border color:'),
+      '#default_value' => theme_get_setting('secondary_button_active_bd_color'),
+      '#description' => $this->t("Custom active border color of the secondary button."),
+    ];
+
     if (!empty($text_formats)) {
       $form['text_formats'] = $text_formats;
     }
@@ -379,7 +596,7 @@ class KamihayaSettingsManager extends SettingsManager {
               continue;
             }
             foreach ($element as $child_name => &$child_element) {
-              if (strpos($child_name, 'color') === FALSE) {
+              if (strpos($child_name, 'color') === FALSE && strpos($child_name, 'bg_schema_custom') === FALSE) {
                 continue;
               }
               $this->addColorSpectrum($child_name, $child_element);
@@ -447,7 +664,7 @@ class KamihayaSettingsManager extends SettingsManager {
       'show_buttons' => TRUE,
       'cancel_text' => $this->t('Cancel'),
       'choose_text' => $this->t('Choose'),
-      'allow_empty' => FALSE,
+      'allow_empty' => TRUE,
     ];
 
     $element[$name] = $element;
