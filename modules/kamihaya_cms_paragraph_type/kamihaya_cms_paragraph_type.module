@@ -67,6 +67,9 @@ function kamihaya_cms_paragraph_type_theme() {
     'paragraph__border_box' => [
       'base hook' => 'paragraph',
     ],
+    'paragraph__embed_tag' => [
+      'base hook' => 'paragraph',
+    ],
   ];
 }
 

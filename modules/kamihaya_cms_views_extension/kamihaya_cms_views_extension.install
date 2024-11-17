@@ -1,0 +1,19 @@
+<?php
+/**
+ * @file
+ * Installation hooks for Paragraphs module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function kamihaya_cms_views_extension_install() {
+  module_set_weight('kamihaya_cms_views_extension', 10);
+}
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_views_extension_update_10001() {
+  module_set_weight('kamihaya_cms_views_extension', 10);
+}
