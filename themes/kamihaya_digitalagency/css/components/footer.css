@@ -48,21 +48,21 @@ footer {
 }
 
 .footer-left .menu--footer .navbar-nav,
-.footer-left nav[class$="-links"] .navbar-nav  {
+.footer-left nav.block-menu .navbar-nav  {
   justify-content: flex-start;
   flex-direction: row;
 }
 
 .footer-bottom .menu--footer .navbar-nav,
-.footer-bottom nav[class$="-links"] .navbar-nav {
+.footer-bottom nav.block-menu .navbar-nav {
   justify-content: center;
   flex-direction: row;
 }
 
 .footer-left .menu--footer .navbar-nav .menu-item,
 .footer-bottom .menu--footer .navbar-nav .menu-item,
-.footer-left nav[class$="-links"] .navbar-nav .nav-item,
-.footer-bottom nav[class$="-links"] .navbar-nav .nav-item {
+.footer-left nav.block-menu .navbar-nav .nav-item,
+.footer-bottom nav.block-menu .navbar-nav .nav-item {
   font-weight: normal;
   font-size: 0.85rem;
   padding-top: 0;
@@ -73,6 +73,7 @@ footer {
 .footer-left .menu--footer .navbar-nav .menu-item:after,
 .footer-bottom .menu--footer .navbar-nav .menu-item:after {
   content: '|';
+  color: var(--bs-footer-link-color);
 }
 
 .footer-left .menu--footer .navbar-nav.no-border .menu-item:after,
@@ -82,25 +83,31 @@ footer {
   content: '';
 }
 
-.footer-left .menu--footer .navbar-nav .menu-item a,
-.footer-bottom .menu--footer .navbar-nav .menu-item a {
+.footer-left .block-menu .navbar-nav .menu-item a,
+.footer-bottom .block-menu .navbar-nav .menu-item a,
+.footer-left .block-menu .navbar-nav .nav-item a,
+.footer-bottom .block-menu .navbar-nav .nav-item a {
   margin-bottom: 0;
   padding: calc(var(--bs-nav-link-padding-y) * 0.5) var(--bs-nav-link-padding-y);
 }
 
-.footer-left .menu--footer .navbar-nav .menu-item:first-child a,
-.footer-bottom .menu--footer .navbar-nav .menu-item:first-child a {
+.footer-left .block-menu .navbar-nav .menu-item:first-child a,
+.footer-bottom .block-menu .navbar-nav .menu-item:first-child a,
+.footer-left .block-menu .navbar-nav .nav-item:first-child a,
+.footer-bottom .block-menu .navbar-nav .nav-item:first-child a {
   padding-left: 0;
 }
 
-.footer-left .menu--footer .navbar-nav .menu-item:last-child a,
-.footer-bottom .menu--footer .navbar-nav .menu-item:last-child a {
+.footer-left .block-menu.navbar-nav .menu-item:last-child a,
+.footer-bottom .block-menu .navbar-nav .menu-item:last-child a,
+.footer-left .block-menu .navbar-nav .nav-item:last-child a,
+.footer-bottom .block-menu .navbar-nav .nav-item:last-child a {
   padding-right: 0;
 }
 
 @media (max-width: 991px) {
   .footer-left .menu--footer .navbar-nav,
-  .footer-left nav[class$="-links"] .navbar-nav {
+  .footer-left nav.block-menu .navbar-nav {
     justify-content: center;
   }
 

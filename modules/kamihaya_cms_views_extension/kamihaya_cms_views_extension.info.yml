@@ -6,5 +6,7 @@ description: 'Extend the view functions.'
 
 dependencies:
   - drupal:views
+  - better_exposed_filters:better_exposed_filters
+  - shs:shs
 
 project: 'kamihaya'
