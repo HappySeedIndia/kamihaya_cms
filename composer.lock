@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "88f0de3ad3dfdca381d37fcbe1975459",
+    "content-hash": "8759e577069800705aa66f232c221361",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -7006,6 +7006,50 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/svg_image",
                 "issues": "https://www.drupal.org/project/issues/svg_image"
+            }
+        },
+        {
+            "name": "drupal/taxonomy_path_breadcrumb",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/taxonomy_path_breadcrumb.git",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/taxonomy_path_breadcrumb-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "1eebb216e7453452286debcf5a92557dbed5f815"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9 || ^10 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1723726321",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "stefan.korn",
+                    "homepage": "https://www.drupal.org/user/1942204"
+                }
+            ],
+            "description": "Use Path breadcrumbs on taxonomy terms",
+            "homepage": "https://www.drupal.org/project/taxonomy_path_breadcrumb",
+            "support": {
+                "source": "https://git.drupalcode.org/project/taxonomy_path_breadcrumb"
             }
         },
         {
