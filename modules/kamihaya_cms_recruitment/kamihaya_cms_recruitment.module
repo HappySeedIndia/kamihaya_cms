@@ -1,8 +1,12 @@
 <?php
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
+
 
 /**
  * Implements hook_entity_type_alter().
@@ -152,4 +156,32 @@ function kamihaya_cms_recruitment_preprocess_field(&$variables, $hook) {
       $item['attributes']->addClass('matching-skill');
     }
   }
+}
+
+/**
+ * Implements hooke_preprocess_node().
+ */
+function kamihaya_cms_recruitment_preprocess_node(array &$variables) {
+  $node = $variables['node'];
+  if ($node->getType() !== 'recruitment') {
+    return;
+  }
+  $variables['#cache']['contexts'][] = 'user';
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function kamihaya_cms_recruitment_control_user_access(UserInterface $user, $operation, AccountInterface $account) {
+  if ($operation === 'update' && $user->id() === $account->id()) {
+    return AccessResult::allowed();
+  }
+
+  if ($operation === 'view'
+    && $user->id() !== $account->id()
+    && array_intersect($account->getRoles(TRUE), ['administrator', 'recruiter'])) {
+    return AccessResult::allowed();
+  }
+
+  return AccessResult::neutral();
 }
