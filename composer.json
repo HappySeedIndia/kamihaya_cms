@@ -161,6 +161,7 @@
         "drupal/tb_megamenu": "^3.0@alpha",
         "drupal/tfa": "^1.4",
         "drupal/token_views_filter": "^2.0",
+        "drupal/twig_tweak": "^3.4",
         "drupal/vbo_export": "^4.1",
         "drupal/views_bulk_operations": "^4.3",
         "drupal/views_custom_cache_tag": "^1.3",
