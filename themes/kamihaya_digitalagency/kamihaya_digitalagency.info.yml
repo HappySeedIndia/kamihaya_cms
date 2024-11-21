@@ -18,6 +18,7 @@ regions:
   footer_top_left: Footer Top Left
   footer_top_right: Footer Top Right
   footer_bottom: Footer Bottom
+  hidden: Hidden
 libraries:
   - kamihaya_digitalagency/font-awesome
   - kamihaya_digitalagency/global-styling

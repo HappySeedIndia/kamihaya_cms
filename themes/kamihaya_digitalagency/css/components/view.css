@@ -15,28 +15,36 @@
 .views-view-grid .views-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
 }
 
+.views-view-grid.cols-8 .views-col {
+  max-width: 12.5%;
+}
+
+.views-view-grid.cols-7 .views-col {
+  max-width: 14%;
+}
+
 .views-view-grid.cols-6 .views-col {
-  max-width: 16%;
+  max-width: 16.5%;
 }
 
 .views-view-grid.cols-5 .views-col {
-  max-width: 19.5%;
+  max-width: 20%;
 }
 
 .views-view-grid.cols-4 .views-col {
-  max-width: 24.4%;
+  max-width: 25%;
 }
 
 .views-view-grid.cols-3 .views-col {
-  max-width: 32.5%;
+  max-width: 33.5%;
 }
 
 .views-view-grid.cols-2 .views-col {
-  max-width: 48.7%;
+  max-width: 50%;
 }
 
 @media (max-width: 767px) {
@@ -47,16 +55,23 @@
   .views-view-grid.cols-2 .views-col {
     max-width: 100%;
   }
+
+  .views-view-grid.cols-6 .sp-col-2 .views-col,
+  .views-view-grid.cols-4 .sp-col-2 .views-col,
+  .views-view-grid.cols-2 .sp-col-2 .views-col {
+    max-width: 50%;
+  }
 }
 
 .views-view-grid .views-col {
   border: 1px solid #8f8f8f;
   border-radius: 5px;
-  padding: 10px 15px;
+  padding: 8px 5px;
   font-size: 0.9rem;
   width: 100%;
   position: relative;
-  margin: 5px auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .views-view-grid .views-col.no-border {
@@ -102,6 +117,11 @@
   color: var(--bs-body-color);
   text-decoration: none;
   font-weight: bold;
+}
+
+.views-view-grid .views-field a {
+  color: var(--bs-body-color);
+  text-decoration: none;
 }
 
 .views-view-grid .views-col .views-field .more-link {
@@ -500,10 +520,13 @@
 .views-exposed-form .form--inline .form-actions .button-wrapper:before {
   color: var(--bs-btn-color);
   position: absolute;
-  top: 16px;
+  top: 12px;
   left: 16px;
   font-size: 20px;
   cursor: pointer;
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  content: "\f002";
 }
 
 .views-exposed-form .form--inline .form-actions .submit-icon {

@@ -189,7 +189,7 @@ class KamihahyaExposedForm extends BetterExposedFilters {
         $form['actions']['submit']['#attributes']['class'] = [];
       }
       $form['actions']['submit']['#attributes']['class'][] = 'submit-icon';
-      $form['actions']['submit']['#prefix'] = '<div class="button-wrapper btn-primary fas fa-search">';
+      $form['actions']['submit']['#prefix'] = '<div class="button-wrapper btn-primary">';
       $form['actions']['submit']['#suffix'] = '</div>';
       if (!empty($this->options['bef']['general']['autosubmit_exclude_textfield'])
         && !empty($this->options['bef']['general']['autosubmit_exclude_textfield'])) {

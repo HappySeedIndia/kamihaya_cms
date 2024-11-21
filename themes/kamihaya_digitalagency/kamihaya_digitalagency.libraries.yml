@@ -9,6 +9,7 @@ global-styling:
       css/components/common.css: {weight: -10}
       css/components/layout.css: {}
       css/components/paragraph.css: {}
+      css/components/tb-megamenu.css: {}
       css/common.css: {}
   js:
     js/menu.js: {}
@@ -71,4 +72,4 @@ maintenance:
 font-awesome:
   css:
     theme:
-      https://use.fontawesome.com/releases/v5.11.2/css/all.css: { type: external, minified: true }
+      https://site-assets.fontawesome.com/releases/v6.7.1/css/all.css: { type: external, minified: true }

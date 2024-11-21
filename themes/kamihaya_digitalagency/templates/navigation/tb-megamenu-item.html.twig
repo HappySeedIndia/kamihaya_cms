@@ -15,7 +15,7 @@
     {% if section == 'frontend' and submenu and not group %}
       <{{tag}} href="{{ link['url'] }}" {{ link['attributes'].addClass('nav-link', 'dropdown-toggle', 'tbm-submenu-toggle') }} role='button' data-bs-toggle='dropdown' aria-expanded='false'>
     {% else %}
-      <{{tag}} href="{{ link['url'] }}" {{ link['attributes'].addClass('nav-link') }}>
+      <{{tag}} href="{{ link['url'] }}" {{ link['attributes'].addClass('nav-link btn btn-primary') }}>
     {% endif %}
   {% else %}
     <{{ tag }}{{ link['attributes'] }}>

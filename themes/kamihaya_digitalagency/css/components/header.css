@@ -176,28 +176,28 @@ header {
 }
 
 /* Header Bottom */
-.navbar>.container.header-bottom {
+.navbar > .container.header-bottom {
   flex-wrap: wrap;
   flex-direction: column;
+  position: relative;
 }
 
 @media (max-width: 991px) {
   .navbar > .container,
   .navbar > .container.header-bottom {
-    position: relative;
     flex-wrap: nowrap;
   }
 
   .navbar > .container > .header-left > nav.menu--main,
   .navbar > .container > .header-right > nav.menu--main,
-  .navbar > .container.header-bottom > nav.menu--main {
+  .navbar > .container.header-bottom > .menu--main {
     position: static;
     width: 100%;
   }
 
-  .navbar > .container > .header-left > nav.menu--main .navbar-toggler,
-  .navbar > .container > .header-right > nav.menu--main .navbar-toggler,
-  .navbar > .container.header-bottom > nav.menu--main .navbar-toggler {
+  .navbar > .container > .header-left > .menu--main .navbar-toggler,
+  .navbar > .container > .header-right > .menu--main .navbar-toggler,
+  .navbar > .container.header-bottom > .menu--main .navbar-toggler {
     position: absolute;
     top: 0;
     right: 0.5rem;
@@ -205,25 +205,25 @@ header {
     z-index: 1;
   }
 
-  .navbar.sp-nav-left > .container>.header-left > nav.menu--main .navbar-toggler,
-  .navbar.sp-nav-left > .container>.header-right > nav.menu--main .navbar-toggler,
-  .navbar.sp-nav-left > .container.header-bottom > nav.menu--main .navbar-toggler {
+  .navbar.sp-nav-left > .container>.header-left > .menu--main .navbar-toggler,
+  .navbar.sp-nav-left > .container>.header-right > .menu--main .navbar-toggler,
+  .navbar.sp-nav-left > .container.header-bottom > .menu--main .navbar-toggler {
     left: 0;
     right: auto;
   }
 
-  .navbar.sp-revert > .container > .header-left > nav.menu--main .navbar-toggler,
-  .navbar.sp-revert > .container > .header-right > nav.menu--main .navbar-toggler {
+  .navbar.sp-revert > .container > .header-left > .menu--main .navbar-toggler,
+  .navbar.sp-revert > .container > .header-right > .menu--main .navbar-toggler {
     top: -45px;
   }
 
-  .navbar.sp-revert.no-headr-left > .container > .header-right > nav.menu--main .navbar-toggler {
+  .navbar.sp-revert.no-headr-left > .container > .header-right > .menu--main .navbar-toggler {
     top: 45px;
   }
 
-  .navbar > .container > .header-left > nav.menu--main .navbar-collapse,
-  .navbar > .container > .header-right > nav.menu--main .navbar-collapse,
-  .navbar > .container.header-bottom > nav.menu--main .navbar-collapse {
+  .navbar > .container > .header-left > .menu--main .navbar-collapse,
+  .navbar > .container > .header-right > .menu--main .navbar-collapse,
+  .navbar > .container.header-bottom > .menu--main .navbar-collapse {
     position: absolute;
     top: 0;
     left: auto;
@@ -232,29 +232,29 @@ header {
     width: calc(100vw - calc(100vw - 100%));;
   }
 
-  .navbar > .container.header-bottom > nav.menu--main .navbar-collapse,
-  .navbar.left-logo-only > .container > .header-right > nav.menu--main .navbar-collapse {
+  .navbar > .container.header-bottom > .menu--main .navbar-collapse,
+  .navbar.left-logo-only > .container > .header-right > .menu--main .navbar-collapse {
     top: 45px;
   }
 
-  .navbar > .container > .header-left > nav.menu--main .navbar-collapse,
-  .navbar > .container > .header-right > nav.menu--main .navbar-collapse {
+  .navbar > .container > .header-left > .menu--main .navbar-collapse,
+  .navbar > .container > .header-right > .menu--main .navbar-collapse {
     top: 90px;
   }
 
-  .navbar.sp-nav-left > .container > .header-left > nav.menu--main .navbar-collapse,
-  .navbar.sp-nav-left > .container > .header-right > nav.menu--main .navbar-collapse,
-  .navbar.sp-nav-left > .container.header-bottom > nav.menu--main .navbar-collapse {
+  .navbar.sp-nav-left > .container > .header-left > .menu--main .navbar-collapse,
+  .navbar.sp-nav-left > .container > .header-right > .menu--main .navbar-collapse,
+  .navbar.sp-nav-left > .container.header-bottom > .menu--main .navbar-collapse {
     left: 0;
     right: auto;
   }
 
-  .navbar > .container > .header-left > nav.menu--main .navbar-collapse .navbar-nav .nav-link,
-  .navbar > .container > .header-right > nav.menu--main .navbar-collapse .navbar-nav .nav-link,
-  .navbar > .container > .header-left > nav.menu--main .navbar-collapse .navbar-nav .dropdown-item,
-  .navbar > .container > .header-right > nav.menu--main .navbar-collapse .navbar-nav .dropdown-item,
-  .navbar > .container.header-bottom > nav.menu--main .navbar-collapse .navbar-nav .nav-link,
-  .navbar > .container.header-bottom > nav.menu--main .navbar-collapse .navbar-nav .dropdown-item {
+  .navbar > .container > .header-left > .menu--main .navbar-collapse .navbar-nav .nav-link,
+  .navbar > .container > .header-right > .menu--main .navbar-collapse .navbar-nav .nav-link,
+  .navbar > .container > .header-left > .menu--main .navbar-collapse .navbar-nav .dropdown-item,
+  .navbar > .container > .header-right > .menu--main .navbar-collapse .navbar-nav .dropdown-item,
+  .navbar > .container.header-bottom > .menu--main .navbar-collapse .navbar-nav .nav-link,
+  .navbar > .container.header-bottom > .menu--main .navbar-collapse .navbar-nav .dropdown-item {
     padding: 0.85rem 1rem;
   }
 
