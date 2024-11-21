@@ -1,12 +1,6 @@
 <div {{ attributes }}>
   {% for row in rows %}
     <div class='tbm-row'>
-      {% if loop.index == 1 and parent_title and parent_link %}
-        <div class='tbm-column submenu-title-box'>
-          <div class='submenu-title'>{{ parent_title }}</div>
-          <div class='submenu-title-link'>{{ link("Go to @page top"|t({ '@page': parent_link.title }), parent_link.url)}}</div>
-        </div>
-      {% endif %}
       {{ row }}
     </div>
   {% endfor %}

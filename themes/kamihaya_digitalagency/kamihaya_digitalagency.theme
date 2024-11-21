@@ -202,21 +202,6 @@ function kamihaya_digitalagency_preprocess_breadcrumb(&$variables){
 }
 
  /**
- * Implements hook_preprocess_tb_megamenu_submenu().
- */
-function kamihaya_digitalagency_preprocess_tb_megamenu_submenu(array &$variables) {
-  if ($variables['level'] > 1) {
-    return;
-  }
-  $parent = $variables['parent'];
-  $variables['parent_title'] = $parent->link->getTitle();
-  $variables['parent_link'] = [
-    'title' => $parent->link->getTitle(),
-    'url' => $parent->link->getUrlObject(),
-  ];
-}
-
- /**
  * Implements hook_preprocess_tb_megamenu_item().
  */
 function kamihaya_digitalagency_preprocess_tb_megamenu_item(array &$variables) {
@@ -376,6 +361,10 @@ function kamihaya_digitalagency_preprocess_block(array &$variables) {
    }
 }
 
+function kamihaya_digitalagency_preprocess_maintenance_page(&$variables) {
+  Drupal::logger('kamihaya_digitalagency')->debug(implode(' ,', array_keys($variables['page']['header_top_right']) ));
+}
+
 /**
  * Implements hook_page_attachments_alter().
  */
@@ -400,7 +389,7 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
       }
     }
   }
-  if (theme_get_setting('body_schema_custom_bg') === 'custom') {
+  if (theme_get_setting('b5_body_bg_schema') === 'custom') {
     if (!empty(theme_get_setting('b5_body_bg_schema_custom'))) {
       $css_vars[':root']['--bs-body-bg'] = theme_get_setting('b5_body_bg_schema_custom');
     }

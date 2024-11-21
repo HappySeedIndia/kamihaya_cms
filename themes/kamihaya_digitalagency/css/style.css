@@ -758,17 +758,12 @@ progress {
   .container-xl, .container-lg, .container-md, .container-sm, .container {
     max-width: 1140px;
   }
-}
-@media (min-width: 1400px) {
+} */
+@media (min-width: 1200px) {
   .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
     max-width: var(--bs-site-max-width);
   }
-}*/
-
-.container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
-  max-width: var(--bs-site-max-width);
 }
-
 :root {
   --bs-breakpoint-xs: 0;
   --bs-breakpoint-sm: 576px;
@@ -3821,7 +3816,9 @@ textarea.form-control-lg {
   list-style: none;
 }
 
-.nav-link, .media-library-view--widget .view-header a {
+.nav-link,
+.media-library-view--widget .view-header a,
+.tbm-link.level-1 {
   display: block;
   padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
   font-size: var(--bs-nav-link-font-size);
@@ -4059,7 +4056,8 @@ textarea.form-control-lg {
   color: var(--bs-navbar-brand-hover-color);
 }
 
-.navbar-nav {
+.navbar-nav,
+.navbar-expand-lg .tbm-nav {
   --bs-nav-link-padding-x: 0;
   --bs-nav-link-padding-y: 0.5rem;
   --bs-nav-link-font-weight: ;
@@ -4243,7 +4241,8 @@ textarea.form-control-lg {
   .navbar-expand-lg {
     justify-content: flex-start;
   }
-  .navbar-expand-lg .navbar-nav {
+  .navbar-expand-lg .navbar-nav,
+  .navbar-expand-lg .tbm-nav {
     flex-direction: row;
   }
   .navbar-expand-lg .navbar-nav .nav-link, .navbar-expand-lg .navbar-nav .media-library-view--widget .view-header a, .media-library-view--widget .view-header .navbar-expand-lg .navbar-nav a {
