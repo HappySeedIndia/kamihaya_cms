@@ -1,11 +1,13 @@
 {# Footer Template #}
 {%
   set footer_classes = 'text-lg-start' ~
-  (b5_footer_schema != 'none' ? " footer-#{b5_footer_schema}" : ' ') ~
-  (b5_footer_schema != 'none' ? (b5_footer_schema == 'custom' ? ' text-custom' : (b5_footer_schema == 'dark' ? ' text-light' : ' text-dark' )) : ' ') ~
-  (b5_footer_bg_schema != 'none' ? " bg-#{b5_footer_bg_schema}" : ' ') ~
-  (footer_pc_align ? " pc-align-#{footer_pc_align}" : ' ') ~
-  (footer_sp_align ? " sp-align-#{footer_sp_align}" : ' ')
+  (b5_footer_schema != 'none' ? " footer-#{b5_footer_schema}" : '') ~
+  (b5_footer_schema != 'none' ? (b5_footer_schema == 'custom' ? ' text-custom' : (b5_footer_schema == 'dark' ? ' text-light' : ' text-dark' )) : '') ~
+  (b5_footer_bg_schema != 'none' ? " bg-#{b5_footer_bg_schema}" : '') ~
+  (footer_pc_align ? " pc-align-#{footer_pc_align}" : '') ~
+  (footer_sp_align ? " sp-align-#{footer_sp_align}" : '') ~
+  (footer_sp_rightt_top ? " sp-right-top" : '')
+
 %}
 
 {% if page.footer_top_left or page.footer_top_right or page.footer_bottom %}

@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Contains hook implementations for Kamihaya CMS Menu Icon.
+ */
+
+/**
+ * Add the option to hide label.
+ */
+function kamihaya_cms_menu_icon_update_10001() {
+	$module_handler = \Drupal::service('module_handler');
+	// Update menu_link_attributes settings.
+	if ($module_handler->moduleExists('menu_link_attributes')) {
+		$config = \Drupal::service('config.factory')->getEditable('menu_link_attributes.config');
+		$attributes = $config->get('attributes');
+		$attributes['container_hide_label'] = [
+			'label' => 'Hide label',
+			'description' => 'Hide the menu item label when Font Awesome class is set.',
+			'type' => 'checkbox',
+		];
+		$config->set('attributes', $attributes);
+		$config->save();
+	}
+}

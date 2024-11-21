@@ -210,7 +210,7 @@ function kamihaya_digitalagency_preprocess_tb_megamenu_item(array &$variables) {
   }
 
   foreach($variables['item']->link->getOptions()['container_attributes'] as $key => $value) {
-    if ($key === 'font_awesome_class') {
+    if ($key === 'font_awesome_class' || $key === 'hide_label') {
       $variables[$key] = $value;
       continue;
     }
@@ -250,11 +250,16 @@ function _kamihaya_digitalagency_preprocess_menu_items(array &$items) {
     /** @var \Drupal\Core\Menu\MenuLinkInterface $menu_link */
     $menu_link = $item['original_link'] ?? NULL;
     if (!empty($menu_link)) {
-      $options = ($menu_link instanceof MenuLinkContentInterface) ?
-        $menu_link->link->first()->options : $menu_link->getOptions();
+      $options = ($menu_link instanceof MenuLinkContentInterface)
+        ? $menu_link->link->first()->options
+        : $menu_link->getOptions();
       if (!empty($item['attributes']) && $item['attributes']->hasAttribute('font_awesome_class')) {
         $item['font_awesome_class'] = $item['attributes']->offsetGet('font_awesome_class');
+        if (!empty($item['attributes']->offsetGet('hide_label')) && !empty($item['attributes']->offsetGet('hide_label')->value())) {
+          $item['hide_label'] = $item['attributes']->offsetGet('hide_label')->value();
+        }
         $item['attributes']->removeAttribute('font_awesome_class');
+        $item['attributes']->removeAttribute('hide_label');
       }
     }
     if (!empty($item['below'])) {
@@ -276,6 +281,9 @@ function kamihaya_digitalagency_preprocess_html(array &$variables) {
   // Footer colour theme.
   $variables['b5_footer_schema'] = theme_get_setting('b5_footer_schema');
   $variables['b5_footer_bg_schema'] = theme_get_setting('b5_footer_bg_schema');
+  if (!empty(theme_get_setting('b5_back_to_top_shape'))) {
+    $variables['back_to_top_shape'] = theme_get_setting('b5_back_to_top_shape');
+  }
 }
 
  /**
@@ -290,6 +298,9 @@ function kamihaya_digitalagency_preprocess_page(array &$variables) {
   }
   if (!empty(theme_get_setting('b5_navbar_sp_revert'))) {
     $variables['navbar_sp_revert'] = theme_get_setting('b5_navbar_sp_revert');
+  }
+  if (!empty(theme_get_setting('b5_footer_sp_rightt_top'))) {
+    $variables['footer_sp_rightt_top'] = theme_get_setting('b5_footer_sp_rightt_top');
   }
   if (!empty($variables['page']['header_left'])) {
     foreach ($variables['page']['header_left'] as $key => $value) {
@@ -496,7 +507,7 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
   }
 
   $buttons = [
-    'primary' => '.btn-primary, .button--small',
+    'primary' => '.btn-primary, .button--small, #backtotop',
     'secondary' => 'btn-secondary',
   ];
 
@@ -546,6 +557,31 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
         }
       }
     }
+  }
+
+  $module_handler = \Drupal::service('module_handler');
+  if ($module_handler->moduleExists('back_to_top')) {
+      $config = \Drupal::config('back_to_top.settings');
+      $settings = $config->get();
+
+      if (!empty($settings['back_to_top_bg_color'])) {
+        $css_vars['body #backtotop']['--bs-backtotop-bg'] = $settings['back_to_top_bg_color'];
+        $css_vars['body #backtotop']['--bs-backtotop-border-color'] = $settings['back_to_top_bg_color'];
+      }
+      if (!empty($settings['back_to_top_border_color'])) {
+        $css_vars['body #backtotop']['--bs-backtotop-active-border-color'] = $settings['back_to_top_border_color'];
+      }
+      if (!empty($settings['back_to_top_hover_color'])) {
+        $css_vars['body #backtotop']['--bs-backtotop-hover-bg'] = $settings['back_to_top_hover_color'];
+        $css_vars['body #backtotop']['--bs-backtotop-hover-border-color'] = $settings['back_to_top_hover_color'];
+        $css_vars['body #backtotop']['--bs-backtotop-active-bg'] = $settings['back_to_top_hover_color'];
+      }
+      if (!empty($settings['back_to_top_text_color'])) {
+        $css_vars['body #backtotop']['--bs-backtotop-color'] = $settings['back_to_top_text_color'];
+        $css_vars['body #backtotop']['--bs-backtotop-hover-color'] = $settings['back_to_top_text_color'];
+        $css_vars['body #backtotop']['--bs-backtotop-active-color'] = $settings['back_to_top_text_color'];
+      }
+
   }
 
   if (empty($css_vars)) {

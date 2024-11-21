@@ -80,7 +80,9 @@ We call a macro which calls itself to render the full tree.
         <span class="menu-icon">
           <i class="{{ item.font_awesome_class }}"></i>
         </span>
-        {{ item.title }}
+        {% if item.hide_label is defined %}
+          {{ item.title }}
+        {% endif %}
       {% else %}
         {{ item.title }}
       {% endif %}
