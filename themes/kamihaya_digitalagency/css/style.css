@@ -4450,7 +4450,7 @@ footer {
   --bs-footer-link-hover-color-rgb: var(--bs-link-hover-color-rgb);
   --bs-footer-link-active-color: var(--bs-link-hover-color);
   --bs-footer-link-active-color-rgb: var(--bs-link-hover-color-rgb);
-  background-color: var(--bs-footer-bg);
+  background-color: transparent;
 }
 
 footer a,
