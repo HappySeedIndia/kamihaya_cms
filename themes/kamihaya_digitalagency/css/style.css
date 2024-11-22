@@ -4438,7 +4438,7 @@ textarea.form-control-lg {
 }
 
 footer {
-  --bs-footer-bg: var(--bs-body-bg);
+  --bs-footer-bg: transparent;
   --bs-footer-bg-rgb: var(--bs-body-bg-rgb);
   --bs-footer-secondary-bg: var(--bs-secondary-bg);
   --bs-footer-secondary-bg-rgb: var(--bs-secondary-bg-rgb);
@@ -4450,7 +4450,7 @@ footer {
   --bs-footer-link-hover-color-rgb: var(--bs-link-hover-color-rgb);
   --bs-footer-link-active-color: var(--bs-link-hover-color);
   --bs-footer-link-active-color-rgb: var(--bs-link-hover-color-rgb);
-  background-color: transparent;
+  background-color: var(--bs-footer-bg);
 }
 
 footer a,
