@@ -83,7 +83,9 @@
         </style>
       {% endif %}
       <div class="bg-image" {% if image_style %} style="{{ image_style|join(' ') }}" {% endif %}>
-        {% if content.field_image_link|render and content.field_link_text is empty %}
+{{ ontent.field_link_text.0 }}
+
+        {% if content.field_image_link|render and content.field_link_text.0 is empty %}
           <a class="image-link" href="{{ imageLink }}" target="{{ content.field_image_link[0]['#url'].external ? '_blank' : '_self' }}">
         {% endif %}
 
@@ -140,7 +142,7 @@
             </div>
           {% endif %}
 
-          {% if content.field_image_link|render and content.field_link_text is empty %}
+          {% if content.field_image_link|render and content.field_link_text.0 is empty %}
           </a>
         {% endif %}
       </div>
