@@ -73,7 +73,6 @@
     max-width: var(--bs-site-max-width);
     background-color: var(--bs-navbar-bg);
     position: absolute;
-    transform: translateX(-50%);
   }
 
   .tbm .tbm-item {
