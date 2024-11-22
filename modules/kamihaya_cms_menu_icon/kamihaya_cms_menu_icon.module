@@ -27,9 +27,9 @@ function kamihaya_cms_menu_icon_modules_installed($modules, $is_syncing) {
           'label' => '',
           'description' => '',
           'options' => [
-		      '_blank' => 'New window (_blank)',
-		      '_self' => 'Same window (_self)',
-		  ],
+		  	 	  '_blank' => 'New window (_blank)',
+		    	  '_self' => 'Same window (_self)',
+		 			],
         ],
       ]);
       $config->save();
@@ -40,12 +40,12 @@ function kamihaya_cms_menu_icon_modules_installed($modules, $is_syncing) {
     	$config = \Drupal::service('config.factory')->getEditable('fontawesome.settings');
     	$settings = [
       	'tag' => 'i',
-				'method' => 'svg',
+				'method' => 'webfonts',
 				'load_assets' => true,
 				'use_cdn' => true,
 				'external_svg_location' => 'https://use.fontawesome.com/releases/v6.4.0/js/all.js',
 				'use_shim' => true,
-				'external_shim_location' => 'https://use.fontawesome.com/releases/v6.4.0/js/,v4-shims.js',
+				'external_shim_location' => 'https://use.fontawesome.com/releases/v6.4.0/js/v4-shims.js',
 				'allow_pseudo_elements' => false,
 				'use_solid_file' => true,
 				'use_regular_file' => true,

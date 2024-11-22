@@ -366,23 +366,42 @@ class KamihayaSettingsManager extends SettingsManager {
       ],
     ];
 
+    $form['footer_details']['b5_footer_sp_rightt_top'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Footer mobile right top'),
+      '#default_value' => theme_get_setting('b5_footer_sp_rightt_top'),
+      '#description' => $this->t("Place footer right on the top of footer in the mobile display."),
+    ];
+
     $text_formats = [];
     if (!empty($form['text_formats'])) {
       $text_formats = $form['text_formats'];
       unset($form['text_formats']);
     }
 
-    $form['site_width'] = [
+    $form['site_common'] = [
       '#type' => 'details',
-      '#title' => $this->t('Site width'),
+      '#title' => $this->t('Site common'),
       '#group' => 'sw',
       '#open' => TRUE,
     ];
 
-    $form['site_width']['site_max_width'] = [
+    $form['site_common']['site_max_width'] = [
       '#type' => 'number',
       '#title' => $this->t('Site max width(px)'),
       '#default_value' => theme_get_setting('site_max_width'),
+    ];
+
+    $form['site_common']['b5_back_to_top_shape'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Gack to top link shape:'),
+      '#default_value' => theme_get_setting('b5_back_to_top_shape'),
+      '#description' => $this->t("The shape of the back to top link."),
+      '#options' => [
+        'circle' => $this->t('Circle'),
+        'scquare' => $this->t('Scquare'),
+        'text' => $this->t('With text'),
+      ],
     ];
 
     $form['button_details'] = [

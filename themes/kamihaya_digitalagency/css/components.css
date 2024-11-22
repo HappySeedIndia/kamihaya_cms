@@ -81,7 +81,8 @@ button.link {
 }
 
 .btn-primary,
-.button--small {
+.button--small,
+#backtotop {
   --bs-btn-color: #fff;
   --bs-btn-bg: #0017C1;
   --bs-btn-border-color: #000082;
@@ -150,32 +151,81 @@ button.link:focus {
   border: var(--bs-btn-focus-border);
 }
 
-#backtotop {
-  background-image: url(../images/back_to_top.svg);
-  padding: 16px;
-  background-size: 14px 16px;
+body #backtotop {
+  --bs-backtotop-bg: var(--bs-btn-bg);
+  --bs-backtotop-color: var(--bs-btn-color);
+  --bs-backtotop-border-color: var(--bs-btn-border-color);
+  --bs-backtotop-hover-bg: var(--bs-btn-hover-bg);
+  --bs-backtotop-hover-color: var(--bs-btn-hover-color);
+  --bs-backtotop-hover-border-color: var(--bs-btn-hover-border-color);
+  --bs-backtotop-active-bg: var(--bs-btn-active-bg);
+  --bs-backtotop-active-color: var(--bs-btn-active-color);
+  --bs-backtotop-active-border-color: var(--bs-btn-active-border-color);
+  color: var(--bs-backtotop-color) !important;
+  background-color: var(--bs-backtotop-bg) !important;
+  border-color: var(--bs-backtotop-border-color) !important;
+}
+
+body #backtotop:hover,
+body #backtotop:focus {
+  color: var(--bs-backtotop-hover-color) !important;
+  background-color: var(--bs-backtotop-hover-bg) !important;
+  border-color: var(--bs-backtotop-hover-border-color) !important;
+}
+
+body #backtotop:active {
+  color: var(--bs-backtotop-active-color) !important;
+  background-color: var(--bs-backtotop-active-bg) !important;
+  border-color: var(--bs-backtotop-active-border-color) !important;
+}
+
+body.back-to-top-circle #backtotop {
   border-radius: 34px;
-  border: 1px solid var(--light-button-normal);
-  background-color: var(--light-background-primary);
   height: 56px;
   width: 56px;
 }
 
-#backtotop:hover {
-  border-color: var(--light-button-hover);
-  background-color: var(--primitive-colors-sea-50);
-  background-image: url(../images/back_to_top_hover.svg);
+body.back-to-top-scquare #backtotop {
+  border-radius: 5px;
+  height: 40px;
+  width: 40px;
 }
 
-#backtotop:active {
-  border-color: var(--light-button-active);
-  background-color: var(--primitive-colors-sea-50);
-  background-image: url(../images/back_to_top_hover.svg);
+body.back-to-top-circle #backtotop,
+body.back-to-top-scquare #backtotop {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-#backtotop:focus {
-  border-color: var(--light-border-focused);
-  border-width: 2px;
+body.back-to-top-circle #backtotop {
+  text-indent: 56px;
+}
+
+body.back-to-top-scquare #backtotop {
+  text-indent: 40px;
+}
+
+body.back-to-top-circle #backtotop:before,
+body.back-to-top-scquare #backtotop:before {
+  font-family: "Font Awesome 6 Free";
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-block;
+  font-weight: 900;
+}
+body.back-to-top-circle #backtotop:before {
+  left: -40px;
+  top: 7px;
+  font-size: 28px;
+  content: "\f106";
+}
+
+body.back-to-top-scquare #backtotop:before {
+  left: -30px;
+  font-size: 24px;
+  content: "\f062";
 }
 
 /* Form control */

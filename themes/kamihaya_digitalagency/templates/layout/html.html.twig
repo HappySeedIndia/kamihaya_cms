@@ -31,6 +31,7 @@
     db_offline ? 'db-offline',
     (b5_body_schema == 'custom' ? ' text-custom' : (b5_body_schema == 'light' ? ' text-dark' : (b5_body_schema == 'dark' ? ' text-light' :  ' '))),
     (b5_body_bg_schema != 'none' ? " bg-#{b5_body_bg_schema}" : ' '),
+    back_to_top_shape ? 'back-to-top-' ~ back_to_top_shape,
     'd-flex flex-column h-100'
   ]
 %}

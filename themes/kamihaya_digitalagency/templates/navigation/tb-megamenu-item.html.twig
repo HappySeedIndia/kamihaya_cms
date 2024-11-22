@@ -28,7 +28,9 @@
         <span class="menu-icon">
           <i class="{{ font_awesome_class }}"></i>
         </span>
-        {{ link.title_translate }}
+        {% if item.hide_label is not defined %}
+         {{ link.title_translate }}
+        {% endif %}
       {% else %}
        {{ link.title_translate }}
       {% endif %}
