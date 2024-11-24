@@ -107,6 +107,7 @@
 
 .views-view-grid .views-col .views-field-rendered-entity h2 {
   font-size: 1.3rem;
+  margin-bottom: 0;
 }
 
 .views-view-grid .views-col .views-field-rendered-entity h2:after {
@@ -477,7 +478,7 @@
 .display-switch-view .view-header .views-display-link-table_page:before,
 .display-switch-view .view-header .views-display-link-grid_page:before {
   font-weight: 900;
-  font-family: "Font Awesome 5 Free";
+  font-family: "Font Awesome 6 Pro";
   margin-right: 0.5rem;
 }
 
@@ -524,7 +525,7 @@
   left: 16px;
   font-size: 20px;
   cursor: pointer;
-  font-family: "Font Awesome 6 Free";
+  font-family: "Font Awesome 6 Pro";
   font-weight: 900;
   content: "\f002";
 }
@@ -561,4 +562,61 @@
 .views-exposed-form .text-button .form-type-textfield input {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
+}
+
+.views-element-container .view-content .media img {
+  margin: 0 auto;
+}
+
+/** Marker */
+.views-element-container .view-content .kamihaya-marker {
+  font-size: 0.9rem;
+  padding: 1px 0.4rem;
+  line-height: 1.1;
+}
+
+.views-element-container .view-content .image-marker {
+  margin: 0 auto;
+  width: fit-content;
+  height: fit-content;
+  position: relative;
+}
+
+.views-element-container .view-content .image-marker .kamihaya-marker {
+  position: absolute;
+  z-index: 1;
+}
+
+.views-element-container .view-content .image-marker .kamihaya-marker.marker-img-top-left {
+  top: 0;
+  left : 0;
+}
+
+.views-element-container .view-content .image-marker .kamihaya-marker.marker-img-top-right {
+  top: 0;
+  right: 0;
+}
+
+.views-element-container .view-content .image-marker .kamihaya-marker.marker-img-bottom-left {
+  bottom: 0;
+  left: 0;
+}
+
+.views-element-container .view-content .image-marker .kamihaya-marker.marker-img-bottom-right {
+  bottom: 0;
+  right: 0;
+}
+
+.views-element-container .view-content .title-marker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.views-element-container .view-content .title-marker .kamihaya-marker.marker-title-left {
+  margin-right: 0.2rem;
+}
+
+.views-element-container .view-content .title-marker .kamihaya-marker.marker-title-right {
+  margin-left: 0.2rem;
 }

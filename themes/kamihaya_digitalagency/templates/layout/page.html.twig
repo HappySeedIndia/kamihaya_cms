@@ -77,6 +77,15 @@
         </div>
       {% endif %}
       <div class="order-2 {{ content_classes }}">
+        {% if marker.marker_left %}
+          <div class="kamihaya-left-markers">
+            {{ marker.marker_left }}
+          </div>
+        {% elseif marker.marker_right %}
+          <div class="kamihaya-right-markers">
+            {{ marker.marker_right }}
+          </div>
+        {% endif %}
         {{ page.content }}
       </div>
       {% if page.sidebar_second %}

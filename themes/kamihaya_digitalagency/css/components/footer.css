@@ -30,9 +30,22 @@ footer {
     flex-direction: row;
     justify-content: space-evenly;
   }
+
+  .footer-left .menu--footer .navbar-nav .menu-item .hide-label,
+  .footer-right .menu--footer .navbar-nav .menu-item .hide-label,
+  .footer-bottom .menu--footer .navbar-nav .menu-item .hide-label,
+  .footer-left nav.block-menu .navbar-nav .nav-item .hide-label,
+  .footer-right nav.block-menu .navbar-nav .nav-item .hide-label,
+  .footer-bottom nav.block-menu .navbar-nav .nav-item .hide-label {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 }
 
 @media (max-width: 991px) {
+  footer {
+    padding-top: 10px;
+  }
   .menu--footer .navbar-nav li {
     margin-bottom: 10px;
   }

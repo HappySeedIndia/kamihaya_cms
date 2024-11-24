@@ -208,7 +208,7 @@ body.back-to-top-scquare #backtotop {
 
 body.back-to-top-circle #backtotop:before,
 body.back-to-top-scquare #backtotop:before {
-  font-family: "Font Awesome 6 Free";
+  font-family: "Font Awesome 6 Pro";
   position: absolute;
   left: 0;
   top: 0;
@@ -1025,7 +1025,7 @@ h2.accordion-header::after {
 
 .flag.action-flag a:before,
 .flag.action-unflag a:before {
-  font-family: "Font Awesome 6 Free";
+  font-family: "Font Awesome 6 Pro";
   position: absolute;
   left: -4px;
   display: inline-block;
@@ -1114,4 +1114,49 @@ h2.accordion-header::after {
   .eu-cookie-compliance-buttons {
     padding-top: 1rem;
   }
+}
+
+/* Marder */
+.kamihaya-marker {
+  --marker-color: #FFFFFF;
+  --marker-bg: #ea5e5e;
+  --marker-border-color: #ea5e5e;
+  color: var(--marker-color);
+  background-color: var(--marker-bg);
+  border: 1px solid var(--marker-border-color);
+  display: inline-block;
+  font-size: 1.3rem;
+  line-height: 1;
+  padding: 0.2rem 0.5rem;
+}
+
+.page-title.marker-title {
+  display: flex;
+  align-items: flex-start;
+}
+
+.page-title .kamihaya-marker {
+  margin-top: 0.4rem;
+}
+
+.page-title .kamihaya-marker.marker-title-left {
+  margin-right: 0.5rem;
+}
+
+.page-title .kamihaya-marker.marker-title-right {
+  margin-left: 0.5rem;
+}
+
+.kamihaya-left-markers {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 0.1rem;
+}
+
+.kamihaya-right-markers {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 0.1rem;
 }

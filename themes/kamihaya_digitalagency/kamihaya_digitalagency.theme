@@ -192,7 +192,11 @@ function kamihaya_digitalagency_preprocess_views_view(array &$variables) {
  * Implements hook_preprocess_breadcrumb().
  */
 function kamihaya_digitalagency_preprocess_breadcrumb(&$variables){
-  if(($node = \Drupal::routeMatch()->getParameter('node')) && $variables['breadcrumb']){
+  $breadcrumb = [];
+  foreach($variables['breadcrumb'] as $item) {
+    $breadcrumb[] = $item['text'];
+  }
+  if(($node = \Drupal::routeMatch()->getParameter('node')) && $variables['breadcrumb'] && !in_array($node->getTitle(), $breadcrumb)) {
     $variables['breadcrumb'][] = [
       'text' => $node->getTitle()
     ];
@@ -362,18 +366,26 @@ function kamihaya_digitalagency_preprocess_block(array &$variables) {
     $entity = !empty(\Drupal::routeMatch()->getParameter('node'))
       ? \Drupal::routeMatch()->getParameter('node')
       : \Drupal::routeMatch()->getParameter('taxonomy_term');
-    if (empty($entity) || !$entity->hasField('field_not_display_title') || empty($entity->get('field_not_display_title')->value)) {
+
+    if (empty($entity)) {
+      return;
+    }
+    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+    $display_repository = \Drupal::service('entity_display.repository');
+    if (!empty($field = $display_repository->getViewDisplay($entity->getEntityTypeId(), $entity->bundle())->getThirdPartySetting('ds', 'fields')) && !empty($field['node_title'])) {
+      // Hide title if title fiels is displayed in the layout.
+      $variables['content']['#access'] = FALSE;
+      return;
+    }
+
+    if (!$entity->hasField('field_not_display_title') || empty($entity->get('field_not_display_title')->value)) {
       return;
     }
     $variables['content']['#access'] = FALSE;
   }
   if (!empty($variables['plugin_id']) && $variables['plugin_id'] === 'system_branding_block' && !empty(theme_get_setting('logo_url'))) {
     $variables['logo_url'] = theme_get_setting('logo_url');
-   }
-}
-
-function kamihaya_digitalagency_preprocess_maintenance_page(&$variables) {
-  Drupal::logger('kamihaya_digitalagency')->debug(implode(' ,', array_keys($variables['page']['header_top_right']) ));
+  }
 }
 
 /**
