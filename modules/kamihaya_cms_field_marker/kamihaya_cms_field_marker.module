@@ -1,0 +1,499 @@
+<?php
+
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\Views;
+
+/**
+ * @file
+ * Contains hook implementations for Kamihaya CMS Date Field Maeker.
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function kamihaya_cms_field_marker_form_field_config_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $field = $form_state->getFormObject()->getEntity();
+  if (in_array($field->getType(),  ['datetime', 'boolean']) && !empty($form['third_party_settings'])) {
+    $form['third_party_settings']['marker_setting'] = [
+      '#type' => 'details',
+      '#title' => t('Marker setting'),
+    ];
+    $form['third_party_settings']['marker_setting']['display_marker'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Display marker'),
+      '#default_value' => $field->getThirdPartySetting('marker_setting', 'display_marker', FALSE),
+      '#description' => t('Display a marker using this field value.'),
+    ];
+
+    if ($field->getType() === 'boolean') {
+      $form['third_party_settings']['marker_setting']['condtion'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Reverse condition'),
+        '#default_value' => $field->getThirdPartySetting('marker_setting', 'condtion', FALSE),
+        '#description' => t('If checked, the marker will be displayed when the field value is not checked.'),
+        '#states' =>
+          ['visible' => [
+            'input[name="third_party_settings[marker_setting][display_marker]"]' => ['checked' => TRUE],
+          ],
+        ]
+      ];
+    }
+
+    if ($field->getType() === 'datetime') {
+      $form['third_party_settings']['marker_setting']['condtion'] = [
+        '#type' => 'textfield',
+        '#title' => t('Condition'),
+        '#maxlength' => 255,
+        '#size' => 60,
+        '#required' => TRUE,
+        '#default_value' => $field->getThirdPartySetting('marker_setting', 'condtion', FALSE),
+        '#description' => t('An offset from the current time such as "+1 day" or "-2 hours -30 minutes".'),
+        '#states' =>
+          ['visible' => [
+            'input[name="third_party_settings[marker_setting][display_marker]"]' => ['checked' => TRUE],
+          ],
+        ]
+      ];
+
+      $form['third_party_settings']['marker_setting']['operator'] = [
+        '#type' => 'select',
+        '#title' => t('Operator'),
+        '#default_value' => $field->getThirdPartySetting('marker_setting', 'operator', ''),
+        '#description' => t('Operator of the condition".'),
+        '#required' => TRUE,
+        '#options' => [
+          '>' => t('less than'),
+          '>=' => t('less than or equal to'),
+          '==' => t('Equal to'),
+          '!=' => t('Not equal to'),
+          '<=' => t('Greater than or equal to'),
+          '<' => t('Greater than'),
+        ],
+        '#states' =>
+          ['visible' => [
+            'input[name="third_party_settings[marker_setting][display_marker]"]' => ['checked' => TRUE],
+          ],
+        ]
+      ];
+    }
+
+    $form['third_party_settings']['marker_setting']['marker_label'] = [
+      '#type' => 'textfield',
+      '#title' => t('Marker label'),
+      '#maxlength' => 255,
+      '#size' => 60,
+      '#required' => TRUE,
+      '#default_value' => $field->getThirdPartySetting('marker_setting', 'marker_label', FALSE),
+      '#description' => t('The label of the marker.'),
+      '#states' =>
+        ['visible' => [
+          'input[name="third_party_settings[marker_setting][display_marker]"]' => ['checked' => TRUE],
+        ],
+      ]
+    ];
+
+    $form['third_party_settings']['marker_setting']['label_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => t('Label  color'),
+      '#default_value' => $field->getThirdPartySetting('marker_setting', 'label_color', ''),
+      '#states' =>
+        ['visible' => [
+          'input[name="third_party_settings[marker_setting][display_marker]"]' => ['checked' => TRUE],
+        ],
+      ]
+    ];
+    kamihaya_cms_field_marker_color_spectrum('marker_label_color', $form['third_party_settings']['marker_setting']['label_color']);
+
+    $form['third_party_settings']['marker_setting']['bg_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => t('Background  color'),
+      '#default_value' => $field->getThirdPartySetting('marker_setting', 'bg_color', ''),
+      '#states' =>
+        ['visible' => [
+          'input[name="third_party_settings[marker_setting][display_marker]"]' => ['checked' => TRUE],
+        ],
+      ]
+    ];
+    kamihaya_cms_field_marker_color_spectrum('marker_bg_color', $form['third_party_settings']['marker_setting']['bg_color']);
+
+    $form['third_party_settings']['marker_setting']['border_color'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => t('Border  color'),
+      '#default_value' => $field->getThirdPartySetting('marker_setting', 'border_color', ''),
+      '#states' =>
+        ['visible' => [
+          'input[name="third_party_settings[marker_setting][display_marker]"]' => ['checked' => TRUE],
+        ],
+      ]
+    ];
+    kamihaya_cms_field_marker_color_spectrum('marker_border_color', $form['third_party_settings']['marker_setting']['border_color']);
+
+    $form['third_party_settings']['marker_setting']['merker_position'] = [
+      '#type' => 'select',
+      '#title' => t('Marker position'),
+      '#default_value' => $field->getThirdPartySetting('marker_setting', 'merker_position', ''),
+      '#required' => TRUE,
+      '#options' => [
+        'title_left' => t('Title left'),
+        'title_right' => t('Title right'),
+        'left' => t('Left side'),
+        'right' => t('Right side'),
+      ],
+      '#states' =>
+        ['visible' => [
+          'input[name="third_party_settings[marker_setting][display_marker]"]' => ['checked' => TRUE],
+        ],
+      ]
+    ];
+
+    $form['third_party_settings']['marker_setting']['merker_view_position'] = [
+      '#type' => 'select',
+      '#title' => t('Marker view position'),
+      '#default_value' => $field->getThirdPartySetting('marker_setting', 'merker_view_position', ''),
+      '#required' => TRUE,
+      '#options' => [
+        'title_left' => t('Title left'),
+        'title_right' => t('Title right'),
+        'img_top_left' => t('Image top left'),
+        'img_top_right' => t('Image top right'),
+        'img_bottom_left' => t('Image bottom left'),
+        'img_bottom_right' => t('Image botom right'),
+      ],
+      '#states' =>
+        ['visible' => [
+          'input[name="third_party_settings[marker_setting][display_marker]"]' => ['checked' => TRUE],
+        ],
+      ]
+    ];
+  }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function kamihaya_cms_field_marker_preprocess_node(array &$variables) {
+  $node = $variables['node'];
+  $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $node->bundle());
+  foreach($bundle_fields as $name => $config) {
+    if ($config->getType() === 'datetime') {
+      $field_config = $bundle_fields[$name];
+      //dpm($field_definition);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_layout().
+ */
+function kamihaya_cms_field_marker_preprocess_layout(array &$variables) {
+  $view_id = \Drupal::routeMatch()->getParameter('view_id');
+  if (empty($view_id) || empty($variables['content']['#node']))  {
+    return;
+  }
+  $node = $variables['content']['#node'];
+  $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $node->bundle());
+  foreach($bundle_fields as $name => $field_config) {
+    if ($field_config->getType() !== 'datetime' && $field_config->getType() !== 'boolean') {
+      continue;
+    }
+    if ($field_config instanceof BaseFieldDefinition) {
+      continue;
+    }
+    $marker_setting = $field_config->getThirdPartySettings('marker_setting');
+    if (empty($marker_setting['display_marker']) || empty($node->get($name)->value)) {
+      continue;
+    }
+    if (empty($marker_setting['merker_view_position'])) {
+      continue;
+    }
+    $marker = _kamihaya_cms_field_marker_add_marker($marker_setting, $name, $field_config->getType(), $node->get($name)->value, FALSE);
+    $position = $marker_setting['merker_view_position'];
+    _kamihaya_cms_field_marker_preprocess_add_marker($variables, $bundle_fields, $position, $marker);
+  }
+  if (empty($variables['marker'])) {
+    return;
+  }
+  // Set the cache max-age to 1 day.
+  $variables['#cache']['max-age'] = 60 * 60 * 24;
+}
+
+function _kamihaya_cms_field_marker_preprocess_add_marker(array &$variables, array $bundle_fields, $position, $marker) {
+  $layout = $variables['layout'];
+  $regions = $layout->getRegionNames();
+  foreach ($regions as $region) {
+    $region_content = &$variables['content'][$region];
+    if (empty($region_content)) {
+      continue;
+    }
+    if (array_key_exists('node_title', $region_content) && strpos($position, 'title_') === 0) {
+      if ($position ===  'title_left') {
+        $region_content['node_title']['#prefix'] = "<div class='title-marker'>$marker";
+        $region_content['node_title']['#suffix'] = '</div>';
+      }
+      else {
+        $region_content['node_title']['#prefix'] = "<div class='title-marker'>";
+        $region_content['node_title']['#suffix'] = "$marker</div>";
+      }
+      break;
+    }
+    foreach($region_content as $name => &$field) {
+      if (empty($bundle_fields[$name])) {
+        continue;
+      }
+      $field_config = $bundle_fields[$name];
+      $dependencies = $field_config->getDependencies();
+      if ($field_config->getType() !== 'entity_reference'
+        || (($field_config->getType() === 'entity_reference' && (empty($dependencies['config'])
+        || (!empty($dependencies['config']) && !in_array('media.type.image', $dependencies['config'])))))
+        && $field_config->getType() !== 'image') {
+        continue;
+      }
+      if (strpos($position, 'img_top') === 0) {
+        $field['#prefix'] = "<div class='image-marker'>$marker";
+        $field['#suffix'] = '</div>';
+      }
+      else {
+        $field['#prefix'] = "<div class='image-marker'>";
+        $field['#suffix'] = "$marker</div>";
+      }
+      break;
+    }
+  }
+}
+
+/**
+ * Implements hook_ds_pre_render_alter().
+ */
+function kamihaya_cms_field_marker_ds_pre_render_alter(array &$layout_render_array, array $context, array &$vars) {
+//  dpm($layout_render_array);
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function kamihaya_cms_field_marker_preprocess_page(array &$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if (empty($node)) {
+    return;
+  }
+  $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $node->bundle());
+  foreach($bundle_fields as $name => $field_config) {
+    if ($field_config->getType() !== 'datetime' && $field_config->getType() !== 'boolean') {
+      continue;
+    }
+    if ($field_config instanceof BaseFieldDefinition) {
+      continue;
+    }
+    $marker_setting = $field_config->getThirdPartySettings('marker_setting');
+    if (empty($marker_setting['display_marker']) || empty($node->get($name)->value)) {
+      continue;
+    }
+    if (empty($marker_setting['merker_position']) || !in_array($marker_setting['merker_position'], ['left', 'right'])) {
+      continue;
+    }
+    $position = $marker_setting['merker_position'];
+    if (empty($variables['marker']["marker_$position"])) {
+      $variables['marker']["marker_$position"] = [];
+    }
+    $variables['marker']["marker_$position"][$name] = [
+      '#markup' => _kamihaya_cms_field_marker_add_marker($marker_setting, $name, $field_config->getType(), $node->get($name)->value)
+    ];
+  }
+  if (empty($variables['marker'])) {
+    return;
+  }
+  // Set the cache max-age to 1 day.
+  $variables['#cache']['max-age'] = 60 * 60 * 24;
+}
+
+/**
+ * Implements hook_preprocess_page_title().
+ */
+function kamihaya_cms_field_marker_preprocess_page_title(array &$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if (empty($node)) {
+    return;
+  }
+  $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $node->bundle());
+  foreach($bundle_fields as $name => $field_config) {
+    if ($field_config->getType() !== 'datetime' && $field_config->getType() !== 'boolean') {
+      continue;
+    }
+    if ($field_config instanceof BaseFieldDefinition) {
+      continue;
+    }
+    $marker_setting = $field_config->getThirdPartySettings('marker_setting');
+    if (empty($marker_setting['display_marker']) || empty($node->get($name)->value)) {
+      continue;
+    }
+    if (empty($marker_setting['merker_position']) || !in_array($marker_setting['merker_position'], ['title_left', 'title_right'])) {
+      continue;
+    }
+    $position = $marker_setting['merker_position'];
+    if (empty($variables['marker']["marker_$position"])) {
+      $variables['marker']["marker_$position"] = [];
+    }
+    $variables['marker']["marker_$position"][$name] = [
+      '#markup' => _kamihaya_cms_field_marker_add_marker($marker_setting, $name, $field_config->getType(), $node->get($name)->value)
+    ];
+  }
+  if (empty($variables['marker'])) {
+    return;
+  }
+  // Set the cache max-age to 1 day.
+  $variables['#cache']['max-age'] = 60 * 60 * 24;
+}
+
+/**
+ * Create the marker tag.
+ *
+ * @param array $marker_setting
+ *  The marker setting.
+ * @param string $field_name
+ *  The field name.
+ * @param string $field_type
+ *  The field type.
+ * @param string $field_value
+ *  The field value.
+ */
+function _kamihaya_cms_field_marker_add_marker(array $marker_setting, $field_name, $field_type, $field_value, $is_node_page = TRUE) {
+  if (empty($marker_setting['display_marker'])) {
+    return;
+  }
+  $condition = $marker_setting['condtion'];
+  $display = FALSE;
+  if ($field_type === 'datetime') {
+    $operator = $marker_setting['operator'];
+    $condition_time = (new \DateTime($condition))->getTimestamp();
+    $field_time = (new \DateTime($field_value))->getTimestamp();
+    $display = eval("return $condition_time $operator $field_time;");
+  }
+  if ($field_type === 'boolean') {
+    $display = $condition ? !$field_value : $field_value;
+  }
+  $marker_label = $marker_setting['marker_label'];
+  $position = str_replace('_', '-', ($is_node_page ? $marker_setting['merker_position'] : $marker_setting['merker_view_position']));
+  if ($display) {
+    $name = str_replace('_', '-', $field_name);
+    return "<div class='kamihaya-marker marker-{$position} marker-{$name}'>{$marker_label}</div>";
+  }
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function kamihaya_cms_field_marker_page_attachments_alter(array &$page) {
+  $view_id = \Drupal::routeMatch()->getParameter('view_id');
+  $display_id = \Drupal::routeMatch()->getParameter('display_id');
+  $bundle_fields = [];
+  if (!empty($view_id) && !empty($display_id)) {
+    $view = Views::getView($view_id);
+    $view->setDisplay($display_id);
+    $view->initHandlers();
+    $entity_type = $view->getBaseEntityType();
+    $filter = $view->filter;
+    if (!empty($entity_type) && $entity_type->id() === 'node' && !empty($filter['type']) && !empty($filter['type']->value)) {
+      foreach($filter['type']->value as $type) {
+        $bundle_fields = array_merge($bundle_fields, \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $type));
+      }
+    }
+  }
+  if (!empty($node = \Drupal::routeMatch()->getParameter('node'))) {
+    $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $node->bundle());
+  }
+  $css_vars = [];
+  foreach($bundle_fields as $name => $field_config) {
+    if ($field_config->getType() !== 'datetime' && $field_config->getType() !== 'boolean') {
+      continue;
+    }
+    if ($field_config instanceof BaseFieldDefinition) {
+      continue;
+    }
+    $marker_setting = $field_config->getThirdPartySettings('marker_setting');
+    if (empty($marker_setting['display_marker']) || (!empty($node) && empty($node->get($name)->value))) {
+      continue;
+    }
+    $style = [];
+    if (!empty($marker_setting['label_color']['marker_label_color'])) {
+      $style[] = "--marker-color: {$marker_setting['label_color']['marker_label_color']};";
+    }
+    if (!empty($marker_setting['bg_color']['marker_bg_color'])) {
+      $style[] = "--marker-bg: {$marker_setting['bg_color']['marker_bg_color']};";
+    }
+    if (!empty($marker_setting['border_color']['marker_border_color'])) {
+      $style[] = "--marker-border-color: {$marker_setting['border_color']['marker_border_color']};";
+    }
+    if (empty($style)) {
+      continue;
+    }
+    $css_vars[] = '.kamihaya-marker.marker-' . str_replace('_', '-', $name) . ' {' . implode(' ', $style) . '}';
+  }
+  if (empty($css_vars)) {
+    return;
+  }
+  // Add CSS variables for marker.
+  $page['#attached']['html_head'][] = [
+    [
+      '#tag' => 'style',
+      '#attributes' => [
+        'type' => 'text/css',
+      ],
+      '#value' => implode(PHP_EOL, $css_vars),
+    ],
+    'kamihaya_cms_field_marker',
+  ];
+}
+
+/**
+ * Add color spectrum to the element.
+ *
+ * @param string $name
+ *   The name of the element.
+ * @param array $element
+ *   The element to add the color spectrum to.
+ */
+function kamihaya_cms_field_marker_color_spectrum($name, array &$element) {
+  $palette = [
+    ["#000", "#444", "#666", "#999", "#ccc", "#eee", "#f3f3f3", "#fff"],
+    ["#f00", "#f90", "#ff0", "#0f0", "#0ff", "#00f", "#90f", "#f0f"],
+    ["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc"],
+    ["#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#9fc5e8", "#b4a7d6", "#d5a6bd"],
+    ["#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6fa8dc", "#8e7cc3", "#c27ba0"],
+    ["#c00", "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3d85c6", "#674ea7", "#a64d79"],
+    ["#900", "#b45f06", "#bf9000", "#38761d", "#134f5c", "#0b5394", "#351c75", "#741b47"],
+    ["#600", "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130"],
+  ];
+  $settings = [
+    'show_input' => TRUE,
+    'show_palette' => TRUE,
+    'palette' => $palette,
+    'show_palette_only' => FALSE,
+    'show_buttons' => TRUE,
+    'cancel_text' => t('Cancel'),
+    'choose_text' => t('Choose'),
+    'allow_empty' => TRUE,
+  ];
+
+  $element[$name] = $element;
+  $element['#type'] = 'container';
+
+  $element['opacity'] = [
+    '#type' => 'value',
+    '#value' => NULL,
+  ];
+  $element['#uid'] = str_replace('_', '-', $name);
+  $element['#attributes']['id'] = $element['#uid'];
+  $element['#attributes']['class'][] = 'js-color-field-widget-spectrum';
+  $element['#attached']['drupalSettings']['color_field']['color_field_widget_spectrum'][$element['#uid']] = $settings;
+  $element['#attached']['library'][] = 'color_field/color-field-widget-spectrum';
+  $element[$name]['#attributes']['class'][] = 'js-color-field-widget-spectrum__color';
+  $element['opacity']['#attributes']['class'][] = 'js-color-field-widget-spectrum__opacity';
+
+}

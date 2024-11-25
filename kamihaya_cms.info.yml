@@ -74,6 +74,7 @@ install:
   - webform_ui
   - gin_toolbar
   - kamihaya_cms_faq
+  - kamihaya_cms_field_marker
   - kamihaya_cms_page
   - kamihaya_cms_user
   - kamihaya_cms_webform

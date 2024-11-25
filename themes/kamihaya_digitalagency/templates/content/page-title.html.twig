@@ -14,8 +14,20 @@
 #}
 {{ title_prefix }}
   {% if title|render|striptags|trim %}
-  <div class="page-title">
-    <h1{{title_attributes}}>{{ title }}</h1>
-  </div>  
+    {%
+      set title_classes = [
+        'page-title',
+        marker ? 'marker-title',
+      ]
+    %}
+    <div {{ attributes.addClass(title_classes) }}>
+      {% if marker.marker_title_left %}
+        {{ marker.marker_title_left }}
+      {% endif %}
+      <h1{{title_attributes}}>{{ title }}</h1>
+      {% if marker.marker_title_right %}
+        {{ marker.marker_title_right }}
+      {% endif %}
+    </div>
   {% endif %}
 {{ title_suffix }}
