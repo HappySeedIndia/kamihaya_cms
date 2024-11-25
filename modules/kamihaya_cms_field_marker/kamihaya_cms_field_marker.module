@@ -399,7 +399,7 @@ function kamihaya_cms_field_marker_page_attachments_alter(array &$page) {
     $view->initHandlers();
     $entity_type = $view->getBaseEntityType();
     $filter = $view->filter;
-    if ($entity_type->id() === 'node' && !empty($filter['type']) && !empty($filter['type']->value)) {
+    if (!empty($entity_type) && $entity_type->id() === 'node' && !empty($filter['type']) && !empty($filter['type']->value)) {
       foreach($filter['type']->value as $type) {
         $bundle_fields = array_merge($bundle_fields, \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $type));
       }
