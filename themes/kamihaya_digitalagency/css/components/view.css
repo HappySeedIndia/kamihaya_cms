@@ -618,3 +618,15 @@
 .views-element-container .view-content .title-marker .kamihaya-marker.marker-title-right {
   margin-bottom: 0;
 }
+
+.views-view-grid .views-field .flag {
+  z-index: 1;
+}
+
+.views-view-grid .views-field .flag.action-flag a {
+  color: #000000;
+}
+
+.views-view-grid .views-field .flag.action-unflag a {
+  color: #E1383A;
+}
