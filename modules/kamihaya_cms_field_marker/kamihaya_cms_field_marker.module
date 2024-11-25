@@ -15,22 +15,22 @@ use Drupal\views\Views;
 function kamihaya_cms_field_marker_form_field_config_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $field = $form_state->getFormObject()->getEntity();
   if (in_array($field->getType(),  ['datetime', 'boolean']) && !empty($form['third_party_settings'])) {
-    $form['third_party_settings']['marker_setting'] = [
+    $form['third_party_settings']['kamihaya_cms_field_marker'] = [
       '#type' => 'details',
       '#title' => t('Marker setting'),
     ];
-    $form['third_party_settings']['marker_setting']['display_marker'] = [
+    $form['third_party_settings']['kamihaya_cms_field_marker']['display_marker'] = [
       '#type' => 'checkbox',
       '#title' => t('Display marker'),
-      '#default_value' => $field->getThirdPartySetting('marker_setting', 'display_marker', FALSE),
+      '#default_value' => $field->getThirdPartySetting('kamihaya_cms_field_marker', 'display_marker', FALSE),
       '#description' => t('Display a marker using this field value.'),
     ];
 
     if ($field->getType() === 'boolean') {
-      $form['third_party_settings']['marker_setting']['condtion'] = [
+      $form['third_party_settings']['kamihaya_cms_field_marker']['condtion'] = [
         '#type' => 'checkbox',
         '#title' => t('Reverse condition'),
-        '#default_value' => $field->getThirdPartySetting('marker_setting', 'condtion', FALSE),
+        '#default_value' => $field->getThirdPartySetting('kamihaya_cms_field_marker', 'condtion', FALSE),
         '#description' => t('If checked, the marker will be displayed when the field value is not checked.'),
         '#states' =>
           ['visible' => [
@@ -41,13 +41,13 @@ function kamihaya_cms_field_marker_form_field_config_edit_form_alter(&$form, For
     }
 
     if ($field->getType() === 'datetime') {
-      $form['third_party_settings']['marker_setting']['condtion'] = [
+      $form['third_party_settings']['kamihaya_cms_field_marker']['condtion'] = [
         '#type' => 'textfield',
         '#title' => t('Condition'),
         '#maxlength' => 255,
         '#size' => 60,
         '#required' => TRUE,
-        '#default_value' => $field->getThirdPartySetting('marker_setting', 'condtion', FALSE),
+        '#default_value' => $field->getThirdPartySetting('kamihaya_cms_field_marker', 'condtion', FALSE),
         '#description' => t('An offset from the current time such as "+1 day" or "-2 hours -30 minutes".'),
         '#states' =>
           ['visible' => [
@@ -56,10 +56,10 @@ function kamihaya_cms_field_marker_form_field_config_edit_form_alter(&$form, For
         ]
       ];
 
-      $form['third_party_settings']['marker_setting']['operator'] = [
+      $form['third_party_settings']['kamihaya_cms_field_marker']['operator'] = [
         '#type' => 'select',
         '#title' => t('Operator'),
-        '#default_value' => $field->getThirdPartySetting('marker_setting', 'operator', ''),
+        '#default_value' => $field->getThirdPartySetting('kamihaya_cms_field_marker', 'operator', ''),
         '#description' => t('Operator of the condition".'),
         '#required' => TRUE,
         '#options' => [
@@ -78,13 +78,13 @@ function kamihaya_cms_field_marker_form_field_config_edit_form_alter(&$form, For
       ];
     }
 
-    $form['third_party_settings']['marker_setting']['marker_label'] = [
+    $form['third_party_settings']['kamihaya_cms_field_marker']['marker_label'] = [
       '#type' => 'textfield',
       '#title' => t('Marker label'),
       '#maxlength' => 255,
       '#size' => 60,
       '#required' => TRUE,
-      '#default_value' => $field->getThirdPartySetting('marker_setting', 'marker_label', FALSE),
+      '#default_value' => $field->getThirdPartySetting('kamihaya_cms_field_marker', 'marker_label', FALSE),
       '#description' => t('The label of the marker.'),
       '#states' =>
         ['visible' => [
@@ -93,52 +93,52 @@ function kamihaya_cms_field_marker_form_field_config_edit_form_alter(&$form, For
       ]
     ];
 
-    $form['third_party_settings']['marker_setting']['label_color'] = [
+    $form['third_party_settings']['kamihaya_cms_field_marker']['label_color'] = [
       '#type' => 'textfield',
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => t('Label  color'),
-      '#default_value' => $field->getThirdPartySetting('marker_setting', 'label_color', ''),
+      '#default_value' => $field->getThirdPartySetting('kamihaya_cms_field_marker', 'label_color', ''),
       '#states' =>
         ['visible' => [
           'input[name="third_party_settings[marker_setting][display_marker]"]' => ['checked' => TRUE],
         ],
       ]
     ];
-    kamihaya_cms_field_marker_color_spectrum('marker_label_color', $form['third_party_settings']['marker_setting']['label_color']);
+    kamihaya_cms_field_marker_color_spectrum('marker_label_color', $form['third_party_settings']['kamihaya_cms_field_marker']['label_color']);
 
-    $form['third_party_settings']['marker_setting']['bg_color'] = [
+    $form['third_party_settings']['kamihaya_cms_field_marker']['bg_color'] = [
       '#type' => 'textfield',
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => t('Background  color'),
-      '#default_value' => $field->getThirdPartySetting('marker_setting', 'bg_color', ''),
+      '#default_value' => $field->getThirdPartySetting('kamihaya_cms_field_marker', 'bg_color', ''),
       '#states' =>
         ['visible' => [
           'input[name="third_party_settings[marker_setting][display_marker]"]' => ['checked' => TRUE],
         ],
       ]
     ];
-    kamihaya_cms_field_marker_color_spectrum('marker_bg_color', $form['third_party_settings']['marker_setting']['bg_color']);
+    kamihaya_cms_field_marker_color_spectrum('marker_bg_color', $form['third_party_settings']['kamihaya_cms_field_marker']['bg_color']);
 
-    $form['third_party_settings']['marker_setting']['border_color'] = [
+    $form['third_party_settings']['kamihaya_cms_field_marker']['border_color'] = [
       '#type' => 'textfield',
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => t('Border  color'),
-      '#default_value' => $field->getThirdPartySetting('marker_setting', 'border_color', ''),
+      '#default_value' => $field->getThirdPartySetting('kamihaya_cms_field_marker', 'border_color', ''),
       '#states' =>
         ['visible' => [
           'input[name="third_party_settings[marker_setting][display_marker]"]' => ['checked' => TRUE],
         ],
       ]
     ];
-    kamihaya_cms_field_marker_color_spectrum('marker_border_color', $form['third_party_settings']['marker_setting']['border_color']);
+    kamihaya_cms_field_marker_color_spectrum('marker_border_color', $form['third_party_settings']['kamihaya_cms_field_marker']['border_color']);
 
-    $form['third_party_settings']['marker_setting']['merker_position'] = [
+    $form['third_party_settings']['kamihaya_cms_field_marker']['merker_position'] = [
       '#type' => 'select',
       '#title' => t('Marker position'),
-      '#default_value' => $field->getThirdPartySetting('marker_setting', 'merker_position', ''),
+      '#default_value' => $field->getThirdPartySetting('kamihaya_cms_field_marker', 'merker_position', ''),
       '#required' => TRUE,
       '#options' => [
         'title_left' => t('Title left'),
@@ -153,10 +153,10 @@ function kamihaya_cms_field_marker_form_field_config_edit_form_alter(&$form, For
       ]
     ];
 
-    $form['third_party_settings']['marker_setting']['merker_view_position'] = [
+    $form['third_party_settings']['kamihaya_cms_field_marker']['merker_view_position'] = [
       '#type' => 'select',
       '#title' => t('Marker view position'),
-      '#default_value' => $field->getThirdPartySetting('marker_setting', 'merker_view_position', ''),
+      '#default_value' => $field->getThirdPartySetting('kamihaya_cms_field_marker', 'merker_view_position', ''),
       '#required' => TRUE,
       '#options' => [
         'title_left' => t('Title left'),
@@ -206,7 +206,7 @@ function kamihaya_cms_field_marker_preprocess_layout(array &$variables) {
     if ($field_config instanceof BaseFieldDefinition) {
       continue;
     }
-    $marker_setting = $field_config->getThirdPartySettings('marker_setting');
+    $marker_setting = $field_config->getThirdPartySettings('kamihaya_cms_field_marker');
     if (empty($marker_setting['display_marker']) || empty($node->get($name)->value)) {
       continue;
     }
@@ -291,7 +291,7 @@ function kamihaya_cms_field_marker_preprocess_page(array &$variables) {
     if ($field_config instanceof BaseFieldDefinition) {
       continue;
     }
-    $marker_setting = $field_config->getThirdPartySettings('marker_setting');
+    $marker_setting = $field_config->getThirdPartySettings('kamihaya_cms_field_marker');
     if (empty($marker_setting['display_marker']) || empty($node->get($name)->value)) {
       continue;
     }
@@ -329,7 +329,7 @@ function kamihaya_cms_field_marker_preprocess_page_title(array &$variables) {
     if ($field_config instanceof BaseFieldDefinition) {
       continue;
     }
-    $marker_setting = $field_config->getThirdPartySettings('marker_setting');
+    $marker_setting = $field_config->getThirdPartySettings('kamihaya_cms_field_marker');
     if (empty($marker_setting['display_marker']) || empty($node->get($name)->value)) {
       continue;
     }
@@ -416,7 +416,7 @@ function kamihaya_cms_field_marker_page_attachments_alter(array &$page) {
     if ($field_config instanceof BaseFieldDefinition) {
       continue;
     }
-    $marker_setting = $field_config->getThirdPartySettings('marker_setting');
+    $marker_setting = $field_config->getThirdPartySettings('kamihaya_cms_field_marker');
     if (empty($marker_setting['display_marker']) || (!empty($node) && empty($node->get($name)->value))) {
       continue;
     }
