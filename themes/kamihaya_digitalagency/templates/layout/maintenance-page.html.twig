@@ -15,40 +15,32 @@
   <header role="banner">
     <div class="container">
       <div class="logo">
-      {% if logo %}
-        <a class="d-block" href="{{ front_page }}" title="{{ 'Home'|t }}" rel="home">
-          <img src="{{ logo }}" alt="{{ 'Home'|t }}" class="img-responsive" />
-        </a>
-      {% endif %}
-
-      {% if site_name or site_slogan %}
-        <div class="name-and-slogan">
-          {% if site_name %}
-          <h1 class="site-name">
-            <a href="{{ front_page }}" title="{{ 'Home'|t }}" rel="home">{{ site_name }}</a>
-          </h1>
-          {% endif %}
-
-          {% if site_slogan %}
-            <div class="site-slogan">{{ site_slogan }}</div>
-          {% endif %}
-        </div>{# /.name-and-slogan #}
-      {% endif %}
+        {% if logo %}
+          <a class="d-block" href="{{ front_page }}" title="{{ 'Home'|t }}" rel="home">
+            <img src="{{ logo }}" alt="{{ 'Home'|t }}" class="img-responsive"/>
+          </a>
+        {% endif %}
       </div>
     </div>
   </header>
 
   <main role="main">
     <div class="container">
-    {% if title|render|striptags|trim %}
-    <div class="page-title">
-      <h1>{{ title }}</h1>
-    </div>
-    {% endif %}
+      {% set maintenance_block %}
+      {{ drupal_entity('block', 'maintenance_mode') }}
+      {% endset %}
+      {% if title|render|striptags|trim and maintenance_block|striptags|trim is empty %}
+        <div class="page-title">
+          <h1>{{ title }}</h1>
+        </div>
+      {% endif %}
 
-    {{ page.highlighted }}
-
-    {{ page.content }}
+      {{ page.highlighted }}
+      {% if maintenance_block|striptags|trim is not empty %}
+        {{ maintenance_block }}
+      {% else %}
+        {{ page.content }}
+      {% endif %}
     </div>
   </main>
 
@@ -67,7 +59,7 @@
   {% if page.footer %}
     <footer role="contentinfo">
       <div class="container">
-      {{ page.footer }}
+        {{ page.footer }}
       </div>
     </footer>
   {% endif %}

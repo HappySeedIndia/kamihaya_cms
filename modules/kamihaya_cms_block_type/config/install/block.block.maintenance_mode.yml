@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:kamihaya_block:a2c3c7ab-4436-4301-8aec-6a6594a26fcc'
+  module:
+    - block_content
+  theme:
+    - kamihaya_digitalagency
+id: maintenance_mode
+theme: kamihaya_digitalagency
+region: hidden
+weight: 0
+provider: null
+plugin: 'block_content:a2c3c7ab-4436-4301-8aec-6a6594a26fcc'
+settings:
+  id: 'block_content:a2c3c7ab-4436-4301-8aec-6a6594a26fcc'
+  label: 'Maintenance mode'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }
