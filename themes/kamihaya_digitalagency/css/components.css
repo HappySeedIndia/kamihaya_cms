@@ -1013,29 +1013,19 @@ h2.accordion-header::after {
 }
 
 /** Flag */
-.flag.action-flag a,
-.flag.action-unflag a {
-  display: inline-block;
-  width: 100%;
-  text-indent: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  position: relative;
-}
-
-.flag.action-flag a:before,
-.flag.action-unflag a:before {
-  font-family: "Font Awesome 6 Pro";
+.flag {
   position: absolute;
-  left: -4px;
-  display: inline-block;
-  font-size: 17px;
-  content: "\f004";
-  font-weight: 900;
-  color: #484848;
+  right: 0;
+}
+.flag a {
+  font-size: 1.3rem;
 }
 
-.flag.action-unflag a:before {
+.flag.action-flag a {
+  color: #000000;
+}
+
+.flag.action-unflag a {
   color: #E1383A;
 }
 
@@ -1117,6 +1107,16 @@ h2.accordion-header::after {
 }
 
 /* Marker */
+.title-marker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.3rem;
+}
+.title-marker .kamihaya-marker {
+  margin-bottom: 0.4rem;
+}
+
 .kamihaya-marker {
   --marker-color: #FFFFFF;
   --marker-bg: #ea5e5e;
