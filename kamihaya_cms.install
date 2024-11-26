@@ -152,7 +152,7 @@ function kamihaya_cms_update_10006() {
 function kamihaya_cms_update_10007() {
   $modules = [];
   if (!\Drupal::moduleHandler()->moduleExists('twig_tweak')) {
-    $modules[] = 'blazy';
+    $modules[] = 'twig_tweak';
   }
 
   if (empty($modules)) {
