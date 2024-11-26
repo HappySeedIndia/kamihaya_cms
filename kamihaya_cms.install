@@ -145,3 +145,20 @@ function kamihaya_cms_update_10006() {
   $module_installer = \Drupal::service("module_installer");
   $module_installer->install($modules);
 }
+
+/**
+ * Install Twig weak module.
+ */
+function kamihaya_cms_update_10007() {
+  $modules = [];
+  if (!\Drupal::moduleHandler()->moduleExists('twig_tweak')) {
+    $modules[] = 'blazy';
+  }
+
+  if (empty($modules)) {
+    return;
+  }
+  /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
+  $module_installer = \Drupal::service("module_installer");
+  $module_installer->install($modules);
+}

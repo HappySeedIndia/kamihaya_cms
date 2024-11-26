@@ -69,6 +69,7 @@ install:
   - svg_image
   - string_field_formatter
   - tb_megamenu
+  - twig_tweak
   - viewsreference
   - webform
   - webform_ui
