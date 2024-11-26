@@ -619,14 +619,18 @@
   margin-bottom: 0;
 }
 
-.views-view-grid .views-field .flag {
+.view-content .views-field .flag {
   z-index: 1;
 }
 
-.views-view-grid .views-field .flag.action-flag a {
+.view-content .views-field .flag.action-flag a {
   color: #000000;
 }
 
-.views-view-grid .views-field .flag.action-unflag a {
+.view-content .views-field .flag.action-unflag a {
   color: #E1383A;
+}
+
+.view-content .table-responsive .views-field .flag {
+  position: static;
 }

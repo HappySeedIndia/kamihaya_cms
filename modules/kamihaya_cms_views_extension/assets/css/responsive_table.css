@@ -1,5 +1,5 @@
 /** Responsive table */
-.view-kamihaya-responsive-table .view-content table td b.responsive_label {
+.view-kamihaya-responsive-table .view-content table td b.responsive-label {
   display: none;
 }
 
@@ -25,9 +25,13 @@
     border-bottom: 0;
   }
 
-  .view-kamihaya-responsive-table .view-content table td b.responsive_label {
+  .view-kamihaya-responsive-table .view-content table td b.responsive-label {
     display: inline-block;
     width: 120px;
     margin-right: 7px;
+  }
+
+  .view-kamihaya-responsive-table .view-content table td.no-label .field-value{
+    margin: 0 auto;
   }
 }
