@@ -463,10 +463,14 @@
   justify-content: space-between;
 }
 
-.display-switch-view .view-header {
+.display-switch-view .view-header .item-list {
+  float: right;
+}
+
+.display-switch-view .view-header .display-links {
   display: flex;
   align-self: flex-end;
-  margin: 1em 0;
+  margin: 0.5em 0;
   text-align: right;
   padding: 0.5rem;
   background: var(--light-background-primary);
