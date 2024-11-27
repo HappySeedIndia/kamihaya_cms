@@ -102,6 +102,7 @@
         "drupal/address": "^2.0",
         "drupal/addtoany": "^2.0",
         "drupal/admin_toolbar": "^3.5",
+        "drupal/advanced_text_formatter": "^3.0@RC",
         "drupal/back_to_top": "^3.0",
         "drupal/better_exposed_filters": "^7.0",
         "drupal/blazy": "^3.0",
