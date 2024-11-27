@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\block_content\Entity\BlockContentType;
 use Drupal\paragraphs\Entity\ParagraphsType;
 
@@ -103,6 +104,33 @@ function kamihaya_cms_block_type_update_10002() {
   $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
   $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
   $field_config->save(TRUE);
+}
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_block_type_update_10003() {
+  $block = \Drupal\block\Entity\Block::load('maintenance_mode');
+  if (!empty($block)) {
+    return;
+  }
+
+  $file_config = _kamihaya_cms_common_load_config_file('kamihaya_cms_block_type', 'block.block.maintenance_mode.yml', 'install');
+  $title = !empty($file_config['settings']['label']) ? $file_config['settings']['label'] : '';
+  $id = !empty($file_config['settings']['id']) && strpos($file_config['settings']['id'], ':') !== FALSE ? explode(':', $file_config['settings']['id'])[1] : '';
+  if (empty($title) || empty($id)) {
+    return;
+  }
+  $block_content = BlockContent::create([
+    'type' => 'kamihaya_block',
+    'info' => $title,
+    'uuid' => $id,
+  ]);
+  $block_content->save();
+
+  _kamihaya_cms_common_change_configs('kamihaya_cms_block_type', [
+    'block.block.maintenance_mode.yml',
+  ], 'install');
 }
 
 /**
