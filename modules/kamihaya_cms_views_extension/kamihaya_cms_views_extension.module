@@ -162,6 +162,9 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
     }
     if (isset($value['#options']) && empty($value['#options'])) {
       $value['#access'] = FALSE;
+      if (!empty($value['#group']) && $value['#group'] !== 'secondary') {
+        $form[$value['#group']]['#access'] = FALSE;
+      }
       continue;
     }
     if (!empty($value['#group']) && $value['#group'] === 'secondary') {

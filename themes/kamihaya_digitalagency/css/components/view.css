@@ -8,6 +8,10 @@
   flex-wrap: wrap;
 }
 
+.view .view-content .views-field p {
+  margin-bottom: 0;
+}
+
 .views-view-grid {
   margin-top: 20px;
 }
@@ -243,6 +247,10 @@
 
 .views-exposed-form .form-item .description {
   margin-bottom: 0;
+}
+
+.views-exposed-form .bef--secondary .form-type-checkbox {
+  display: inline;
 }
 
 .views-exposed-form .form--inline .form-actions input[type='submit'] {
