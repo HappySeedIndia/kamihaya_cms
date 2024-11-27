@@ -181,7 +181,7 @@ function kamihaya_cms_field_marker_form_field_config_edit_form_alter(&$form, For
 function kamihaya_cms_field_marker_preprocess_layout(array &$variables) {
   $view_id = \Drupal::routeMatch()->getParameter('view_id');
   $param_node = \Drupal::routeMatch()->getParameter('node');
-  if (empty($param_node) && (empty($view_id) || empty($variables['content']['#node'])))  {
+  if (empty($param_node) && empty($view_id) && empty($variables['content']['#node'])) {
     return;
   }
   $node = $variables['content']['#node'];
