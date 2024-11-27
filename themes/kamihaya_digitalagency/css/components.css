@@ -1098,7 +1098,8 @@ h2.accordion-header::after {
     flex-direction: column;
     padding: 1.5rem;
   }
-  .eu-cookie-compliance-message {
+  .eu-cookie-compliance-message,
+  .eu-cookie-compliance-buttons {
     max-width: 100%;
   }
   .eu-cookie-compliance-buttons {
