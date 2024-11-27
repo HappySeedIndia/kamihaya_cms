@@ -197,7 +197,7 @@ function kamihaya_cms_field_marker_preprocess_layout(array &$variables) {
     if (empty($marker_setting['display_marker']) || empty($node->get($name)->value)) {
       continue;
     }
-    if (!empty($param_node) && empty($marker_setting['marker_position'])) {
+    if (!empty($param_node) && (empty($marker_setting['marker_position']) || strpos($marker_setting['marker_position'], 'title_') !== 0)) {
       continue;
     }
     if (!empty($view_id) && empty($marker_setting['marker_view_position'])) {
@@ -214,6 +214,18 @@ function kamihaya_cms_field_marker_preprocess_layout(array &$variables) {
   $variables['#cache']['max-age'] = 60 * 60 * 24;
 }
 
+/**
+ * Add the marker to the field.
+ *
+ * @param array $variables
+ *  The variables of the layout.
+ * @param array $bundle_fields
+ *  The bundle fields.
+ * @param string $position
+ *  The position of the marker.
+ * @param string $marker
+ *  The marker tag.
+ */
 function _kamihaya_cms_field_marker_add_marker(array &$variables, array $bundle_fields, $position, $marker) {
   $layout = $variables['layout'];
   $regions = $layout->getRegionNames();
