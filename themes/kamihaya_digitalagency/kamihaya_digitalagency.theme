@@ -186,6 +186,22 @@ function kamihaya_digitalagency_preprocess_views_view(array &$variables) {
   if (!empty($view->getStyle()->getPluginId())) {
     $variables['format'] = str_replace('_', '-', $view->getStyle()->getPluginId());
   }
+  $display_links = [];
+  foreach ($variables['header'] as $key => $header) {
+    if (strpos($key, 'display_link') === 0) {
+      $display_links[] = $header;
+      unset($variables['header'][$key]);
+    }
+  }
+  if (!empty($display_links)) {
+    $variables['header']['display_links'] = [
+      '#theme' => 'item_list',
+      '#items' => $display_links,
+      '#attributes' => [
+        'class' => ['display-links'],
+      ],
+    ];
+  }
 }
 
 /**

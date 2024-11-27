@@ -1098,7 +1098,8 @@ h2.accordion-header::after {
     flex-direction: column;
     padding: 1.5rem;
   }
-  .eu-cookie-compliance-message {
+  .eu-cookie-compliance-message,
+  .eu-cookie-compliance-buttons {
     max-width: 100%;
   }
   .eu-cookie-compliance-buttons {
@@ -1159,4 +1160,32 @@ h2.accordion-header::after {
   flex-direction: row;
   justify-content: flex-end;
   gap: 0.1rem;
+}
+
+/** Expand formatter */
+.expand-collapse {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.expand-collapse a {
+  color: var(--bs-body-color);
+  text-decoration: none;
+  text-align: center;
+}
+
+.expand-collapse a:after {
+  font-family: 'Font Awesome 6 Pro';
+  font-weight: 900;
+  margin-left: 0.5rem;
+}
+
+.expand-collapse a.ecf-open:after {
+  content: '\f107';
+}
+
+.expand-collapse a.ecf-close:after {
+  content: '\f106';
 }
