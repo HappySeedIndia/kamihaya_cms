@@ -183,9 +183,9 @@
     margin-left: 0;
   }
 
-    .tbm-item.level-1 .tbm-column .tbm-subnav {
-      flex-wrap: wrap;
-    }
+  .tbm-item.level-1 .tbm-column .tbm-subnav {
+    flex-wrap: wrap;
+  }
 }
 
 .tbm-item--has-dropdown .tbm-submenu-toggle {
@@ -321,6 +321,7 @@
 @media (max-width: 991px) {
   .tbm .tbm-block .view-html-list ul {
     border-left: 0;
+    border-top: 0;
     border-bottom: 0;
     display: block;
   }

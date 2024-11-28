@@ -1064,7 +1064,7 @@ h2.accordion-header::after {
 /** Cookie banner */
 .eu-cookie-compliance-banner {
   background-color: var(--bs-secondary-bg);
-  opacity: 0.85;
+  opacity: 0.95;
   width: 100vw;
 }
 
