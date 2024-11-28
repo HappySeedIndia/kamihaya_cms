@@ -18,9 +18,29 @@
 
 .views-view-grid .views-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: flex-start;
+}
+
+.views-view-grid .views-row.gap-xs {
+  gap: 0.1rem;
+}
+
+.views-view-grid .views-row.gap-s {
+  gap: 0.25rem;
+}
+
+.views-view-grid .views-row.gap-m {
+  gap: 0.5rem;
+}
+
+.views-view-grid .views-row.gap-l {
+  gap: 0.75rem;
+}
+
+.views-view-grid .views-row.gap-xl {
+  gap: 1rem;
 }
 
 .views-view-grid.cols-8 .views-col {
@@ -44,7 +64,7 @@
 }
 
 .views-view-grid.cols-3 .views-col {
-  max-width: 33.5%;
+  max-width: 33.3%;
 }
 
 .views-view-grid.cols-2 .views-col {
