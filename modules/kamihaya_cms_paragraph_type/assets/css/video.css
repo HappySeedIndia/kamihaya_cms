@@ -1,6 +1,8 @@
 /* Video css */
 .video-tag {
   margin-bottom: 20px;
+  margin-right: auto;
+  margin-left: auto;
   width: 100%;
   display: block;
 }
@@ -12,10 +14,13 @@
   aspect-ratio: 16 / 9;
 }
 
+.video-media {
+  margin: 0 auto;
+}
+
 .video-media video {
   display: block;
   width: 100%;
-  max-width: 840px;
   margin: 0 auto 20px;
   height: auto;
 }
@@ -25,23 +30,22 @@
   float: none;
 }
 
-.align-left .video-media video {
+.align-left .video-media {
   margin-left: 0;
+  margin-right: auto;
 }
 
-.align-right .video-media video {
+.align-right .video-media {
   margin-right: 0;
+  margin-left: auto;
 }
 
 .align-left .video-tag {
-  text-align: left;
+  margin-left: 0;
+  margin-right: auto;
 }
 
 .align-right .video-tag {
-  text-align: right;
+  margin-right: 0;
+  margin-left: auto;
 }
-
-.align-center .video-tag {
-  text-align: center;
-}
-

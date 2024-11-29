@@ -1,0 +1,12 @@
+@media (max-width: 767px) {
+  .paragraph--type--modal-dialog .modal-dialog {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+form #edit-field-body .modal {
+  display: block;
+  position: static;
+  opacity: 1;
+}

@@ -1,0 +1,12 @@
+/* Link button Paragrpah type */
+.paragraph--type--link-button .link-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 767px) {
+  .paragraph--type--link-button .link-buttons {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}

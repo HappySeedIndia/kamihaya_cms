@@ -5,6 +5,8 @@ dependencies:
     - field.field.paragraph.video.field_align
     - field.field.paragraph.video.field_video_media
     - field.field.paragraph.video.field_video_tag
+    - field.field.paragraph.video.field_width
+    - field.field.paragraph.video.field_width_unit
     - paragraphs.paragraphs_type.video
   module:
     - media_library
@@ -15,7 +17,7 @@ mode: default
 content:
   field_align:
     type: options_select
-    weight: 16
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -33,6 +35,19 @@ content:
     settings:
       rows: 5
       placeholder: ''
+    third_party_settings: {  }
+  field_width:
+    type: number
+    weight: 13
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_width_unit:
+    type: options_select
+    weight: 14
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden:
   created: true

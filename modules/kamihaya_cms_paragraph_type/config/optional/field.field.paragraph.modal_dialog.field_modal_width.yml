@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_modal_width
+    - paragraphs.paragraphs_type.modal_dialog
+id: paragraph.modal_dialog.field_modal_width
+field_name: field_modal_width
+entity_type: paragraph
+bundle: modal_dialog
+label: 'Modal width'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.headings.field_align
     - field.field.paragraph.headings.field_color
     - field.field.paragraph.headings.field_style
     - field.field.paragraph.headings.field_title_tag
@@ -14,6 +15,12 @@ targetEntityType: paragraph
 bundle: headings
 mode: default
 content:
+  field_align:
+    type: options_select
+    weight: 16
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_color:
     type: color_field_widget_spectrum
     weight: 2
@@ -47,6 +54,11 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  translation:
+    weight: 10
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden:
   created: true

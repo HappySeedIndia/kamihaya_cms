@@ -62,3 +62,20 @@ divider-css:
   css:
     base:
       assets/css/divider.css: {}
+
+link-button-css:
+  css:
+    base:
+      assets/css/link-button.css: {}
+
+modal-dialog:
+  css:
+    base:
+      assets/css/modal-dialog.css: {}
+  js:
+    assets/js/modal-dialog.js: {}
+  dependencies:
+    - core/jquery
+    - core/js-cookie
+    - core/drupal
+    - core/drupalSettings
