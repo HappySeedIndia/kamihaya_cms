@@ -1,3 +1,4 @@
+uuid: 4cada72d-1f3b-4e34-a84e-2ea0636045f3
 langcode: en
 status: true
 dependencies:
@@ -27,6 +28,8 @@ dependencies:
     - paragraphs.paragraphs_type.wysiwyg_editor
   module:
     - entity_reference_revisions
+_core:
+  default_config_hash: _JSrzAGJFjaV_GyjUuE0c2DZPJtRbDyXYN5uziz97QA
 id: paragraph.modal_dialog.field_dialog_body
 field_name: field_dialog_body
 entity_type: paragraph

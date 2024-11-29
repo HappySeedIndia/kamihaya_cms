@@ -38,6 +38,7 @@
  * @ingroup themeable
  */
 #}
+{{  attach_library('kamihaya_cms_paragraph_type/link-button-css') }}
 {% block paragraph %}
   {% block content %}
     {% set align = content.field_align|render|striptags|trim|lower %}
@@ -49,12 +50,12 @@
         not paragraph.isPublished() ? 'paragraph--unpublished',
         'link-button',
         align ? 'align-' ~ align,
+        content.field_button_link.1 ? 'link-button--multiple' : '',
       ]
     %}
-    {% if content.field_button_link|render and content.field_button_text|render %}
+    {% if content.field_button_link|render %}
       <div{{attributes.addClass(classes)}}>
         {% if content.field_button_link|render %}
-          {% set url = content.field_button_link.0['#url'] %}
           {% set size = paragraph.field_button_text_size.0.value %}
           {% set color = content.field_button_text_color|render|striptags|trim|lower %}
           {% set bd_color = content.field_button_border_color|render|striptags|trim|lower %}
@@ -73,17 +74,34 @@
               color ? 'color: '  ~ color  ~ ';' : '',
             ]
           %}
-
-          {% if content.field_button_link.0['#url'].external == true %}
-            <a class="btn btn-primary" href="{{ url }}" target="_blank"{% if style %} style="{{ style|join(' ') }}"{% endif %}>
-          {% else %}
-            <a class="btn btn-primary" href="{{ url }}"{% if style %} style="{{ style|join(' ') }}"{% endif %}>
+          {% if content.field_button_link.1 %}
+            <div class="link-buttons">
+          {% endif %}
+          {% for key, item in content.field_button_link %}
+            {% if key matches '/^\\d+$/' %}
+              {% set text %}
+                {% if key == 0 and content.field_button_text|render %}
+                  {{ content.field_button_text.0 }}
+                {% else %}
+                  {{ item['#title'] }}
+                {% endif %}
+              {% endset %}
+              {% set url = item['#url'] %}
+              {% if item['#url'].external == true %}
+                <a class="btn btn-primary" href="{{ url }}" target="_blank"{% if style %} style="{{ style|join(' ') }}"{% endif %}>
+              {% else %}
+                <a class="btn btn-primary" href="{{ url }}"{% if style %} style="{{ style|join(' ') }}"{% endif %}>
+              {% endif %}
+              <span{% if text_style %} style="{{ text_style|join(' ') }}"{% endif %}>
+                {{ text }}
+              </span>
+              </a>
+            {% endif %}
+          {% endfor %}
+          {% if content.field_button_link.1 %}
+            </div>
           {% endif %}
         {% endif %}
-          <span{% if text_style %} style="{{ text_style|join(' ') }}"{% endif %}>
-            {{ content.field_button_text.0 }}
-          </span>
-        </a>
       </div>
     {% endif %}
   {% endblock %}

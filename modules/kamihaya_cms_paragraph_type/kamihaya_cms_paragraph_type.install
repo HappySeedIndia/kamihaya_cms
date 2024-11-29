@@ -678,3 +678,94 @@ function kamihaya_cms_paragraph_type_update_10010() {
     ->save();
   }
 }
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_paragraph_type_update_10011() {
+  $field_storage = FieldStorageConfig::loadByName('paragraph', 'field_button_link');
+  if ($field_storage) {
+    $field_storage->set('cardinality', -1);
+    $field_storage->save();
+  }
+  $field_config = FieldConfig::loadByName('paragraph', 'link_button', 'field_button_link');
+  if ($field_config) {
+    $settings = $field_config->get('settings');
+    $settings['title'] = 1;
+    $field_config->set('settings', $settings);
+    $field_config->save();
+  }
+  $field_config = FieldConfig::loadByName('paragraph', 'link_button', 'field_button_text');
+  if ($field_config) {
+    $field_config->set('required', false);
+    $field_config->save();
+  }
+
+  $storage_configs = [];
+  $install_configs = [];
+  $option_configs = [];
+
+  $paragraphs = [
+    'modal_dialog' => [
+      'field_cookie_name' => 'string_textfield',
+      'field_default_open' => 'boolean_checkbox',
+      'field_one_time' => 'boolean_checkbox',
+      'field_modal_width' => 'number',
+      'field_width_unit' => 'options_select',
+    ],
+    'headings' => [
+      'field_align' => 'options_select',
+    ],
+    'video' => [
+      'field_width' => 'number',
+      'field_width_unit' => 'options_select',
+    ],
+  ];
+
+  foreach($paragraphs as $paragraph => $fields) {
+    foreach(array_keys($fields) as $field) {
+      $field_storage = FieldStorageConfig::loadByName('paragraph', $field);
+      if (!$field_storage) {
+        $storage_configs[] = "field.storage.paragraph.{$field}.yml";
+      }
+      $field_config = FieldConfig::loadByName('paragraph', $paragraph, $field);
+      if (!$field_config) {
+        continue;
+      }
+      if ($paragraph === 'modal_dialog') {
+        $option_configs[] = "field.field.paragraph.{$paragraph}.{$field}.yml";
+      }
+      else {
+        $install_configs[] = "field.field.paragraph.{$paragraph}.{$field}.yml";
+      }
+    }
+  }
+
+  if (empty($storage_configs) && empty($install_configs) && empty($option_configs)) {
+    return;
+  }
+  if (!empty($storage_configs)) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $storage_configs, 'optional');
+  }
+  if (!empty($install_configs)) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $install_configs, 'install');
+    _kamihaya_cms_common_save_translation_configs($install_configs, 'ja');
+  }
+  if (!empty($option_configs)) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $option_configs, 'optional');
+    _kamihaya_cms_common_save_translation_configs($option_configs, 'ja');
+  }
+
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+
+  foreach($paragraphs as $paragraph => $fields) {
+    $form_display = $display_repository->getFormDisplay('paragraph', $paragraph);
+    foreach($fields as $field => $type) {
+      $form_display->setComponent($field, [
+        'type' => $type,
+      ])
+      ->save();
+    }
+  }
+}

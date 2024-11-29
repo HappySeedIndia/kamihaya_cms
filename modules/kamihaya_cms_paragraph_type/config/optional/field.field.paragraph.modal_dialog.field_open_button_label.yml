@@ -1,9 +1,12 @@
+uuid: d5a44ffa-b9e5-45ae-a347-1325aa2e38fe
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_open_button_label
     - paragraphs.paragraphs_type.modal_dialog
+_core:
+  default_config_hash: G-z3zxePFYE3rVzIdow2XnuNh5-uex71k9TjGCLcmG4
 id: paragraph.modal_dialog.field_open_button_label
 field_name: field_open_button_label
 entity_type: paragraph

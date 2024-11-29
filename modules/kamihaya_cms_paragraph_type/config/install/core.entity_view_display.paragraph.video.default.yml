@@ -5,6 +5,8 @@ dependencies:
     - field.field.paragraph.video.field_align
     - field.field.paragraph.video.field_video_media
     - field.field.paragraph.video.field_video_tag
+    - field.field.paragraph.video.field_width
+    - field.field.paragraph.video.field_width_unit
     - paragraphs.paragraphs_type.video
   module:
     - kamihaya_cms_paragraph_type
@@ -19,7 +21,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 16
+    weight: 2
     region: content
   field_video_media:
     type: entity_reference_entity_view
@@ -38,5 +40,21 @@ content:
       edit_preview: '1'
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_width:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_width_unit:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 13
     region: content
 hidden: {  }

@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.headings.field_align
     - field.field.paragraph.headings.field_color
     - field.field.paragraph.headings.field_style
     - field.field.paragraph.headings.field_title_tag
@@ -15,6 +16,13 @@ targetEntityType: paragraph
 bundle: headings
 mode: default
 content:
+  field_align:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 16
+    region: content
   field_color:
     type: color_field_formatter_text
     label: hidden

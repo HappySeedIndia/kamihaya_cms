@@ -40,6 +40,7 @@
 #}
 
 {{  attach_library('kamihaya_cms_paragraph_type/heading-css') }}
+{% set align = paragraph.field_align.0.value %}
 
 {%
   set classes = [
@@ -47,6 +48,7 @@
     'paragraph--type--' ~ paragraph.bundle|clean_class,
     view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
     not paragraph.isPublished() ? 'paragraph--unpublished',
+    align ? 'align-' ~ align,
   ]
 %}
 

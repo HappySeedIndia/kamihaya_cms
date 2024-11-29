@@ -41,7 +41,7 @@
 {{  attach_library('kamihaya_cms_paragraph_type/video-css') }}
 {% block paragraph %}
   {% block content %}
-    {% set align = content.field_align|render|striptags|trim|lower %}
+    {% set align = paragraph.field_align.0.value %}
     {%
       set classes = [
         'paragraph',
@@ -51,20 +51,35 @@
         align ? 'align-' ~ align,
       ]
     %}
-
+    {% set width = paragraph.field_width.0.value %}
+    {% set width_unit = paragraph.field_width_unit.0.value %}
+    {%
+      set style = [
+        width ? (width_unit == 'px' ? ('width: 100%; max-width: ' ~ width ~ width_unit ~ ';') : ('width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;'))) : 'width: 100%;',
+        height ? 'height: ' ~ height ~ (height_unit ? height_unit ~ ';' : 'px;') : 'height: auto;',
+      ]
+    %}
+    {% if width_unit == 'vw' %}
+      {%
+        set style = style|merge([
+          'margin-left: calc(-50vw + 50%);',
+          'max-width: none;',
+        ])
+      %}
+    {% endif %}
     <div{{ attributes.addClass(classes) }}>
       {# Video #}
       {% if content.field_video_media|render %}
-      <div class="video-media">
-        {{ content.field_video_media }}
-      </div>
+        <div class="video-media"{% if style %} style="{{ style|join(' ') }}" {% endif %}/>
+          {{ content.field_video_media }}
+        </div>
       {% endif %}
 
        {# Field Tag #}
       {% if content.field_video_tag|render %}
-      <div class="video-tag">
-        {{ content.field_video_tag }}
-      </div>
+        <div class="video-tag"{% if style %} style="{{ style|join(' ') }}" {% endif %}/>
+          {{ content.field_video_tag }}
+        </div>
       {% endif %}
      </div>
   {% endblock %}

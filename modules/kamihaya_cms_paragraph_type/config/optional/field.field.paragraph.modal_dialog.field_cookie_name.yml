@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_cookie_name
+    - paragraphs.paragraphs_type.modal_dialog
+id: paragraph.modal_dialog.field_cookie_name
+field_name: field_cookie_name
+entity_type: paragraph
+bundle: modal_dialog
+label: 'Cookie name'
+description: 'Cookie name for one time open.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
