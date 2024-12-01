@@ -15,27 +15,28 @@
   <header role="banner">
     <div class="container">
       <div class="logo">
-      {% if logo %}
-        <a class="d-block" href="{{ front_page }}" title="{{ 'Home'|t }}" rel="home">
-          <img src="{{ logo }}" alt="{{ 'Home'|t }}" class="img-responsive" />
-        </a>
-      {% endif %}
+        {% if logo %}
+          <a class="d-block" href="{{ front_page }}" title="{{ 'Home'|t }}" rel="home">
+            <img src="{{ logo }}" alt="{{ 'Home'|t }}" class="img-responsive"/>
+          </a>
+        {% endif %}
+      </div>
     </div>
   </header>
 
   <main role="main">
     <div class="container">
       {% set maintenance_block %}
-        {{ drupal_entity('block', 'maintenance_mode') }}
+      {{ drupal_entity('block', 'maintenance_mode') }}
       {% endset %}
-      {% if title|render|striptags|trim and maintenance_block|trim is empty %}
+      {% if title|render|striptags|trim and maintenance_block|striptags|trim is empty %}
         <div class="page-title">
           <h1>{{ title }}</h1>
         </div>
       {% endif %}
 
       {{ page.highlighted }}
-      {% if maintenance_block|trim is not empty %}
+      {% if maintenance_block|striptags|trim is not empty %}
         {{ maintenance_block }}
       {% else %}
         {{ page.content }}
@@ -58,9 +59,10 @@
   {% if page.footer %}
     <footer role="contentinfo">
       <div class="container">
-      {{ page.footer }}
+        {{ page.footer }}
       </div>
     </footer>
   {% endif %}
 
 </div>{# /.layout-container #}
+
