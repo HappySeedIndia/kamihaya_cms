@@ -76,6 +76,10 @@ modal-dialog:
     assets/js/modal-dialog.js: {}
   dependencies:
     - core/jquery
-    - core/js-cookie
     - core/drupal
     - core/drupalSettings
+
+anchor-link-css:
+  css:
+    base:
+      assets/css/anchor-link.css: {}
