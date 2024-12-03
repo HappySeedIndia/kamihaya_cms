@@ -78,8 +78,3 @@ modal-dialog:
     - core/jquery
     - core/drupal
     - core/drupalSettings
-
-anchor-link-css:
-  css:
-    base:
-      assets/css/anchor-link.css: {}
