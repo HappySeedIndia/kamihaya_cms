@@ -76,6 +76,5 @@ modal-dialog:
     assets/js/modal-dialog.js: {}
   dependencies:
     - core/jquery
-    - core/js-cookie
     - core/drupal
     - core/drupalSettings
