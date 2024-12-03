@@ -229,17 +229,6 @@ function kamihaya_cms_content_type_update_10005() {
  * Update configs.
  */
 function kamihaya_cms_content_type_update_10006() {
-  $paragraph_types = [];
-  if (!empty(ParagraphsType::load('block'))) {
-    $paragraph_types[] = 'block';
-  }
-  if (!empty(ParagraphsType::load('views'))) {
-    $paragraph_types[] = 'views';
-  }
-  if (empty($paragraph_types)) {
-    return;
-  }
-
   $content_types = [];
   if (!empty(NodeType::load('kamihaya_article'))) {
     $content_types[] = 'kamihaya_article';
@@ -254,41 +243,9 @@ function kamihaya_cms_content_type_update_10006() {
     return;
   }
 
-  foreach($content_types ?: [] as $content_type) {
-    $field_config = \Drupal::configFactory()->getEditable("field.field.node.{$content_type}.field_body");
-    if (empty($field_config)) {
-      return;
-    }
-    $dependencies = $field_config->get('dependencies.config');
-    $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
-    $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
-    $max_weight = 0;
-    foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
-      if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
-        continue;
-      }
-      $max_weight = $target_bundle['weight'];
-    }
-
-    foreach($paragraph_types ?: [] as $paragraph_type) {
-      $paragraph = "paragraphs.paragraphs_type.{$paragraph_type}";
-      if (!in_array($paragraph, $dependencies)) {
-        $dependencies[] = $paragraph;
-      }
-      if (!in_array($paragraph_type, $target_bundles)) {
-        $target_bundles[$paragraph_type] = $paragraph_type;
-      }
-      if (!in_array($paragraph_type, $target_bundles_drag_drop)) {
-        $target_bundles_drag_drop[$paragraph_type] = [
-          'enabled' => TRUE,
-          'weight' => ++$max_weight,
-        ];
-      }
-    }
-    $field_config->set('dependencies.config', $dependencies);
-    $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
-    $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
-    $field_config->save(TRUE);
+  foreach($content_types as $content_type) {
+    _kamihaya_cms_common_add_paragraph('node', $content_type, 'block', 'field_body');
+    _kamihaya_cms_common_add_paragraph('node', $content_type, 'views', 'field_body');
   }
 }
 
@@ -296,10 +253,6 @@ function kamihaya_cms_content_type_update_10006() {
  * Update configs.
  */
 function kamihaya_cms_content_type_update_10007() {
-  if (empty(ParagraphsType::load('border_box'))) {
-    return;
-  }
-
   $content_types = [];
   if (!empty(NodeType::load('kamihaya_article'))) {
     $content_types[] = 'kamihaya_article';
@@ -313,42 +266,8 @@ function kamihaya_cms_content_type_update_10007() {
   if (empty($content_types)) {
     return;
   }
-  $paragraph_type = 'border_box';
-
-  foreach($content_types ?: [] as $content_type) {
-    $field_config = \Drupal::configFactory()->getEditable("field.field.node.{$content_type}.field_body");
-    if (empty($field_config)) {
-      return;
-    }
-    $dependencies = $field_config->get('dependencies.config');
-    $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
-    $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
-    $max_weight = 0;
-    foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
-      if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
-        continue;
-      }
-      $max_weight = $target_bundle['weight'];
-    }
-
-    $paragraph = "paragraphs.paragraphs_type.{$paragraph_type}";
-    if (!in_array($paragraph, $dependencies)) {
-      $dependencies[] = $paragraph;
-    }
-    if (!in_array($paragraph_type, $target_bundles)) {
-      $target_bundles[$paragraph_type] = $paragraph_type;
-    }
-    if (!in_array($paragraph_type, $target_bundles_drag_drop)) {
-      $target_bundles_drag_drop[$paragraph_type] = [
-        'enabled' => TRUE,
-        'weight' => ++$max_weight,
-      ];
-    }
-
-    $field_config->set('dependencies.config', $dependencies);
-    $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
-    $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
-    $field_config->save(TRUE);
+  foreach($content_types as $content_type) {
+    _kamihaya_cms_common_add_paragraph('node', $content_type, 'border_box', 'field_body');
   }
 }
 
@@ -369,40 +288,32 @@ function kamihaya_cms_content_type_update_10008() {
   if (empty($content_types)) {
     return;
   }
-  $field_storage = FieldStorageConfig::loadByName('node', 'field_not_display_title');
-  if (empty($field_storage)) {
-    _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', ['field.storage.node.field_not_display_title.yml'], 'optional');
-  }
-
-  $configs = [];
-  foreach($content_types ?: [] as $content_type) {
-    $field_config = FieldConfig::loadByName('node', '$content_type', 'field_not_display_title');
-    if (empty($field_config)) {
-      $configs[] = "field.field.node.{$content_type}.field_not_display_title.yml";
-    }
-  }
-  if (empty($configs)) {
-    return;
-  }
-  _kamihaya_cms_common_change_configs('kamihaya_cms_content_type', $configs, 'optional');
-  _kamihaya_cms_common_save_translation_configs($configs, 'ja');
-
-  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-  $display_repository = \Drupal::service('entity_display.repository');
-
-  foreach($content_types ?: [] as $content_type) {
-    $form_display = $display_repository->getFormDisplay('node', $content_type);
-    $form_component = $form_display->getComponent('langcode');
-    $form_weight = !empty($form_component) ? $form_component['weight'] - 1 : $form_display->getHeighestWeight() + 1;
-    $display_repository->getFormDisplay('node', $content_type)
-      ->setComponent('field_not_display_title', [
-        'type' => 'boolean_checkbox',
-        'weight' => $form_weight,
-      ])
-      ->save();
+  foreach($content_types as $content_type) {
+    _kamihaya_cms_common_add_paragraph('node', $content_type, 'field_not_display_title', 'field_body');
   }
 }
 
+/**
+ * Update configs.
+ */
+function kamihaya_cms_content_type_update_10009() {
+  $content_types = [];
+  if (!empty(NodeType::load('kamihaya_article'))) {
+    $content_types[] = 'kamihaya_article';
+  }
+  if (!empty(NodeType::load('kamihaya_basic'))) {
+    $content_types[] = 'kamihaya_basic';
+  }
+  if (!empty(NodeType::load('kamihaya_news'))) {
+    $content_types[] = 'kamihaya_news';
+  }
+  if (empty($content_types)) {
+    return;
+  }
+  foreach($content_types as $content_type) {
+    _kamihaya_cms_common_add_paragraph('node', $content_type, 'anchor_link', 'field_body');
+  }
+}
 
 /**
  * Implements hook_update_dependencies().
@@ -414,6 +325,9 @@ function kamihaya_cms_content_type_update_dependencies() {
     ],
     10007 => [
       'kamihaya_cms_paragraph_type' => 10008,
+    ],
+    10009 => [
+      'kamihaya_cms_paragraph_type' => 10012,
     ],
   ];
   return $dependencies;

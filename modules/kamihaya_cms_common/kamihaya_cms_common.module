@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Component\Serialization\Yaml;
+use Drupal\paragraphs\Entity\ParagraphsType;
 
 /**
  * Change configs.
@@ -91,4 +92,55 @@ function _kamihaya_cms_common_load_config_file($module, $file, $path_name) {
     return [];
   }
   return Yaml::decode($file);
+}
+
+/**
+ * Add a paragraph to a field.
+ *
+ * @param string $entity_type
+ *   The entity type.
+ * @param string $bundle
+ *   The bundle.
+ * @param string $paragraph_type
+ *   The paragraph type.
+ * @param string $field
+ *   The field name.
+ */
+function _kamihaya_cms_common_add_paragraph($entity_type, $bundle, $paragraph_type, $field) {
+  if (empty(ParagraphsType::load($paragraph_type))) {
+    return;
+  }
+  $field_config = \Drupal::configFactory()->getEditable("field.field.{$entity_type}.{$bundle}.{$field}");
+  if (empty($field_config)) {
+    return;
+  }
+  $dependencies = $field_config->get('dependencies.config');
+  $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
+  $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
+  $max_weight = 0;
+  foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
+    if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
+      continue;
+    }
+    $max_weight = $target_bundle['weight'];
+  }
+
+  $paragraph = "paragraphs.paragraphs_type.{$paragraph_type}";
+  if (!in_array($paragraph, $dependencies)) {
+    $dependencies[] = $paragraph;
+  }
+  if (!in_array($paragraph_type, $target_bundles)) {
+    $target_bundles[$paragraph_type] = $paragraph_type;
+  }
+  if (!in_array($paragraph_type, $target_bundles_drag_drop)) {
+    $target_bundles_drag_drop[$paragraph_type] = [
+      'enabled' => TRUE,
+      'weight' => ++$max_weight,
+    ];
+  }
+
+  $field_config->set('dependencies.config', $dependencies);
+  $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
+  $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
+  $field_config->save(TRUE);
 }

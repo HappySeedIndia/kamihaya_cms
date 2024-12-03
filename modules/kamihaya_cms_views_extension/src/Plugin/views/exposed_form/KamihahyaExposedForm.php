@@ -244,8 +244,8 @@ class KamihahyaExposedForm extends BetterExposedFilters {
    * {@inheritdoc}
    */
   public function query() {
-    $exposed_input = $this->view->getExposedInput() ?? [];
-    $sort_by = $exposed_input['sort_by'] ?? NULL;
+    $exposed_data = $this->view->exposed_data ?? [];
+    $sort_by = $exposed_data['sort_by'] ?? NULL;
     if (empty($this->options['bef']['sort']['optimize_sort_order']) || empty($sort_by)) {
       parent::query();
       return;

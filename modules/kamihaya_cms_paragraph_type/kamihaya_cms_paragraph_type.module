@@ -99,4 +99,23 @@ function kamihaya_cms_paragraph_type_preprocess_paragraph(array &$variables) {
     $variables['#attached']['drupalSettings']['modal_dialog']['cookie_name'] = $paragraph->get('field_cookie_name')->value;
     $variables['#attached']['drupalSettings']['modal_dialog']['one_time'] = $paragraph->get('field_one_time')->value;
   }
+  if (in_array($paragraph->bundle(), ['h2_title', 'h3_title', 'h4_title']) && !empty($paragraph->get('field_anchor_link_id')->value)) {
+    if (!empty($variables['content']['field_h2_title'][0])) {
+      $variables['content']['field_h2_title'][0]['#attributes']['id'] = $paragraph->get('field_anchor_link_id')->value;
+    }
+    if (!empty($variables['content']['field_h3_title'][0])) {
+      $variables['content']['field_h3_title'][0]['#attributes']['id'] = $paragraph->get('field_anchor_link_id')->value;
+    }
+    if (!empty($variables['content']['field_h4_title'][0])) {
+      $variables['content']['field_h4_title'][0]['#attributes']['id'] = $paragraph->get('field_anchor_link_id')->value;
+    }
+  }
+  if ($paragraph->bundle() === 'anchor_link' && !empty($paragraph->get('field_link_item')) && !empty($paragraph->get('field_link_item')->getValue())) {
+    $variables['#attached']['library'][] = 'kamihaya_cms_paragraph_type/anchor-link-css';
+    $link_items = $paragraph->get('field_link_item')->getValue();
+    if (empty($variables['#attributes']['class'])) {
+      $variables['#attributes']['class'] = [];
+    }
+    $variables['attributes']['class'][] = 'links-' . count($link_items);
+  }
 }

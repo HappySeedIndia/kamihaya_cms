@@ -1,0 +1,22 @@
+.paragraph--type--anchor-link {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.5rem;
+  margin: 0 auto;
+}
+
+.paragraph--type--anchor-link.links-2 {
+  max-width: calc(var(--bs-site-max-width) * 0.5);
+}
+
+.paragraph--type--anchor-link.links-3 {
+  max-width: calc(var(--bs-site-max-width) * 0.8);
+}
+
+.paragraph--type--anchor-link .paragraph--type--link-button {
+  padding: 0;
+}
+
+.paragraph--type--anchor-link .paragraph--type--link-button a {
+  width: 100%;
+}

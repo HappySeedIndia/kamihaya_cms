@@ -118,18 +118,6 @@ class KamihayaDate extends Date {
   /**
    * {@inheritdoc}
    */
-  public function validateExposed(&$form, FormStateInterface $form_state) {
-    if (empty($this->options['exposed'])) {
-      return;
-    }
-    $identifier = $this->options['expose']['identifier'];
-    $user_input = $form_state->getUserInput();
-    $form_state->setValue($identifier, $user_input[$identifier]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function acceptExposedInput($input) {
     if (empty($this->options['exposed'])) {
       return TRUE;

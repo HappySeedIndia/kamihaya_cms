@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.h4_title.field_anchor_link_id
     - field.field.paragraph.h4_title.field_h4_title
     - paragraphs.paragraphs_type.h4_title
   module:
@@ -21,4 +22,5 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-hidden: {  }
+hidden:
+  field_anchor_link_id: true
