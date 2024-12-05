@@ -1,0 +1,49 @@
+<?php
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\node\NodeInterface;
+use Drupal\views\Entity\View;
+
+/**
+ * @file
+ * hook implementation for Content type.
+ */
+
+/**
+ * Implements hook_node_load().
+ */
+function kamihaya_cms_content_type_node_view(array &$build, NodeInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  $contents = $display->getComponents();
+  foreach ($contents as $name => $field) {
+    if (strpos($name, 'field_') !== 0) {
+      continue;
+    }
+    $field_definition = $node->getFieldDefinition($name);
+    if ($field_definition->getType() !== 'viewsreference') {
+      continue;
+    }
+    $default_value = $field_definition->getDefaultValueLiteral();
+    $value = $node->get($name)->getValue();
+    if (count($default_value) === count($value)) {
+      continue;
+    }
+    if (!empty($value)) {
+      $default_value = array_slice($default_value, count($value));
+    }
+    $entity_repository = \Drupal::service('entity.repository');
+    foreach($default_value as $item) {
+      if (empty($item) || empty($item['target_uuid']) || empty($item['display_id'])) {
+        continue;
+      }
+      /** @var \Drupal\views\ViewEntityInterface $view */
+      $view = $entity_repository->loadEntityByUuid('view', $item['target_uuid']);
+      if (empty($view) || empty($view->getDisplay($item['display_id']))) {
+        continue;
+      }
+      $item['target_id'] = $view->id();
+      $value[] = $item;
+    }
+    $node->set($name, $value);
+    $build[$name] = $node->$name->view($view_mode);
+  }
+}

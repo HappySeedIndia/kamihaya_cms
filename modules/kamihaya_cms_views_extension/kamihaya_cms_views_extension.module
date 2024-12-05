@@ -90,12 +90,13 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
  * Implements hook_query_TAG_alter().
  */
 function kamihaya_cms_views_extension_query_reduce_duplicate_term_alter(AlterableInterface $query) {
+  $field_names = ['tid', 'weight'];
   $fields = &$query->getFields();
   $order_by = &$query->getOrderBy();
   $order_by_keys = array_keys($order_by);
   $order_by_values = array_values($order_by);
   foreach($fields as $name => $field) {
-    if (strpos($name, 'parent_tid') === FALSE && $field['field'] !== 'tid' && $field['field'] !== 'weight') {
+    if (strpos($name, 'parent_tid') === FALSE && !in_array($field['field'], $field_names)) {
       continue;
     };
     if (array_key_exists($name, $order_by)) {
@@ -105,6 +106,215 @@ function kamihaya_cms_views_extension_query_reduce_duplicate_term_alter(Alterabl
       unset($order_by[$name]);
     }
     unset($fields[$name]);
+  }
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function kamihaya_cms_views_extension_query_reduce_duplicate_node_alter(AlterableInterface $query) {
+  $field_names = ['nid', 'delta'];
+  $fields = &$query->getFields();
+  $order_by = &$query->getOrderBy();
+  $order_by_keys = array_keys($order_by);
+  $order_by_values = array_values($order_by);
+  foreach($fields as $name => $field) {
+    if (!in_array($field['field'], $field_names)) {
+      continue;
+    };
+    if (array_key_exists($name, $order_by)) {
+      $index = array_search($name, $order_by_keys);
+      $order_by_keys[$index] = "{$field['table']}.{$field['field']}";
+      $order_by = array_combine($order_by_keys, $order_by_values);
+      unset($order_by[$name]);
+    }
+    unset($fields[$name]);
+  }
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function kamihaya_cms_views_extension_query_multiple_field_media_alter(AlterableInterface $query) {
+  kamihaya_cms_views_extension_query_reduce_duplicate_node_alter($query);
+  $fields = &$query->getFields();
+  $tables = &$query->getTables();
+  $conditions = &$query->conditions();
+  $order_by = &$query->getOrderBy();
+  $order_by_keys = array_keys($order_by);
+  $order_by_values = array_values($order_by);
+  $node_tables = [];
+  $duplicate_tables = [];
+  $idx = 0;
+  foreach($tables as $alias => $table) {
+    if (empty($node_tables)) {
+      $idx++;
+    }
+    if (in_array($table['table'], array_keys($duplicate_tables))) {
+      $duplicate_tables[$table['table']][] = $alias;
+      unset($tables[$alias]);
+      continue;
+    }
+    if (count(array_filter($tables, function($table) use ($alias) {
+      return $table['table'] === $alias;
+    })) > 1) {
+      $duplicate_tables[$alias] = [];
+    }
+    if ($table['table'] !== 'node_field_data') {
+      continue;
+    }
+    $table['condition'] = str_replace("$alias.", 'node_field_data.', $table['condition']);
+    $table['alias'] = 'node_field_data';
+    $node_tables[$alias] = $table;
+    unset($tables[$alias]);
+  }
+  foreach($tables as $alias => &$table) {
+    foreach(array_keys($node_tables) as $node_alias) {
+      if (empty($table['condition'])) {
+        continue;
+      }
+      if (strpos($table['condition'], "$node_alias.") !== FALSE) {
+        $table['condition'] = str_replace("$node_alias.", 'node_field_data.', $table['condition']);
+        break;
+      }
+    }
+  }
+  if (empty($node_tables)) {
+    return;
+  }
+  $condision = [];
+  $arguments = [];
+  foreach($node_tables as $alias => &$table) {
+    $condision[] = '(' . $table['condition'] . ')';
+    $arguments = array_merge($arguments, $table['arguments']);
+  }
+  $tables = array_merge(array_slice($tables, 0, $idx), [
+    'node_field_data' => [
+      'join type' => 'LEFT',
+      'table' => 'node_field_data',
+      'alias' => 'node_field_data',
+      'condition' => implode(' OR ', $condision),
+      'arguments' => $arguments,
+    ]
+    ], array_slice($tables, $idx));
+
+  foreach($fields as $name => &$field) {
+    foreach($duplicate_tables as $alias => $duplicates) {
+      if (!in_array($field['table'], $duplicates)) {
+        continue;
+      }
+      $field['table'] = $alias;
+    }
+    if (!in_array($field['table'], array_keys($node_tables))) {
+      continue;
+    }
+    $field['table'] = 'node_field_data';
+  }
+
+  foreach($conditions as &$cons0) {
+    if (!is_array($cons0) || empty($cons0['field'])) {
+      continue;
+    }
+    $con0 = &$cons0['field']->conditions();
+    foreach($con0 as &$cons1) {
+      if (!is_array($cons1) || empty($cons1['field'])) {
+        continue;
+      }
+
+      if (!is_object($cons1['field'])) {
+        foreach(array_keys($node_tables) as $node_alias) {
+          _kamihaya_cms_views_extension_update_condition($cons1, $node_alias, 'node_field_data', '.nid');
+        }
+        foreach($duplicate_tables as $alias => $duplicates) {
+          foreach($duplicates as $duplicate) {
+            _kamihaya_cms_views_extension_update_condition($cons1, $duplicate, $alias);
+          }
+        }
+        continue;
+      }
+      $con1 = &$cons1['field']->conditions();
+      foreach($con1 as &$cons2) {
+        if (!is_array($cons2) || empty($cons2['field'])) {
+          continue;
+        }
+        if (!is_object($cons2['field'])) {
+          foreach(array_keys($node_tables) as $node_alias) {
+            _kamihaya_cms_views_extension_update_condition($cons2, $node_alias, 'node_field_data', '.nid');
+          }
+          foreach($duplicate_tables as $alias => $duplicates) {
+            foreach($duplicates as $duplicate) {
+              _kamihaya_cms_views_extension_update_condition($cons2, $duplicate, $alias);
+            }
+          }
+          continue;
+        }
+        $con2 = &$cons2['field']->conditions();
+        foreach($con2 as &$cons3) {
+          if (!is_array($cons3) || empty($cons3['field'])) {
+            continue;
+          }
+          if (!is_object($cons3['field'])) {
+            foreach(array_keys($node_tables) as $node_alias) {
+              _kamihaya_cms_views_extension_update_condition($cons3, $node_alias, 'node_field_data', '.nid');
+            }
+            foreach($duplicate_tables as $alias => $duplicates) {
+              foreach($duplicates as $duplicate) {
+                _kamihaya_cms_views_extension_update_condition($cons3, $duplicate, $alias);
+              }
+            }
+            continue;
+          }
+        }
+      }
+    }
+  }
+  foreach($order_by as $name => $order) {
+    foreach(array_keys($node_tables) as $node_alias) {
+      if (strpos($name, "$node_alias.") === 0) {
+        $index = array_search($name, $order_by_keys);
+        $order_by_keys[$index] = str_replace("$node_alias.", 'node_field_data-', $name);
+        continue 2;
+      }
+    }
+    foreach($duplicate_tables as $alias => $duplicates) {
+      foreach($duplicates as $duplicate) {
+        if (strpos($name, "$duplicate.") !== FALSE) {
+          $index = array_search($name, $order_by_keys);
+          $order_by_keys[$index] = str_replace("$duplicate.", "{$alias}-", $name);
+          continue 3;
+        }
+      }
+    }
+  }
+  $order_by = array_combine($order_by_keys, $order_by_values);
+  foreach($order_by as $name => $order) {
+    if (strpos($name, 'delta') === FALSE && strpos($name, 'weight') === FALSE) {
+      continue;
+    }
+    $field_name = str_replace('-', '.', $name);
+    $value = '-2147483648';
+    if ($order === 'ASC') {
+      $value = '2147483647';
+    }
+    $query->addExpression("CASE WHEN $field_name IS NULL THEN $value ELSE $field_name END", $name);
+  }
+}
+
+function _kamihaya_cms_views_extension_update_condition(array &$condition, $alias, $replace, $field = NULL) {
+  if (strpos($condition['field'], "$alias.") !== FALSE) {
+    $condition['field'] = str_replace("$alias.", "$replace.", $condition['field']);
+  }
+  if (!empty($field) && strpos($condition['field'], $field) === 0) {
+    $condition['field'] = $replace . $condition['field'];
+  }
+  if (is_array($condition['value']) || empty($condition['value'])) {
+    return;
+  }
+  if (strpos($condition['value'], "$alias.") !== FALSE) {
+    $condition['value'] = str_replace("$alias.", "$replace.", $condition['value']);
+  }
+  if (!empty($field) && strpos($condition['value'], $field) === 0) {
+    $condition['value'] = $alias . $condition['value'];
   }
 }
 

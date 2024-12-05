@@ -390,7 +390,10 @@ function kamihaya_digitalagency_preprocess_block(array &$variables) {
     $display_repository = \Drupal::service('entity_display.repository');
     if (!empty($field = $display_repository->getViewDisplay($entity->getEntityTypeId(), $entity->bundle())->getThirdPartySetting('ds', 'fields')) && !empty($field['node_title'])) {
       // Hide title if title fiels is displayed in the layout.
-      $variables['content']['#access'] = FALSE;
+      if (empty($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [];
+      }
+      $variables['attributes']['class'][] = 'pc-hidden';
       return;
     }
 
