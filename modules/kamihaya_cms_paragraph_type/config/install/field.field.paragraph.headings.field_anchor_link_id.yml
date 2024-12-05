@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_anchor_link_id
+    - paragraphs.paragraphs_type.headings
+id: paragraph.headings.field_anchor_link_id
+field_name: field_anchor_link_id
+entity_type: paragraph
+bundle: headings
+label: 'Anchor link ID'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

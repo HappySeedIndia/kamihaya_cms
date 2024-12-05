@@ -2,108 +2,26 @@
 
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\block_content\Entity\BlockContentType;
-use Drupal\paragraphs\Entity\ParagraphsType;
 
 /**
  * Update configs.
  */
 function kamihaya_cms_block_type_update_10001() {
-  $paragraph_types = [];
-  if (!empty(ParagraphsType::load('block'))) {
-    $paragraph_types[] = 'block';
-  }
-  if (!empty(ParagraphsType::load('views'))) {
-    $paragraph_types[] = 'views';
-  }
-  if (empty($paragraph_types)) {
-    return;
-  }
-
   if (empty(BlockContentType::load('kamihaya_block'))) {
     return;
   }
-
-  $field_config = \Drupal::configFactory()->getEditable("field.field.block_content.kamihaya_block.field_body");
-  if (empty($field_config)) {
-    return;
-  }
-  $dependencies = $field_config->get('dependencies.config');
-  $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
-  $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
-  $max_weight = 0;
-  foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
-    if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
-      continue;
-    }
-    $max_weight = $target_bundle['weight'];
-  }
-
-  foreach($paragraph_types ?: [] as $paragraph_type) {
-    $paragraph = "paragraphs.paragraphs_type.{$paragraph_type}";
-    if (!in_array($paragraph, $dependencies)) {
-      $dependencies[] = $paragraph;
-    }
-    if (!in_array($paragraph_type, $target_bundles)) {
-      $target_bundles[$paragraph_type] = $paragraph_type;
-    }
-    if (!in_array($paragraph_type, $target_bundles_drag_drop)) {
-      $target_bundles_drag_drop[$paragraph_type] = [
-        'enabled' => TRUE,
-        'weight' => ++$max_weight,
-      ];
-    }
-  }
-  $field_config->set('dependencies.config', $dependencies);
-  $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
-  $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
-  $field_config->save(TRUE);
+  _kamihaya_cms_common_add_paragraph('block_content', 'kamihaya_block', 'block', 'field_body');
+  _kamihaya_cms_common_add_paragraph('block_content', 'kamihaya_block', 'views', 'field_body');
 }
 
 /**
  * Update configs.
  */
 function kamihaya_cms_block_type_update_10002() {
-  if (empty(ParagraphsType::load('border_box'))) {
-    return;
-  }
   if (empty(BlockContentType::load('kamihaya_block'))) {
     return;
   }
-  $paragraph_type = 'border_box';
-
-  $field_config = \Drupal::configFactory()->getEditable("field.field.block_content.kamihaya_block.field_body");
-  if (empty($field_config)) {
-    return;
-  }
-  $dependencies = $field_config->get('dependencies.config');
-  $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
-  $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
-  $max_weight = 0;
-  foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
-    if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
-      continue;
-    }
-    $max_weight = $target_bundle['weight'];
-  }
-
-  $paragraph = "paragraphs.paragraphs_type.{$paragraph_type}";
-  if (!in_array($paragraph, $dependencies)) {
-    $dependencies[] = $paragraph;
-  }
-  if (!in_array($paragraph_type, $target_bundles)) {
-    $target_bundles[$paragraph_type] = $paragraph_type;
-  }
-  if (!in_array($paragraph_type, $target_bundles_drag_drop)) {
-    $target_bundles_drag_drop[$paragraph_type] = [
-      'enabled' => TRUE,
-      'weight' => ++$max_weight,
-    ];
-  }
-
-  $field_config->set('dependencies.config', $dependencies);
-  $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
-  $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
-  $field_config->save(TRUE);
+  _kamihaya_cms_common_add_paragraph('block_content', 'kamihaya_block', 'border_box', 'field_body');
 }
 
 /**
@@ -134,6 +52,13 @@ function kamihaya_cms_block_type_update_10003() {
 }
 
 /**
+ * Update configs.
+ */
+function kamihaya_cms_block_type_update_10004() {
+  _kamihaya_cms_common_add_paragraph('block_content', 'kamihaya_block', 'anchor_link', 'field_body');
+}
+
+/**
  * Implements hook_update_dependencies().
  */
 function kamihaya_cms_block_type_update_dependencies() {
@@ -143,6 +68,9 @@ function kamihaya_cms_block_type_update_dependencies() {
     ],
     10002 => [
       'kamihaya_cms_paragraph_type' => 10008,
+    ],
+    10004 => [
+      'kamihaya_cms_paragraph_type' => 10012,
     ],
   ];
   return $dependencies;

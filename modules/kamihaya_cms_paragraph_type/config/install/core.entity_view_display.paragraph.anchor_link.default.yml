@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.anchor_link.field_link_item
+    - paragraphs.paragraphs_type.anchor_link
+  module:
+    - entity_reference_revisions
+id: paragraph.anchor_link.default
+targetEntityType: paragraph
+bundle: anchor_link
+mode: default
+content:
+  field_link_item:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

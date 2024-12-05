@@ -79,10 +79,15 @@
       {% set titleColor = '(rgba(0,0,0,1))' %}
     {% endif %}
 
+    {# Anchoe link ID #}
+    {% if content.field_anchor_link_id|render %}
+      {% set anchorLinkID = content.field_anchor_link_id|render|striptags|trim %}
+    {% endif %}
+
     {# Heading Text #}
     {% if headingTag|render and content.field_title_text|render %}
     <div class="title-{{ headingStyle }}">
-      <{{ headingTag }} style="color: {{ titleColor }};">
+      <{{ headingTag }} style="color: {{ titleColor }};"{% if anchorLinkID %} id="{{ anchorLinkID }}"{% endif %}>
         {{ content.field_title_text.0 }}
       </{{ headingTag }}>
     </div>

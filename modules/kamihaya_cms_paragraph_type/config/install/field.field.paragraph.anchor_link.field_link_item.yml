@@ -1,0 +1,117 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_link_item
+    - paragraphs.paragraphs_type.anchor_link
+    - paragraphs.paragraphs_type.link_button
+  module:
+    - entity_reference_revisions
+id: paragraph.anchor_link.field_link_item
+field_name: field_link_item
+entity_type: paragraph
+bundle: anchor_link
+label: 'Link item'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      link_button: link_button
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: -60
+        enabled: false
+      accordion_item:
+        weight: -59
+        enabled: false
+      anchor_link:
+        weight: -58
+        enabled: false
+      block:
+        weight: -57
+        enabled: false
+      border_box:
+        weight: -56
+        enabled: false
+      border_box_item:
+        weight: -55
+        enabled: false
+      divider:
+        weight: -54
+        enabled: false
+      drawer:
+        weight: -53
+        enabled: false
+      embed_tag:
+        weight: -52
+        enabled: false
+      featured_content:
+        weight: -51
+        enabled: false
+      file_download:
+        weight: -50
+        enabled: false
+      h2_title:
+        weight: -49
+        enabled: false
+      h3_title:
+        weight: -48
+        enabled: false
+      h4_title:
+        weight: -47
+        enabled: false
+      headings:
+        weight: -46
+        enabled: false
+      image:
+        weight: -45
+        enabled: false
+      image_link:
+        weight: -44
+        enabled: false
+      layout_paragraph:
+        weight: -43
+        enabled: false
+      left_image_text:
+        weight: -42
+        enabled: false
+      link_button:
+        weight: -61
+        enabled: true
+      modal_dialog:
+        weight: -41
+        enabled: false
+      q_a:
+        weight: -40
+        enabled: false
+      right_image_text:
+        weight: -39
+        enabled: false
+      slider:
+        weight: -38
+        enabled: false
+      slider_item:
+        weight: -37
+        enabled: false
+      two_col_table:
+        weight: -36
+        enabled: false
+      two_col_table_row:
+        weight: -35
+        enabled: false
+      video:
+        weight: -34
+        enabled: false
+      views:
+        weight: -33
+        enabled: false
+      wysiwyg_editor:
+        weight: -32
+        enabled: false
+field_type: entity_reference_revisions

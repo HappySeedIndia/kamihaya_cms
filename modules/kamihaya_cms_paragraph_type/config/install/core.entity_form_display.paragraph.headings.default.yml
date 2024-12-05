@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.headings.field_align
+    - field.field.paragraph.headings.field_anchor_link_id
     - field.field.paragraph.headings.field_color
     - field.field.paragraph.headings.field_style
     - field.field.paragraph.headings.field_title_tag
@@ -17,9 +18,17 @@ mode: default
 content:
   field_align:
     type: options_select
-    weight: 16
+    weight: 5
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_anchor_link_id:
+    type: string_textfield
+    weight: 6
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   field_color:
     type: color_field_widget_spectrum
@@ -56,7 +65,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 10
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }

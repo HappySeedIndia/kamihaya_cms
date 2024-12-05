@@ -92,47 +92,17 @@ function kamihaya_cms_commerce_update_10003() {
  * Update configs.
  */
 function kamihaya_cms_commerce_update_10004() {
-  if (empty(ParagraphsType::load('border_box'))) {
-    return;
-  }
   if (empty(ProductType::load('default'))) {
     return;
   }
-  $paragraph_type = 'border_box';
+  _kamihaya_cms_common_add_paragraph('commerce_product', 'default', 'border_box', 'field_body');
+}
 
-  $field_config = \Drupal::configFactory()->getEditable("field.field.commerce_product.default.field_body");
-  if (empty($field_config)) {
-    return;
-  }
-  $dependencies = $field_config->get('dependencies.config');
-  $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
-  $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
-  $max_weight = 0;
-  foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
-    if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
-      continue;
-    }
-    $max_weight = $target_bundle['weight'];
-  }
-
-  $paragraph = "paragraphs.paragraphs_type.{$paragraph_type}";
-  if (!in_array($paragraph, $dependencies)) {
-    $dependencies[] = $paragraph;
-  }
-  if (!in_array($paragraph_type, $target_bundles)) {
-    $target_bundles[$paragraph_type] = $paragraph_type;
-  }
-  if (!in_array($paragraph_type, $target_bundles_drag_drop)) {
-    $target_bundles_drag_drop[$paragraph_type] = [
-      'enabled' => TRUE,
-      'weight' => ++$max_weight,
-    ];
-  }
-
-  $field_config->set('dependencies.config', $dependencies);
-  $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
-  $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
-  $field_config->save(TRUE);
+/**
+ * Update configs.
+ */
+function kamihaya_cms_commerce_update_10005() {
+  _kamihaya_cms_common_add_paragraph('commerce_product', 'default', 'anchor_link', 'field_body');
 }
 
 /**
@@ -142,6 +112,9 @@ function kkamihaya_cms_commerce_update_dependencies() {
   $dependencies['kamihaya_cms_commerce'] = [
     10004 => [
       'kamihaya_cms_paragraph_type' => 10008,
+    ],
+    10005 => [
+      'kamihaya_cms_paragraph_type' => 10012,
     ],
   ];
   return $dependencies;
