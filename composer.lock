@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e2f501418bd11931e3c2a0e49e97a41",
+    "content-hash": "f0689e01b20696f64bee8fdfbab5a7fe",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2657,6 +2657,70 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/color_field",
                 "issues": "https://www.drupal.org/project/issues/color_field?version=8.x"
+            }
+        },
+        {
+            "name": "drupal/colorbox",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/colorbox.git",
+                "reference": "2.1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/colorbox-2.1.1.zip",
+                "reference": "2.1.1",
+                "shasum": "59f2fc48ba12ebc91293f7d33138ae6a7761b4b1"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10 || ^11"
+            },
+            "suggest": {
+                "jackmoore/colorbox": "The Colorbox library is required to use the drupal/colorbox module."
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.1.1",
+                    "datestamp": "1723487172",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9 || ^10 || ^11"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Paul McKibben",
+                    "homepage": "https://www.drupal.org/u/paulmckibben",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Neslee Canil Pinto",
+                    "homepage": "https://www.drupal.org/u/neslee-canil-pinto",
+                    "role": "Former Maintainer"
+                },
+                {
+                    "name": "Fredrik Jonsson",
+                    "homepage": "https://www.drupal.org/u/frjo",
+                    "role": "Former Maintainer"
+                }
+            ],
+            "description": "A light-weight, customizable lightbox plugin for jQuery.",
+            "homepage": "https://www.drupal.org/project/colorbox",
+            "support": {
+                "source": "https://git.drupalcode.org/project/colorbox",
+                "issues": "https://www.drupal.org/project/issues/colorbox"
             }
         },
         {

@@ -112,6 +112,7 @@
         "drupal/ckeditor_bs_grid": "^2.0",
         "drupal/cloud": "^7.0",
         "drupal/color_field": "^3.0",
+        "drupal/colorbox": "^2.1",
         "drupal/colorbutton": "^1.5",
         "drupal/commerce": "^2.40",
         "drupal/content_access": "^2.0",
