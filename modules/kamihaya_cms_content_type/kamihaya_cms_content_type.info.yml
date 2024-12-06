@@ -6,6 +6,7 @@ description: 'Kamihaya content type for Kamihaya CMS.'
 
 dependencies:
   - drupal:entity_reference_revisions
+  - drupal:layout_discovery
   - drupal:node
   - drupal:taxonomy
   - drupal:views
@@ -15,6 +16,7 @@ dependencies:
   - pathauto:pathauto
   - scheduler:scheduler
   - shs:shs
+  - viewsreference:viewsreference
   - kamihaya_cms_common:kamihaya_cms_common
   - kamihaya_cms_media_type:kamihaya_cms_media_type
   - kamihaya_cms_paragraph_type:kamihaya_cms_paragraph_type

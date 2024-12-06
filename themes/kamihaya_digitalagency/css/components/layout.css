@@ -8,3 +8,26 @@
     padding-left: 10px;
   }
 }
+
+@media screen and (max-width: 767px) {
+  .ds-2col-stacked > .group-left,
+  .ds-2col-stacked>.group-right {
+    width: 100%;
+    float: none;
+  }
+}
+
+/** Title */
+.pc-hidden .page-title {
+  display: none;
+}
+
+@media screen and (max-width: 767px) {
+  .pc-hidden .page-title {
+    display: block;
+  }
+
+  .sp-hidden.h1 {
+    display: none;
+  }
+}

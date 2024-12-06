@@ -698,6 +698,7 @@ progress {
 .img-fluid {
   max-width: 100%;
   height: auto;
+  margin: 0 auto;
 }
 
 .img-thumbnail {
@@ -4245,9 +4246,11 @@ textarea.form-control-lg {
   .navbar-expand-lg .tbm-nav {
     flex-direction: row;
   }
-  .navbar-expand-lg .navbar-nav .nav-link, .navbar-expand-lg .navbar-nav .media-library-view--widget .view-header a, .media-library-view--widget .view-header .navbar-expand-lg .navbar-nav a {
-    padding-right: var(--bs-navbar-nav-link-padding-x);
-    padding-left: var(--bs-navbar-nav-link-padding-x);
+  .navbar-expand-lg .navbar-nav .nav-link,
+  .navbar-expand-lg .navbar-nav .media-library-view--widget .view-header a,
+  .media-library-view--widget .view-header .navbar-expand-lg .navbar-nav a {
+    padding-right: calc(var(--bs-navbar-nav-link-padding-x) * 3);
+    padding-left: calc(var(--bs-navbar-nav-link-padding-x) * 3);
   }
   .navbar-expand-lg .navbar-nav-scroll {
     overflow: visible;
@@ -5692,6 +5695,10 @@ footer .navbar-nav a.is-active {
   border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
   border-radius: var(--bs-modal-border-radius);
   outline: 0;
+}
+
+.modal-content.hidden {
+  display: none;
 }
 
 .modal-backdrop {
