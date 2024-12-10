@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\kamihaya_digitalagency\KamihayaSettingsManager;
@@ -167,6 +168,17 @@ function kamihaya_digitalagency_preprocess_node(array &$variables) {
     $variables['show_post_date'] = theme_get_setting('teaser_show_post_date');
     $variables['show_author_info'] = theme_get_setting('teaser_show_author_info');
   }
+}
+
+/**
+ * Implements hook_preprocess_layout().
+ */
+function kamihaya_digitalagency_preprocess_layout(array &$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if (empty($node)) {
+    return;
+  }
+  $variables['#attached']['library'][] = 'kamihaya_digitalagency/node';
 }
 
  /**
@@ -339,39 +351,17 @@ function kamihaya_digitalagency_preprocess_page(array &$variables) {
 /**
  * Implements hook_preprocess_field().
  */
-function old_kamihaya_digitalagency_preprocess_field(&$variables, $hook) {
-  $name = $variables['element']['#field_name'];
-
-  if ($variables['element']['#object']->getEntityTypeId() === 'node') {
-    $node = $variables['element']['#object'];
-  }
-
-  if (isset($node) && $name === "field_required_skill" || $name === "field_welcome_skill") {
-    $current_user = User::load(Drupal::currentUser()->id());
-    $skill_paragraphs = $current_user->get('field_skill')->referencedEntities();
-    $target_ids = [];
-    foreach($skill_paragraphs as $paragraph) {
-      if (empty($paragraph->get('field_skill')->target_id)) {
-        continue;
-      }
-      $target_ids[] = $paragraph->get('field_skill')->target_id;
-    }
-    if (empty($target_ids)) {
-      return;
-    }
-    $terms = Term::loadMultiple($target_ids);
-    $skils = [];
-    foreach ($terms as $terms) {
-      $skils[] = $terms->label();
-    }
-    foreach ($variables['items'] as &$item) {
-      if (empty($item['content']['#plain_text']) || empty($item['attributes']) || !in_array($item['content']['#plain_text'], $skils)) {
-        continue;
-      }
-      $item['attributes']->addClass('matching-skill');
-    }
+function kamihaya_digitalagency_preprocess_field(&$variables, $hook) {
+  if (!empty($variables['field_type']
+    && $variables['field_type'] === 'color_field_type')
+    && !empty($variables['element']['#formatter'])
+    && $variables['element']['#formatter'] === 'color_field_formatter_swatch'
+    && !empty($variables['element'][0]['#attributes'])) {
+    $entity = $variables['element']['#object'];
+    $variables['element'][0]['#attributes']->setAttribute('title', $entity->label());
   }
 }
+
 
  /**
  * Implements hook_preprocess_block().
@@ -407,6 +397,18 @@ function kamihaya_digitalagency_preprocess_block(array &$variables) {
   }
 }
 
+ /**
+ * Implements hook_preprocess_block().
+ */
+function kamihaya_digitalagency_preprocess_file_link(array &$variables) {
+  if (!empty($variables['file_size']) && !empty($variables['link']['#title'])) {
+    $file_size = $variables['file_size'];
+    $link_title = $variables['link']['#title'];
+    $variables['link']['#title'] = Markup::create("{$link_title} [{$file_size}]");
+    $variables['file_size'] = '';
+  }
+}
+
 /**
  * Implements hook_page_attachments_alter().
  */
@@ -434,6 +436,9 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
   if (theme_get_setting('b5_body_bg_schema') === 'custom') {
     if (!empty(theme_get_setting('b5_body_bg_schema_custom'))) {
       $css_vars[':root']['--bs-body-bg'] = theme_get_setting('b5_body_bg_schema_custom');
+    }
+    if (!empty(theme_get_setting('b5_body_light_bg_schema_custom'))) {
+      $css_vars[':root']['--bs-light'] = theme_get_setting('b5_body_light_bg_schema_custom');
     }
     if (!empty(theme_get_setting('b5_body_secondary_bg_schema_custom'))) {
       $css_vars[':root']['--bs-secondary-bg'] = theme_get_setting('b5_body_secondary_bg_schema_custom');
@@ -671,7 +676,7 @@ function kamihaya_digitalagency_create_css_custom_vars(array $css_vars) : string
     $vars = [];
     foreach ($values as $key => $value) {
       $vars[] = "$key: $value !important;";
-      if (strpos($key, 'color') === FALSE && str_ends_with($key, 'bg') === FALSE) {
+      if (strpos($value, '#') === FALSE || strlen($value) !== 7 || !is_numeric(hexdec(substr($value, 1)))) {
         continue;
       }
 
