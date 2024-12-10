@@ -18,19 +18,18 @@
   padding-left: inherit;
   background-position: right center;
 }
-.file-download .file:before {
+.file-download .file:before,
+.file.file--application-pdf:before {
   content: '**';
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  color: inherit;
+  color: var(--bs-body-color);
   font-style: normal;
   font-variant: normal;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
-  font-family: "Font Awesome 5 Free";
+  font-family: "Font Awesome 6 Pro";
   font-weight: 900;
-  padding-right: 10px;
+  margin-right: 0.5rem;
 }
 
 .file-download .file--general,
@@ -75,4 +74,11 @@
 }
 .file-download .file--image:before {
   content: '\f1c5';
+}
+.file.file--application-pdf {
+  background-image: none;
+}
+.file.file--application-pdf:before {
+  content: '\f1c1';
+  font-weight: 400;
 }

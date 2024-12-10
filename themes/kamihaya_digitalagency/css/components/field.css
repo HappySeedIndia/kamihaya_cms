@@ -10,3 +10,15 @@
   background-color: #50851f;
   color: #ffffff;
 }
+
+.field--label-inline {
+  display: flex;
+  gap: 0 1rem;
+  flex-wrap: wrap;
+}
+
+.field--label-inline .field__items {
+  display: flex;
+  gap: 0 1rem;
+  flex-wrap: wrap;
+}

@@ -127,6 +127,15 @@ class KamihayaSettingsManager extends SettingsManager {
       '#description' => $this->t("Custom background color of the body."),
     ];
 
+    $form['body_details']['body_schema_custom_bg']['b5_body_light_bg_schema_custom'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 7,
+      '#size' => 7,
+      '#title' => $this->t('Body custom light background:'),
+      '#default_value' => theme_get_setting('b5_body_light_bg_schema_custom'),
+      '#description' => $this->t("Custom light background color of the body."),
+    ];
+
     $form['body_details']['body_schema_custom_bg']['b5_body_secondary_bg_schema_custom'] = [
       '#type' => 'textfield',
       '#maxlength' => 7,

@@ -492,7 +492,7 @@ html[lang='ja'] .form-required:after {
   --bs-table-border-color: #D8D8DB;
 }
 
-.table> :not(caption)>*>* {
+.table > :not(caption) > * > * {
   padding: 1rem 1rem;
   background-color: var(--bs-table-bg-white);
 }
@@ -501,6 +501,169 @@ html[lang='ja'] .form-required:after {
   background-color: var(--bs-table-bg);
   font-weight: 400;
   vertical-align: middle;
+}
+
+.table td a {
+  text-decoration: none;
+  color: var(--bs-body-color)
+}
+
+.table-bordered.bd-row-light tr,
+.table-bordered.bd-dark.bd-row-light tr {
+  --bs-table-border-color: #e6e5e5;
+}
+
+.table-bordered.bd-dark tr,
+.table-bordered.bd-dark.bd-row-light tr:first-child,
+.table-bordered.bd-dark.bd-row-light tr:last-child {
+  --bs-table-border-color: #484848;
+}
+
+.table-bordered.bd-dark.bd-row-light tr:first-child {
+  border-bottom-width: 0;
+}
+
+.table.no-row-border tr,
+.table.no-row-border th,
+.table.no-row-border td {
+  border-width: 0;
+}
+
+.table-bordered.no-row-border tr:first-child th,
+.table-bordered.no-row-border tr:first-child td {
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.table-bordered.no-row-border tr:last-child th,
+.table-bordered.no-row-border tr:last-child td {
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+}
+
+.table.no-col-border tr > *:first-child {
+  padding-left: 2em;
+}
+
+.table.no-col-border tr > *:last-child {
+  padding-right: 2rem;
+}
+
+.table-bordered.no-row-border tr:first-child {
+  border-top-width: var(--bs-border-width);
+}
+
+.table-bordered.no-row-border tr:last-child {
+  border-bottom-width: var(--bs-border-width);
+}
+
+.table-bordered.no-col-border th,
+.table-bordered.no-col-border td {
+  border-width: 0;
+}
+
+.table.no-th-bg th {
+  background-color: transparent;
+  font-weight: bold;
+}
+
+.table.no-th tr > td:first-child {
+  padding-left: 2rem;
+}
+
+.table.no-th td,
+.table.no-th td .file {
+  width: 100%;
+}
+
+.table.td-file td {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.table.td-file td > * {
+  width: 100%;
+}
+
+.table.no-th td .file {
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+}
+
+.table.td-file td .file:before {
+  font-size: 1.5rem;
+}
+
+.table.td-file td .file.file--application-pdf a {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.table.td-file td .file.file--application-pdf:before {
+  display: none;
+}
+
+.table.td-file td .file.file--application-pdf a:before,
+.table.td-file td .file.file--application-pdf a:after {
+  font-family:'Font Awesome 6 Pro';
+  font-weight: 900;
+  font-size: 1.5rem;
+}
+
+.table.td-file td .file.file--application-pdf a:before {
+  content: '\f1c1';
+  font-weight: 400;
+  margin-right: 0.5rem;
+}
+
+.table.td-file td .field--type-entity-reference.field--label-inline {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  align-content: revert;
+  flex-direction: row-reverse;
+}
+
+.table.td-file td .field--type-entity-reference.field--label-inline .field__label:after {
+  content: '';
+}
+
+.table.no-th td .file.file--application-pdf a:after {
+  content: '\f019';
+  position: absolute;
+  right: 0;
+}
+
+.table tr.type-entity-reference td {
+  display: flex;
+  gap: 0.5rem;;
+}
+
+.table tr.type-entity-reference td .layout,
+.table tr.type-entity-reference td .layout .layout__region {
+  display: flex;
+}
+
+.table.w-th-20 th {
+  width: 20%;;
+}
+
+.table.w-th-25 th {
+  width: 25%;
+}
+
+.table.w-th-30 th {
+  width: 30%;
+}
+
+.table.w-th-40 th {
+  width: 40%;
+}
+
+.table.w-th-50 th {
+  width: 50%;
 }
 
 /* Pager */
@@ -1177,6 +1340,9 @@ h2.accordion-header::after {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+.expand-collapse .ec-content {
+  word-break: break-all;
 }
 
 .expand-collapse a {

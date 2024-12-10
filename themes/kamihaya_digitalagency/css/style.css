@@ -1845,6 +1845,13 @@ progress {
     --bs-gutter-y: 3rem;
   }
 }
+.table,
+.table tr,
+.table th,
+.table td {
+  --bs-table-border-color: var(--bs-border-color);
+  border-color: var(--bs-table-border-color);
+}
 .table {
   --bs-table-color-type: initial;
   --bs-table-bg-type: initial;
@@ -1852,7 +1859,6 @@ progress {
   --bs-table-bg-state: initial;
   --bs-table-color: var(--bs-body-color);
   --bs-table-bg: var(--bs-body-bg);
-  --bs-table-border-color: var(--bs-border-color);
   --bs-table-accent-bg: transparent;
   --bs-table-striped-color: var(--bs-body-color);
   --bs-table-striped-bg: #f9f9f9;
@@ -3986,7 +3992,7 @@ textarea.form-control-lg {
   --bs-navbar-link-hover-color-rgb: var(--bs-link-hover-color-rgb);
   --bs-navbar-link-active-color: var(--bs-link-hover-color);
   --bs-navbar-link-active-color-rgb: var(--bs-link-hover-color-rgb);
-  --bs-navbar-bg: var(--bs-body-bg);
+  --bs-navbar-bg: transparent;
   --bs-navbar-bg-rgb: var(--bs-body-bg-rgb);
   --bs-navbar-secondary-bg: var(--bs-secondary-bg);
   --bs-navbar-secondary-bg-rgb: var(--bs-secondary-bg-rgb);
