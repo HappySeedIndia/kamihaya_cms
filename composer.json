@@ -175,6 +175,7 @@
         "drupal/viewsreference": "^2.0@beta",
         "drupal/webform": "^6.2",
         "drupal/webform_mautic": "^2.0",
+        "drupal/webp": "^1.0@RC",
         "drupal/xmlsitemap": "^1.5",
         "npm-asset/jquery": "^2.2"
     }
