@@ -12,13 +12,6 @@ use Drupal\views\Entity\View;
  */
 
 /**
- * Implements hook_preprocess_node().
- */
-function kamihaya_cms_content_type_preprocess_node(array &$variables) {
-  dpm($variables);
-}
-
-/**
  * Implements hook_preprocess_layout().
  */
 function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
