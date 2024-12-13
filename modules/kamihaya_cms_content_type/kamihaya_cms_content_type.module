@@ -1,6 +1,8 @@
 <?php
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Url;
+use Drupal\node\Entity\NodeType;
 use Drupal\node\NodeInterface;
 use Drupal\views\Entity\View;
 
@@ -8,6 +10,42 @@ use Drupal\views\Entity\View;
  * @file
  * hook implementation for Content type.
  */
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function kamihaya_cms_content_type_preprocess_node(array &$variables) {
+  dpm($variables);
+}
+
+/**
+ * Implements hook_preprocess_layout().
+ */
+function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
+  $links = [];
+  $anchor_links = [];
+  foreach($variables['content'] as $name => &$element) {
+    if ($name === 'anchor_links') {
+      $anchor_links = &$element;
+    }
+    if (is_array($element) && array_key_exists('anchor_links', $element)) {
+      $anchor_links = &$element['anchor_links'];
+    }
+    if (strpos($name, 'group_') !== 0 || empty($element['#id']) || empty($element['#title'])) {
+      continue;
+    }
+    $links[$element['#id']] = [
+      'title' => $element['#title'],
+      'url' => Url::fromUserInput("#{$element['#id']}"),
+    ];
+  }
+  if (empty($links) || empty($anchor_links)) {
+    return;
+  }
+  $anchor_links['#links'] = $links;
+  $anchor_links['#attributes']['class'] = ['anchor-links'];
+  $variables['content']['anchor_links'] = $anchor_links;
+}
 
 /**
  * Implements hook_node_load().
@@ -46,4 +84,28 @@ function kamihaya_cms_content_type_node_view(array &$build, NodeInterface $node,
     $node->set($name, $value);
     $build[$name] = $node->$name->view($view_mode);
   }
+  if (!in_array('anchor_links', array_keys($contents))) {
+    return;
+  }
+  $build['anchor_links'] = [
+    '#theme' => 'links',
+  ];
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function kamihaya_cms_content_type_entity_extra_field_info() {
+  $extra = [];
+  $description = t('Kamihaya cms content type module element');
+  foreach (NodeType::loadMultiple() as $bundle) {
+    $extra['node'][$bundle->id()]['display']['anchor_links'] = [
+      'label' => t('Anchor links'),
+      'description' => $description,
+      'weight' => 100,
+      'visible' => TRUE,
+    ];
+  }
+
+  return $extra;
 }
