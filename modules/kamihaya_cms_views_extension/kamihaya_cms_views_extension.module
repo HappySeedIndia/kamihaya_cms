@@ -455,3 +455,39 @@ function kamihaya_cms_views_extension_views_plugins_exposed_form_alter(array &$p
     $plugins['bef']['class'] = $plugins['kamihaya_exposed_form']['class'];
   }
 }
+
+/**
+ * Implements hook_preprocess_views_view_table().
+ */
+function kamihaya_cms_views_extension_preprocess_views_view_field(&$variables) {
+  $view = $variables['view'];
+  $row = $variables['row'];
+  if ($variables['field']->field === 'link_flag') {
+   // dpm(array_keys($variables));
+   // dpm($variables['output']);
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view_table().
+ */
+function kamihaya_cms_views_extension_preprocess_flag(&$variables) {
+  $route = Drupal::routeMatch()->getRouteName();
+  if (strpos($route, 'view.') !== 0) {
+    return;
+  }
+  $array = explode('.', $route);
+  if (count($array) < 3) {
+    return;
+  }
+  $view = Views::getView($array[1]);
+  $view->setDisplay($array[2]);
+  $display = $view->display_handler;
+  if ($display->ajaxEnabled()) {
+    return;
+  }
+  if (empty($variables['attributes']['class']) || $idx = array_search('use-ajax', $variables['attributes']['class'])) {
+    return;
+  }
+  unset($variables['attributes']['class'][$idx]);
+}
