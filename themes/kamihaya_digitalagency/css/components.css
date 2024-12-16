@@ -1175,7 +1175,7 @@ h2.accordion-header::after {
 /** Flag */
 .flag {
   position: absolute;
-  right: 0;
+  right: 5px;
 }
 .flag a {
   font-size: 1.3rem;
