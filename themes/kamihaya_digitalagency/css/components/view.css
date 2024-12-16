@@ -276,7 +276,7 @@
 .views-view-grid .views-col {
   border: 1px solid #8f8f8f;
   border-radius: 5px;
-  padding: 8px 5px;
+  padding: 8px;
   font-size: 0.9rem;
   width: 100%;
   position: relative;
@@ -398,6 +398,25 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0 0.5rem;
+}
+
+.views-view-grid .views-field h2 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  word-break: break-all;
+}
+
+.views-view-grid .views-field h2:after {
+  display: none;
+}
+
+.views-view-grid .views-field .flag {
+  position: static;
+}
+
+.views-view-grid .views-field .bg-gray {
+  background-color: #e6e5e5;
 }
 
 .view .view-content .table-responsive {
@@ -943,4 +962,32 @@
   .view-content .owl-carousel .owl-nav button span {
     font-size: 3rem;
   }
+}
+
+.region-after-header .views-exposed-form {
+  background-color: var(--bs-secondary-bg);
+}
+
+.region-after-header .views-exposed-form .form--inline {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 1rem 0.5rem 0;
+}
+
+.region-after-header .views-exposed-form .form--inline label {
+  display: none;
+}
+
+.region-after-header .views-exposed-form .form--inline .text-button,
+.region-after-header .views-exposed-form .form--inline .form-item,
+.region-after-header .views-exposed-form .text-button .form-type-textfield input {
+  width: 100%;
+}
+
+.region-after-header .views-exposed-form .form--inline .text-button {
+  margin-bottom: 0;
+}
+
+.region-after-header .views-exposed-form .form--inline .text-button .form-actions {
+  padding-top: 0;
 }

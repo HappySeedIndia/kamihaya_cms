@@ -105,6 +105,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
     $field_definitions = $this->entityFieldManager->getFieldDefinitions('taxonomy_term', $this->options['vid']);
     $bundles = [];
     $form['value']['#related_filter'] = [];
+    $form['value']['#related_argument'] = [];
     foreach ($field_definitions as $field_name => $field_definition) {
       if (strpos($field_name, 'field_') !== 0 || $field_definition->getType() !== 'entity_reference' || strpos($field_definition->getSetting('handler'), 'taxonomy_term') === FALSE) {
         continue;
@@ -122,7 +123,22 @@ trait KamihayaTaxonomyViewsFilterTrait {
         $filters[] = $name;
       }
     }
-    if (empty($filters)) {
+    $arguments = [];
+    foreach ($this->view->argument as $name => $argument) {
+      if (strpos($argument->options['plugin_id'], 'taxonomy') === FALSE || empty($argument->options['validate_options']['bundles'])) {
+        continue;
+      }
+      if (!array_intersect($argument->options['validate_options']['bundles'], $bundles)) {
+        continue;
+      }
+      if (empty($argument->options['default_argument_type'] || $argument->options['default_argument_type'] !== 'taxonomy_term')) {
+        continue;
+      }
+      $form['value']['#related_argument'][] = $name;
+      $arguments[] = $name;
+    }
+
+    if (empty($filters) && empty($arguments)) {
       $form['value']['#options'] = [];
       return;
     }
@@ -145,6 +161,32 @@ trait KamihayaTaxonomyViewsFilterTrait {
           $target_ids = $field->getValue();
           foreach ($target_ids as $target_id) {
             if (in_array($target_id['target_id'], $param_value)) {
+              continue 2;
+            }
+          }
+          unset($options[$key]);
+        }
+      }
+    }
+    foreach ($arguments as $argument) {
+      $arg_term = \Drupal::routeMatch()->getParameter('taxonomy_term');
+      if (empty($arg_term)) {
+        continue;
+      }
+      foreach ($options as $key => $option) {
+        $tid = $key;
+        if (is_array($option)) {
+          $tid = key($option);
+        }
+        $term = $this->termStorage->load($tid);
+        foreach ($bundles as $field_name => $bundle) {
+          $field = $term->get($field_name);
+          if (empty($field)) {
+            unset($options[$key]);
+          }
+          $target_ids = $field->getValue();
+          foreach ($target_ids as $target_id) {
+            if ($target_id['target_id'] === $arg_term->id()) {
               continue 2;
             }
           }
