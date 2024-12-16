@@ -417,6 +417,65 @@ function kamihaya_cms_field_marker_page_attachments_alter(array &$page) {
   if (!empty($node = \Drupal::routeMatch()->getParameter('node'))) {
     $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $node->bundle());
   }
+  $css_vars = kamihaya_cms_field_marker_marker_css($bundle_fields);
+  if (empty($css_vars)) {
+    return;
+  }
+  // Add CSS variables for marker.
+  $page['#attached']['html_head'][] = [
+    [
+      '#tag' => 'style',
+      '#attributes' => [
+        'type' => 'text/css',
+      ],
+      '#value' => implode(PHP_EOL, $css_vars),
+    ],
+    'kamihaya_cms_field_marker',
+  ];
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function kamihaya_cms_field_marker_preprocess_views_view(array &$variables) {
+  $view = $variables['view'];
+  $bundle_fields = [];
+  if (!empty($view)) {
+    $entity_type = $view->getBaseEntityType();
+    $filter = $view->filter;
+    if (!empty($entity_type) && $entity_type->id() === 'node' && !empty($filter['type']) && !empty($filter['type']->value)) {
+      foreach($filter['type']->value as $type) {
+        $bundle_fields = array_merge($bundle_fields, \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $type));
+      }
+    }
+  }
+  $css_vars = kamihaya_cms_field_marker_marker_css($bundle_fields);
+  if (empty($css_vars)) {
+    return;
+  }
+  // Add CSS variables for marker.
+  $variables['#attached']['html_head'][] = [
+    [
+      '#tag' => 'style',
+      '#attributes' => [
+        'type' => 'text/css',
+      ],
+      '#value' => implode(PHP_EOL, $css_vars),
+    ],
+    'kamihaya_cms_field_marker',
+  ];
+}
+
+/**
+ * Return the CSS variables for the marker.
+ *
+ * @param array $bundle_fields
+ *  The bundle fields.
+ *
+ * @return array
+ *  The CSS variables.
+ */
+function kamihaya_cms_field_marker_marker_css(array $bundle_fields) {
   $css_vars = [];
   foreach($bundle_fields as $name => $field_config) {
     if ($field_config->getType() !== 'datetime' && $field_config->getType() !== 'boolean') {
@@ -444,20 +503,7 @@ function kamihaya_cms_field_marker_page_attachments_alter(array &$page) {
     }
     $css_vars[] = '.kamihaya-marker.marker-' . str_replace('_', '-', $name) . ' {' . implode(' ', $style) . '}';
   }
-  if (empty($css_vars)) {
-    return;
-  }
-  // Add CSS variables for marker.
-  $page['#attached']['html_head'][] = [
-    [
-      '#tag' => 'style',
-      '#attributes' => [
-        'type' => 'text/css',
-      ],
-      '#value' => implode(PHP_EOL, $css_vars),
-    ],
-    'kamihaya_cms_field_marker',
-  ];
+  return $css_vars;
 }
 
 /**

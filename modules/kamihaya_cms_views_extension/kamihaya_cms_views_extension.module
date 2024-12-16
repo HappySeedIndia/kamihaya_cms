@@ -365,20 +365,21 @@ function kamihaya_cms_views_extension_preprocess_views_view_table(&$variables) {
  * Implements hook_form_views_exposed_form_alter().
  */
 function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form, FormStateInterface $form_state) {
-  $access = FALSE;
+  $request = \Drupal::request();
+  if (!empty($form['sort_by']) && empty($request->query->get('sort_by') && array_key_exists(0, $form['sort_by']['#options']))) {
+    $form['sort_by']['#value'] = 0;
+  }
   foreach ($form as $key => &$value) {
-    if (!is_array($value) || strpos($key, 'field_') !== 0) {
+    if (!is_array($value) || (strpos($key, 'field_') !== 0 && strpos($key, 'term_node_tid' !== 0))) {
       continue;
     }
+
     if (isset($value['#options']) && empty($value['#options'])) {
       $value['#access'] = FALSE;
       if (!empty($value['#group']) && $value['#group'] !== 'secondary') {
         $form[$value['#group']]['#access'] = FALSE;
       }
       continue;
-    }
-    if (!empty($value['#group']) && $value['#group'] === 'secondary') {
-      $access = TRUE;
     }
     if (!empty($value['#related_filter'])) {
       $id = str_replace('_', '-', (!empty($value['#group']) ? $value['#group'] : $key));
@@ -390,7 +391,6 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
       }
       $related_filter = $value['#related_filter'];
       foreach ($related_filter as $filter) {
-        continue;
         if (empty($form[$filter]['#ajax'])) {
           $form[$filter]['#ajax'] = [
             'callback' => 'kamihaya_cms_views_extension_ajax_callback',
@@ -406,9 +406,6 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
       }
     }
   }
-  if (!empty($form['secondary'])) {
-    $form['secondary']['#access'] = $access;
-  }
 }
 
 /**
@@ -420,6 +417,7 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
  *  The form state.
  */
 function kamihaya_cms_views_extension_ajax_callback(array &$form, FormStateInterface $form_state) {
+  dpm($form);
   $target = $form_state->getTriggeringElement();
   $elements = $target['#ajax']['wrapper'];
   $response = new \Drupal\Core\Ajax\AjaxResponse();
@@ -454,4 +452,28 @@ function kamihaya_cms_views_extension_views_plugins_exposed_form_alter(array &$p
   if (!empty($plugins['bef'])) {
     $plugins['bef']['class'] = $plugins['kamihaya_exposed_form']['class'];
   }
+}
+
+/**
+ * Implements hook_preprocess_views_view_table().
+ */
+function kamihaya_cms_views_extension_preprocess_flag(&$variables) {
+  $route = Drupal::routeMatch()->getRouteName();
+  if (strpos($route, 'view.') !== 0) {
+    return;
+  }
+  $array = explode('.', $route);
+  if (count($array) < 3) {
+    return;
+  }
+  $view = Views::getView($array[1]);
+  $view->setDisplay($array[2]);
+  $display = $view->display_handler;
+  if ($display->ajaxEnabled()) {
+    return;
+  }
+  if (empty($variables['attributes']['class']) || $idx = array_search('use-ajax', $variables['attributes']['class'])) {
+    return;
+  }
+  unset($variables['attributes']['class'][$idx]);
 }

@@ -105,7 +105,6 @@ trait KamihayaTaxonomyViewsFilterTrait {
     $field_definitions = $this->entityFieldManager->getFieldDefinitions('taxonomy_term', $this->options['vid']);
     $bundles = [];
     $form['value']['#related_filter'] = [];
-    $form['value']['#related_argument'] = [];
     foreach ($field_definitions as $field_name => $field_definition) {
       if (strpos($field_name, 'field_') !== 0 || $field_definition->getType() !== 'entity_reference' || strpos($field_definition->getSetting('handler'), 'taxonomy_term') === FALSE) {
         continue;
@@ -134,7 +133,6 @@ trait KamihayaTaxonomyViewsFilterTrait {
       if (empty($argument->options['default_argument_type'] || $argument->options['default_argument_type'] !== 'taxonomy_term')) {
         continue;
       }
-      $form['value']['#related_argument'][] = $name;
       $arguments[] = $name;
     }
 
