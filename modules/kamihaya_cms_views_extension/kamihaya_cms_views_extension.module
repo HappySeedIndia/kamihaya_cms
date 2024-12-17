@@ -90,7 +90,7 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
  * Implements hook_query_TAG_alter().
  */
 function kamihaya_cms_views_extension_query_reduce_duplicate_term_alter(AlterableInterface $query) {
-  $field_names = ['tid', 'weight'];
+  $field_names = ['tid', 'weight', 'id'];
   $fields = &$query->getFields();
   $order_by = &$query->getOrderBy();
   $order_by_keys = array_keys($order_by);
@@ -113,7 +113,7 @@ function kamihaya_cms_views_extension_query_reduce_duplicate_term_alter(Alterabl
  * Implements hook_query_TAG_alter().
  */
 function kamihaya_cms_views_extension_query_reduce_duplicate_node_alter(AlterableInterface $query) {
-  $field_names = ['nid', 'delta'];
+  $field_names = ['nid', 'delta', 'id'];
   $fields = &$query->getFields();
   $order_by = &$query->getOrderBy();
   $order_by_keys = array_keys($order_by);
@@ -417,6 +417,7 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
  *  The form state.
  */
 function kamihaya_cms_views_extension_ajax_callback(array &$form, FormStateInterface $form_state) {
+  dpm($form);
   $target = $form_state->getTriggeringElement();
   $elements = $target['#ajax']['wrapper'];
   $response = new \Drupal\Core\Ajax\AjaxResponse();
