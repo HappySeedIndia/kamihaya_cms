@@ -133,6 +133,7 @@
         "drupal/gin": "^3.0@RC",
         "drupal/google_tag": "^2.0",
         "drupal/imce": "^3.0",
+        "drupal/json_field": "^1.4",
         "drupal/layout_paragraphs": "^2.0",
         "drupal/masonry_views": "^4.0",
         "drupal/menu_link_attributes": "^1.3",
