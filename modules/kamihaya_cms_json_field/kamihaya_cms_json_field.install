@@ -1,0 +1,12 @@
+<?php
+/**
+ * @file
+ * Installation hooks for kamihaya_cms_json_field module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function kamihaya_cms_json_field_install() {
+  module_set_weight('kamihaya_cms_json_field', 10);
+}
