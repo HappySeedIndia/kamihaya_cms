@@ -183,6 +183,18 @@ class KamihahyaExposedForm extends BetterExposedFilters {
    */
   public function exposedFormAlter(&$form, FormStateInterface $form_state): void {
     parent::exposedFormAlter($form, $form_state);
+    foreach ($form as $key => $field) {
+      if (!is_array($field) || empty($field['#type']) || $field['#type'] !== 'textfield' || empty($field['#attributes']['minlength'])) {
+        continue;
+      }
+
+      if (empty($form['#attached']['drupalSettings']['exposed_form'])) {
+        $form['#attached']['drupalSettings']['exposed_form'] = [];
+        $form['#attached']['library'][] = 'kamihaya_cms_views_extension/exposed-form';
+      }
+      $form['#attached']['drupalSettings']['exposed_form'][$key] = $field['#attributes']['minlength'];
+    }
+
     if (!empty($this->options['bef']['general']['submit_icon'])) {
       $form['actions']['submit']['#value'] = '';
       if (empty($form['actions']['submit']['#attributes']['class'])) {
@@ -200,22 +212,21 @@ class KamihahyaExposedForm extends BetterExposedFilters {
           }
           $text_fields[$key] = $field;
         }
-        if (empty($text_fields) || count($text_fields) > 1) {
-          return;
+        if (!empty($text_fields) && count($text_fields) === 1) {
+          $keys = array_keys($form);
+          $values = array_values($form);
+          $values[array_search(array_keys($text_fields)[0], $keys)] = [
+            '#type' => 'container',
+            '#attributes' => [
+              'class' => ['text-button'],
+            ],
+            array_keys($text_fields)[0] => array_values($text_fields)[0],
+            'actions' => $form['actions'],
+          ];
+          $keys[array_search(array_keys($text_fields)[0], $keys)] = 'text_button';
+          $form = array_combine($keys, $values);
+          $form['actions']['#access'] = FALSE;
         }
-        $keys = array_keys($form);
-        $values = array_values($form);
-        $values[array_search(array_keys($text_fields)[0], $keys)] = [
-          '#type' => 'container',
-          '#attributes' => [
-            'class' => ['text-button'],
-          ],
-          array_keys($text_fields)[0] => array_values($text_fields)[0],
-          'actions' => $form['actions'],
-        ];
-        $keys[array_search(array_keys($text_fields)[0], $keys)] = 'text_button';
-        $form = array_combine($keys, $values);
-        $form['actions']['#access'] = FALSE;
       }
     }
     $view = $form_state->get('view');

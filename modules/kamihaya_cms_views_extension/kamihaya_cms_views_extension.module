@@ -442,6 +442,9 @@ function kamihaya_cms_views_extension_views_plugins_filter_alter(array &$plugins
   if (!empty($plugins['boolean'])) {
     $plugins['boolean']['class'] = $plugins['kamihaya_boolean']['class'];
   }
+  if (!empty($plugins['combine'])) {
+    $plugins['combine']['class'] = $plugins['kamihaya_combine']['class'];
+  }
 }
 
 /**

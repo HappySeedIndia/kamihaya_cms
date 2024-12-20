@@ -3,3 +3,11 @@ responsive_table:
   css:
     base:
       assets/css/responsive_table.css: {}
+
+exposed-form:
+  js:
+    assets/js/exposed-form.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings

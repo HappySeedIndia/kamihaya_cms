@@ -752,7 +752,11 @@
 .views-exposed-form .form--inline .form-actions .button-wrapper {
   position: relative;
   background-color: var(--bs-btn-bg);
-  border: var(--bs-border-radius);
+  border: 0;
+}
+
+.views-exposed-form .form--inline .form-actions .button-wrapper.disabled {
+  background-color: var(--bs-btn-disabled-bg);
 }
 
 .views-exposed-form .form--inline .form-actions .button-wrapper:before {
@@ -771,6 +775,7 @@
   width: auto;
   min-width: 52px !important;
   background-color: transparent;
+  border: 0;
   position: relative;
   z-index: 1;
 }
@@ -787,13 +792,19 @@
 }
 
 .views-exposed-form .form--inline .text-button .form-actions {
-  padding-top: 27px;
+  padding-top: 28px;
 }
 
 .views-exposed-form .form--inline .text-button .form-actions .submit-icon,
 .views-exposed-form .form--inline .text-button .form-actions .button-wrapper {
   border-top-right-radius: var(--bs-border-radius);
   border-bottom-right-radius: var(--bs-border-radius);
+}
+
+.views-exposed-form .form--inline .form-actions .button-wrapper.disabled,
+.views-exposed-form .form--inline .form-actions .button-wrapper.disabled:before,
+.views-exposed-form .form--inline .text-button .form-actions .submit-icon:disabled {
+  cursor: not-allowed;
 }
 
 .views-exposed-form .text-button .form-type-textfield input {
