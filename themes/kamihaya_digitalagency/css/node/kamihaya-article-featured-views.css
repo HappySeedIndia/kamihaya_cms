@@ -9,7 +9,7 @@
 
 @media (min-width: 992px) {
   .content-grid-1>.view-content {
-    width: 50%;
+    width: 50% !important;
   }
 }
 
@@ -47,7 +47,7 @@
 
 @media (min-width: 992px) {
   .content-grid-1>.attachment-after {
-    width: 50%;
+    width: 50% !important;
   }
 }
 
@@ -77,7 +77,7 @@
 
 @media (min-width: 992px) {
   .content-grid-1 .views-element-container {
-    width: 50%;
+    width: 50% !important;
   }
 }
 
@@ -145,7 +145,7 @@
 
 @media (min-width: 992px) {
   .content-grid-3>.view-content {
-    width: 50%;
+    width: 50% !important;
   }
 }
 
@@ -183,7 +183,7 @@
 
 @media (min-width: 992px) {
   .content-grid-3>.attachment-after {
-    width: 50%;
+    width: 50% !important;
   }
 }
 
@@ -209,7 +209,7 @@
 
 @media (min-width: 992px) {
   .content-grid-3 .views-element-container {
-    width: 50%;
+    width: 50% !important;
   }
 }
 

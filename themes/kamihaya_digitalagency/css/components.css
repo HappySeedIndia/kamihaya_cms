@@ -262,8 +262,6 @@ html[lang='ja'] .form-required:after {
 
 .form-control:focus,
 .form-element:focus {
-  border-width: 2px;
-  border-color: var(--light-border-focused);
   box-shadow: none;
 }
 
