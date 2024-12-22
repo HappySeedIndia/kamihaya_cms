@@ -337,13 +337,13 @@ function kamihaya_cms_views_extension_preprocess_views_view_table(&$variables) {
         if (empty($label)) {
           $col['attributes']->addClass('no-label');
         }
-        if (!empty($col['content'])) {
+        if (!empty($col['content']) && !empty($col['content'][0]['field_output']['#markup'])) {
           if ($col['content'][0]['field_output']['#markup'] instanceof Markup) {
             $text = $col['content'][0]['field_output']['#markup']->__toString();
             $col['content'][0]['field_output']['#markup'] = Markup::create("$label_value<div class='field-value'>$text</div>");
           }
           else {
-            $text =$col['content'][0]['field_output']['#markup'];
+            $text = $col['content'][0]['field_output']['#markup'];
             $col['content'][0]['field_output']['#markup'] = "$label_value<div class='field-value'>$text</div>";
           }
         }
@@ -379,7 +379,6 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
       if (!empty($value['#group']) && $value['#group'] !== 'secondary') {
         $form[$value['#group']]['#access'] = FALSE;
       }
-      continue;
     }
     if (!empty($value['#related_filter'])) {
       $id = str_replace('_', '-', (!empty($value['#group']) ? $value['#group'] : $key));
