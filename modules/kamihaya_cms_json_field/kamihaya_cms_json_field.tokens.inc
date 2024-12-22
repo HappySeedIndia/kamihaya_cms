@@ -102,7 +102,7 @@ function kamihaya_cms_json_field_tokens($type, $tokens, array $data, array $opti
   }
 
   if ($type === 'json' && !empty($data['json'])) {
-    $json = json_decode($data['json']);
+    $json = json_decode($data['json'], TRUE);
     foreach ($tokens as $name => $original) {
       $toke_name = explode(':', $name);
       if (count($toke_name) === 1) {
@@ -125,8 +125,8 @@ function kamihaya_cms_json_field_tokens($type, $tokens, array $data, array $opti
             $val = explode('=', $attrs[0])[1];
             $val_key = $attrs[1];
             foreach ($value as $item) {
-              if (!empty($item->$key) && $item->$key === $val && !empty($item->$val_key)) {
-                $replacements[$original] = $item->$val_key;
+              if (!empty($item[$key]) && $item[$key] === $val && !empty($item[$val_key])) {
+                $replacements[$original] = $item[$val_key];
                 continue 3;
               }
             }

@@ -234,7 +234,7 @@ class KamihahyaExposedForm extends BetterExposedFilters {
     if (!empty($form['sort_by']) && empty($this->request->query->get('sort_by') && array_key_exists(0, $form['sort_by']['#options']))) {
       $form['sort_by']['#value'] = 0;
     }
-    if ($path === "view.{$view->id()}.{$view->current_display}") {
+    if ($path === "view.{$view->id()}.{$view->current_display}" || $path === 'views.ajax') {
       return;
     }
     if (!empty($form['sort_by']) && !empty($this->options['bef']['sort']['hide'])) {
