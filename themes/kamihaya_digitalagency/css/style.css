@@ -12484,6 +12484,10 @@ td > .form-item {
   align-items: center;
 }
 
+.navbar-nav .nav-link.dropdown-toggle {
+  padding: var(--bs-navbar-nav-link-padding-x);
+}
+
 .navbar-brand {
   white-space: unset;
 }

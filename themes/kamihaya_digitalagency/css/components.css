@@ -22,6 +22,12 @@
   --light-button-hover: #000082;
 }
 
+@media (max-width: 991px) {
+  .sp-hidden {
+    display: none;
+  }
+}
+
 /* Accordion */
 .accordion {
   --bs-accordion-btn-focus-box-shadow: 0 0 0 0.05rem #D18D0F;
@@ -529,14 +535,14 @@ html[lang='ja'] .form-required:after {
 
 .table-bordered.no-row-border tr:first-child th,
 .table-bordered.no-row-border tr:first-child td {
-  padding-top: 1rem;
-  padding-bottom: 0.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 1rem;
 }
 
 .table-bordered.no-row-border tr:last-child th,
 .table-bordered.no-row-border tr:last-child td {
-  padding-top: 0.5rem;
-  padding-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 0.75rem;
 }
 
 .table.no-col-border tr > *:first-child {
@@ -1177,14 +1183,20 @@ h2.accordion-header::after {
 }
 .flag a {
   font-size: 1.3rem;
+  position: relative;
+  z-index: 2;
 }
 
 .flag.action-flag a {
   color: #000000;
 }
 
-.flag.action-unflag a {
-  color: #E1383A;
+.flag.action-unflag a .fa-heart {
+  color: #E1383A !important;
+}
+
+.flag.action-unflag a .fa-star {
+  color: #FFC802 !important;
 }
 
 /* Dropdown icons */

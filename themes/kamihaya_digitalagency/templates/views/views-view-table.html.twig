@@ -64,7 +64,7 @@
     {% endif %}
     {% if header %}
       <thead>
-        <tr>
+        <tr{{ header_attributes }}>
           {% for key, column in header %}
             {% if column.default_classes %}
               {%
