@@ -278,3 +278,13 @@ header {
   border-radius: 0;
   padding: 0;
 }
+
+/** My list */
+.header-right .view-content .views-field .flag {
+  position: static;
+}
+
+.header-right .view-content .views-field .flag a {
+  text-decoration: none;
+  font-size: 0.85rem;;
+}

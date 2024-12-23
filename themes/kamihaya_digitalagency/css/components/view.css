@@ -17,6 +17,10 @@
   margin-bottom: 0;
 }
 
+.view .view-content .views-field .bg-gray {
+  background-color: #e6e5e5;
+}
+
 .views-view-grid {
   margin-top: 20px;
 }
@@ -415,17 +419,80 @@
   position: static;
 }
 
-.views-view-grid .views-field .bg-gray {
-  background-color: #e6e5e5;
-}
-
 .view .view-content .table-responsive {
   padding: 2rem 0;
-  border-bottom: 1px solid var(--light-border-divider);
 }
 
 .view .view-content .table-responsive:last-child {
   border-bottom: 0;
+}
+
+.views-table tr .views-field.w-10 {
+  width: 10%;
+}
+
+.views-table tr .views-field.w-15 {
+  width: 15%;
+}
+
+.views-table tr .views-field.w-20 {
+  width: 20%;
+}
+
+.views-table tr .views-field.w-25 {
+  width: 25%;
+}
+
+.views-table tr .views-field.w-30 {
+  width: 30%;
+}
+
+.views-table tr .views-field.w-35 {
+  width: 35%;
+}
+
+.views-table tr .views-field.w-40 {
+  width: 40%;
+}
+
+.views-table tr .views-field.w-45 {
+  width: 45%;
+}
+
+.views-table tr .views-field.w-50 {
+  width: 50%;
+}
+
+.views-table tr .views-field.w-55 {
+  width: 55%;
+}
+
+.views-table tr .views-field.w-60 {
+  width: 60;
+}
+
+.views-table tr .views-field.w-65 {
+  width: 65%;
+}
+
+.views-table tr .views-field.w-70 {
+  width: 70%;
+}
+
+.views-table tr .views-field.w-75 {
+  width: 75%;
+}
+
+.views-table tr .views-field.w-80 {
+  width: 80%;
+}
+
+.views-table tr .views-field.w-85 {
+  width: 85%;
+}
+
+.views-table tr .views-field.w-90 {
+  width: 90%;
 }
 
 .views-table tr td a {
@@ -451,6 +518,20 @@
 
 .views-table tr td ul li .paragraph .field__label {
   font-weight: normal;
+}
+
+.views-table tr.bd-dark {
+  --bs-table-border-color: #484848;
+}
+
+.views-table tr.bg-secondary th {
+  background-color: var(--bs-secondary-bg);
+}
+
+.views-table tr.no-col-border th,
+.views-table tr.no-col-border td {
+  border-left: 0;
+  border-right: 0;
 }
 
 .view-id-talent_list .views-field-uid {
@@ -745,7 +826,8 @@
 
 /** Action */
 .views-form .form-actions .btn {
-  padding: 10px;
+  border-radius: 5px;
+  padding: 0.5rem 2rem;
 }
 
 /** Button icon */
@@ -870,14 +952,6 @@
 /** Flag */
 .view-content .views-field .flag {
   z-index: 1;
-}
-
-.view-content .views-field .flag.action-flag a {
-  color: #000000;
-}
-
-.view-content .views-field .flag.action-unflag a {
-  color: #E1383A;
 }
 
 .view-content .table-responsive .views-field .flag {

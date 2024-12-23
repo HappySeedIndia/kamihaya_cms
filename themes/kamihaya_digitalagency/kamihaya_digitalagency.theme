@@ -410,6 +410,23 @@ function kamihaya_digitalagency_preprocess_file_link(array &$variables) {
 }
 
 /**
+ * Implements hook_preprocess_views_view_table().
+ */
+function kamihaya_digitalagency_preprocess_views_view_table(&$variables) {
+  $rows = $variables['rows'];
+
+  if (empty($rows)) {
+    return;
+  }
+  $row = $rows[0];
+  if (empty($row['attributes']['class'])) {
+    return;
+  }
+  $variables['header_attributes'] = new Attribute();
+  $variables['header_attributes']->addClass($row['attributes']->getClass()->value());
+}
+
+/**
  * Implements hook_page_attachments_alter().
  */
 function kamihaya_digitalagency_page_attachments_alter(array &$page) {
