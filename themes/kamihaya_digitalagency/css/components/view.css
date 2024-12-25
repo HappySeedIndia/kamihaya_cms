@@ -421,7 +421,7 @@
 
 .views-view-grid .views-field-views-bulk-operations-bulk-form .form-type-checkbox {
   margin-top: 0;
-  margin-bottom: 0;
+  margin-bottom: 0.5rem;
   display: flex;
 }
 
@@ -510,10 +510,6 @@
   margin-bottom: 0;
 }
 
-.views-table tr td ul li {
-  border-bottom: 1px solid var(--bs-table-border-color);
-}
-
 .views-table tr td ul li:last-child {
   border-bottom: 0;
 }
@@ -532,7 +528,8 @@
 
 .views-table tr.bd-col-dark th,
 .views-table tr.bd-col-dark td {
-  --bs-table-border-color: #484848;
+  border-left-color: #484848;
+  border-right-color: #484848;
 }
 
 .views-table tr:first-child.bd-outline-dark {
@@ -552,10 +549,50 @@
   color: #ffffff;
 }
 
+.views-table tr.no-th-bg th {
+  background-color: transparent;
+}
+
 .views-table tr.no-col-border th,
 .views-table tr.no-col-border td {
   border-left: 0;
   border-right: 0;
+}
+
+.views-table tr.no-th-bg th {
+  background-color: transparent;
+}
+
+.views-flipped-table tr.th-w-10 th {
+  width: 10%;
+}
+
+.views-flipped-table tr.th-w-15 th {
+  width: 15%;
+}
+
+.views-flipped-table tr.th-w-20 th {
+  width: 20%;
+}
+
+.views-flipped-table tr.th-w-25 th {
+  width: 25%;
+}
+
+.views-flipped-table tr.th-w-30 th {
+  width: 30%;
+}
+
+.views-flipped-table tr.th-w-35 th {
+  width: 35%;
+}
+
+.views-flipped-table tr.th-w-40 th {
+  width: 40%;
+}
+
+.views-flipped-table tr.th-w-45 th {
+  width: 45%;
 }
 
 .view-id-talent_list .views-field-uid {
@@ -761,28 +798,30 @@
 }
 
 /** Flepped table */
-.views-flipped-table {
+.view-flipped-table .view-content {
   width: 100%;
   overflow-x: auto;
 }
 
-.views-flipped-table .table {
+.view-flipped-table .table {
   width: auto;
   min-width: 100%;
   margin-bottom: 0;
 }
 
-.views-flipped-table .table.sticky-enabled tr th {
+.view-flipped-table .table.table-layout-fixed {
+  width: fit-content;
+  max-width: 100%;
+  min-width: auto;
+  margin: 0 auto;
+}
+
+.view-flipped-table .table.sticky-enabled tr th {
   position: -webkit-sticky;
   /* Safari */
   position: sticky;
   left: -0.5px;
   z-index: 1;
-}
-
-.views-flipped-table .table tr th,
-.views-flipped-table .table tr td {
-  width: 175px;
 }
 
 /** Table / Grid switcher */

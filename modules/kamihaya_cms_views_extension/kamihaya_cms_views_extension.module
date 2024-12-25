@@ -510,6 +510,12 @@ function kamihaya_cms_views_extension_preprocess_views_view_flipped_table(array 
   $view = $variables['view'];
   $handler = $view->style_plugin;
   $row_class = $handler->options['row_class'];
+  $table_layout = $handler->options['table_layout'];
+  $th_width = $handler->options['th_width'];
+  $td_width = $handler->options['td_width'];
+  $variables['table_layout'] = $table_layout;
+  $variables['th_width'] = $th_width;
+  $variables['td_width'] = $td_width;
   if (empty($row_class)) {
     return;
   }

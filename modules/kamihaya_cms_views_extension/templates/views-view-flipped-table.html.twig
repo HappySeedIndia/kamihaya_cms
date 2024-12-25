@@ -17,8 +17,21 @@
     'cols-' ~ flipped_header|length,
     responsive ? 'responsive-enabled',
     sticky ? 'sticky-enabled',
+    table_layout == 'fixed' ? 'table-layout-fixed' : 'table-layout-auto',
   ]
 %}
+{% set th_style %}
+  {% if th_width %}
+    width: {{ th_width }};
+  {% endif %}
+{% endset %}
+
+{% set td_style %}
+  {% if table_layout == 'fixed' and td_width %}
+    width: {{ td_width }};
+  {% endif %}
+{% endset %}
+
 <table{{ attributes.addClass(classes) }}>
   {% if caption_needed %}
     <caption>
@@ -51,7 +64,7 @@
                 ]
               %}
             {% endif %}
-            <th{{ header[flipped_header_field_name].attributes.addClass(column_classes).setAttribute('scope', 'row') }}>
+            <th{{ header[flipped_header_field_name].attributes.addClass(column_classes).setAttribute('scope', 'row') }}{% if th_style %} style="{{ th_style }}"{% endif %}>
               {{ header[flipped_header_field_name].content }}
             </th>
         {% endif %}
@@ -66,7 +79,7 @@
               {% set column_classes = column_classes|merge(['views-field-' ~ field]) %}
             {% endfor %}
           {% endif %}
-          <th{{ column.attributes.addClass(column_classes) }}>
+          <th{{ column.attributes.addClass(column_classes) }}{% if th_style %} style="{{ th_style }}"{% endif %}>
             {%- if column.wrapper_element -%}
               <{{ column.wrapper_element }}>
                 {%- if column.url -%}
@@ -100,7 +113,7 @@
               ]
             %}
           {% endif %}
-          <th{{ header_column.attributes.addClass(column_classes).setAttribute('scope', 'row') }}>
+          <th{{ header_column.attributes.addClass(column_classes).setAttribute('scope', 'row') }}{% if th_style %} style="{{ th_style }}"{% endif %}>
             {%- if header_column.wrapper_element -%}
               <{{ header_column.wrapper_element }}>
               {%- if header_column.url -%}
@@ -129,7 +142,7 @@
               {% set column_classes = column_classes|merge(['views-field-' ~ field]) %}
             {% endfor %}
           {% endif %}
-          <td{{ item.attributes.addClass(column_classes) }}>
+          <td{{ item.attributes.addClass(column_classes) }}{% if td_style %} style="{{ td_style }}"{% endif %}>
             {% for content in item.content %}
               {{ content.field_output }}
             {% endfor %}

@@ -8,5 +8,6 @@ dependencies:
   - drupal:views
   - better_exposed_filters:better_exposed_filters
   - shs:shs
+  - views_flipped_table:views_flipped_table
 
 project: 'kamihaya'

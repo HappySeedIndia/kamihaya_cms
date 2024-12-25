@@ -2048,6 +2048,19 @@ progress {
   -webkit-overflow-scrolling: touch;
 }
 
+.table-layout-auto {
+  table-layout: auto;
+}
+
+.table-layout-fixed {
+  table-layout: fixed;
+  width: auto;
+}
+
+.table-layout-fixed td {
+  word-break: break-all;
+}
+
 @media (max-width: 575.98px) {
   .table-responsive-sm {
     overflow-x: auto;
