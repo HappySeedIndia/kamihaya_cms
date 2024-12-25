@@ -1,8 +1,8 @@
 diff --git a/js/infinite-scroll.js b/js/infinite-scroll.js
-index 31af211..02b3f79 100644
+index 31af211..6b65d6d 100644
 --- a/js/infinite-scroll.js
 +++ b/js/infinite-scroll.js
-@@ -56,9 +56,16 @@
+@@ -56,9 +56,19 @@
      view.$view.find(contentWrapperSelector)
        // Trigger a jQuery event on the wrapper to inform that new content was
        // loaded and allow other scripts to respond to the event.
@@ -15,6 +15,9 @@ index 31af211..02b3f79 100644
 +    // Add the new rows to existing view.
 +    if (view.$view.find(contentWrapperSelector).find('tbody').length) {
 +      view.$view.find(contentWrapperSelector).find('tbody').append($newRows.find('tbody').children());
++    }
++    else if(view.$view.find(contentWrapperSelector).find('.views-view-grid').length) {
++      view.$view.find(contentWrapperSelector).find('.views-view-grid').append($newRows.find('.views-view-grid').children());
 +    }
 +    else {
 +      view.$view.find(contentWrapperSelector).append($newRows);
