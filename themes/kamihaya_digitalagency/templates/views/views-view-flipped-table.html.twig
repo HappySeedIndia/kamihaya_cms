@@ -89,7 +89,7 @@
   {% endif %}
   <tbody>
     {% for field_name, row in rows_flipped %}
-      <tr>
+      <tr{{ row.attributes }}>
         {% if header[field_name] and show_labels %}
           {% set header_column = header[field_name] %}
           {% if header_column.default_classes %}

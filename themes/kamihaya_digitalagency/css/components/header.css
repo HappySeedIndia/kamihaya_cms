@@ -282,6 +282,7 @@ header {
 /** My list */
 .header-right .view-content .views-field .flag {
   position: static;
+  display: flex;
 }
 
 .header-right .view-content .views-field .flag a {

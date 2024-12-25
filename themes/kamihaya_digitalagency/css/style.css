@@ -2276,6 +2276,17 @@ textarea.form-control-lg {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   appearance: none;
 }
+
+.form-control.form-select {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .form-control.form-select {
+    width: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .form-select {
     transition: none;

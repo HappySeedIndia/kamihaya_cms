@@ -98,6 +98,7 @@ class KamihayaJsonDataField extends JsonDataField {
               return $item[$val_key];
             }
           }
+          return '';
         }
       }
     }

@@ -5,6 +5,7 @@ use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
+use Drupal\Core\Template\Attribute;
 use Drupal\views\Plugin\views\pager\Full;
 use Drupal\views\Plugin\views\pager\Mini;
 use Drupal\views\Views;
@@ -328,9 +329,12 @@ function kamihaya_cms_views_extension_preprocess_views_view_table(&$variables) {
   if ($view->getStyle()->getPluginId() === 'kamihaya_responsive_table') {
     $variables['#attached']['library'][] = 'kamihaya_cms_views_extension/responsive_table';
     foreach ($rows as $idx => &$row) {
-      foreach ($row['columns'] as $field_name=>&$col) {
+      foreach ($row['columns'] as $field_name => &$col) {
+        if (empty($variables['header'][$field_name])) {
+          continue;
+        }
         $label = $variables['header'][$field_name]['content'];
-        if (!empty($col['fields'][0]) && strpos($col['fields'][0], 'views-bulk-operations-bulk-form') === 0) {
+        if (!!empty($col['fields'][0]) && strpos($col['fields'][0], 'views-bulk-operations-bulk-form') === 0) {
           continue;
         }
         $label_value = !empty($label) ? "<b class='responsive-label'>$label</b>" : '';
@@ -394,6 +398,7 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
           $form[$filter]['#ajax'] = [
             'callback' => 'kamihaya_cms_views_extension_ajax_callback',
             'event' => 'change',
+            'wrapper' => [],
             'progress' => [
               'type' => 'throbber',
               'message' => '',
@@ -401,6 +406,7 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
           ];
         }
         $target = empty($value['#group']) ? $key : $value['#group'];
+        $target = $key;
         $form[$filter]['#ajax']['wrapper'][$target] = $id;
       }
     }
@@ -465,6 +471,15 @@ function kamihaya_cms_views_extension_views_plugins_exposed_form_alter(array &$p
 }
 
 /**
+ * Implements hook_views_plugins_exposed_form_alter().
+ */
+function kamihaya_cms_views_extension_views_plugins_style_alter(array &$plugins) {
+  if (!empty($plugins['flipped_table'])) {
+    $plugins['flipped_table']['class'] = $plugins['kamihaya_flipped_table']['class'];
+  }
+}
+
+/**
  * Implements hook_preprocess_views_view_table().
  */
 function kamihaya_cms_views_extension_preprocess_flag(&$variables) {
@@ -486,4 +501,22 @@ function kamihaya_cms_views_extension_preprocess_flag(&$variables) {
     return;
   }
   unset($variables['attributes']['class'][$idx]);
+}
+
+/**
+ * Implements hook_preprocess_views_view_flipped_table().
+ */
+function kamihaya_cms_views_extension_preprocess_views_view_flipped_table(array &$variables) {
+  $view = $variables['view'];
+  $handler = $view->style_plugin;
+  $row_class = $handler->options['row_class'];
+  if (empty($row_class)) {
+    return;
+  }
+  foreach ($variables['rows_flipped'] as $idx => &$row) {
+    if (empty($row['attributes'])) {
+      $row['attributes'] = new Attribute();
+    }
+    $row['attributes']->addClass($row_class);
+  }
 }
