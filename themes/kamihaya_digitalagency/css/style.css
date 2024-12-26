@@ -2048,6 +2048,19 @@ progress {
   -webkit-overflow-scrolling: touch;
 }
 
+.table-layout-auto {
+  table-layout: auto;
+}
+
+.table-layout-fixed {
+  table-layout: fixed;
+  width: auto;
+}
+
+.table-layout-fixed td {
+  word-break: break-all;
+}
+
 @media (max-width: 575.98px) {
   .table-responsive-sm {
     overflow-x: auto;
@@ -2276,6 +2289,17 @@ textarea.form-control-lg {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   appearance: none;
 }
+
+.form-control.form-select {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .form-control.form-select {
+    width: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .form-select {
     transition: none;
