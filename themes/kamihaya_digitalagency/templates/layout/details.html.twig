@@ -15,6 +15,13 @@
  * @see template_preprocess_details()
  */
 #}
+{% if attributes.hasClass('full-width') %}
+	<style>
+		body {
+			overflow-x: hidden;
+		}
+	</style>
+{% endif %}
 <details{{ attributes.addClass('card') }}>
   {%- if title -%}
     {%
