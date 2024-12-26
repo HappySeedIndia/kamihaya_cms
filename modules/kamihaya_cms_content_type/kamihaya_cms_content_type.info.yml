@@ -5,11 +5,11 @@ package: Kamihaya
 description: 'Kamihaya content type for Kamihaya CMS.'
 
 dependencies:
-  - drupal:entity_reference_revisions
   - drupal:layout_discovery
   - drupal:node
   - drupal:taxonomy
   - drupal:views
+  - entity_reference_revisions:entity_reference_revisions
   - layout_paragraphs:layout_paragraphs
   - metatag:metatag
   - paragraphs:paragraphs

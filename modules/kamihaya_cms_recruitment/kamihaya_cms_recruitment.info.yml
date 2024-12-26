@@ -3,7 +3,6 @@ description: 'Provides recruitment content type and related configuration.'
 type: module
 core_version_requirement: '^9.4 || ^10'
 dependencies:
-  - 'drupal:entity_reference_revisions'
   - 'drupal:field'
   - 'drupal:image'
   - 'drupal:language'
@@ -19,10 +18,10 @@ dependencies:
   - 'drupal:views'
   - 'drupal:select_or_other'
   - 'drupal:views'
-  - 'drupal:entity_reference_revisions'
   - 'drupal:datetime_range'
   - 'drupal:content_moderation'
   - 'address:address'
+  - entity_reference_revisions:entity_reference_revisions
   - 'paragraphs:paragraphs'
   - 'password_policy:password_policy'
   - 'svg_image:svg_image'

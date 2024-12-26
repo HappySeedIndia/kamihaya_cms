@@ -6,8 +6,8 @@ description: 'Kamihaya block type for Kamihaya CMS.'
 
 dependencies:
   - drupal:block_content
-  - drupal:entity_reference_revisions
   - drupal:node
+  - entity_reference_revisions:entity_reference_revisions
   - layout_paragraphs:layout_paragraphs
   - paragraphs:paragraphs
   - kamihaya_cms_common:kamihaya_cms_common
