@@ -26,7 +26,17 @@
   .pc-hidden .page-title {
     display: block;
   }
+  .pc-hidden .page-title h1 {
+    font-size: 1.75rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0;
+  }
 
+  .pc-hidden .page-title h1:before,
+  .pc-hidden .page-title h1:after {
+    display: none;
+  }
   .sp-hidden.h1 {
     display: none;
   }
