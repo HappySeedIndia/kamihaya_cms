@@ -1374,3 +1374,10 @@ h2.accordion-header::after {
 .expand-collapse a.ecf-close:after {
   content: '\f106';
 }
+
+/* Youtube */
+iframe[title="YouTube video player"] {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: auto;
+}
