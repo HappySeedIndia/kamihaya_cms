@@ -779,7 +779,7 @@ function kamihaya_cms_paragraph_type_update_10012() {
 
   $paragraphs = [
     'anchor_link' => [
-      'field_link_item' => 'entity_reference_revisions',
+      'field_link_item' => 'paragraphs',
     ],
     'headings' => [
       'field_anchor_link_id' => 'string_textfield',

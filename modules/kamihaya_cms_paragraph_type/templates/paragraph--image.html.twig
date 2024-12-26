@@ -60,7 +60,7 @@
       {% set width_unit = paragraph.field_width_unit.0.value %}
       {%
         set style = [
-          width ? (width_unit == 'px' ? ('width: 100%; max-width: ' ~ width ~ width_unit ~ ';') : ('width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;'))) : 'width: 100%;',
+          width ? (width_unit == 'px' ? ('width: 100%; max-width: ' ~ width ~ width_unit ~ ';') : ('width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;'))) : (height ? 'width: auto;' : 'width: 100%;'),
           height ? 'height: ' ~ height ~ (height_unit ? height_unit ~ ';' : 'px;') : 'height: auto;',
         ]
       %}
