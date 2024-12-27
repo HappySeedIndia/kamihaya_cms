@@ -1,0 +1,15 @@
+diff --git a/js/expand_collapse_formatter.js b/js/expand_collapse_formatter.js
+index 4fe18ea..c6b4a35 100644
+--- a/js/expand_collapse_formatter.js
++++ b/js/expand_collapse_formatter.js
+@@ -52,7 +52,9 @@
+     this.linkTextClose = field.getAttribute('data-link-text-close');
+     this.linkClassOpen = field.getAttribute('data-link-class-open');
+     this.linkClassClose = field.getAttribute('data-link-class-close');
+-    this.text = this.content.innerText;
++    // Kamihaya CMS: Change this.text to this.content.textContent to get hidden text.
++    this.text = this.content.textContent;
++    // this.text = this.content.innerText;
+     this.html = this.content.innerHTML;
+     this.showMore = Drupal.t(this.linkTextOpen);
+     this.showLess = Drupal.t(this.linkTextClose);
