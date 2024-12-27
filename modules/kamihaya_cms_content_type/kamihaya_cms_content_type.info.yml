@@ -10,12 +10,14 @@ dependencies:
   - drupal:taxonomy
   - drupal:views
   - entity_reference_revisions:entity_reference_revisions
+  - field_group:field_group
   - layout_paragraphs:layout_paragraphs
   - metatag:metatag
   - paragraphs:paragraphs
   - pathauto:pathauto
   - scheduler:scheduler
   - shs:shs
+  - views_flipped_table:views_flipped_table
   - viewsreference:viewsreference
   - kamihaya_cms_common:kamihaya_cms_common
   - kamihaya_cms_media_type:kamihaya_cms_media_type

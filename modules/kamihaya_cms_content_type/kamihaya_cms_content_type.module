@@ -5,6 +5,7 @@ use Drupal\Core\Url;
 use Drupal\node\Entity\NodeType;
 use Drupal\node\NodeInterface;
 use Drupal\views\Entity\View;
+use Drupal\views_flipped_table\Plugin\views\style\FlippedTable;
 
 /**
  * @file
@@ -17,6 +18,7 @@ use Drupal\views\Entity\View;
 function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
   $links = [];
   $anchor_links = [];
+  $full_width = FALSE;
   foreach($variables['content'] as $name => &$element) {
     if ($name === 'anchor_links') {
       $anchor_links = &$element;
@@ -24,9 +26,13 @@ function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
     if (is_array($element) && array_key_exists('anchor_links', $element)) {
       $anchor_links = &$element['anchor_links'];
     }
-    if (strpos($name, 'group_') !== 0 || empty($element['#id']) || empty($element['#title'])) {
+    if (strpos($name, 'group_') !== 0 || empty($element['#id']) || empty($element['#title']) || (isset($element['#access']) && empty($element['#access']))) {
       continue;
     }
+    if (!empty($element['#attributes']['class']) && in_array('full-width', $element['#attributes']['class'])) {
+      $full_width = TRUE;
+    }
+
     $links[$element['#id']] = [
       'title' => $element['#title'],
       'url' => Url::fromUserInput("#{$element['#id']}"),
@@ -38,6 +44,18 @@ function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
   $anchor_links['#links'] = $links;
   $anchor_links['#attributes']['class'] = ['anchor-links'];
   $variables['content']['anchor_links'] = $anchor_links;
+  if ($full_width) {
+    $variables['#attached']['html_head'][] = [
+      [
+        '#tag' => 'style',
+        '#attributes' => [
+          'type' => 'text/css',
+        ],
+        '#value' => 'body { overflow-x: hidden; }',
+      ],
+      'kamihaya_cms_content_type',
+    ];
+  }
 }
 
 /**
@@ -101,4 +119,44 @@ function kamihaya_cms_content_type_entity_extra_field_info() {
   }
 
   return $extra;
+}
+
+/**
+ * Implements hook_field_group_pre_render().
+ */
+function kamihaya_cms_content_type_field_group_pre_render(array &$element, $group, &$rendering_object) {
+  if (empty($element)) {
+    return;
+  }
+
+  $empty = FALSE;
+  foreach($element as $name => &$field) {
+    if (strpos($name, 'field_') !== 0 || empty($field['#field_type']) || $field['#field_type'] !== 'viewsreference') {
+      continue;
+    }
+    $empty = TRUE;
+    foreach($field as $key => $value) {
+      if (!is_numeric($key)) {
+        continue;
+      }
+      if (empty($value['contents']['#view'])) {
+        continue;
+      }
+      $view = $value['contents']['#view'];
+      if (empty($view->result)) {
+        continue;
+      }
+      if ($view->style_plugin instanceof FlippedTable) {
+        $render = Drupal::service('renderer')->render($value['contents']);
+        if (strpos($render, '</tr>') === FALSE) {
+          continue;
+        }
+      }
+      $empty = FALSE;
+    }
+  }
+  if ($empty) {
+    $element['#access'] = FALSE;
+  }
+
 }
