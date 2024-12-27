@@ -90,6 +90,9 @@
             },
             "drupal/core": {
                 "https://www.drupal.org/project/drupal/issues/2842525": "https://www.drupal.org/files/issues/2024-09-18/2842525-159.patch"
+            },
+            "drupal/expand_collapse_formatter": {
+                "KD-465": "https://raw.githubusercontent.com/HappySeedIndia/kamihaya_cms/refs/heads/KD-465/patches/expand_collapse_formatter.patch"
             }
         }
     },
