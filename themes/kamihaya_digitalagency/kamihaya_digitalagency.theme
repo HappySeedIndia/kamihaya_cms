@@ -222,6 +222,10 @@ function kamihaya_digitalagency_preprocess_views_view(array &$variables) {
 function kamihaya_digitalagency_preprocess_breadcrumb(&$variables){
   $breadcrumb = [];
   foreach($variables['breadcrumb'] as $item) {
+    if ($idx = array_search($item['text'], $breadcrumb)) {
+      unset($variables['breadcrumb'][$idx]);
+      continue;
+    }
     $breadcrumb[] = $item['text'];
   }
   if(($node = \Drupal::routeMatch()->getParameter('node')) && $variables['breadcrumb'] && !in_array($node->getTitle(), $breadcrumb)) {
