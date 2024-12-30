@@ -118,6 +118,15 @@ header {
   .header-right .navbar-nav .dropdown-toggle:after {
     display: none;
   }
+
+  .header-right .view-content .views-row {
+    padding: 0;
+  }
+
+  .header-right .view-content .views-row .view-field .field-content {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
 }
 .header-right .navbar-nav .dropdown-toggle.show:after {
   transform: rotate(180deg);

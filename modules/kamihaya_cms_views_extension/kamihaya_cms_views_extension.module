@@ -459,6 +459,9 @@ function kamihaya_cms_views_extension_views_plugins_field_alter(array &$plugins)
   if (!empty($plugins['json_data'])) {
     $plugins['json_data']['class'] = $plugins['kamihaya_json_data']['class'];
   }
+  if (!empty($plugins['views_bulk_operations_bulk_form'])) {
+    $plugins['views_bulk_operations_bulk_form']['class'] = $plugins['kamihaya_views_bulk_operation_form']['class'];
+  }
 }
 
 /**
