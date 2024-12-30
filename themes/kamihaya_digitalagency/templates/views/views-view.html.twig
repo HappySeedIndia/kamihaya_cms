@@ -46,14 +46,14 @@
     {{ title }}
   {% endif %}
   {{ title_suffix }}
-  {% if header %}
-    <div class="view-header">
-      {{ header }}
-    </div>
-  {% endif %}
   {% if exposed %}
     <div class="view-filters">
       {{ exposed }}
+    </div>
+  {% endif %}
+  {% if header %}
+    <div class="view-header">
+      {{ header }}
     </div>
   {% endif %}
   {% if attachment_before %}

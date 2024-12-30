@@ -114,7 +114,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
     $request_params = array_merge($this->request->query->all(), $this->request->request->all());
     $filters = [];
-    foreach ($this->view->filter as $name => $filter) {
+    foreach ($this->view->filter ?: [] as $name => $filter) {
       if (strpos($filter->options['plugin_id'], 'taxonomy_index_tid') === FALSE || !in_array($filter->options['vid'], $bundles)) {
         continue;
       }

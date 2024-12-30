@@ -88,7 +88,8 @@ button.link {
 
 .btn-primary,
 .button--small,
-#backtotop {
+#backtotop,
+details summary[role="button"] {
   --bs-btn-color: #fff;
   --bs-btn-bg: #0017C1;
   --bs-btn-border-color: #000082;
@@ -1232,6 +1233,8 @@ h2.accordion-header::after {
     white-space: nowrap;
     position: relative;
     width: 40px;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
   }
 
   header .dropdown-toggle.globe:before,
@@ -1239,7 +1242,7 @@ h2.accordion-header::after {
     margin-right: 0;
     position: absolute;
     right: 8px;
-    top: 12px;
+    top: 4px;
   }
 }
 

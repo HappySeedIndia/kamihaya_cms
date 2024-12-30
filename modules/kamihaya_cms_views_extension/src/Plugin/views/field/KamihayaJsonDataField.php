@@ -19,7 +19,7 @@ class KamihayaJsonDataField extends JsonDataField {
   /**
    * {@inheritdoc}
    */
-    protected function defineOptions() {
+  protected function defineOptions() {
     $options = parent::defineOptions();
     $options['render_value'] = ['default' => TRUE];
     return $options;

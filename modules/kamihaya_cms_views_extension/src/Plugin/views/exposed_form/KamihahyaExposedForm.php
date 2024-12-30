@@ -90,6 +90,8 @@ class KamihahyaExposedForm extends BetterExposedFilters {
     $options = parent::defineOptions();
     $options['bef']['general']['submit_icon'] = ['default' => FALSE];
     $options['bef']['sort']['optimize_sort_order'] = ['default' => FALSE];
+    $options['bef']['sort']['hide'] = ['default' => FALSE];
+    $options['bef']['sort']['label_inline'] = ['default' => FALSE];
     return $options;
   }
 
@@ -145,6 +147,12 @@ class KamihahyaExposedForm extends BetterExposedFilters {
         '#description' => $this->t('If enabled, the exposed sort will be hidden on not view pages.'),
         '#default_value' => $this->options['bef']['sort']['hide'],
       ];
+      $form['bef']['sort']['configuration']['label_inline'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Inline label'),
+        '#description' => $this->t('If enabled, the label will be displayed inline.'),
+        '#default_value' => $this->options['bef']['sort']['label_inline'],
+      ];
       if (!empty($advanced)) {
         $form['bef']['sort']['configuration']['advanced'] = $advanced;
       }
@@ -161,6 +169,28 @@ class KamihahyaExposedForm extends BetterExposedFilters {
         '#default_value' => $this->options['bef']['filter'][$key]['advanced']['hide'] ?? FALSE,
       ];
 
+      $index = 0;
+      foreach (array_keys($filter['configuration']['advanced']) as $idx => $name) {
+        if (!is_array($filter['configuration']['advanced'][$name])/* || empty($filter['configuration']['advanced'][$name]['#type'])*/) {
+          continue;
+        }
+        $filter['configuration']['advanced'][$name]['#weight'] = $index;
+        if ($name === 'hide_label') {
+          $filter['configuration']['advanced']['label_inline'] = [
+            '#type' => 'checkbox',
+            '#title' => $this->t('Inline label'),
+            '#description' => $this->t('If enabled, the label will be displayed inline.'),
+            '#default_value' => $this->options['bef']['filter'][$key]['advanced']['label_inline'] ?? FALSE,
+            '#states' => [
+              'invisible' => [
+                'input[name="exposed_form_options[bef][filter][' . $key . '][configuration][advanced][hide_label]"]' => ['checked' => TRUE],
+              ],
+            ],
+            '#weight' => ++$index,
+          ];
+          $index++;
+        }
+      }
     }
   }
 
@@ -171,10 +201,12 @@ class KamihahyaExposedForm extends BetterExposedFilters {
     $options = &$form_state->getValue('exposed_form_options');
     $optimize_sort_order = $options['bef']['sort']['configuration']['optimize_sort_order'] ?? FALSE;
     $hide_sort = $options['bef']['sort']['configuration']['hide'] ?? FALSE;
+    $label_inline = $options['bef']['sort']['configuration']['label_inline'] ?? FALSE;
     parent::submitOptionsForm($form, $form_state);
     if (!empty($options['bef']['sort'])) {
       $options['bef']['sort']['optimize_sort_order'] = $optimize_sort_order;
       $options['bef']['sort']['hide'] = $hide_sort;
+      $options['bef']['sort']['label_inline'] = $label_inline;
     }
   }
 
@@ -183,11 +215,22 @@ class KamihahyaExposedForm extends BetterExposedFilters {
    */
   public function exposedFormAlter(&$form, FormStateInterface $form_state): void {
     parent::exposedFormAlter($form, $form_state);
-    foreach ($form as $key => $field) {
-      if (!is_array($field) || empty($field['#type']) || $field['#type'] !== 'textfield' || empty($field['#attributes']['minlength'])) {
+    foreach ($form as $key => &$field) {
+      if (!is_array($field) || empty($field['#type'])) {
         continue;
       }
-
+      if (!empty($this->options['bef']['filter'][$key]) && !empty($this->options['bef']['filter'][$key]['advanced']['label_inline'])) {
+        if (empty($field['#attributes'])) {
+          $field['#attributes'] = [];
+        }
+        if (empty($field['#attributes']['class'])) {
+          $field['#attributes']['class'] = [];
+        }
+        $field['#attributes']['class'][] = 'label-inline';
+      }
+      if ($field['#type'] !== 'textfield' || empty($field['#attributes']['minlength'])) {
+        continue;
+      }
       if (empty($form['#attached']['drupalSettings']['exposed_form'])) {
         $form['#attached']['drupalSettings']['exposed_form'] = [];
         $form['#attached']['library'][] = 'kamihaya_cms_views_extension/exposed-form';
@@ -206,7 +249,7 @@ class KamihahyaExposedForm extends BetterExposedFilters {
       if (!empty($this->options['bef']['general']['autosubmit_exclude_textfield'])
         && !empty($this->options['bef']['general']['autosubmit_exclude_textfield'])) {
         $text_fields = [];
-        foreach ($form as $key => $field) {
+        foreach ($form as $key => &$field) {
           if (!is_array($field) || empty($field['#type']) || $field['#type'] !== 'textfield') {
             continue;
           }
@@ -227,7 +270,11 @@ class KamihahyaExposedForm extends BetterExposedFilters {
           $form = array_combine($keys, $values);
           $form['actions']['#access'] = FALSE;
         }
+        $form['sort_by']['#weight'] = 10;
       }
+    }
+    if (!empty($this->options['bef']['sort']['label_inline'])) {
+      $form['sort_by']['#attributes']['class'][] = 'label-inline';
     }
     $view = $form_state->get('view');
     $path = $this->routeMatch->getRouteName();
