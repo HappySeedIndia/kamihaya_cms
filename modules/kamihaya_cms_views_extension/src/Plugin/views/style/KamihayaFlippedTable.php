@@ -29,6 +29,7 @@ class KamihayaFlippedTable extends FlippedTable {
     $options['table_layout'] = ['default' => 'auto'];
     $options['td_width'] = ['default' => ''];
     $options['th_width'] = ['default' => ''];
+    $options['no_value_text'] = ['default' => ''];
 
     return $options;
   }
@@ -68,6 +69,13 @@ class KamihayaFlippedTable extends FlippedTable {
       '#title' => $this->t('Table Header(th) Width'),
       '#default_value' => $this->options['th_width'],
       '#description' => $this->t("Sets the width of the table header(th) element. ex. 100px, 50%, 10em"),
+    ];
+
+    $form['no_value_text'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('No Value Text'),
+      '#default_value' => $this->options['no_value_text'],
+      '#description' => $this->t("Text to display when there is no value."),
     ];
   }
 

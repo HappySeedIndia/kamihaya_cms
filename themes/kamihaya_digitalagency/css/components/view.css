@@ -933,9 +933,11 @@
 
 .display-switch-view .view-header .display-links {
   display: flex;
-  align-self: flex-end;
+  align-items: center;
   text-align: right;
   padding: 0.5rem;
+  line-height: 1;
+  margin-bottom: 0;
   background: var(--light-background-primary);
   border-radius: 0.5rem;
   box-shadow: 0 1px 2px rgb(20 45 82 / 2%),
@@ -985,6 +987,28 @@
 .views-form .form-actions .btn {
   border-radius: 5px;
   padding: 0.5rem 2rem;
+}
+
+@media (max-width: 767px) {
+  .views-form .form-actions .btn {
+    padding: 0.5rem;
+  }
+
+  .display-switch-view.header-mb-minus-m .view-header .display-links li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+  }
+
+  .display-switch-view .view-header .views-display-link-table_page,
+  .display-switch-view .view-header .views-display-link-grid_page {
+    display: inline-block !important;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    width: 33px;
+    padding-left: 0.6rem;
+  }
 }
 
 /** Button icon */
@@ -1037,8 +1061,8 @@
 }
 
 @media (max-width: 767px) {
-  .views-exposed-form .form--inline .text-button,
-  .views-exposed-form .form--inline .form-item {
+  .main-content .views-exposed-form .form--inline div.text-button,
+  .main-content .views-exposed-form .form--inline div.form-item {
     max-width: none;
   }
 }
@@ -1281,11 +1305,11 @@
 }
 
 .view.header-mb-minus-m .view-header {
-  margin-bottom: -4.5rem;
+  margin-bottom: -3.5rem;
 }
 
 .view.header-mb-minus-s .view-header {
-  margin-bottom: -3.5rem;
+  margin-bottom: -2.5rem;
 }
 
 .view.header-mb-minus-s .view-header:has(.float-end) {

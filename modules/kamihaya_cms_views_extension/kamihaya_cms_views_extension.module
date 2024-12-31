@@ -330,11 +330,11 @@ function kamihaya_cms_views_extension_preprocess_views_view_table(&$variables) {
     $variables['#attached']['library'][] = 'kamihaya_cms_views_extension/responsive_table';
     foreach ($rows as $idx => &$row) {
       foreach ($row['columns'] as $field_name => &$col) {
-        if (empty($variables['header'][$field_name])) {
+        if (empty($variables['header'][$field_name]) || $field_name === 'views_bulk_operations_bulk_form') {
           continue;
         }
         $label = $variables['header'][$field_name]['content'];
-        if (!!empty($col['fields'][0]) && strpos($col['fields'][0], 'views-bulk-operations-bulk-form') === 0) {
+        if (empty($col['fields'][0])) {
           continue;
         }
         $label_value = !empty($label) ? "<b class='responsive-label'>$label</b>" : '';
@@ -393,6 +393,17 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
         $value['#id'] = $id;
       }
       $related_filter = $value['#related_filter'];
+      // if (!empty($related_filter) && empty($form['#ajax'])) {
+      //   $form['#ajax'] = [
+      //     'callback' => 'kamihaya_cms_views_extension_ajax_callback',
+      //     'event' => 'change',
+      //     'progress' => [
+      //       'type' => 'throbber',
+      //       'message' => '',
+      //     ],
+      //   ];
+      // }
+      // continue;
       foreach ($related_filter as $filter) {
         if (empty($form[$filter]['#ajax'])) {
           $form[$filter]['#ajax'] = [
@@ -423,10 +434,13 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
  */
 function kamihaya_cms_views_extension_ajax_callback(array &$form, FormStateInterface $form_state) {
   $target = $form_state->getTriggeringElement();
+  dpm($target);
   $elements = $target['#ajax']['wrapper'];
   $response = new \Drupal\Core\Ajax\AjaxResponse();
+  //$response->addCommand(new \Drupal\Core\Ajax\ReplaceCommand($form['id'], \Drupal::service('renderer')->render($form)));
   foreach ($elements as $name => $id) {
-    $response->addCommand(new \Drupal\Core\Ajax\ReplaceCommand("#$id", $form[$name]));
+    dpm($form[$name]);
+    $response->addCommand(new \Drupal\Core\Ajax\ReplaceCommand("#$id", \Drupal::service('renderer')->render($form[$name])));
   }
   return $response;
 }
@@ -516,16 +530,29 @@ function kamihaya_cms_views_extension_preprocess_views_view_flipped_table(array 
   $table_layout = $handler->options['table_layout'];
   $th_width = $handler->options['th_width'];
   $td_width = $handler->options['td_width'];
+  $no_value_text = $handler->options['no_value_text'];
   $variables['table_layout'] = $table_layout;
   $variables['th_width'] = $th_width;
   $variables['td_width'] = $td_width;
-  if (empty($row_class)) {
+  if (empty($row_class) && empty($no_value_text)) {
     return;
   }
   foreach ($variables['rows_flipped'] as $idx => &$row) {
-    if (empty($row['attributes'])) {
-      $row['attributes'] = new Attribute();
+    if (!empty($row_class)) {
+      if (empty($row['attributes'])) {
+        $row['attributes'] = new Attribute();
+      }
+      $row['attributes']->addClass($row_class);
     }
-    $row['attributes']->addClass($row_class);
+    if (empty($no_value_text) || empty($row['columns'])) {
+      continue;
+    }
+    foreach ($row['columns'] as &$col) {
+      if (empty($col['content'])) {
+        $col['content'][] = [
+          'field_output' => Markup::create(t($no_value_text)),
+        ];
+      }
+    }
   }
 }
