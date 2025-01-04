@@ -1,0 +1,10 @@
+name: Kanmihaya CMS Feeds Contentserv
+type: module
+description: 'Feeds extention for Contentserv.'
+core_version_requirement: ^9 || ^10
+package: Kamihaya
+
+project: 'kamihaya'
+
+dependencies:
+  - feeds:feeds
