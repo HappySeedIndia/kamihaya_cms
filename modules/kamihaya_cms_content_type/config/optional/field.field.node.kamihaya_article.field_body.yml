@@ -5,7 +5,6 @@ dependencies:
     - field.storage.node.field_body
     - node.type.kamihaya_article
     - paragraphs.paragraphs_type.accordion
-    - paragraphs.paragraphs_type.anchor_link
     - paragraphs.paragraphs_type.block
     - paragraphs.paragraphs_type.border_box
     - paragraphs.paragraphs_type.divider
@@ -65,22 +64,18 @@ settings:
       embed_tag: embed_tag
       featured_content: featured_content
       two_col_table: two_col_table
-      anchor_link: anchor_link
       drawer: drawer
-      border_box: border_box
       block: block
       views: views
+      border_box: border_box
     negate: 0
     target_bundles_drag_drop:
       accordion:
-        weight: -47
+        weight: -46
         enabled: true
       accordion_item:
-        weight: -34
+        weight: 4
         enabled: false
-      anchor_link:
-        weight: -41
-        enabled: true
       block:
         weight: -38
         enabled: true
@@ -88,78 +83,102 @@ settings:
         weight: -39
         enabled: true
       border_box_item:
-        weight: -35
+        weight: 1
+        enabled: false
+      career:
+        weight: 2
         enabled: false
       divider:
-        weight: -46
+        weight: -45
         enabled: true
       drawer:
         weight: -40
         enabled: true
+      educational_background:
+        weight: 3
+        enabled: false
       embed_tag:
-        weight: -44
-        enabled: true
-      featured_content:
         weight: -43
         enabled: true
-      file_download:
-        weight: -49
-        enabled: true
-      h2_title:
-        weight: -60
-        enabled: true
-      h3_title:
-        weight: -59
-        enabled: true
-      h4_title:
-        weight: -58
-        enabled: true
-      headings:
-        weight: -57
-        enabled: true
-      image:
-        weight: -55
-        enabled: true
-      image_link:
-        weight: -51
-        enabled: true
-      layout_paragraph:
-        weight: -61
-        enabled: true
-      left_image_text:
-        weight: -53
-        enabled: true
-      link_button:
-        weight: -50
-        enabled: true
-      modal_dialog:
-        weight: -48
-        enabled: true
-      q_a:
-        weight: -33
+      english_skill:
+        weight: 5
         enabled: false
-      right_image_text:
-        weight: -52
-        enabled: true
-      slider:
-        weight: -45
-        enabled: true
-      slider_item:
-        weight: -36
-        enabled: false
-      two_col_table:
+      featured_content:
         weight: -42
         enabled: true
+      file_download:
+        weight: -48
+        enabled: true
+      groups:
+        weight: 6
+        enabled: false
+      h2_title:
+        weight: -59
+        enabled: true
+      h3_title:
+        weight: -58
+        enabled: true
+      h4_title:
+        weight: -57
+        enabled: true
+      headings:
+        weight: -56
+        enabled: true
+      image:
+        weight: -54
+        enabled: true
+      image_link:
+        weight: -50
+        enabled: true
+      layout_paragraph:
+        weight: -60
+        enabled: true
+      left_image_text:
+        weight: -52
+        enabled: true
+      license:
+        weight: 7
+        enabled: false
+      link_button:
+        weight: -49
+        enabled: true
+      modal_dialog:
+        weight: -47
+        enabled: true
+      other_language:
+        weight: 8
+        enabled: false
+      other_notice:
+        weight: 9
+        enabled: false
+      q_a:
+        weight: 10
+        enabled: false
+      right_image_text:
+        weight: -51
+        enabled: true
+      skill:
+        weight: 11
+        enabled: false
+      slider:
+        weight: -44
+        enabled: true
+      slider_item:
+        weight: 0
+        enabled: false
+      two_col_table:
+        weight: -41
+        enabled: true
       two_col_table_row:
-        weight: -32
+        weight: 12
         enabled: false
       video:
-        weight: -54
+        weight: -53
         enabled: true
       views:
         weight: -37
         enabled: true
       wysiwyg_editor:
-        weight: -56
+        weight: -55
         enabled: true
 field_type: entity_reference_revisions
