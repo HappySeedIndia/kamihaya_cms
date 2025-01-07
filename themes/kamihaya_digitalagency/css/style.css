@@ -7835,6 +7835,26 @@ footer .navbar-nav a.is-active {
   width: auto !important;
 }
 
+.w-25-sp-100,
+.w-50-sp-100,
+.w-75-sp-100 {
+  width: 100% !important;
+}
+
+@media (min-width: 768px) {
+  .w-25-sp-100 {
+    width: 25% !important;
+  }
+
+  .w-50-sp-100 {
+    width: 50% !important;
+  }
+
+  .w-75-sp-100 {
+    width: 75% !important;
+  }
+}
+
 .mw-100 {
   max-width: 100% !important;
 }
