@@ -151,6 +151,7 @@ header {
 @media (min-width: 992px) {
   .navbar-expand-lg {
     padding: 0;
+    flex-direction: column;
   }
 
   li.nav-item.dropdown .dropdown-menu {

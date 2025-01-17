@@ -2,11 +2,10 @@
 
 namespace Drupal\kamihaya_cms_views_extension\Plugin\views\field;
 
-use Drupal\Core\Datetime\TimeZoneFormHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Attribute\ViewsField;
+use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
-use Drupal\json_field\Plugin\views\field\JsonDataField;
 
 /**
  * Extend the JSON field.
@@ -14,7 +13,7 @@ use Drupal\json_field\Plugin\views\field\JsonDataField;
  * @ingroup views_field_handlers
  */
 #[ViewsField("kamihaya_json_data")]
-class KamihayaJsonDataField extends JsonDataField {
+class KamihayaJsonDataField extends FieldPluginBase {
 
   /**
    * {@inheritdoc}
