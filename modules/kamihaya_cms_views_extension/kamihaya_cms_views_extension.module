@@ -426,7 +426,7 @@ function kamihaya_cms_views_extension_ajax_callback(array &$form, FormStateInter
   $elements = $target['#ajax']['wrapper'];
   $response = new \Drupal\Core\Ajax\AjaxResponse();
   foreach ($elements as $name => $id) {
-    $response->addCommand(new \Drupal\Core\Ajax\ReplaceCommand("#$id", $form[$name]));
+    $response->addCommand(new \Drupal\Core\Ajax\ReplaceCommand("#$id", \Drupal::service('renderer')->render($form[$name])));
   }
   return $response;
 }

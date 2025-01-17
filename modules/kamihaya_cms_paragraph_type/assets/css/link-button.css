@@ -5,6 +5,12 @@
   gap: 1rem;
 }
 
+.paragraph--type--link-button .link-buttons .btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (max-width: 767px) {
   .paragraph--type--link-button .link-buttons {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));

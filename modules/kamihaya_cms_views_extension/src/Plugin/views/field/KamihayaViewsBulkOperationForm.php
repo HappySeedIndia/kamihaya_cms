@@ -2,12 +2,8 @@
 
 namespace Drupal\kamihaya_cms_views_extension\Plugin\views\field;
 
-use Drupal\Component\Utility\SortArray;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Attribute\ViewsField;
-use Drupal\views\Plugin\views\style\Table;
-use Drupal\views\ResultRow;
-use Drupal\views\ViewExecutable;
 use Drupal\views_bulk_operations\Plugin\views\field\ViewsBulkOperationsBulkForm;
 
 /**
