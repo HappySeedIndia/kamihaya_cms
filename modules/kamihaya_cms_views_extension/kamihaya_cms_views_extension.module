@@ -393,17 +393,6 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
         $value['#id'] = $id;
       }
       $related_filter = $value['#related_filter'];
-      // if (!empty($related_filter) && empty($form['#ajax'])) {
-      //   $form['#ajax'] = [
-      //     'callback' => 'kamihaya_cms_views_extension_ajax_callback',
-      //     'event' => 'change',
-      //     'progress' => [
-      //       'type' => 'throbber',
-      //       'message' => '',
-      //     ],
-      //   ];
-      // }
-      // continue;
       foreach ($related_filter as $filter) {
         if (empty($form[$filter]['#ajax'])) {
           $form[$filter]['#ajax'] = [
@@ -434,12 +423,9 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
  */
 function kamihaya_cms_views_extension_ajax_callback(array &$form, FormStateInterface $form_state) {
   $target = $form_state->getTriggeringElement();
-  dpm($target);
   $elements = $target['#ajax']['wrapper'];
   $response = new \Drupal\Core\Ajax\AjaxResponse();
-  //$response->addCommand(new \Drupal\Core\Ajax\ReplaceCommand($form['id'], \Drupal::service('renderer')->render($form)));
   foreach ($elements as $name => $id) {
-    dpm($form[$name]);
     $response->addCommand(new \Drupal\Core\Ajax\ReplaceCommand("#$id", \Drupal::service('renderer')->render($form[$name])));
   }
   return $response;
