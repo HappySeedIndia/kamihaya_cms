@@ -2,34 +2,40 @@
 
 namespace Drupal\kamihaya_cms_feeds_contentserv\Feeds\Parser;
 
+use Drupal\Core\File\FileSystemInterface;
+use GuzzleHttp\Psr7\Stream;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Exception\FetchException;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\DynamicItem;
 use Drupal\feeds\Feeds\Parser\ParserBase;
+use Drupal\feeds\FieldTargetDefinition;
 use Drupal\feeds\Result\FetcherResultInterface;
 use Drupal\feeds\Result\ParserResult;
 use Drupal\feeds\StateInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\file\Entity\File;
+use Drupal\file\FileInterface;
+use Drupal\kamihaya_cms_feeds_contentserv\Trait\ContentservApiTrait;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Defines a CSV feed parser.
+ * Defines a Contentserv API feed parser.
  *
  * @FeedsParser(
  *   id = "kamihaya_contentserv",
  *   title = "Kamihaya Contentserv",
  *   description = @Translation("Parse Contentserv JSON gotten by Kamihaya Contentserv API."),
- *   form = {
- *     "configuration" = "Drupal\kamihaya_cms_feeds_contentserv\Feeds\Parser\Form\ContentservApiFetcherForm",
- *     "feed" = "Drupal\feeds\kamihaya_cms_feeds_contentserv\Parser\Form\ContentservApiFetcherFeedForm",
- *   },
  * )
  */
-class ContentservApiParser extends ParserBase implements ContainerFactoryPluginInterface{
+class ContentservApiParser extends ParserBase implements ContainerFactoryPluginInterface {
+
+  use ContentservApiTrait;
 
   /**
    * Constructor.
@@ -42,8 +48,10 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    *   The plugin definition.
    * @param \GuzzleHttp\ClientInterface $httpClient
    *   The Guzzle client.
+   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
+   *   The file system.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, protected ClientInterface $httpClient) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, protected ClientInterface $httpClient, protected FileSystemInterface $fileSystem) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -56,9 +64,9 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
       $plugin_id,
       $plugin_definition,
       $container->get('http_client'),
+      $container->get('file_system'),
     );
   }
-
 
   /**
    * {@inheritdoc}
@@ -78,63 +86,100 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     }
 
     $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
+    $processor_config = $feed->getType()->getProcessor()->getConfiguration();
+    $langcode = !empty($processor_config['addtional_langcode']) ? $processor_config['addtional_langcode'] : '';
 
-    /** @var \Drupal\kamihaya_cms_feeds_contentserv\Feeds\Result\ContentservApiFetcherResultInterface $fetcher_result */
-    if (empty($fetcher_result->getProducts())) {
+    /** @var \Drupal\kamihaya_cms_feeds_contentserv\Result\ContentservApiFetcherResultInterface $fetcher_result */
+    if (empty($fetcher_result->getResults())) {
       throw new EmptyFeedException();
     }
     $result = new ParserResult();
+    $mappings = $feed->getType()->getMappings();
 
     try {
-      $url = $fetcher_config['json_api_url'];
-      $data_url = "$url/core/v1/product/";
       $data_type = $fetcher_config['data_type'];
-      $options = [
-        RequestOptions::TIMEOUT => $fetcher_config['request_timeout'],
-        RequestOptions::HEADERS => [
-          'Content-Type' => 'application/json',
-          'Authorization' => "Bearer {$fetcher_result->getAccessToken()}",
-        ],
-      ];
+      $url = $fetcher_config['json_api_url'];
+      $data_url = "/core/v1/" . strtolower($data_type) . '/';
 
       if (empty($state->pointer)) {
         $state->pointer = 0;
       }
-      $products = array_slice($fetcher_result->getProducts(), $state->pointer, $this->configuration['data_limit']);
-      foreach ($products as $product) {
+      $results = array_slice($fetcher_result->getResults(), $state->pointer, $this->configuration['data_limit']);
+      foreach ($results as $result_data) {
         // Get the detail of product.
-        $response = $this->httpClient->get("$data_url{$product['ID']}", $options);
-        $data = json_decode($response->getBody()->getContents(), TRUE);
+        $response = $this->getData($feed, $url, "$data_url{$result_data['ID']}", $fetcher_result->getAccessToken());
+        $data = json_decode($response, TRUE);
         if (empty($data[$data_type])) {
           continue;
         }
+        dpm($data);
         $item = new DynamicItem();
         foreach ($sources as $key => $json_key) {
           if (isset($skip_sources[$key])) {
-            // Skip custom sources that are not of type "csv".
             continue;
           }
 
           $value = $this->getAttributeValue($data[$data_type], $json_key);
+          if (!empty($value) && $target = $this->getMediaTarget($feed, $key)) {
+            $label = $this->getAttributeValue($data[$data_type], 'Label');
+            $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
+          }
           $item->set($key, $value);
         }
 
+        if (!empty($langcode)) {
+          // Get additional language data.
+          $add_options = [];
+          $add_options[RequestOptions::QUERY] = ['lang' => $langcode];
+          $response = $this->getData($feed, $url, "$data_url{$result_data['ID']}", $fetcher_result->getAccessToken(), $add_options);
+          $data = json_decode($response, TRUE);
+          if (!empty($data[$data_type])) {
+            $add_item = new DynamicItem();
+            foreach ($sources as $key => $json_key) {
+              if (isset($skip_sources[$key])) {
+                continue;
+              }
+              $value = $this->getAttributeValue($data[$data_type], $json_key);
+
+              $alt = FALSE;
+              foreach ($mappings as $mapping) {
+                if (empty($mapping['map']['alt']) || $mapping['map']['alt'] !== $key) {
+                  continue;
+                }
+                $alt = TRUE;
+              }
+              if (strlen($value) === 0 || ($value === $item->get($key) && !$alt)) {
+                continue;
+              }
+              if (!empty($value) && $target = $this->getMediaTarget($feed, $key)) {
+                $label = $this->getAttributeValue($data[$data_type], 'Label');
+                $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
+              }
+              $add_item->set($key, $value);
+            }
+            if (count($add_item->toArray())) {
+              $add_item->set('translation', TRUE);
+              $item->set($langcode, $add_item);
+            }
+          }
+        }
+        $item->set('access_token', $fetcher_result->getAccessToken());
         $result->addItem($item);
         $state->pointer++;
       }
 
       // Report progress.
-      $state->total = count($fetcher_result->getProducts());
+      $state->total = count($fetcher_result->getResults());
       $state->progress($state->total, $state->pointer);
 
-    } catch (RequestException $e) {
+    }
+    catch (GuzzleException $e) {
       $state->setCompleted();
       $args = ['%error' => $e->getMessage()];
       throw new FetchException(strtr('The error occurs while getting data because of error "%error".', $args));
     }
 
-    // Set progress to complete if no more results are parsed. Can happen with
-    // empty lines in CSV.
+    // Set progress to complete if no more results are parsed.
     if (!$result->count()) {
       $state->setCompleted();
     }
@@ -153,7 +198,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    * @return string
    *   The attribute value.
    */
-  private function getAttributeValue(array $json, $render_value) {
+  protected function getAttributeValue(array $json, $render_value) {
     $render_value = str_replace(' ', '', $render_value);
     $attributes = explode(':', $render_value);
     $value = $json;
@@ -162,10 +207,15 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         return '';
       }
       $attribute = trim($attribute);
-      if (empty($value[$attribute])) {
-        '';
+      if (strpos($attribute, 'EXCLUDE') === 0) {
+        $attribute = str_replace(['EXCLUDE(', ')'], '', $attribute);
+        if (empty($value[$attribute])) {
+          continue;
+        }
+        unset($value[$attribute]);
+        continue;
       }
-      if (!empty($value[$attribute])) {
+      if (isset($value[$attribute])) {
         $value = $value[$attribute];
         continue;
       }
@@ -176,7 +226,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
           $val = explode('=', $attrs[0])[1];
           $val_key = $attrs[1];
           foreach ($value as $item) {
-            if (!empty($item[$key]) && $item[$key] === $val && !empty($item[$val_key])) {
+            if (isset($item[$key]) && $item[$key] === $val && isset($item[$val_key])) {
               return $item[$val_key];
             }
           }
@@ -184,7 +234,124 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         }
       }
     }
+    if (is_array($value)) {
+      return json_encode($value);
+    }
     return $value;
+  }
+
+  /**
+   * Check the source is media or not.
+   *
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed.
+   * @param string $source
+   *   The source.
+   *
+   * @return \Drupal\feeds\FieldTargetDefinition|null
+   *   The media target.
+   */
+  protected function getMediaTarget(FeedInterface $feed, $source) {
+    $mappings = $feed->getType()->getMappings();
+    $targets = $feed->getType()->getMappingTargets();
+    foreach ($mappings as $value) {
+      if (empty($value['target']) || empty($value['map']['target_id']) || $value['map']['target_id'] !== $source || empty($targets[$value['target']])) {
+        continue;
+      }
+      /** @var \Drupal\feeds\FieldTargetDefinition $target */
+      $target = $targets[$value['target']];
+      if ($target->getFieldDefinition()->getType() === 'file' || $target->getFieldDefinition()->getType() === 'image') {
+        return $target;
+      }
+    }
+    return NULL;
+  }
+
+  /**
+   * Create media file.
+   *
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed.
+   * @param \Drupal\feeds\Result\FetcherResultInterface $fetcher_result
+   *   The fetcher result.
+   * @param \Drupal\feeds\FieldTargetDefinition $target
+   *   The target.
+   * @param string $file_id
+   *   The file id.
+   * @param string $file_name
+   *   The file name.
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @return int
+   *   The file id.
+   */
+  protected function createMediaFile(FeedInterface $feed, FetcherResultInterface $fetcher_result, FieldTargetDefinition $target, $file_id, $file_name, $langcode = '') {
+    $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
+    $processor_config = $feed->getType()->getProcessor()->getConfiguration();
+    $field_name = $target->getFieldDefinition()->getName();
+    $field_storage = FieldStorageConfig::loadByName($target->getFieldDefinition()->getTargetEntityTypeId(), $field_name);
+    $direcotry = $target->getFieldDefinition()->getSetting('file_directory');
+    $destination = $field_storage->getSetting('uri_scheme');
+    $file_destination = "{$destination}://{$direcotry}";
+    $this->fileSystem->prepareDirectory($file_destination, FileSystemInterface::CREATE_DIRECTORY);
+    $file_destination = "{$file_destination}/{$file_name}";
+    $resource = fopen($file_destination, 'w');
+    try {
+      $url = $fetcher_config['json_api_url'];
+      $data_url = "/core/v1/file/downloadurl/$file_id";
+
+      $download_url = $this->getData($feed, $url, $data_url, $fetcher_result->getAccessToken());
+      if (empty($download_url)) {
+        return NULL;
+      }
+      $download_url = str_replace(["\\", '"'], '', $download_url);
+      $options = [
+        RequestOptions::TIMEOUT => $fetcher_config['request_timeout'],
+        RequestOptions::SINK => $resource,
+        RequestOptions::HEADERS => [
+          'Authorization' => "Bearer {$fetcher_result->getAccessToken()}",
+        ],
+      ];
+
+      if (!empty($langcode)) {
+        $options[RequestOptions::QUERY] = ['lang' => $langcode];
+      }
+
+      $response = $this->httpClient->get($download_url, $options);
+      /** @var \GuzzleHttp\Psr7\Stream $stream */
+      $stream = $response->getBody();
+      if (empty($stream) || !($stream instanceof Stream)) {
+        return NULL;
+      }
+      // Save the file.
+      $file_uri = $stream->getMetadata('uri');
+      if ($file_uri) {
+        // Create the file entity.
+        $entity_values = [
+          'uri' => $file_uri,
+          'status' => FileInterface::STATUS_PERMANENT,
+        ];
+        if (!empty($langcode)) {
+          $entity_values['langcode'] = $langcode;
+        }
+        if ($processor_config['owner_feed_author']) {
+          $entity_values['uid'] = $feed->getOwnerId();
+        }
+        else {
+          $entity_values['uid'] = $processor_config['owner_id'];
+        }
+
+        $file = File::create($entity_values);
+        $file->save();
+        return $file->id();
+      }
+
+    }
+    catch (RequestException $e) {
+      $args = ['%error' => $e->getMessage()];
+      throw new FetchException(strtr('The error occurs while getting data because of error "%error".', $args));
+    }
   }
 
   /**
@@ -206,7 +373,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    */
   public function defaultConfiguration() {
     return [
-      'data_limit' => 100,
+      'data_limit' => 50,
     ];
   }
 

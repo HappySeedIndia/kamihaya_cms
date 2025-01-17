@@ -1,0 +1,22 @@
+<?php
+
+use Drupal\feeds\FeedInterface;
+
+function kamihaya_cms_feeds_contentserv_feeds_feed_presave(FeedInterface $feed) {
+  $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
+  if (empty($fetcher_config['scheduled_execution'])) {
+    return;
+  }
+  if (!isset($fetcher_config['scheduled_minute']) || is_null($fetcher_config['scheduled_minute'])) {
+    return;
+  }
+  $min = $fetcher_config['scheduled_minute'];
+  $time = time();
+  $cur_min = date('i', $time);
+  $hour = 0;
+  if ($cur_min >= $min) {
+    $hour = 1;
+  }
+  $next = mktime(date('H', $time) + $hour, $min, 0, date('m', $time), date('d', $time), date('Y', $time));
+  $feed->set('next', $next);
+}

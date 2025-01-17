@@ -10,12 +10,12 @@ use Drupal\feeds\Result\FetcherResultInterface;
 interface ContentservApiFetcherResultInterface extends FetcherResultInterface {
 
   /**
-   * Returns the headers.
+   * Returns the results.
    *
    * @return array
-   *   The headers array.
+   *   The results array.
    */
-  public function getProducts();
+  public function getResults();
 
   /**
    * Returns the access token.
