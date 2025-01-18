@@ -710,6 +710,13 @@ progress {
   height: auto;
 }
 
+.img-default {
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+}
+
 .figure {
   display: inline-block;
 }
