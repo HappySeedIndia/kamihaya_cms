@@ -159,3 +159,35 @@ function kamihaya_cms_content_type_field_group_pre_render(array &$element, $grou
   }
 
 }
+
+/**
+ * Implements hook_node_load().
+ */
+function kamihaya_cms_content_type_node_load(array $nodes) {
+  /** @var \Drupal\node\NodeInterface $node */
+  foreach ($nodes as $node) {
+    $fields = $node->toArray();
+    foreach ($fields ?: [] as $field_name => $value) {
+      if (!empty($value)) {
+        continue;
+      }
+      $field_config = $node->getFieldDefinition($field_name)->getConfig($node->bundle());
+      if (empty($field_config) || $field_config->getType() !== 'entity_reference'
+        || empty($field_config->getDefaultValue($node))
+        || empty($field_config->getDefaultValue($node)[0]['target_id']))  {
+        continue;
+      }
+      if ($field_config->getSetting('handler') !== 'default:media'
+        || empty($field_config->getSetting('handler_settings')['target_bundles'])
+        || !in_array('image', $field_config->getSetting('handler_settings')['target_bundles'])) {
+        continue;
+      }
+      $target_id = $field_config->getDefaultValue($node)[0]['target_id'];
+      $media = \Drupal::entityTypeManager()->getStorage('media')->load($target_id);
+      if (empty($media)) {
+        continue;
+      }
+      $node->set($field_name, $media->id());
+    }
+  }
+}
