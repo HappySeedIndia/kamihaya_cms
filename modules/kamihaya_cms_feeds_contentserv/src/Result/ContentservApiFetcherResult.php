@@ -17,10 +17,12 @@ class ContentservApiFetcherResult extends FetcherResult implements ContentservAp
   /**
    * Constructs an ContentservFetcherResult object.
    *
-   * @param array $headers
-   *   An array of HTTP headers.
+   * @param array $results
+   *   An array of results.
+   * @param string $accessToken
+   *  The access token.
    */
-  public function __construct(protected array $products, protected string $accessToken) {
+  public function __construct(protected array $results, protected string $accessToken) {
 
   }
 
@@ -35,8 +37,8 @@ class ContentservApiFetcherResult extends FetcherResult implements ContentservAp
   /**
    * {@inheritdoc}
    */
-  public function getProducts() {
-    return $this->products;
+  public function getResults() {
+    return $this->results;
   }
 
   /**

@@ -1,0 +1,6 @@
+services:
+  kamihaya_cms_feeds_contentserv.feeds_subscriber:
+    class: Drupal\kamihaya_cms_feeds_contentserv\EventSubscriber\FeedsSubscriber
+    arguments: ['@feeds_tamper.feed_type_tamper_manager']
+    tags:
+      - {name: event_subscriber}

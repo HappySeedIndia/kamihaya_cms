@@ -73,6 +73,27 @@ class ContentservApiFetcherForm extends ExternalPluginFormBase {
       '#min' => 0,
     ];
 
+    $form['scheduled_execution'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Scheduled execution'),
+      '#description' => $this->t('Enable this option to execute the feed import on a schedule.'),
+      '#default_value' => $this->plugin->getConfiguration('scheduled_execution'),
+    ];
+
+    $form['scheduled_minute'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Execute minute'),
+      '#max' => 59,
+      '#min' => 0,
+      '#description' => $this->t('Execute the feed import at the specified minute every hour.'),
+      '#default_value' => $this->plugin->getConfiguration('scheduled_minute'),
+      '#states' => [
+        'visible' => [
+          ':input[name="fetcher_configuration[scheduled_execution]"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
     return $form;
   }
 

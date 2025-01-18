@@ -3,17 +3,16 @@
 namespace Drupal\kamihaya_cms_feeds_contentserv\Feeds\Fetcher;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Exception\FetchException;
 use Drupal\feeds\FeedInterface;
-use Drupal\feeds\Annotation\FeedsFetcher;
 use Drupal\feeds\Plugin\Type\Fetcher\FetcherInterface;
 use Drupal\feeds\Plugin\Type\PluginBase;
 use Drupal\feeds\StateInterface;
 use Drupal\kamihaya_cms_feeds_contentserv\Result\ContentservApiFetcherResult;
+use Drupal\kamihaya_cms_feeds_contentserv\Trait\ContentservApiTrait;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -31,6 +30,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class ContentservApiFetcher extends PluginBase implements FetcherInterface, ContainerFactoryPluginInterface {
+
+  use ContentservApiTrait;
 
   /**
    * Constructor.
@@ -65,29 +66,13 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
    */
   public function fetch(FeedInterface $feed, StateInterface $state) {
     $url = $this->configuration['json_api_url'];
-    $auth_url = "$url/auth/v1/token";
-    $list_url = "$url/core/v1/product/changes/";
     $data_type = $this->configuration['data_type'];
-
-    $products = [];
-    $token = '';
-
-    $options = [
-      RequestOptions::TIMEOUT => $this->configuration['request_timeout'],
-      RequestOptions::HEADERS => [
-       'Content-Type' => 'application/json',
-        'Authorization' => "CSAuth {$this->configuration['api_key']}:{$this->configuration['secret']}",
-      ],
-    ];
+    $list_url = "/core/v1/" . strtolower($data_type) . '/changes/';
+    $results = [];
 
     try {
       // Get the access token.
-      $response = $this->httpClient->get($auth_url, $options);
-      $result = json_decode($response->getBody()->getContents(), TRUE);
-      $token = !empty($result['access_token']) ? $result['access_token'] : '';
-      if (empty($token)) {
-        throw new FetchException($this->t('Faild to get the access token'));
-      }
+      $token = $this->getAccessToken($feed, $url);
 
       // Get the last imported time to fetch only the changed data.
       $last_imported_time = 0;
@@ -95,48 +80,50 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
         $last_imported_time = $feed->getImportedTime();
       }
       $options = [
-        RequestOptions::TIMEOUT => $this->configuration['request_timeout'],
-        RequestOptions::HEADERS => [
-          'Content-Type' => 'application/json',
-          'Authorization' => "Bearer $token",
-        ],
         RequestOptions::QUERY => [
           'filter' => 'IsFolder=0',
           'begin' => date('Y-m-d H:i:s', $last_imported_time),
-          'limit' => $this->configuration['limit']
+          'limit' => $this->configuration['limit'],
         ],
       ];
 
-      // Get the list of products.
-      $response = $this->httpClient->get("$list_url{$this->configuration['folder_id']}", $options);
-      $result = json_decode($response->getBody()->getContents(), TRUE);
+      // Get the list of results.
+      $response = $this->getData($feed, $url, "$list_url{$this->configuration['folder_id']}", $token, $options);
+      $result = json_decode($response, TRUE);
       if (empty($result['Meta']['Total'])) {
         $state->setMessage($this->t('No data found.'));
         throw new EmptyFeedException();
       }
-      $products = $result["{$data_type}s"] ? $result["{$data_type}s"] : [];
+      $results = $result["{$data_type}s"] ? $result["{$data_type}s"] : [];
 
       // Get the rest of the data if the total count is more than the limit.
       if ($result['Meta']['Total'] > $this->configuration['limit']) {
         $count = ceil($result['Meta']['Total'] / $this->configuration['limit']) - 1;
         for ($i = 1; $i <= $count; $i++) {
           $options[RequestOptions::QUERY]['page'] = $i;
-          $response = $this->httpClient->get("$list_url{$this->configuration['folder_id']}", $options);
-          $result = json_decode($response->getBody()->getContents(), TRUE);
+          $response = $this->getData($feed, $url, "$list_url{$this->configuration['folder_id']}", $token, $options);
+          $result = json_decode($response, TRUE);
           if (empty($result["{$data_type}s"])) {
             $state->setMessage($this->t('No additional data found.'));
             throw new EmptyFeedException();
           }
-          $products = array_merge($products, $result["{$data_type}s"]);
+          $results = array_merge($results, $result["{$data_type}s"]);
         }
       }
     }
-    catch (RequestException $e) {
+    catch (GuzzleException $e) {
       $args = ['%error' => $e->getMessage()];
       throw new FetchException(strtr('The error occurs while getting data because of error "%error".', $args));
     }
 
-    return new ContentservApiFetcherResult($products, $token);
+    return new ContentservApiFetcherResult($results, $token);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function defaultFeedConfiguration() {
+    return ['access_token' => ''];
   }
 
   /**
@@ -151,6 +138,8 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
       'data_type' => 'Product',
       'limit' => '1000',
       'request_timeout' => 30,
+      'scheduled_execution' => FALSE,
+      'scheduled_minute' => 0,
     ];
   }
 

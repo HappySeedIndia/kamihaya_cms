@@ -8,3 +8,5 @@ project: 'kamihaya'
 
 dependencies:
   - feeds:feeds
+  - feeds_tamper:feeds_tamper
+  - tamper:tamper
