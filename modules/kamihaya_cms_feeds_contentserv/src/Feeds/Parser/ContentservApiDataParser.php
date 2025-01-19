@@ -4,11 +4,13 @@ namespace Drupal\kamihaya_cms_feeds_contentserv\Feeds\Parser;
 
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Exception\FetchException;
+use Drupal\feeds\Exception\ValidationException;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\DynamicItem;
 use Drupal\feeds\Result\FetcherResultInterface;
 use Drupal\feeds\Result\ParserResult;
 use Drupal\feeds\StateInterface;
+use Drupal\feeds\StateType;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 
@@ -66,6 +68,13 @@ class ContentservApiDataParser extends ContentservApiParser {
         $value = $this->getAttributeValue($result_data[$data_type], $json_key);
         if (!empty($value) && $target = $this->getMediaTarget($feed, $key)) {
           $label = $this->getAttributeValue($result_data[$data_type], 'Label');
+          if (!$this->checkFileExtention($target, $label)) {
+            $state->report(StateType::SKIP, 'Skipped because the file extentioon is not correct.', [
+              'feed' => $feed,
+              'item' => $item,
+            ]);
+            return $result;
+          }
           $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
         }
         $item->set($key, $value);
@@ -73,12 +82,11 @@ class ContentservApiDataParser extends ContentservApiParser {
 
       if (!empty($langcode)) {
         // Get additional language data.
-        $source = $feed->getSource();
         $url = $fetcher_config['json_api_url'];
         $data_url = "/core/v1/" . strtolower($data_type) . '/';
         $add_options = [];
         $add_options[RequestOptions::QUERY] = ['lang' => $langcode];
-        $response = $this->getData($feed, $url, "$data_url{$source}", $fetcher_result->getAccessToken(), $add_options);
+        $response = $this->getData($feed, $url, "$data_url{$result_data[$data_type]['ID']}", $fetcher_result->getAccessToken(), $add_options);
         $data = json_decode($response, TRUE);
         if (!empty($data[$data_type])) {
           $add_item = new DynamicItem();
@@ -100,6 +108,9 @@ class ContentservApiDataParser extends ContentservApiParser {
             }
             if (!empty($value) && $target = $this->getMediaTarget($feed, $key)) {
               $label = $this->getAttributeValue($data[$data_type], 'Label');
+              if (!$this->checkFileExtention($target, $label)) {
+                continue;
+              }
               $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
             }
             $add_item->set($key, $value);
@@ -110,7 +121,6 @@ class ContentservApiDataParser extends ContentservApiParser {
           }
         }
       }
-      dpm($item);
       $item->set('access_token', $fetcher_result->getAccessToken());
       $result->addItem($item);
       $state->pointer = 1;

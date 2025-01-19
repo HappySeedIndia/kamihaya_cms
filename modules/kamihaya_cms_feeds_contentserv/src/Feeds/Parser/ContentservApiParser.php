@@ -2,6 +2,7 @@
 
 namespace Drupal\kamihaya_cms_feeds_contentserv\Feeds\Parser;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use GuzzleHttp\Psr7\Stream;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -14,6 +15,7 @@ use Drupal\feeds\FieldTargetDefinition;
 use Drupal\feeds\Result\FetcherResultInterface;
 use Drupal\feeds\Result\ParserResult;
 use Drupal\feeds\StateInterface;
+use Drupal\feeds\StateType;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
@@ -50,8 +52,10 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    *   The Guzzle client.
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The file system.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, protected ClientInterface $httpClient, protected FileSystemInterface $fileSystem) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, protected ClientInterface $httpClient, protected FileSystemInterface $fileSystem, protected EntityTypeManagerInterface $entityTypeManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -65,6 +69,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
       $plugin_definition,
       $container->get('http_client'),
       $container->get('file_system'),
+      $container->get('entity_type.manager'),
     );
   }
 
@@ -112,7 +117,6 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         if (empty($data[$data_type])) {
           continue;
         }
-        dpm($data);
         $item = new DynamicItem();
         foreach ($sources as $key => $json_key) {
           if (isset($skip_sources[$key])) {
@@ -122,6 +126,13 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
           $value = $this->getAttributeValue($data[$data_type], $json_key);
           if (!empty($value) && $target = $this->getMediaTarget($feed, $key)) {
             $label = $this->getAttributeValue($data[$data_type], 'Label');
+            if (!$this->checkFileExtention($target, $label)) {
+              $state->report(StateType::SKIP, 'Skipped because the file extentioon is not correct.', [
+                'feed' => $feed,
+                'item' => $item,
+              ]);
+              continue 2;
+            }
             $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
           }
           $item->set($key, $value);
@@ -153,6 +164,9 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
               }
               if (!empty($value) && $target = $this->getMediaTarget($feed, $key)) {
                 $label = $this->getAttributeValue($data[$data_type], 'Label');
+                if (!$this->checkFileExtention($target, $label)) {
+                  continue;
+                }
                 $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
               }
               $add_item->set($key, $value);
@@ -199,6 +213,9 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    *   The attribute value.
    */
   protected function getAttributeValue(array $json, $render_value) {
+    if ($render_value === 'FULL') {
+      return $json;
+    }
     $render_value = str_replace(' ', '', $render_value);
     $attributes = explode(':', $render_value);
     $value = $json;
@@ -268,6 +285,26 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
   }
 
   /**
+   * Check the file extention.
+   *
+   * @param \Drupal\feeds\FieldTargetDefinition $target
+   *   The target.
+   * @param string $uri
+   *   The uri.
+   *
+   * @return bool
+   *   Whether the file extention is correct.
+   */
+  protected function checkFileExtention(FieldTargetDefinition $target, $uri) {
+    $extensions = $target->getFieldDefinition()->getSetting('file_extensions');
+    $regex = '/\.(' . preg_replace('/ +/', '|', preg_quote($extensions)) . ')$/i';
+    if (!preg_match($regex, $uri)) {
+      return FALSE;
+    }
+    return TRUE;;
+  }
+
+  /**
    * Create media file.
    *
    * @param \Drupal\feeds\FeedInterface $feed
@@ -327,22 +364,30 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
       // Save the file.
       $file_uri = $stream->getMetadata('uri');
       if ($file_uri) {
-        // Create the file entity.
-        $entity_values = [
-          'uri' => $file_uri,
-          'status' => FileInterface::STATUS_PERMANENT,
-        ];
-        if (!empty($langcode)) {
-          $entity_values['langcode'] = $langcode;
-        }
-        if ($processor_config['owner_feed_author']) {
-          $entity_values['uid'] = $feed->getOwnerId();
+        $files = $this->entityTypeManager->getStorage('file')->loadByProperties(['uri' => $file_uri]);
+        if (!empty($files)) {
+          /** @var \Drupal\file\FileInterface $file */
+          $file = reset($files);
+          $file->setChangedTime(time());
         }
         else {
-          $entity_values['uid'] = $processor_config['owner_id'];
+          // Create the file entity.
+          $entity_values = [
+            'uri' => $file_uri,
+            'status' => FileInterface::STATUS_PERMANENT,
+          ];
+          if (!empty($langcode)) {
+            $entity_values['langcode'] = $langcode;
+          }
+          if ($processor_config['owner_feed_author']) {
+            $entity_values['uid'] = $feed->getOwnerId();
+          }
+          else {
+            $entity_values['uid'] = $processor_config['owner_id'];
+          }
+          $file = File::create($entity_values);
         }
 
-        $file = File::create($entity_values);
         $file->save();
         return $file->id();
       }

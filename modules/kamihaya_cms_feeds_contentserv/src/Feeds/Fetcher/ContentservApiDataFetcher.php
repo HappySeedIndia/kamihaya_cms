@@ -27,9 +27,14 @@ class ContentservApiDataFetcher extends ContentservApiFetcher {
    * {@inheritdoc}
    */
   public function fetch(FeedInterface $feed, StateInterface $state) {
-    $source = $feed->getSource();
-    $url = $this->configuration['json_api_url'];
     $data_type = $this->configuration['data_type'];
+    $source = $feed->getSource();
+    $json = [];
+    if ($feed->hasField('field_json_data') && !empty($feed->get('field_json_data')->getValue())) {
+      $json_data = $feed->get('field_json_data')->getValue()[0]['value'];
+      $json = json_decode($json_data, TRUE);
+    }
+    $url = $this->configuration['json_api_url'];
     $data_url = "/core/v1/" . strtolower($data_type) . '/';
     $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
     $token = '';
@@ -42,6 +47,10 @@ class ContentservApiDataFetcher extends ContentservApiFetcher {
         $token = $this->getAccessToken($feed, $url);
         $feed_config['access_token'] = $token;
         $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
+      }
+
+      if (!empty($json)) {
+        return new ContentservApiFetcherResult([[$data_type => $json]], $token);
       }
 
       // Get the detail of product.

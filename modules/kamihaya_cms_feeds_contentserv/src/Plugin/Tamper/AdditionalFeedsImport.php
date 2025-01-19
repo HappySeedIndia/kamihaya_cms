@@ -6,6 +6,8 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\feeds\Entity\Feed;
+use Drupal\feeds\StateInterface;
+use Drupal\tamper\Exception\SkipTamperDataException;
 use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -17,7 +19,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "additional_feeds_import",
  *   label = @Translation("Additional Feeds Import"),
  *   description = @Translation("Import with the additional feeds."),
- *   category = "Other"
+ *   category = "Other",
+ *   handle_multiples = TRUE
  * )
  */
 class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPluginInterface {
@@ -87,6 +90,7 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
       '#title' => $this->t('Skip translated item'),
       '#default_value' => $this->getSetting(self::SETTING_SKIP_TRANSLATED_ITEM),
     ];
+
     return $form;
   }
 
@@ -97,6 +101,7 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
     parent::submitConfigurationForm($form, $form_state);
     $this->setConfiguration([
       self::SETTING_FEEDS => $form_state->getValue(self::SETTING_FEEDS),
+      self::SETTING_SKIP_TRANSLATED_ITEM => $form_state->getValue(self::SETTING_SKIP_TRANSLATED_ITEM),
     ]);
   }
 
@@ -104,7 +109,7 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public function tamper($data, TamperableItemInterface $item = NULL) {
-    if (is_null($data) || strlen($data) === 0) {
+    if (is_null($data) || (is_array($data) && empty($data)) || (!is_array($data) && strlen($data) === 0)) {
       return $data;
     }
     if ($this->getSetting(self::SETTING_SKIP_TRANSLATED_ITEM) && !empty($item->getSource()['translation'])) {
@@ -113,11 +118,16 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
     $values = [
       'title' => $this->t('Temporary feed for additional feeds import'),
       'type' => $this->getSetting(self::SETTING_FEEDS),
-      'source' => $data,
       'feeds_log' => FALSE,
     ];
 
     $feed = Feed::create($values);
+    if ($feed->hasField('field_json_data')) {
+      $feed->set('field_json_data', json_encode($data));
+    }
+    else {
+      $feed->setSource($data);
+    }
     if (!empty($item->getSource()['access_token'])) {
       $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
       $feed_config['access_token'] = $item->getSource()['access_token'];
@@ -132,6 +142,7 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
     } finally {
       $feed->delete();
     }
+
     return $data;
   }
 
