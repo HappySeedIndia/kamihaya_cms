@@ -1,7 +1,13 @@
 <?php
 
 use Drupal\feeds\FeedInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\kamihaya_cms_feeds_contentserv\Feeds\Fetcher\ContentservApiDataFetcher;
 
+/**
+ * Implements hook_feed_presave().
+ */
 function kamihaya_cms_feeds_contentserv_feeds_feed_presave(FeedInterface $feed) {
   $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
   if (empty($fetcher_config['scheduled_execution'])) {
@@ -19,4 +25,39 @@ function kamihaya_cms_feeds_contentserv_feeds_feed_presave(FeedInterface $feed) 
   }
   $next = mktime(date('H', $time) + $hour, $min, 0, date('m', $time), date('d', $time), date('Y', $time));
   $feed->set('next', $next);
+}
+
+/**
+ * Implements hook_entity_bundle_create().
+ */
+function kamihaya_cms_feeds_contentserv_entity_bundle_create($entity_type, $bundle) {
+  if ($entity_type !== 'feeds_feed') {
+    return;
+  }
+  /** @var \Drupal\feeds\FeedTypeInterface $feed_type */
+  $feed_type = \Drupal::entityTypeManager()->getStorage('feeds_feed_type')->load($bundle);
+  $fetcher = $feed_type->getFetcher();
+  if (!($fetcher instanceof ContentservApiDataFetcher)) {
+    return;
+  }
+  if (!FieldStorageConfig::loadByName($entity_type, 'field_json_data')) {
+    $field_storage = FieldStorageConfig::create([
+      'field_name' => 'field_json_data',
+      'entity_type' => $entity_type,
+      'type' => 'json_native',
+      'cardinality' => 1,
+      'translatable' => TRUE,
+    ]);
+    $field_storage->save();
+  }
+
+  $field_instance = FieldConfig::create([
+    'field_name' => 'field_json_data',
+    'entity_type' => $entity_type,
+    'bundle' => $bundle,
+    'label' => 'JSON data',
+    'required' => FALSE,
+    'settings' => [],
+  ]);
+  $field_instance->save();
 }

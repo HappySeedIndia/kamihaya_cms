@@ -9,4 +9,5 @@ project: 'kamihaya'
 dependencies:
   - feeds:feeds
   - feeds_tamper:feeds_tamper
+  - json_field:json_field
   - tamper:tamper

@@ -25,7 +25,6 @@ class SetValueWithCondition extends TamperBase {
   const SETTING_DATA_VALUE = 'data_value';
   const SETTING_NOT_MATCH_VALUE = 'not_match_value';
 
-
   /**
    * {@inheritdoc}
    */
@@ -123,7 +122,7 @@ class SetValueWithCondition extends TamperBase {
   /**
    * {@inheritdoc}
    */
-  public function tamper($data, TamperableItemInterface $item = NULL) {
+  public function tamper($data, ?TamperableItemInterface $item = NULL) {
     $condition_source = $this->getSetting(self::SETTING_CONDITION_SOURCE);
     $condition_value = $this->getSetting(self::SETTING_CONDITION_VALUE);
     $matching_condition = $this->getSetting(self::SETTING_MATCHING_CONDITION);
@@ -163,7 +162,6 @@ class SetValueWithCondition extends TamperBase {
         }
         break;
     }
-
     return $not_match_value;
   }
 
