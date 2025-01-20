@@ -6,7 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\taxonomy\Entity\Term;
 
 /**
- * Builds a the query with the limited display depth.
+ * Builds the query with the limited display depth.
  */
 trait KamihayaTaxonomyViewsFilterTrait {
 
@@ -69,7 +69,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
 
     if (empty($this->options['display_depth']) && !empty($this->options['reduce_by_relation'])) {
-      $this->reduceTermByRelation($form, $form['value']['#options']);
+       $this->reduceTermByRelation($form, $form['value']['#options']);
       return;
     }
 
@@ -104,6 +104,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
    */
   private function reduceTermByRelation(array &$form, array $options) {
     $field_definitions = $this->entityFieldManager->getFieldDefinitions('taxonomy_term', $this->options['vid']);
+    // Bundles should store the child filters which will be updated using AJAX.
     $bundles = [];
     $form['value']['#related_filter'] = [];
     foreach ($field_definitions as $field_name => $field_definition) {
@@ -112,9 +113,13 @@ trait KamihayaTaxonomyViewsFilterTrait {
       }
       $bundles[$field_name] = reset($field_definition->getSetting('handler_settings')['target_bundles']);
     }
+    // $request_params consists the AJAX request query parameters including (term_node_tid_depth).
     $request_params = array_merge($this->request->query->all(), $this->request->request->all());
     $filters = [];
+
+    // Loop through all the filters configured in the current view.
     foreach ($this->view->filter ?: [] as $name => $filter) {
+      // Ignore non-taxonomy filters and continue.
       if (strpos($filter->options['plugin_id'], 'taxonomy_index_tid') === FALSE || !in_array($filter->options['vid'], $bundles)) {
         continue;
       }
@@ -129,6 +134,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
         $filters[] = $request_params[$name];
       }
     }
+
     if (!empty($this->view->argument)) {
       $arguments = [];
       $route_term = $this->routeMatch->getParameter('taxonomy_term');
@@ -175,21 +181,22 @@ trait KamihayaTaxonomyViewsFilterTrait {
         }
       }
     }
+
+    // If no parent filter is selected display no child filters.
     if (empty($filters)) {
       $form['value']['#options'] = [];
       return;
     }
     foreach ($options as $key => $option) {
-      $tid = $key;
-      if (is_array($option)) {
-        $tid = key($option);
-      }
+      $tid = is_array($option) ? key($option) : $key;
       $term = $this->termStorage->load($tid);
       foreach ($bundles as $field_name => $bundle) {
         $field = $term->get($field_name);
+        // If the field doesn't contain any reference, unset the option.
         if (empty($field)) {
           unset($options[$key]);
         }
+
         $target_ids = $field->getValue();
         foreach ($target_ids as $target_id) {
           if (in_array($target_id['target_id'], $filters)) {
@@ -199,6 +206,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
       }
       unset($options[$key]);
     }
+    // Return the filtered options.
     $form['value']['#options'] = $options;
   }
 
