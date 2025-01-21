@@ -50,7 +50,6 @@ class ContentservApiDataFetcher extends ContentservApiFetcher {
       }
 
       if (!empty($json)) {
-        dpm($json);
         return new ContentservApiFetcherResult([[$data_type => $json]], $token);
       }
 
