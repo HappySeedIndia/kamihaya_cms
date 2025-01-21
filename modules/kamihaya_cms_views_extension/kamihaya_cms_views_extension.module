@@ -2,6 +2,7 @@
 
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CssCommand;
+use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Database\DatabaseExceptionWrapper;
 use Drupal\Core\Database\Query\AlterableInterface;
@@ -456,6 +457,8 @@ function kamihaya_cms_views_extension_ajax_callback(array &$form, FormStateInter
       $response->addCommand($command);
     }
   }
+  $submit_command = new InvokeCommand('input.form-submit[data-bef-auto-submit-click]', 'click');
+  $response->addCommand($submit_command);
   return $response;
 }
 
