@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_font_bold
+    - paragraphs.paragraphs_type.image_link
+  module:
+    - kamihaya_cms_field_marker
+third_party_settings:
+  kamihaya_cms_field_marker:
+    display_marker: 0
+    condtion: 0
+    marker_label: ''
+    label_color:
+      marker_label_color: ''
+      opacity: null
+    bg_color:
+      marker_bg_color: ''
+      opacity: null
+    border_color:
+      marker_border_color: ''
+      opacity: null
+    marker_position: title_left
+    marker_view_position: title_left
+id: paragraph.image_link.field_font_bold
+field_name: field_font_bold
+entity_type: paragraph
+bundle: image_link
+label: 'Font bold'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

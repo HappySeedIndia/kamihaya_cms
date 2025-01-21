@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.image_link.field_align
+    - field.field.paragraph.image_link.field_font_bold
     - field.field.paragraph.image_link.field_image
     - field.field.paragraph.image_link.field_image_desc_text_align
     - field.field.paragraph.image_link.field_image_desc_text_size
@@ -17,6 +18,12 @@ dependencies:
     - field.field.paragraph.image_link.field_link_text_halign
     - field.field.paragraph.image_link.field_link_text_valign
     - field.field.paragraph.image_link.field_mobile_height
+    - field.field.paragraph.image_link.field_padding
+    - field.field.paragraph.image_link.field_text_bg_color
+    - field.field.paragraph.image_link.field_text_bg_padding_x
+    - field.field.paragraph.image_link.field_text_bg_padding_y
+    - field.field.paragraph.image_link.field_text_bg_width
+    - field.field.paragraph.image_link.field_text_bg_width_unit
     - field.field.paragraph.image_link.field_width
     - field.field.paragraph.image_link.field_width_unit
     - paragraphs.paragraphs_type.image_link
@@ -36,7 +43,17 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 10
+    region: content
+  field_font_bold:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 20
     region: content
   field_image:
     type: image
@@ -58,7 +75,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 12
+    weight: 14
     region: content
   field_image_desc_text_size:
     type: number_integer
@@ -67,14 +84,14 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 11
+    weight: 8
     region: content
   field_image_description:
     type: basic_string
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 4
+    weight: 3
     region: content
   field_image_link:
     type: link
@@ -86,7 +103,7 @@ content:
       rel: '0'
       target: '0'
     third_party_settings: {  }
-    weight: 2
+    weight: 1
     region: content
   field_image_text:
     type: string
@@ -94,7 +111,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 3
+    weight: 2
     region: content
   field_image_text_color:
     type: color_field_formatter_text
@@ -103,14 +120,14 @@ content:
       format: rgb
       opacity: true
     third_party_settings: {  }
-    weight: 10
+    weight: 7
     region: content
   field_image_text_halign:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 8
+    weight: 5
     region: content
   field_image_text_size:
     type: number_integer
@@ -119,14 +136,14 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 9
+    weight: 6
     region: content
   field_image_text_valign:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 6
+    weight: 4
     region: content
   field_link_text:
     type: entity_reference_revisions_entity_view
@@ -135,21 +152,21 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 14
+    weight: 11
     region: content
   field_link_text_halign:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 16
+    weight: 12
     region: content
   field_link_text_valign:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 15
+    weight: 13
     region: content
   field_mobile_height:
     type: number_integer
@@ -158,7 +175,53 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 13
+    weight: 9
+    region: content
+  field_padding:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 14
+    region: content
+  field_text_bg_color:
+    type: color_field_formatter_text
+    label: hidden
+    settings:
+      format: rgb
+      opacity: true
+    third_party_settings: {  }
+    weight: 15
+    region: content
+  field_text_bg_padding_x:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 16
+    region: content
+  field_text_bg_padding_y:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 17
+    region: content
+  field_text_bg_width:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 18
+    region: content
+  field_text_bg_width_unit:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 19
     region: content
   field_width:
     type: number_integer
@@ -167,13 +230,13 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 5
+    weight: 3
     region: content
   field_width_unit:
     type: list_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 7
+    weight: 4
     region: content
 hidden: {  }

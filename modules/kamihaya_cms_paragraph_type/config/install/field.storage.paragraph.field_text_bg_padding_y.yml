@@ -1,0 +1,36 @@
+uuid: 01b2a24c-0f88-4ad2-85a3-fa182ce8b860
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_text_bg_padding_y
+field_name: field_text_bg_padding_y
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: py-5
+      label: XLarge
+    -
+      value: py-4
+      label: Large
+    -
+      value: py-3
+      label: Middle
+    -
+      value: py-2
+      label: Small
+    -
+      value: py-1
+      label: XSmall
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

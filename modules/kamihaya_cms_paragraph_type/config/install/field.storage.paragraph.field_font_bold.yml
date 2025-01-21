@@ -1,0 +1,18 @@
+uuid: 707c8cf2-c1b1-48ff-b04b-4241a0e49cf0
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_font_bold
+field_name: field_font_bold
+entity_type: paragraph
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
