@@ -122,7 +122,7 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
     ];
 
     $feed = Feed::create($values);
-    if ($feed->hasField('field_json_data')) {
+    if ($feed->hasField('field_json_data') && is_array($data)) {
       $feed->set('field_json_data', json_encode($data));
     }
     else {

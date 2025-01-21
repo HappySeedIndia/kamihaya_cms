@@ -64,7 +64,6 @@ class ContentservApiDataParser extends ContentservApiParser {
         if (isset($skip_sources[$key])) {
           continue;
         }
-
         $value = $this->getAttributeValue($result_data[$data_type], $json_key);
         if (!empty($value) && $target = $this->getMediaTarget($feed, $key)) {
           $label = $this->getAttributeValue($result_data[$data_type], 'Label');

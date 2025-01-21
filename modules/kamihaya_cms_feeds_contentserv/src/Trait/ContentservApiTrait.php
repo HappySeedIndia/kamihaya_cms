@@ -68,7 +68,7 @@ trait ContentservApiTrait {
     // Get the access token.
     $response = $this->httpClient->get("{$bace_url}{$additional_url}", $options);
     $status_code = $response->getStatusCode();
-    if ($status_code == 401) {
+    if ($status_code == 401 || $status_code == 401) {
       $token = $this->getAccessToken($feed, $bace_url);
       $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
       if (!empty($feed_config['access_token'])) {
