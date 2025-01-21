@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_text_bg_padding_y
+    - paragraphs.paragraphs_type.image_link
+  module:
+    - options
+id: paragraph.image_link.field_text_bg_padding_y
+field_name: field_text_bg_padding_y
+entity_type: paragraph
+bundle: image_link
+label: 'Text background vertical padding'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -60,6 +60,7 @@
       {% set width = paragraph.field_width.0.value %}
       {% set width_unit = paragraph.field_width_unit.0.value %}
       {% set mobile_height = paragraph.field_mobile_height.0.value %}
+      {% set padding = paragraph.field_padding.0.value %}
 
       {% if width %}
         {% set image_style = [width_unit == 'px' ? ('width: 100%; max-width: ' ~ width ~ width_unit ~ ';') : ('width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;'))] %}
@@ -93,6 +94,29 @@
             <img src="{{ imageUrl }}" alt="{{ content.field_image.0['#item'].alt }}" class="w-100"/>
           {% endif %}
 
+          {# Background #}
+          {% if content.field_text_bg_color|render %}
+            {% set bg_color = content.field_text_bg_color|render|striptags|trim|lower %}
+            {% set bg_pd_x = paragraph.field_text_bg_padding_x.0.value %}
+            {% set bg_pd_y = paragraph.field_text_bg_padding_y.0.value %}
+            {% set bg_width = paragraph.field_text_bg_width.0.value %}
+            {% set bg_width_unit = paragraph.field_text_bg_width_unit.0.value %}
+            {%
+              set bg_classes = [
+                'image-text-bg',
+                bg_pd_x ? bg_pd_x,
+                bg_pd_y ? bg_pd_y,
+              ]
+            %}
+            {%
+              set bg_style = [
+                bg_color ? 'background-color: ' ~ bg_color ~ ';',
+                bg_width ? 'width: ' ~ bg_width ~ (bg_width_unit ? bg_width_unit ~ ';' : 'px;'),
+              ]
+            %}
+          {% endif %}
+
+
           {# Text #}
           {% if content.field_image_text|render %}
             {# Other fields attributes #}
@@ -105,15 +129,20 @@
             %}
 
             {% set size = paragraph.field_image_text_size.0.value %}
+            {% set bold = paragraph.field_font_bold.0.value %}
             {% set color = content.field_image_text_color|render|striptags|trim|lower %}
             {%
               set style = [
                 size ? 'font-size: '  ~  size  ~  'px;' : 'font-size: 16px;',
                 color ? 'color: '  ~ color  ~ ';' : 'color: #fff;',
+                bold ? 'font-weight: bold;' : '',
               ]
             %}
-            <div class="mask">
+            <div class="mask"{% if padding %} class="{{ padding }};"{% endif %}>
               <div class="{{ text_classes|join(' ') }}" style="{{ style|join(' ') }}">
+                {% if bg_classes %}
+                  <div class="{{ bg_classes|join(' ') }}" style="{{ bg_style|join(' ') }}">
+                {% endif %}
                 <div>
                   <p>{{ content.field_image_text }}</p>
                   {% if content.field_image_description|render %}
@@ -122,6 +151,9 @@
                     <p {% if size %} style="font-size: {{ size }}px;" {% endif %} class="image-description{% if dec_align %} text-align-{{ dec_align }}{% endif %}">{{ content.field_image_description }}</p>
                   {% endif %}
                 </div>
+                {% if bg_classes %}
+                  </div>
+                {% endif %}
               </div>
             </div>
           {% endif %}
@@ -134,9 +166,15 @@
                 content.field_link_text_valign|render ? 'link-text-valign-' ~ paragraph.field_link_text_valign.0.value,
               ]
             %}
-            <div class="link-text-mask">
+            <div class="link-text-mask"{% if padding %} class="{{ padding }};"{% endif %}>
               <div class="{{ link_text_classes|join(' ') }}">
+                {% if bg_classes %}
+                  <div class="{{ bg_classes|join(' ') }}" style="{{ bg_style|join(' ') }}">
+                {% endif %}
                 {{ content.field_link_text }}
+                {% if bg_classes %}
+                  </div>
+                {% endif %}
               </div>
             </div>
           {% endif %}

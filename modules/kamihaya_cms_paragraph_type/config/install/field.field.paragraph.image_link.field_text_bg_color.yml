@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_text_bg_color
+    - paragraphs.paragraphs_type.image_link
+  module:
+    - color_field
+id: paragraph.image_link.field_text_bg_color
+field_name: field_text_bg_color
+entity_type: paragraph
+bundle: image_link
+label: 'Text background color'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  opacity: 1
+field_type: color_field_type

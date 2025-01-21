@@ -1,4 +1,12 @@
 /* Headings patterns */
+.paragraph--type--headings h1,
+.paragraph--type--headings h2,
+.paragraph--type--headings h3,
+.paragraph--type--headings h4,
+.paragraph--type--headings h5,
+.paragraph--type--headings h6 {
+  margin-bottom: 0;
+}
 
 /* === HEADING STYLE #1 === */
 .title-style_one h1,

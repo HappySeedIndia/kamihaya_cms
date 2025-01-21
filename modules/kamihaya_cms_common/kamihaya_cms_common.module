@@ -1,6 +1,8 @@
 <?php
 
 use Drupal\Component\Serialization\Yaml;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\paragraphs\Entity\ParagraphsType;
 
 /**
@@ -143,4 +145,90 @@ function _kamihaya_cms_common_add_paragraph($entity_type, $bundle, $paragraph_ty
   $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
   $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
   $field_config->save(TRUE);
+}
+
+/**
+ * Add a paragraph to a field.
+ *
+ * @param string $module
+ *  The module name.
+ * @param string $entity_type
+ *   The entity type.
+ * @param string $bundle
+ *   The bundle.
+ * @param array $fields
+ *   The field names.
+ */
+function _kamihaya_cms_common_add_fields($module, $entity_type, $bundle, array $fields) {
+  $module_path = \Drupal::service('extension.path.resolver')->getPath('module', $module);
+  $storage_configs = [];
+  $storage_optional_configs = [];
+  $install_configs = [];
+  $option_configs = [];
+
+  foreach($fields as $field) {
+    $field_storage = FieldStorageConfig::loadByName($entity_type, $field);
+    if ($field_storage) {
+      continue;
+    }
+    $field_storate_file_name = "field.storage.{$entity_type}.{$field}.yml";
+    $file = file_get_contents("$module_path/config/install/{$field_storate_file_name}");
+    if (!$file) {
+      $storage_optional_configs[] = $field_storate_file_name;
+      continue;
+    }
+    $storage_configs[] = $field_storate_file_name;
+  }
+
+  foreach($fields as $field) {
+    $field_config_file_name = "field.field.{$entity_type}.{$bundle}.{$field}.yml";
+    $file = file_get_contents("$module_path/config/install/{$field_config_file_name}");
+    if (!$file) {
+      $option_configs[] = $field_config_file_name;
+      continue;
+    }
+    $install_configs[] = $field_config_file_name;
+  }
+
+  if (empty($storage_configs) && empty($storage_optional_configs) && empty($install_configs) && empty($option_configs)) {
+    return;
+  }
+  if (!empty($storage_configs)) {
+    _kamihaya_cms_common_change_configs($module, $storage_configs, 'install');
+  }
+  if (!empty($storage_optional_configs)) {
+    _kamihaya_cms_common_change_configs($module, $storage_optional_configs, 'optional');
+  }
+  if (!empty($install_configs)) {
+    _kamihaya_cms_common_change_configs($module, $install_configs, 'install');
+    _kamihaya_cms_common_save_translation_configs($install_configs, 'ja');
+  }
+  if (!empty($option_configs)) {
+    _kamihaya_cms_common_change_configs($module, $option_configs, 'optional');
+    _kamihaya_cms_common_save_translation_configs($option_configs, 'ja');
+  }
+
+  $filename = "$module_path/config/install/core.entity_form_display.{$entity_type}.{$bundle}.default.yml";
+  $file = file_get_contents($filename);
+  $form_config = !empty($file) ? Yaml::decode($file) : [];
+
+  $filename = "$module_path/config/install/core.entity_view_display.{$entity_type}.{$bundle}.default.yml";
+  $file = file_get_contents($filename);
+  $display_config = !empty($file) ? Yaml::decode($file) : [];
+
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+
+  $form_display = $display_repository->getFormDisplay($entity_type, $bundle);
+  $view_display = $display_repository->getViewDisplay($entity_type, $bundle);
+  foreach($fields as $field) {
+    if (empty($form_config['content'][$field])) {
+      continue;
+    }
+    $form_display->setComponent($field, $form_config['content'][$field])->save();
+    if (empty($display_config['content'][$field])) {
+      continue;
+    }
+    $view_display->setComponent($field, $display_config['content'][$field])->save();
+  }
 }

@@ -51,6 +51,10 @@ a.image-link {
   align-items: flex-end;
 }
 
+.image-text-bg p {
+  margin-bottom: 0;
+}
+
 .paragraph--type--image-link .bg-image {
   position: relative;
   margin: 0 auto;
@@ -71,8 +75,8 @@ a.image-link {
 }
 
 .paragraph--type--image-link .paragraph--type--link-button .btn {
-  --bs-btn-padding-x: 0.5rem;
-  --bs-btn-padding-y: 0.2rem;
+  --bs-btn-padding-x: 1rem;
+  --bs-btn-padding-y: 0.5rem;
 }
 
 .paragraph--type--image-link .image-description {

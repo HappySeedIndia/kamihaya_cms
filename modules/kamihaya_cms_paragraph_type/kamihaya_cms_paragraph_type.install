@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\Core\Serialization\Yaml;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
@@ -779,7 +780,7 @@ function kamihaya_cms_paragraph_type_update_10012() {
 
   $paragraphs = [
     'anchor_link' => [
-      'field_link_item' => 'paragraphs',
+      'field_link_item' => 'entity_reference_revisions',
     ],
     'headings' => [
       'field_anchor_link_id' => 'string_textfield',
@@ -841,4 +842,19 @@ function kamihaya_cms_paragraph_type_update_10012() {
       ->save();
     }
   }
+}
+
+/**
+ * Update configs.
+ */
+function kamihaya_cms_paragraph_type_update_10013() {
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image_link', [
+    'field_font_bold',
+    'field_padding',
+    'field_text_bg_color',
+    'field_text_bg_padding_x',
+    'field_text_bg_padding_y',
+    'field_text_bg_width',
+    'field_text_bg_width_unit',
+  ]);
 }
