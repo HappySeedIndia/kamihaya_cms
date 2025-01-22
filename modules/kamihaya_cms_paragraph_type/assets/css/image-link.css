@@ -8,7 +8,8 @@ a.image-link {
 }
 
 a.image-link:hover {
-  opacity: 0.8;
+  opacity: 0.85;
+  text-decoration: underline;
 }
 
 .link-text,

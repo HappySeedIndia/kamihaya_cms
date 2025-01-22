@@ -51,7 +51,7 @@ content:
     region: content
   field_font_bold:
     type: boolean
-    label: above
+    label: hidden
     settings:
       format: custom
       format_custom_false: ''
@@ -76,7 +76,7 @@ content:
     region: content
   field_image_desc_color:
     type: color_field_formatter_text
-    label: above
+    label: hidden
     settings:
       format: rgb
       opacity: true
@@ -85,7 +85,7 @@ content:
     region: content
   field_image_desc_position:
     type: boolean
-    label: above
+    label: hidden
     settings:
       format: custom
       format_custom_false: ''
@@ -232,7 +232,7 @@ content:
     region: content
   field_text_bg_width:
     type: number_integer
-    label: above
+    label: hidden
     settings:
       thousand_separator: ''
       prefix_suffix: true
@@ -241,7 +241,7 @@ content:
     region: content
   field_text_bg_width_unit:
     type: list_default
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 19

@@ -125,7 +125,13 @@
           bold ? 'font-weight: bold;' : '',
         ]
       %}
-
+      {% set dec_size = paragraph.field_image_desc_text_size.0.value %}
+      {% set dec_color = content.field_image_desc_color|render|striptags|trim|lower %}
+      {% set dec_align = paragraph.field_image_desc_text_align.0.value %}
+      {% set dec_style = [
+        dec_size ? 'font-size: ' ~ dec_size ~ 'px;' : 'font-size: 16px;',
+        dec_color ? 'color: ' ~ dec_color ~ ';' : (color ? 'color: ' ~ color ~ ';' : 'color: #fff;'),
+      ] %}
       <div class="bg-image" {% if image_style %} style="{{ image_style|join(' ') }}" {% endif %}>
 
         {% if content.field_image_link|render and content.field_link_text.0 is empty %}
@@ -140,9 +146,7 @@
             <div>
               <p>{{ content.field_image_text }}</p>
               {% if content.field_image_description|render and desc_position != 1 %}
-                {% set size = paragraph.field_image_desc_text_size.0.value %}
-                {% set dec_align = paragraph.field_image_desc_text_align.0.value %}
-                <p {% if size %} style="font-size: {{ size }}px;" {% endif %} class="image-description{% if dec_align %} text-align-{{ dec_align }}{% endif %}">{{ content.field_image_description }}</p>
+                 <p {% if dec_style %} style="{{ dec_style|join(' ') }}" {% endif %} class="image-description{% if dec_align %} text-align-{{ dec_align }}{% endif %}">{{ content.field_image_description }}</p>
               {% endif %}
             </div>
             {% if bg_classes %}
@@ -167,10 +171,8 @@
               {% endif %}
               <div>
                 <p>{{ content.field_image_text }}</p>
-                {% if content.field_image_description|render and desc_position != 1  %}
-                  {% set size = paragraph.field_image_desc_text_size.0.value %}
-                  {% set dec_align = paragraph.field_image_desc_text_align.0.value %}
-                  <p {% if size %} style="font-size: {{ size }}px;" {% endif %} class="image-description{% if dec_align %} text-align-{{ dec_align }}{% endif %}">{{ content.field_image_description }}</p>
+                {% if content.field_image_description|render and desc_position != 1 %}
+                  <p {% if dec_style %} style="{{ dec_style|join(' ') }}" {% endif %} class="image-description{% if dec_align %} text-align-{{ dec_align }}{% endif %}">{{ content.field_image_description }}</p>
                 {% endif %}
               </div>
               {% if bg_classes %}
@@ -203,9 +205,7 @@
           </div>
         {% endif %}
         {% if content.field_image_description|render and desc_position == 1 %}
-          {% set size = paragraph.field_image_desc_text_size.0.value %}
-          {% set dec_align = paragraph.field_image_desc_text_align.0.value %}
-          <p {% if size %} style="font-size: {{ size }}px;" {% endif %} class="image-description{% if dec_align %} text-align-{{ dec_align }}{% endif %}">{{ content.field_image_description }}</p>
+           <p {% if dec_style %} style="{{ dec_style|join(' ') }}" {% endif %} class="image-description{% if dec_align %} text-align-{{ dec_align }}{% endif %}">{{ content.field_image_description }}</p>
         {% endif %}
 
         {% if content.field_image_link|render and content.field_link_text.0 is empty %}
