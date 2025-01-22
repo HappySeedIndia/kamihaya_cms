@@ -42,7 +42,7 @@ content:
       show_buttons: '1'
       cancel_text: Cancel
       choose_text: Choose
-      allow_empty: '0'
+      allow_empty: '1'
     third_party_settings: {  }
   field_style:
     type: options_select

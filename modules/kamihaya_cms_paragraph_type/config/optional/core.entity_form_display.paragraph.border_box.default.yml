@@ -1,4 +1,3 @@
-uuid: 53411443-3343-4933-8087-0e2f6566db1b
 langcode: en
 status: true
 dependencies:
@@ -24,8 +23,6 @@ dependencies:
   module:
     - color_field
     - paragraphs
-_core:
-  default_config_hash: 0yAeW1n1UXNtsNX3Ie4GDbmzAR1zzLJAogSir36slq8
 id: paragraph.border_box.default
 targetEntityType: paragraph
 bundle: border_box
