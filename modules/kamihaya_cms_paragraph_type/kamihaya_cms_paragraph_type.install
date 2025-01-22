@@ -850,6 +850,7 @@ function kamihaya_cms_paragraph_type_update_10012() {
 function kamihaya_cms_paragraph_type_update_10013() {
   _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image_link', [
     'field_font_bold',
+    'field_image_desc_color',
     'field_image_desc_position',
     'field_padding',
     'field_text_bg_color',
