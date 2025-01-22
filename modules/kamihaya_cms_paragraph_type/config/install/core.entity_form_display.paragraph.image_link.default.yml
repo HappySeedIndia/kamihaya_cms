@@ -5,6 +5,8 @@ dependencies:
     - field.field.paragraph.image_link.field_align
     - field.field.paragraph.image_link.field_font_bold
     - field.field.paragraph.image_link.field_image
+    - field.field.paragraph.image_link.field_image_desc_color
+    - field.field.paragraph.image_link.field_image_desc_position
     - field.field.paragraph.image_link.field_image_desc_text_align
     - field.field.paragraph.image_link.field_image_desc_text_size
     - field.field.paragraph.image_link.field_image_description
@@ -30,10 +32,116 @@ dependencies:
     - paragraphs.paragraphs_type.image_link
   module:
     - color_field
+    - field_group
     - imce
     - link
     - paragraphs
     - svg_image
+third_party_settings:
+  field_group:
+    group_image:
+      children:
+        - field_image
+        - field_image_link
+        - field_width
+        - field_width_unit
+        - field_mobile_height
+        - field_padding
+        - field_align
+      label: Image
+      region: content
+      parent_name: ''
+      weight: 0
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
+    group_text:
+      children:
+        - field_image_text
+        - field_image_text_size
+        - field_image_text_color
+        - field_font_bold
+        - field_image_text_valign
+        - field_image_text_halign
+      label: Text
+      region: content
+      parent_name: ''
+      weight: 1
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
+    group_image_description:
+      children:
+        - field_image_description
+        - field_image_desc_color
+        - field_image_desc_text_size
+        - field_image_desc_text_align
+        - field_image_desc_position
+      label: "\tImage description"
+      region: content
+      parent_name: ''
+      weight: 2
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
+    group_text_background:
+      children:
+        - field_text_bg_color
+        - field_text_bg_padding_x
+        - field_text_bg_padding_y
+        - field_text_bg_width
+        - field_text_bg_width_unit
+      label: 'Text background'
+      region: content
+      parent_name: ''
+      weight: 3
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
+    group_link_text:
+      children:
+        - field_link_text
+        - field_link_text_halign
+        - field_link_text_valign
+      label: 'Link text'
+      region: content
+      parent_name: ''
+      weight: 4
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
+_core:
+  default_config_hash: vJof-_iKPEUWzm9IFaceW3kGQSHxb2F0xnrfHXVtz4A
 id: paragraph.image_link.default
 targetEntityType: paragraph
 bundle: image_link
@@ -41,20 +149,20 @@ mode: default
 content:
   field_align:
     type: options_select
-    weight: 18
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   field_font_bold:
     type: boolean_checkbox
-    weight: 3
+    weight: 5
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_image:
     type: image_image
-    weight: 0
+    weight: 1
     region: content
     settings:
       progress_indicator: throbber
@@ -62,22 +170,43 @@ content:
     third_party_settings:
       imce:
         enabled: true
+  field_image_desc_color:
+    type: color_field_widget_spectrum
+    weight: 4
+    region: content
+    settings:
+      show_input: '1'
+      show_palette: '1'
+      palette: "[\"#000\",\"#444\",\"#666\",\"#999\",\"#ccc\",\"#eee\",\"#f3f3f3\",\"#fff\"],\r\n[\"#f00\",\"#f90\",\"#ff0\",\"#0f0\",\"#0ff\",\"#00f\",\"#90f\",\"#f0f\"],\r\n[\"#f4cccc\",\"#fce5cd\",\"#fff2cc\",\"#d9ead3\",\"#d0e0e3\",\"#cfe2f3\",\"#d9d2e9\",\"#ead1dc\"],\r\n[\"#ea9999\",\"#f9cb9c\",\"#ffe599\",\"#b6d7a8\",\"#a2c4c9\",\"#9fc5e8\",\"#b4a7d6\",\"#d5a6bd\"],\r\n[\"#e06666\",\"#f6b26b\",\"#ffd966\",\"#93c47d\",\"#76a5af\",\"#6fa8dc\",\"#8e7cc3\",\"#c27ba0\"],\r\n[\"#c00\",\"#e69138\",\"#f1c232\",\"#6aa84f\",\"#45818e\",\"#3d85c6\",\"#674ea7\",\"#a64d79\"],\r\n[\"#900\",\"#b45f06\",\"#bf9000\",\"#38761d\",\"#134f5c\",\"#0b5394\",\"#351c75\",\"#741b47\"],\r\n[\"#600\",\"#783f04\",\"#7f6000\",\"#274e13\",\"#0c343d\",\"#073763\",\"#20124d\",\"#4c1130\"]"
+      show_palette_only: '0'
+      show_buttons: '1'
+      cancel_text: Cancel
+      choose_text: Choose
+      allow_empty: '1'
+    third_party_settings: {  }
+  field_image_desc_position:
+    type: boolean_checkbox
+    weight: 7
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_image_desc_text_align:
     type: options_select
-    weight: 9
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   field_image_desc_text_size:
     type: number
-    weight: 8
+    weight: 5
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_image_description:
     type: string_textarea
-    weight: 7
+    weight: 3
     region: content
     settings:
       rows: 5
@@ -85,7 +214,7 @@ content:
     third_party_settings: {  }
   field_image_link:
     type: link_default
-    weight: 20
+    weight: 2
     region: content
     settings:
       placeholder_url: ''
@@ -93,7 +222,7 @@ content:
     third_party_settings: {  }
   field_image_text:
     type: string_textfield
-    weight: 1
+    weight: 2
     region: content
     settings:
       size: 60
@@ -101,7 +230,7 @@ content:
     third_party_settings: {  }
   field_image_text_color:
     type: color_field_widget_spectrum
-    weight: 6
+    weight: 4
     region: content
     settings:
       show_input: '1'
@@ -115,26 +244,26 @@ content:
     third_party_settings: {  }
   field_image_text_halign:
     type: options_select
-    weight: 5
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   field_image_text_size:
     type: number
-    weight: 2
+    weight: 3
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_image_text_valign:
     type: options_select
-    weight: 4
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   field_link_text:
     type: paragraphs
-    weight: 21
+    weight: 8
     region: content
     settings:
       title: Paragraph
@@ -145,39 +274,41 @@ content:
       closed_mode_threshold: 0
       add_mode: dropdown
       form_display_mode: default
-      default_paragraph_type: ''
+      default_paragraph_type: _none
       features:
+        add_above: '0'
         collapse_edit_all: collapse_edit_all
+        convert: '0'
         duplicate: duplicate
     third_party_settings: {  }
   field_link_text_halign:
     type: options_select
-    weight: 22
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   field_link_text_valign:
     type: options_select
-    weight: 23
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
   field_mobile_height:
     type: number
-    weight: 17
+    weight: 5
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_padding:
     type: options_select
-    weight: 19
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   field_text_bg_color:
     type: color_field_widget_spectrum
-    weight: 10
+    weight: 4
     region: content
     settings:
       show_input: '1'
@@ -191,44 +322,44 @@ content:
     third_party_settings: {  }
   field_text_bg_padding_x:
     type: options_select
-    weight: 11
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   field_text_bg_padding_y:
     type: options_select
-    weight: 12
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   field_text_bg_width:
     type: number
-    weight: 13
+    weight: 7
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_text_bg_width_unit:
     type: options_select
-    weight: 14
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
   field_width:
     type: number
-    weight: 15
+    weight: 3
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_width_unit:
     type: options_select
-    weight: 16
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
   translation:
-    weight: 24
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }

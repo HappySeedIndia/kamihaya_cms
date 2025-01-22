@@ -5,6 +5,8 @@ dependencies:
     - field.field.paragraph.image_link.field_align
     - field.field.paragraph.image_link.field_font_bold
     - field.field.paragraph.image_link.field_image
+    - field.field.paragraph.image_link.field_image_desc_color
+    - field.field.paragraph.image_link.field_image_desc_position
     - field.field.paragraph.image_link.field_image_desc_text_align
     - field.field.paragraph.image_link.field_image_desc_text_size
     - field.field.paragraph.image_link.field_image_description
@@ -33,6 +35,8 @@ dependencies:
     - link
     - options
     - svg_image
+_core:
+  default_config_hash: ULJ_8hui0SSu1KUryjMXNVKP2OXJMcTY7GCyIOsbXnY
 id: paragraph.image_link.default
 targetEntityType: paragraph
 bundle: image_link
@@ -47,11 +51,11 @@ content:
     region: content
   field_font_bold:
     type: boolean
-    label: above
+    label: hidden
     settings:
-      format: default
+      format: custom
       format_custom_false: ''
-      format_custom_true: ''
+      format_custom_true: '1'
     third_party_settings: {  }
     weight: 20
     region: content
@@ -69,6 +73,25 @@ content:
       svg_render_as_image: true
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_image_desc_color:
+    type: color_field_formatter_text
+    label: hidden
+    settings:
+      format: rgb
+      opacity: true
+    third_party_settings: {  }
+    weight: 22
+    region: content
+  field_image_desc_position:
+    type: boolean
+    label: hidden
+    settings:
+      format: custom
+      format_custom_false: ''
+      format_custom_true: '1'
+    third_party_settings: {  }
+    weight: 21
     region: content
   field_image_desc_text_align:
     type: list_key
@@ -209,7 +232,7 @@ content:
     region: content
   field_text_bg_width:
     type: number_integer
-    label: above
+    label: hidden
     settings:
       thousand_separator: ''
       prefix_suffix: true
@@ -218,7 +241,7 @@ content:
     region: content
   field_text_bg_width_unit:
     type: list_default
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 19

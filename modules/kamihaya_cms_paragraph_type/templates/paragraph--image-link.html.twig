@@ -61,6 +61,8 @@
       {% set width_unit = paragraph.field_width_unit.0.value %}
       {% set mobile_height = paragraph.field_mobile_height.0.value %}
       {% set padding = paragraph.field_padding.0.value %}
+      {% set valign = paragraph.field_image_text_valign.0.value %}
+      {% set desc_position = paragraph.field_image_desc_position.0.value %}
 
       {% if width %}
         {% set image_style = [width_unit == 'px' ? ('width: 100%; max-width: ' ~ width ~ width_unit ~ ';') : ('width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;'))] %}
@@ -83,103 +85,130 @@
           }
         </style>
       {% endif %}
+
+      {# Background #}
+      {% if content.field_text_bg_color|render %}
+        {% set bg_color = content.field_text_bg_color|render|striptags|trim|lower %}
+        {% set bg_pd_x = paragraph.field_text_bg_padding_x.0.value %}
+        {% set bg_pd_y = paragraph.field_text_bg_padding_y.0.value %}
+        {% set bg_width = paragraph.field_text_bg_width.0.value %}
+        {% set bg_width_unit = paragraph.field_text_bg_width_unit.0.value %}
+        {%
+          set bg_classes = [
+            'image-text-bg',
+            bg_pd_x ? bg_pd_x,
+            bg_pd_y ? bg_pd_y,
+          ]
+        %}
+        {%
+          set bg_style = [
+            bg_color ? 'background-color: ' ~ bg_color ~ ';',
+            bg_width ? 'width: ' ~ bg_width ~ (bg_width_unit ? bg_width_unit ~ ';' : 'px;'),
+          ]
+        %}
+      {% endif %}
+      {%
+        set text_classes = [
+          'image-link-text',
+          content.field_image_text_halign|render ? 'image-text-halign-' ~ paragraph.field_image_text_halign.0.value,
+          valign ? 'image-text-valign-' ~ valign,
+        ]
+      %}
+
+      {% set size = paragraph.field_image_text_size.0.value %}
+      {% set bold = paragraph.field_font_bold.0.value %}
+      {% set color = content.field_image_text_color|render|striptags|trim|lower %}
+      {%
+        set style = [
+          size ? 'font-size: '  ~  size  ~  'px;' : 'font-size: 16px;',
+          color ? 'color: '  ~ color  ~ ';' : 'color: #fff;',
+          bold ? 'font-weight: bold;' : '',
+        ]
+      %}
+      {% set dec_size = paragraph.field_image_desc_text_size.0.value %}
+      {% set dec_color = content.field_image_desc_color|render|striptags|trim|lower %}
+      {% set dec_align = paragraph.field_image_desc_text_align.0.value %}
+      {% set dec_style = [
+        dec_size ? 'font-size: ' ~ dec_size ~ 'px;' : 'font-size: 16px;',
+        dec_color ? 'color: ' ~ dec_color ~ ';' : (color ? 'color: ' ~ color ~ ';' : 'color: #fff;'),
+      ] %}
       <div class="bg-image" {% if image_style %} style="{{ image_style|join(' ') }}" {% endif %}>
 
         {% if content.field_image_link|render and content.field_link_text.0 is empty %}
           <a class="image-link" href="{{ imageLink }}" target="{{ content.field_image_link[0]['#url'].external ? '_blank' : '_self' }}">
         {% endif %}
 
-          {# Image #}
-          {% if content.field_image|render %}
-            <img src="{{ imageUrl }}" alt="{{ content.field_image.0['#item'].alt }}" class="w-100"/>
-          {% endif %}
+        {% if content.field_image_text|render and valign == 'above' %}
+          <div class="{{ text_classes|join(' ') }}" style="{{ style|join(' ') }}">
+            {% if bg_classes %}
+              <div class="{{ bg_classes|join(' ') }}" style="{{ bg_style|join(' ') }}">
+            {% endif %}
+            <div>
+              <p>{{ content.field_image_text }}</p>
+              {% if content.field_image_description|render and desc_position != 1 %}
+                 <p {% if dec_style %} style="{{ dec_style|join(' ') }}" {% endif %} class="image-description{% if dec_align %} text-align-{{ dec_align }}{% endif %}">{{ content.field_image_description }}</p>
+              {% endif %}
+            </div>
+            {% if bg_classes %}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
 
-          {# Background #}
-          {% if content.field_text_bg_color|render %}
-            {% set bg_color = content.field_text_bg_color|render|striptags|trim|lower %}
-            {% set bg_pd_x = paragraph.field_text_bg_padding_x.0.value %}
-            {% set bg_pd_y = paragraph.field_text_bg_padding_y.0.value %}
-            {% set bg_width = paragraph.field_text_bg_width.0.value %}
-            {% set bg_width_unit = paragraph.field_text_bg_width_unit.0.value %}
-            {%
-              set bg_classes = [
-                'image-text-bg',
-                bg_pd_x ? bg_pd_x,
-                bg_pd_y ? bg_pd_y,
-              ]
-            %}
-            {%
-              set bg_style = [
-                bg_color ? 'background-color: ' ~ bg_color ~ ';',
-                bg_width ? 'width: ' ~ bg_width ~ (bg_width_unit ? bg_width_unit ~ ';' : 'px;'),
-              ]
-            %}
-          {% endif %}
+        {# Image #}
+        {% if content.field_image|render %}
+          <img src="{{ imageUrl }}" alt="{{ content.field_image.0['#item'].alt }}" class="w-100"/>
+        {% endif %}
 
-
-          {# Text #}
-          {% if content.field_image_text|render %}
-            {# Other fields attributes #}
-            {%
-              set text_classes = [
-                'image-link-text',
-                content.field_image_text_halign|render ? 'image-text-halign-' ~ paragraph.field_image_text_halign.0.value,
-                content.field_image_text_valign|render ? 'image-text-valign-' ~ paragraph.field_image_text_valign.0.value,
-              ]
-            %}
-
-            {% set size = paragraph.field_image_text_size.0.value %}
-            {% set bold = paragraph.field_font_bold.0.value %}
-            {% set color = content.field_image_text_color|render|striptags|trim|lower %}
-            {%
-              set style = [
-                size ? 'font-size: '  ~  size  ~  'px;' : 'font-size: 16px;',
-                color ? 'color: '  ~ color  ~ ';' : 'color: #fff;',
-                bold ? 'font-weight: bold;' : '',
-              ]
-            %}
+        {# Text #}
+        {% if content.field_image_text|render and valign != 'above'%}
+          {% if  valign != 'under' %}
             <div class="mask"{% if padding %} class="{{ padding }};"{% endif %}>
-              <div class="{{ text_classes|join(' ') }}" style="{{ style|join(' ') }}">
-                {% if bg_classes %}
-                  <div class="{{ bg_classes|join(' ') }}" style="{{ bg_style|join(' ') }}">
+          {% endif %}
+            <div class="{{ text_classes|join(' ') }}" style="{{ style|join(' ') }}">
+              {% if bg_classes %}
+                <div class="{{ bg_classes|join(' ') }}" style="{{ bg_style|join(' ') }}">
+              {% endif %}
+              <div>
+                <p>{{ content.field_image_text }}</p>
+                {% if content.field_image_description|render and desc_position != 1 %}
+                  <p {% if dec_style %} style="{{ dec_style|join(' ') }}" {% endif %} class="image-description{% if dec_align %} text-align-{{ dec_align }}{% endif %}">{{ content.field_image_description }}</p>
                 {% endif %}
-                <div>
-                  <p>{{ content.field_image_text }}</p>
-                  {% if content.field_image_description|render %}
-                    {% set size = paragraph.field_image_desc_text_size.0.value %}
-                    {% set dec_align = paragraph.field_image_desc_text_align.0.value %}
-                    <p {% if size %} style="font-size: {{ size }}px;" {% endif %} class="image-description{% if dec_align %} text-align-{{ dec_align }}{% endif %}">{{ content.field_image_description }}</p>
-                  {% endif %}
+              </div>
+              {% if bg_classes %}
                 </div>
-                {% if bg_classes %}
-                  </div>
-                {% endif %}
-              </div>
+              {% endif %}
+            </div>
+          {% if valign != 'under' %}
             </div>
           {% endif %}
-          {# Text #}
-          {% if content.field_link_text|render %}
-            {%
-              set link_text_classes = [
-                'link-text',
-                content.field_link_text_halign|render ? 'link-text-halign-' ~ paragraph.field_link_text_halign.0.value,
-                content.field_link_text_valign|render ? 'link-text-valign-' ~ paragraph.field_link_text_valign.0.value,
-              ]
-            %}
-            <div class="link-text-mask"{% if padding %} class="{{ padding }};"{% endif %}>
-              <div class="{{ link_text_classes|join(' ') }}">
-                {% if bg_classes %}
-                  <div class="{{ bg_classes|join(' ') }}" style="{{ bg_style|join(' ') }}">
-                {% endif %}
-                {{ content.field_link_text }}
-                {% if bg_classes %}
-                  </div>
-                {% endif %}
-              </div>
+        {% endif %}
+        {# Text #}
+        {% if content.field_link_text|render %}
+          {%
+            set link_text_classes = [
+              'link-text',
+              content.field_link_text_halign|render ? 'link-text-halign-' ~ paragraph.field_link_text_halign.0.value,
+              content.field_link_text_valign|render ? 'link-text-valign-' ~ paragraph.field_link_text_valign.0.value,
+            ]
+          %}
+          <div class="link-text-mask"{% if padding %} class="{{ padding }};"{% endif %}>
+            <div class="{{ link_text_classes|join(' ') }}">
+              {% if bg_classes %}
+                <div class="{{ bg_classes|join(' ') }}" style="{{ bg_style|join(' ') }}">
+              {% endif %}
+              {{ content.field_link_text }}
+              {% if bg_classes %}
+                </div>
+              {% endif %}
             </div>
-          {% endif %}
+          </div>
+        {% endif %}
+        {% if content.field_image_description|render and desc_position == 1 %}
+           <p {% if dec_style %} style="{{ dec_style|join(' ') }}" {% endif %} class="image-description{% if dec_align %} text-align-{{ dec_align }}{% endif %}">{{ content.field_image_description }}</p>
+        {% endif %}
 
-          {% if content.field_image_link|render and content.field_link_text.0 is empty %}
+        {% if content.field_image_link|render and content.field_link_text.0 is empty %}
           </a>
         {% endif %}
       </div>

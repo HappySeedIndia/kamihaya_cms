@@ -11,6 +11,9 @@ type: list_string
 settings:
   allowed_values:
     -
+      value: above
+      label: Above
+    -
       value: top
       label: Top
     -
@@ -19,6 +22,9 @@ settings:
     -
       value: bottom
       label: Bottom
+    -
+      value: under
+      label: Under
   allowed_values_function: ''
 module: options
 locked: false

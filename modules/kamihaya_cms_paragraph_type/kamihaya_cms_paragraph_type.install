@@ -850,6 +850,8 @@ function kamihaya_cms_paragraph_type_update_10012() {
 function kamihaya_cms_paragraph_type_update_10013() {
   _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image_link', [
     'field_font_bold',
+    'field_image_desc_color',
+    'field_image_desc_position',
     'field_padding',
     'field_text_bg_color',
     'field_text_bg_padding_x',
@@ -857,4 +859,19 @@ function kamihaya_cms_paragraph_type_update_10013() {
     'field_text_bg_width',
     'field_text_bg_width_unit',
   ]);
+
+  $field_storage = FieldStorageConfig::loadByName('paragraph', 'field_image_text_valign');
+  if (!$field_storage) {
+    return;
+  }
+  $module_path = \Drupal::service('extension.path.resolver')->getPath('module', 'kamihaya_cms_paragraph_type');
+  $filename = "$module_path/config/install/field.storage.paragraph.field_image_text_valign.yml";
+  $file = file_get_contents($filename);
+  $storage_config = !empty($file) ? Yaml::decode($file) : [];
+  $allowed_values = [];
+  foreach($storage_config['settings']['allowed_values'] as $value) {
+    $allowed_values[$value['value']] = $value['label'];
+  }
+  $field_storage->setSetting('allowed_values', $allowed_values);
+  $field_storage->save();
 }
