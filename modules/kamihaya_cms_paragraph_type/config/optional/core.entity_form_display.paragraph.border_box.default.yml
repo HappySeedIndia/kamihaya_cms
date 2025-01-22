@@ -1,3 +1,4 @@
+uuid: 53411443-3343-4933-8087-0e2f6566db1b
 langcode: en
 status: true
 dependencies:
@@ -23,6 +24,8 @@ dependencies:
   module:
     - color_field
     - paragraphs
+_core:
+  default_config_hash: 0yAeW1n1UXNtsNX3Ie4GDbmzAR1zzLJAogSir36slq8
 id: paragraph.border_box.default
 targetEntityType: paragraph
 bundle: border_box
@@ -46,7 +49,7 @@ content:
       show_buttons: '1'
       cancel_text: Cancel
       choose_text: Choose
-      allow_empty: '0'
+      allow_empty: '1'
     third_party_settings: {  }
   field_border_bottom_color:
     type: color_field_widget_spectrum
@@ -60,7 +63,7 @@ content:
       show_buttons: '1'
       cancel_text: Cancel
       choose_text: Choose
-      allow_empty: '0'
+      allow_empty: '1'
     third_party_settings: {  }
   field_border_bottom_width:
     type: options_select
@@ -98,7 +101,7 @@ content:
       show_buttons: '1'
       cancel_text: Cancel
       choose_text: Choose
-      allow_empty: '0'
+      allow_empty: '1'
     third_party_settings: {  }
   field_border_left_width:
     type: options_select
@@ -118,7 +121,7 @@ content:
       show_buttons: '1'
       cancel_text: Cancel
       choose_text: Choose
-      allow_empty: '0'
+      allow_empty: '1'
     third_party_settings: {  }
   field_border_right_width:
     type: options_select
@@ -144,7 +147,7 @@ content:
       show_buttons: '1'
       cancel_text: Cancel
       choose_text: Choose
-      allow_empty: '0'
+      allow_empty: '1'
     third_party_settings: {  }
   field_border_top_width:
     type: options_select
