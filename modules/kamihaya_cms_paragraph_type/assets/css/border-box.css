@@ -162,6 +162,12 @@
   border-radius: var(--bs-border-radius) !important;
 }
 
+.border-box-item {
+  width: 100%;
+  max-width: var(--bs-site-max-width);
+  margin: 0 auto;
+}
+
 .border-box-item .paragraph {
   padding: 0;
 }

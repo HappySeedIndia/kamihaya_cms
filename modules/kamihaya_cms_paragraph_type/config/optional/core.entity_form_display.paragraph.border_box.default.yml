@@ -46,7 +46,7 @@ content:
       show_buttons: '1'
       cancel_text: Cancel
       choose_text: Choose
-      allow_empty: '0'
+      allow_empty: '1'
     third_party_settings: {  }
   field_border_bottom_color:
     type: color_field_widget_spectrum
@@ -60,7 +60,7 @@ content:
       show_buttons: '1'
       cancel_text: Cancel
       choose_text: Choose
-      allow_empty: '0'
+      allow_empty: '1'
     third_party_settings: {  }
   field_border_bottom_width:
     type: options_select
@@ -98,7 +98,7 @@ content:
       show_buttons: '1'
       cancel_text: Cancel
       choose_text: Choose
-      allow_empty: '0'
+      allow_empty: '1'
     third_party_settings: {  }
   field_border_left_width:
     type: options_select
@@ -118,7 +118,7 @@ content:
       show_buttons: '1'
       cancel_text: Cancel
       choose_text: Choose
-      allow_empty: '0'
+      allow_empty: '1'
     third_party_settings: {  }
   field_border_right_width:
     type: options_select
@@ -144,7 +144,7 @@ content:
       show_buttons: '1'
       cancel_text: Cancel
       choose_text: Choose
-      allow_empty: '0'
+      allow_empty: '1'
     third_party_settings: {  }
   field_border_top_width:
     type: options_select

@@ -3,6 +3,22 @@
   clear: both;
 }
 
+.paragraph--type--border-box {
+  padding-top: 0;
+}
+
+.paragraph--type--headings,
+.paragraph--type--h2-title,
+.paragraph--type--h3-title,
+.paragraph--type--h4-title,
+.paragraph--type--border-box {
+  padding-bottom: 0;
+}
+
+.paragraph--type--wysiwyg-editor p:nth-last-of-type(1) {
+  margin-bottom: 0;
+}
+
 .link-button {
   text-align: center;
 }
