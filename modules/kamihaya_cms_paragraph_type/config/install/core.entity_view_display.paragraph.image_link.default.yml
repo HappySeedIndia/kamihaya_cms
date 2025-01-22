@@ -5,6 +5,7 @@ dependencies:
     - field.field.paragraph.image_link.field_align
     - field.field.paragraph.image_link.field_font_bold
     - field.field.paragraph.image_link.field_image
+    - field.field.paragraph.image_link.field_image_desc_position
     - field.field.paragraph.image_link.field_image_desc_text_align
     - field.field.paragraph.image_link.field_image_desc_text_size
     - field.field.paragraph.image_link.field_image_description
@@ -49,9 +50,9 @@ content:
     type: boolean
     label: above
     settings:
-      format: default
+      format: custom
       format_custom_false: ''
-      format_custom_true: ''
+      format_custom_true: '1'
     third_party_settings: {  }
     weight: 20
     region: content
@@ -69,6 +70,16 @@ content:
       svg_render_as_image: true
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_image_desc_position:
+    type: boolean
+    label: above
+    settings:
+      format: custom
+      format_custom_false: ''
+      format_custom_true: '1'
+    third_party_settings: {  }
+    weight: 21
     region: content
   field_image_desc_text_align:
     type: list_key
