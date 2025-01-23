@@ -860,6 +860,17 @@ function kamihaya_cms_paragraph_type_update_10013() {
     'field_text_bg_width_unit',
   ]);
 
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'headings', [
+    'field_text_size',
+  ]);
+
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'border_box', [
+    'field_vertical_margin',
+  ], 'optional');
+
+  _kamihaya_cms_common_set_field_display('kamihaya_cms_paragraph_type', 'paragraph', 'headings', 'field_color');
+  _kamihaya_cms_common_set_field_display('kamihaya_cms_paragraph_type', 'paragraph', 'border_box_item', 'field_border_box_body', 'optional', FALSE);
+
   $field_storage = FieldStorageConfig::loadByName('paragraph', 'field_image_text_valign');
   if (!$field_storage) {
     return;

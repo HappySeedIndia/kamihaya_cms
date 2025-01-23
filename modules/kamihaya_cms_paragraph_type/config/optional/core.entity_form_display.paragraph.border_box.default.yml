@@ -17,12 +17,65 @@ dependencies:
     - field.field.paragraph.border_box.field_padding
     - field.field.paragraph.border_box.field_radius_size
     - field.field.paragraph.border_box.field_radius_type
+    - field.field.paragraph.border_box.field_vertical_margin
     - field.field.paragraph.border_box.field_width
     - field.field.paragraph.border_box.field_width_unit
     - paragraphs.paragraphs_type.border_box
   module:
     - color_field
+    - field_group
     - paragraphs
+third_party_settings:
+  field_group:
+    group_border:
+      children:
+        - field_border_top_color
+        - field_border_bottom_color
+        - field_border_left_color
+        - field_border_right_color
+        - field_border_top_width
+        - field_border_bottom_width
+        - field_border_left_width
+        - field_border_right_width
+        - field_border_style
+      label: Border
+      region: content
+      parent_name: ''
+      weight: 3
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
+    group_box_style:
+      children:
+        - field_bg_color
+        - field_radius_type
+        - field_radius_size
+        - field_width
+        - field_width_unit
+        - field_padding
+        - field_align
+        - field_vertical_margin
+      label: 'Box style'
+      region: content
+      parent_name: ''
+      weight: 1
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
+_core:
+  default_config_hash: 0yAeW1n1UXNtsNX3Ie4GDbmzAR1zzLJAogSir36slq8
 id: paragraph.border_box.default
 targetEntityType: paragraph
 bundle: border_box
@@ -30,13 +83,13 @@ mode: default
 content:
   field_align:
     type: options_select
-    weight: 16
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
   field_bg_color:
     type: color_field_widget_spectrum
-    weight: 1
+    weight: 2
     region: content
     settings:
       show_input: '1'
@@ -50,7 +103,7 @@ content:
     third_party_settings: {  }
   field_border_bottom_color:
     type: color_field_widget_spectrum
-    weight: 3
+    weight: 5
     region: content
     settings:
       show_input: '1'
@@ -64,7 +117,7 @@ content:
     third_party_settings: {  }
   field_border_bottom_width:
     type: options_select
-    weight: 7
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -88,7 +141,7 @@ content:
     third_party_settings: {  }
   field_border_left_color:
     type: color_field_widget_spectrum
-    weight: 4
+    weight: 6
     region: content
     settings:
       show_input: '1'
@@ -102,13 +155,13 @@ content:
     third_party_settings: {  }
   field_border_left_width:
     type: options_select
-    weight: 8
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
   field_border_right_color:
     type: color_field_widget_spectrum
-    weight: 5
+    weight: 7
     region: content
     settings:
       show_input: '1'
@@ -122,19 +175,19 @@ content:
     third_party_settings: {  }
   field_border_right_width:
     type: options_select
-    weight: 9
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   field_border_style:
     type: options_select
-    weight: 10
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
   field_border_top_color:
     type: color_field_widget_spectrum
-    weight: 2
+    weight: 4
     region: content
     settings:
       show_input: '1'
@@ -148,38 +201,44 @@ content:
     third_party_settings: {  }
   field_border_top_width:
     type: options_select
-    weight: 6
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
   field_padding:
     type: options_select
-    weight: 15
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   field_radius_size:
     type: options_select
-    weight: 12
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
   field_radius_type:
     type: options_select
-    weight: 11
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_vertical_margin:
+    type: options_select
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   field_width:
     type: number
-    weight: 13
+    weight: 5
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_width_unit:
     type: options_select
-    weight: 14
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }

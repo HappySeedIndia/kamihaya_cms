@@ -40,6 +40,8 @@
 #}
 {{  attach_library('kamihaya_cms_paragraph_type/border-box-css') }}
 
+{% set v_margin = paragraph.field_vertical_margin.0.value %}
+
 {%
   set classes = [
     'paragraph',
@@ -47,6 +49,7 @@
     view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
     not paragraph.isPublished() ? 'paragraph--unpublished',
     'border-box',
+    v_margin ? v_margin,
   ]
 %}
 {% block paragraph %}
@@ -102,7 +105,7 @@
       %}
 
       <div{{box_attribute.addClass(box_classes).setAttribute('style', style|join(' '))}}>
-        <div class="border-box-item {{ padding ? 'p-' ~ padding }}">
+        <div class="border-box-item {{ padding ? padding }}">
           {{ content.field_border_box_item }}
         </div>
       </div>

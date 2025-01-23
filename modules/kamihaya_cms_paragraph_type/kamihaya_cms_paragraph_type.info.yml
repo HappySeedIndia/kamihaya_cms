@@ -16,6 +16,7 @@ dependencies:
   - block_field:block_field
   - color_field:color_field
   - entity_browser:entity_browser
+  - field_group:field_group
   - imce:imce
   - layout_paragraphs:layout_paragraphs
   - paragraphs:paragraphs

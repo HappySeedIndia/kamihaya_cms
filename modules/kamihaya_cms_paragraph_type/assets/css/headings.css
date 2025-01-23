@@ -5,6 +5,25 @@
 .paragraph--type--headings h4,
 .paragraph--type--headings h5,
 .paragraph--type--headings h6 {
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.paragraph--type--headings h1:before,
+.paragraph--type--headings h2:before,
+.paragraph--type--headings h3:before,
+.paragraph--type--headings h4:before,
+.paragraph--type--headings h5:before,
+.paragraph--type--headings h6:before {
+  display: none;
+}
+
+.paragraph--type--headings h1:after,
+.paragraph--type--headings h2:after,
+.paragraph--type--headings h3:after,
+.paragraph--type--headings h4:after,
+.paragraph--type--headings h5:after,
+.paragraph--type--headings h6:after {
   margin-bottom: 0;
 }
 

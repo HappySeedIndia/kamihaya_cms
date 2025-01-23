@@ -1,3 +1,7 @@
+.paragraph--type--border-box {
+  margin-bottom: 0;
+}
+
 .border-solid {
   border-style : solid;
 }
@@ -180,10 +184,12 @@
   margin-right: auto;
   margin-left: 0;
   float: none;
+  text-align: left;
 }
 
 .paragraph--type--border-box .align-right {
   margin-right: 0;
   margin-left: auto;
   float: none;
+  text-align: right;
 }

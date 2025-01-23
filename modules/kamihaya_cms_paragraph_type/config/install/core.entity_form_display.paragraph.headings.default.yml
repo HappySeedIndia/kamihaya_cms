@@ -6,6 +6,7 @@ dependencies:
     - field.field.paragraph.headings.field_anchor_link_id
     - field.field.paragraph.headings.field_color
     - field.field.paragraph.headings.field_style
+    - field.field.paragraph.headings.field_text_size
     - field.field.paragraph.headings.field_title_tag
     - field.field.paragraph.headings.field_title_text
     - paragraphs.paragraphs_type.headings
@@ -18,13 +19,13 @@ mode: default
 content:
   field_align:
     type: options_select
-    weight: 5
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   field_anchor_link_id:
     type: string_textfield
-    weight: 6
+    weight: 7
     region: content
     settings:
       size: 60
@@ -32,7 +33,7 @@ content:
     third_party_settings: {  }
   field_color:
     type: color_field_widget_spectrum
-    weight: 2
+    weight: 3
     region: content
     settings:
       show_input: '1'
@@ -46,13 +47,20 @@ content:
     third_party_settings: {  }
   field_style:
     type: options_select
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_text_size:
+    type: number
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   field_title_tag:
     type: options_select
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -65,7 +73,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 4
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
