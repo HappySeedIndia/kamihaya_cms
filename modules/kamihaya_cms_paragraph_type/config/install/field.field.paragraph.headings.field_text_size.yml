@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_text_size
+    - paragraphs.paragraphs_type.headings
+id: paragraph.headings.field_text_size
+field_name: field_text_size
+entity_type: paragraph
+bundle: headings
+label: 'Text size'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: px
+field_type: integer

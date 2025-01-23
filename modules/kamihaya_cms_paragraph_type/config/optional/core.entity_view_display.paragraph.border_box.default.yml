@@ -17,6 +17,7 @@ dependencies:
     - field.field.paragraph.border_box.field_padding
     - field.field.paragraph.border_box.field_radius_size
     - field.field.paragraph.border_box.field_radius_type
+    - field.field.paragraph.border_box.field_vertical_margin
     - field.field.paragraph.border_box.field_width
     - field.field.paragraph.border_box.field_width_unit
     - paragraphs.paragraphs_type.border_box
@@ -145,6 +146,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 10
+    region: content
+  field_vertical_margin:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 17
     region: content
   field_width:
     type: number_integer

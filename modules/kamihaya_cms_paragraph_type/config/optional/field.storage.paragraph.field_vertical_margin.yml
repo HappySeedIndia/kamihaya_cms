@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_vertical_margin
+field_name: field_vertical_margin
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: my-5
+      label: XLarge
+    -
+      value: my-4
+      label: Large
+    -
+      value: my-3
+      label: Middle
+    -
+      value: my-2
+      label: Small
+    -
+      value: my-1
+      label: XSmall
+    -
+      value: my-0
+      label: None
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

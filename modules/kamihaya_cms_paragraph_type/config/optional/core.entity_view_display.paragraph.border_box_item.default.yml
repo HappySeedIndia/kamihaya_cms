@@ -5,14 +5,14 @@ dependencies:
     - field.field.paragraph.border_box_item.field_border_box_body
     - paragraphs.paragraphs_type.border_box_item
   module:
-    - entity_reference_revisions
+    - layout_paragraphs
 id: paragraph.border_box_item.default
 targetEntityType: paragraph
 bundle: border_box_item
 mode: default
 content:
   field_border_box_body:
-    type: entity_reference_revisions_entity_view
+    type: layout_paragraphs
     label: hidden
     settings:
       view_mode: default

@@ -6,6 +6,7 @@ dependencies:
     - field.field.paragraph.headings.field_anchor_link_id
     - field.field.paragraph.headings.field_color
     - field.field.paragraph.headings.field_style
+    - field.field.paragraph.headings.field_text_size
     - field.field.paragraph.headings.field_title_tag
     - field.field.paragraph.headings.field_title_text
     - paragraphs.paragraphs_type.headings
@@ -47,6 +48,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 2
+    region: content
+  field_text_size:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 6
     region: content
   field_title_tag:
     type: list_key

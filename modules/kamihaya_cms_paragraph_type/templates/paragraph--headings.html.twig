@@ -75,8 +75,20 @@
     {# Title Color #}
     {% if content.field_color|render %}
       {% set titleColor = content.field_color|render|striptags|trim|lower %}
-    {% else %}
-      {% set titleColor = '(rgba(0,0,0,1))' %}
+    {% endif %}
+
+    {# Text size #}
+    {% if content.field_text_size|render %}
+      {% set textSize = content.field_text_size|render|striptags|trim|lower %}
+    {% endif %}
+
+    {% if titleColor is not empty or textSize is not empty %}
+      {%
+        set style = [
+          titleColor ? 'color: ' ~ titleColor ~ ';',
+          textSize ? 'font-size:' ~ textSize ~ ';',
+        ]
+      %}
     {% endif %}
 
     {# Anchoe link ID #}
@@ -87,7 +99,7 @@
     {# Heading Text #}
     {% if headingTag|render and content.field_title_text|render %}
     <div class="title-{{ headingStyle }}">
-      <{{ headingTag }} style="color: {{ titleColor }};"{% if anchorLinkID %} id="{{ anchorLinkID }}"{% endif %}>
+      <{{ headingTag }}{% if style %} style="{{ style|join(' ') }}"{% endif %}{% if anchorLinkID %} id="{{ anchorLinkID }}"{% endif %}>
         {{ content.field_title_text.0 }}
       </{{ headingTag }}>
     </div>
