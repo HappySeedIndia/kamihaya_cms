@@ -67,7 +67,7 @@
     {% set titleStyle = content.field_style.0|render %}
 
     {% if titleStyle == '' %}
-      {% set headingStyle = '' %}
+      {% set headingStyle = 'style_none' %}
     {% else %}
       {% set headingStyle = titleStyle %}
     {% endif %}

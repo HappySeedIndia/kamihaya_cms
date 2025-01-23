@@ -11,20 +11,20 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: '1'
-      label: XSmall
+      value: p-5
+      label: XLarge
     -
-      value: '2'
-      label: Small
-    -
-      value: '3'
-      label: Medium
-    -
-      value: '4'
+      value: p-4
       label: Large
     -
-      value: '5'
-      label: XLarge
+      value: p-3
+      label: Medium
+    -
+      value: p-2
+      label: Small
+    -
+      value: p-1
+      label: XSmall
   allowed_values_function: ''
 module: options
 locked: false
