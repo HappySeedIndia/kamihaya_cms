@@ -70,6 +70,9 @@ function kamihaya_cms_paragraph_type_theme() {
     'paragraph__embed_tag' => [
       'base hook' => 'paragraph',
     ],
+    'paragraph__background_image' => [
+      'base hook' => 'paragraph',
+    ],
   ];
 }
 

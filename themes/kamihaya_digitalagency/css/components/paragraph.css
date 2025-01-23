@@ -1,5 +1,6 @@
 .paragraph {
-  margin: 15px 0;
+  margin-top: 15px;
+  margin-bottom: 15px;
   clear: both;
 }
 

@@ -1,4 +1,16 @@
 /* Headings patterns */
+.paragraph--type--headings.align-left {
+  text-align: left;
+}
+
+.paragraph--type--headings.align-center {
+  text-align: center;
+}
+
+.paragraph--type--headings.align-right {
+  text-align: right;
+}
+
 .paragraph--type--headings h1,
 .paragraph--type--headings h2,
 .paragraph--type--headings h3,
@@ -9,12 +21,18 @@
   margin-bottom: 0;
 }
 
-.paragraph--type--headings h1:before,
-.paragraph--type--headings h2:before,
-.paragraph--type--headings h3:before,
-.paragraph--type--headings h4:before,
-.paragraph--type--headings h5:before,
-.paragraph--type--headings h6:before {
+.paragraph--type--headings .title-style_none h1:before,
+.paragraph--type--headings .title-style_none h2:before,
+.paragraph--type--headings .title-style_none h3:before,
+.paragraph--type--headings .title-style_none h4:before,
+.paragraph--type--headings .title-style_none h5:before,
+.paragraph--type--headings .title-style_none h6:before,
+.paragraph--type--headings .title-style_none h1:after,
+.paragraph--type--headings .title-style_none h2:after,
+.paragraph--type--headings .title-style_none h3:after,
+.paragraph--type--headings .title-style_none h4:after,
+.paragraph--type--headings .title-style_none h5:after,
+.paragraph--type--headings .title-style_none h6:after {
   display: none;
 }
 
@@ -26,7 +44,6 @@
 .paragraph--type--headings h6:after {
   margin-bottom: 0;
 }
-
 /* === HEADING STYLE #1 === */
 .title-style_one h1,
 .title-style_one h2,
@@ -39,6 +56,7 @@
   padding-bottom: 5px;
   position: relative;
 }
+
 .title-style_one h1:before,
 .title-style_one h2:before,
 .title-style_one h3:before,
@@ -55,6 +73,7 @@
   margin-left: -14px;
   background-color: #000;
 }
+
 .title-style_one h1:after,
 .title-style_one h2:after,
 .title-style_one h3:after,
@@ -83,6 +102,7 @@
   position: relative;
   padding-bottom: 15px;
 }
+
 .title-style_two h1:before,
 .title-style_two h2:before,
 .title-style_two h3:before,
@@ -114,6 +134,7 @@
   text-transform: capitalize;
   margin-bottom: 40px;
 }
+
 .title-style_three h1:before,
 .title-style_three h2:before,
 .title-style_three h3:before,
@@ -128,12 +149,13 @@
   width: 55px;
   background-color: #111;
 }
+
 .title-style_three h1:after,
 .title-style_three h2:after,
 .title-style_three h3:after,
 .title-style_three h4:after,
 .title-style_three h5:after,
-.title-style_three h6:after  {
+.title-style_three h6:after {
   content: "";
   position: absolute;
   left: 0;
@@ -154,7 +176,8 @@
   text-align: center;
   font-weight: 700;
   text-transform: uppercase;
-  word-spacing: 1px; letter-spacing:2px;
+  word-spacing: 1px;
+  letter-spacing: 2px;
   position: relative;
 }
 
@@ -184,9 +207,10 @@
 .title-style_five h5,
 .title-style_five h6 {
   text-align: center;
-  font-weight:400;
+  font-weight: 400;
   text-transform: uppercase;
-  word-spacing: 1px; letter-spacing:2px;
+  word-spacing: 1px;
+  letter-spacing: 2px;
   position: relative;
   padding-bottom: 15px;
 }
@@ -210,17 +234,19 @@
   height: 4px;
   content: "";
   right: 45px;
-  margin:auto;
+  margin: auto;
   background-color: #ccc;
 }
+
 .title-style_five h1:before,
 .title-style_five h2:before,
 .title-style_five h3:before,
 .title-style_five h4:before,
 .title-style_five h5:before,
 .title-style_five h6:before {
-  background-color:#222;
-  left:45px; width:90px;
+  background-color: #222;
+  left: 45px;
+  width: 90px;
 }
 
 /* Style 6
@@ -233,8 +259,8 @@
 .title-style_six h6 {
   text-align: center;
   /* font-size:30px; */
-  font-weight:300;
-  letter-spacing:1px;
+  font-weight: 300;
+  letter-spacing: 1px;
   text-transform: uppercase;
   position: relative;
   display: grid;
@@ -255,14 +281,13 @@
 .title-style_six h3:before,
 .title-style_six h4:before,
 .title-style_six h5:before,
-.title-style_six h6:before
-{
+.title-style_six h6:before {
   content: " ";
   display: block;
   border-bottom: 1px solid #000;
   border-top: 1px solid #000;
   height: 5px;
-  background-color:#f8f8f8;
+  background-color: #f8f8f8;
 }
 
 /* Style 7
@@ -273,10 +298,10 @@
 .title-style_seven h4,
 .title-style_seven h5,
 .title-style_seven h6 {
-  text-align:center;
-  text-transform:uppercase;
+  text-align: center;
+  text-transform: uppercase;
   /* font-size:26px;  */
-  letter-spacing:1px;
+  letter-spacing: 1px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: 16px 0;
@@ -294,12 +319,11 @@
 .title-style_seven h3:before,
 .title-style_seven h4:before,
 .title-style_seven h5:before,
-.title-style_seven h6:before
-{
+.title-style_seven h6:before {
   content: " ";
   display: block;
   border-bottom: 2px solid #ccc;
-  background-color:#f8f8f8;
+  background-color: #f8f8f8;
 }
 
 /* Light mode */
