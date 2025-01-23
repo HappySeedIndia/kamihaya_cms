@@ -93,6 +93,9 @@
             },
             "drupal/expand_collapse_formatter": {
                 "KD-465": "https://raw.githubusercontent.com/HappySeedIndia/kamihaya_cms/refs/heads/KD-465/patches/expand_collapse_formatter.patch"
+            },
+            "drupal/views_bulk_operations":{
+                "https://www.drupal.org/project/views_bulk_operations/issues/3479950": "https://www.drupal.org/files/issues/2024-10-10/3479950-views_bulk_operations-fixes-label-message-override-config-translations-2.patch"
             }
         }
     },
