@@ -181,6 +181,12 @@
   margin-bottom: 0;
 }
 
+.border-box-item > .paragraph:only-child,
+.paragraph--type--border-box-item > .paragraph:only-child {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .paragraph--type--border-box .align-center {
   margin: 0 auto;
 }
@@ -199,7 +205,7 @@
   text-align: right;
 }
 
-.layout__region .paragraph--type--border-box {
+.layout__region .paragraph--type--border-box:only-child {
   height: 100%;
 }
 
