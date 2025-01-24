@@ -50,7 +50,7 @@
         not paragraph.isPublished() ? 'paragraph--unpublished',
         'link-button',
         align ? 'align-' ~ align,
-        content.field_button_link.1 ? 'link-button--multiple' : '',
+        content.field_button_link.1 ? 'link-button--multiple' ,
       ]
     %}
     {% if content.field_button_link|render %}
@@ -63,9 +63,9 @@
           {% set bd_radius = paragraph.field_button_border_radius.0.value %}
           {%
             set style = [
-              bd_color ? 'border-width: 1px; border-color: ' ~ bd_color  ~ ';' : '',
-              bd_radius ? 'border-radius:  ' ~ bd_radius  ~ 'px;' : '',
-              bg_color ? 'background-color: ' ~ bg_color  ~ ';' : '',
+              bd_color ? 'border-width: 1px; border-color: ' ~ bd_color  ~ ';',
+              bd_radius ? 'border-radius:  ' ~ bd_radius  ~ 'px;',
+              bg_color ? 'background-color: ' ~ bg_color  ~ ';',
             ]
           %}
           {%

@@ -848,10 +848,33 @@ function kamihaya_cms_paragraph_type_update_10012() {
  * Update configs.
  */
 function kamihaya_cms_paragraph_type_update_10013() {
+  // Create Background Image Paragraph.
+  _kamihaya_cms_common_create_paragraph('background_image', [
+    'field_body',
+    'field_background_image',
+    'field_background_mobile_image',
+    'field_width',
+    'field_width_unit',
+    'field_align',
+  ],
+  [
+    'accordion_item' => 'field_accordion_body',
+    'border_box_item' => 'field_border_box_body',
+    'drawer' => 'field_drawer_body',
+    'modal_dialog' => 'field_dialog_body',
+    'two_col_table_row' => 'field_row_data',
+  ], 'optional');
+
+  // Add fields to Image Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image', ['field_mobile_image']);
+
+  // Add fields to Image Paragraph.
   _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image_link', [
     'field_font_bold',
     'field_image_desc_color',
     'field_image_desc_position',
+    'field_link_text_sp_halign',
+    'field_mobile_image',
     'field_padding',
     'field_text_bg_color',
     'field_text_bg_padding_x',
@@ -860,17 +883,16 @@ function kamihaya_cms_paragraph_type_update_10013() {
     'field_text_bg_width_unit',
   ]);
 
-  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'headings', [
-    'field_text_size',
-  ]);
-
-  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'border_box', [
-    'field_vertical_margin',
-  ], 'optional');
-
+  // Add fields to Headings Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'headings', ['field_text_size']);
+  // Add fields to Border box Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'border_box', ['field_vertical_margin'], 'optional');
+  // Change field display of Headings Paragraph.
   _kamihaya_cms_common_set_field_display('kamihaya_cms_paragraph_type', 'paragraph', 'headings', 'field_color');
+  // Change field display of Border box item Paragraph.
   _kamihaya_cms_common_set_field_display('kamihaya_cms_paragraph_type', 'paragraph', 'border_box_item', 'field_border_box_body', 'optional', FALSE);
 
+  // Change the allowed values of Image text vertical align field.
   $field_storage = FieldStorageConfig::loadByName('paragraph', 'field_image_text_valign');
   if (!$field_storage) {
     return;

@@ -106,6 +106,14 @@ function kamihaya_cms_commerce_update_10005() {
 }
 
 /**
+ * Update configs.
+ */
+function kamihaya_cms_commerce_update_10006() {
+  _kamihaya_cms_common_add_paragraph('commerce_product', 'default', 'background_image', 'field_body');
+}
+
+
+/**
  * Implements hook_update_dependencies().
  */
 function kkamihaya_cms_commerce_update_dependencies() {
@@ -115,6 +123,9 @@ function kkamihaya_cms_commerce_update_dependencies() {
     ],
     10005 => [
       'kamihaya_cms_paragraph_type' => 10012,
+    ],
+    10006 => [
+      'kamihaya_cms_paragraph_type' => 10013,
     ],
   ];
   return $dependencies;

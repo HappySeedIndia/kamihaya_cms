@@ -162,7 +162,6 @@ function _kamihaya_cms_common_add_paragraph($entity_type, $bundle, $paragraph_ty
  *   The path name under the config directory.
  */
 function _kamihaya_cms_common_add_fields($module, $entity_type, $bundle, array $fields, $path_name = 'install') {
-  $module_path = \Drupal::service('extension.path.resolver')->getPath('module', $module);
   $storage_configs = [];
   $install_configs = [];
 
@@ -171,8 +170,8 @@ function _kamihaya_cms_common_add_fields($module, $entity_type, $bundle, array $
     if ($field_storage) {
       continue;
     }
-    $field_storate_file_name = "field.storage.{$entity_type}.{$field}.yml";
-    $storage_configs[] = $field_storate_file_name;
+    $field_storage_file_name = "field.storage.{$entity_type}.{$field}.yml";
+    $storage_configs[] = $field_storage_file_name;
   }
 
   foreach($fields as $field) {
@@ -231,4 +230,90 @@ function _kamihaya_cms_common_set_field_display($module, $entity_type, $bundle, 
     return;
   }
   $display->setComponent($field, $config['content'][$field])->save();
+}
+
+/**
+ * Add a paragraph type.
+ *
+ * @param string $paragraph_type
+ *   The paragraph type.
+ * @param array $fields
+ *   The field names.
+ * @param array $add_fields
+ *   The field of paragraphs to add the new paragraph.
+ * @param string $path_name
+ *   The path name under the config directory.
+ */
+function _kamihaya_cms_common_create_paragraph($paragraph_type, array $fields, array $add_fields = [], $path_name = 'install') {
+  if (!empty(ParagraphsType::load($paragraph_type))) {
+    return;
+  }
+  $configs = [
+    'paragraph' => [
+      "paragraphs.paragraphs_type.{$paragraph_type}.yml",
+    ],
+    'storage' => [],
+    'field' => [],
+    'entity_display' => [
+      "core.entity_form_display.paragraph.{$paragraph_type}.default.yml",
+      "core.entity_view_display.paragraph.{$paragraph_type}.default.yml",
+    ],
+  ];
+  foreach($fields as $field) {
+    $field_storage = FieldStorageConfig::loadByName('paragraph', $field);
+    if ($field_storage) {
+      continue;
+    }
+    $field_storage_file_name = "field.storage.paragraph.{$field}.yml";
+    $configs['storage'][] = $field_storage_file_name;
+  }
+
+  foreach($fields as $field) {
+    $field_config_file_name = "field.field.paragraph.{$paragraph_type}.{$field}.yml";
+    $configs['field'][] = $field_config_file_name;
+  }
+
+  foreach($configs as $key => $config) {
+    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $config, $path_name);
+    if ($key === 'storage' || $key === 'entity_display') {
+      continue;
+    }
+    _kamihaya_cms_common_save_translation_configs($config, 'ja');
+  }
+
+  foreach($add_fields ?: [] as $paragraph_name => $field) {
+    $field_config = \Drupal::configFactory()->getEditable("field.field.paragraph.{$paragraph_name}.{$field}");
+    if (empty($field_config)) {
+      return;
+    }
+    $dependencies = $field_config->get('dependencies.config');
+    $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
+    $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
+    $max_weight = 0;
+    foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
+      if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
+        continue;
+      }
+      $max_weight = $target_bundle['weight'];
+    }
+
+    $paragraph = "paragraphs.paragraphs_type.{$paragraph_type}";
+    if (!empty($dependencies) && !in_array($paragraph, $dependencies)) {
+      $dependencies[] = $paragraph;
+    }
+    if (!empty($target_bundles) && !in_array($paragraph_type, $target_bundles)) {
+      $target_bundles[$paragraph_type] = $paragraph_type;
+    }
+    if (!empty($target_bundles_drag_drop) && !in_array($paragraph_type, $target_bundles_drag_drop)) {
+      $target_bundles_drag_drop[$paragraph_type] = [
+        'enabled' => TRUE,
+        'weight' => ++$max_weight,
+      ];
+    }
+
+    $field_config->set('dependencies.config', $dependencies);
+    $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
+    $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
+    $field_config->save(TRUE);
+  }
 }

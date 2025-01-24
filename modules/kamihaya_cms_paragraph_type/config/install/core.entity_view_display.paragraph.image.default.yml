@@ -6,6 +6,7 @@ dependencies:
     - field.field.paragraph.image.field_height
     - field.field.paragraph.image.field_height_unit
     - field.field.paragraph.image.field_image
+    - field.field.paragraph.image.field_mobile_image
     - field.field.paragraph.image.field_width
     - field.field.paragraph.image.field_width_unit
     - paragraphs.paragraphs_type.image
@@ -22,7 +23,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 16
+    weight: 6
     region: content
   field_height:
     type: number_integer
@@ -31,14 +32,14 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   field_height_unit:
     type: list_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 3
     region: content
   field_image:
     type: image
@@ -55,6 +56,21 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
+  field_mobile_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: ''
+      image_loading:
+        attribute: lazy
+      svg_attributes:
+        width: null
+        height: null
+      svg_render_as_image: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
   field_width:
     type: number_integer
     label: hidden
@@ -62,13 +78,13 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 3
+    weight: 4
     region: content
   field_width_unit:
     type: list_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 4
+    weight: 5
     region: content
 hidden: {  }

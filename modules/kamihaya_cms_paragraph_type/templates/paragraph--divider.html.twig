@@ -62,9 +62,9 @@
 
       {%
         set style = [
-          width ? 'border: 0; border-top-width: '  ~  width  ~  'px;' : '',
-          color ? 'border-color: '  ~ color  ~ ';' : '',
-          border_style ? 'border-style: '  ~ border_style  ~ ';' : '',
+          width ? 'border: 0; border-top-width: '  ~  width  ~  'px;',
+          color ? 'border-color: '  ~ color  ~ ';',
+          border_style ? 'border-style: '  ~ border_style  ~ ';',
           h_width ? (width_unit == 'px' ? ('width: 100%; max-width: ' ~ h_width ~ width_unit ~ ';') : ('width: ' ~ h_width ~ (width_unit ? width_unit ~ ';' : 'px;'))) : 'width: 100%;',
         ]
       %}
