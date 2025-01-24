@@ -38,30 +38,26 @@
  * @ingroup themeable
  */
 #}
-{{  attach_library('kamihaya_cms_paragraph_type/image-css') }}
+{{  attach_library('kamihaya_cms_paragraph_type/background-image-css') }}
 
+{%
+  set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished',
+  ]
+%}
 {% block paragraph %}
   {% block content %}
-    {% set align = content.field_align|render|striptags|trim|lower %}
-    {%
-      set classes = [
-        'paragraph',
-        'paragraph--type--' ~ paragraph.bundle|clean_class,
-        view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
-        not paragraph.isPublished() ? 'paragraph--unpublished',
-        align ? 'align-' ~ align,
-      ]
-    %}
-
-    <div{{ attributes.addClass(classes) }}>
-      {% set height = paragraph.field_height.0.value %}
-      {% set height_unit = paragraph.field_height_unit.0.value %}
+    <div{{attributes.addClass(classes)}}>
+      {% set imageUrl = file_url(content.field_background_image.0['#item'].entity.uri.value) %}
       {% set width = paragraph.field_width.0.value %}
       {% set width_unit = paragraph.field_width_unit.0.value %}
+      {% set align = content.field_align|render|striptags|trim|lower %}
       {%
         set style = [
-          width ? (width_unit == 'px' ? ('width: 100%; max-width: ' ~ width ~ width_unit ~ ';') : ('width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;'))) : (height ? 'width: auto;' : 'width: 100%;'),
-          height ? 'height: ' ~ height ~ (height_unit ? height_unit ~ ';' : 'px;') : 'height: auto;',
+          width ? (width_unit == 'px' ? ('width: 100%; max-width: ' ~ width ~ width_unit ~ ';') : ('width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;'))) : 'width: 100%;',
         ]
       %}
       {% if width_unit == 'vw' %}
@@ -72,18 +68,36 @@
           ])
         %}
       {% endif %}
-      {# Image url #}
-      {% set imageUrl = file_url(content.field_image.0['#item'].entity.uri.value) %}
-      {% if content.field_mobile_image|render %}
-        {% set mobileImageUrl = file_url(content.field_mobile_image.0['#item'].entity.uri.value) %}
-        <picture>
-          <source srcset="{{ mobileImageUrl }}" media="(max-width:767px)">
-      {% endif %}
-      <img src="{{ imageUrl }}" alt="{{ content.field_image.0['#item'].alt }}"{% if style %} style="{{ style|join(' ') }}" {% endif %}/>
 
-      {% if content.field_mobile_image|render %}
-        </picture>
-      {% endif %}
+      {% set bg_attribute = create_attribute() %}
+      {%
+        set bg_classes = [
+          'bg-image',
+          align ? 'align-' ~ align,
+        ]
+      %}
+
+      <div{{bg_attribute.addClass(bg_classes).setAttribute('style', style|join(' '))}} class="">
+        {# Image #}
+        {% if content.field_background_image|render %}
+          {% if content.field_background_mobile_image|render %}
+            {% set mobileImageUrl = file_url(content.field_background_mobile_image.0['#item'].entity.uri.value) %}
+              <picture>
+                <source srcset="{{ mobileImageUrl }}" media="(max-width:767px)">
+          {% endif %}
+          <img src="{{ imageUrl }}" alt="{{ content.field_image.0['#item'].alt }}" class="w-100"/>
+          {% if content.field_background_mobile_image|render %}
+            </picture>
+          {% endif %}
+        {% endif %}
+
+        {# Body #}
+        <div class="mask">
+          <div class="bg-image-item">
+            {{ content.field_body }}
+          </div>
+        </div>
+      </div>
     </div>
   {% endblock %}
 {% endblock paragraph %}

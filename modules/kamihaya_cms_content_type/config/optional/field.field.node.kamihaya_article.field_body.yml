@@ -6,6 +6,7 @@ dependencies:
     - node.type.kamihaya_article
     - paragraphs.paragraphs_type.accordion
     - paragraphs.paragraphs_type.anchor_link
+    - paragraphs.paragraphs_type.background_image
     - paragraphs.paragraphs_type.block
     - paragraphs.paragraphs_type.border_box
     - paragraphs.paragraphs_type.divider
@@ -68,98 +69,102 @@ settings:
       anchor_link: anchor_link
       drawer: drawer
       border_box: border_box
+      background_image: background_image
       block: block
       views: views
     negate: 0
     target_bundles_drag_drop:
       accordion:
-        weight: -47
-        enabled: true
-      accordion_item:
-        weight: -34
-        enabled: false
-      anchor_link:
-        weight: -41
-        enabled: true
-      block:
-        weight: -38
-        enabled: true
-      border_box:
-        weight: -39
-        enabled: true
-      border_box_item:
-        weight: -35
-        enabled: false
-      divider:
-        weight: -46
-        enabled: true
-      drawer:
-        weight: -40
-        enabled: true
-      embed_tag:
-        weight: -44
-        enabled: true
-      featured_content:
-        weight: -43
-        enabled: true
-      file_download:
         weight: -49
         enabled: true
-      h2_title:
-        weight: -60
-        enabled: true
-      h3_title:
-        weight: -59
-        enabled: true
-      h4_title:
-        weight: -58
-        enabled: true
-      headings:
-        weight: -57
-        enabled: true
-      image:
-        weight: -55
-        enabled: true
-      image_link:
-        weight: -51
-        enabled: true
-      layout_paragraph:
-        weight: -61
-        enabled: true
-      left_image_text:
-        weight: -53
-        enabled: true
-      link_button:
-        weight: -50
-        enabled: true
-      modal_dialog:
-        weight: -48
-        enabled: true
-      q_a:
-        weight: -33
+      accordion_item:
+        weight: -35
         enabled: false
-      right_image_text:
-        weight: -52
+      anchor_link:
+        weight: -43
         enabled: true
-      slider:
-        weight: -45
+      background_image:
+        weight: -40
         enabled: true
-      slider_item:
+      block:
+        weight: -39
+        enabled: true
+      border_box:
+        weight: -41
+        enabled: true
+      border_box_item:
         weight: -36
         enabled: false
-      two_col_table:
+      divider:
+        weight: -48
+        enabled: true
+      drawer:
         weight: -42
         enabled: true
-      two_col_table_row:
-        weight: -32
+      embed_tag:
+        weight: -46
+        enabled: true
+      featured_content:
+        weight: -45
+        enabled: true
+      file_download:
+        weight: -51
+        enabled: true
+      h2_title:
+        weight: -62
+        enabled: true
+      h3_title:
+        weight: -61
+        enabled: true
+      h4_title:
+        weight: -60
+        enabled: true
+      headings:
+        weight: -59
+        enabled: true
+      image:
+        weight: -57
+        enabled: true
+      image_link:
+        weight: -53
+        enabled: true
+      layout_paragraph:
+        weight: -63
+        enabled: true
+      left_image_text:
+        weight: -55
+        enabled: true
+      link_button:
+        weight: -52
+        enabled: true
+      modal_dialog:
+        weight: -50
+        enabled: true
+      q_a:
+        weight: -34
         enabled: false
-      video:
+      right_image_text:
         weight: -54
         enabled: true
-      views:
+      slider:
+        weight: -47
+        enabled: true
+      slider_item:
         weight: -37
+        enabled: false
+      two_col_table:
+        weight: -44
+        enabled: true
+      two_col_table_row:
+        weight: -33
+        enabled: false
+      video:
+        weight: -56
+        enabled: true
+      views:
+        weight: -38
         enabled: true
       wysiwyg_editor:
-        weight: -56
+        weight: -58
         enabled: true
 field_type: entity_reference_revisions

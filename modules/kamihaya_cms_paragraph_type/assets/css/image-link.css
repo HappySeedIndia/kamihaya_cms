@@ -52,6 +52,23 @@ a.image-link:hover {
   text-align: right;
 }
 
+@media screen and (max-width: 767px) {
+  .sp-align-left {
+    justify-content: flex-start;
+  }
+
+  .sp-align-center {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .sp-align-right {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+}
+
 .image-text-halign-justify {
   justify-content: stretch;
 }
@@ -94,6 +111,14 @@ a.image-link:hover {
   background-attachment: fixed;
 }
 
+.paragraph--type--image-link .image-link-text p {
+  margin-bottom: 0.5rem;
+}
+
+.paragraph--type--image-link .image-link-text p:last-child {
+  margin-bottom: 0;
+}
+
 .paragraph--type--image-link .paragraph--type--link-button .btn {
   --bs-btn-padding-x: 1rem;
   --bs-btn-padding-y: 0.5rem;
@@ -101,4 +126,9 @@ a.image-link:hover {
 
 .paragraph--type--image-link .image-description {
   word-break: break-all;
+}
+
+.paragraph--type--image-link .paragraph--type--link-button {
+  margin-top: 0;
+  margin-bottom: 0;
 }

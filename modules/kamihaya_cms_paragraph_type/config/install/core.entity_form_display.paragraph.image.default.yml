@@ -6,6 +6,7 @@ dependencies:
     - field.field.paragraph.image.field_height
     - field.field.paragraph.image.field_height_unit
     - field.field.paragraph.image.field_image
+    - field.field.paragraph.image.field_mobile_image
     - field.field.paragraph.image.field_width
     - field.field.paragraph.image.field_width_unit
     - image.style.thumbnail
@@ -20,20 +21,20 @@ mode: default
 content:
   field_align:
     type: options_select
-    weight: 16
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   field_height:
     type: number
-    weight: 1
+    weight: 2
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_height_unit:
     type: options_select
-    weight: 2
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -47,16 +48,31 @@ content:
     third_party_settings:
       imce:
         enabled: true
+  field_mobile_image:
+    type: image_image
+    weight: 1
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings:
+      imce:
+        enabled: true
   field_width:
     type: number
-    weight: 3
+    weight: 4
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_width_unit:
     type: options_select
-    weight: 4
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  translation:
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }

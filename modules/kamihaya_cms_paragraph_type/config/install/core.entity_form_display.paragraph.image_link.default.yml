@@ -18,8 +18,10 @@ dependencies:
     - field.field.paragraph.image_link.field_image_text_valign
     - field.field.paragraph.image_link.field_link_text
     - field.field.paragraph.image_link.field_link_text_halign
+    - field.field.paragraph.image_link.field_link_text_sp_halign
     - field.field.paragraph.image_link.field_link_text_valign
     - field.field.paragraph.image_link.field_mobile_height
+    - field.field.paragraph.image_link.field_mobile_image
     - field.field.paragraph.image_link.field_padding
     - field.field.paragraph.image_link.field_text_bg_color
     - field.field.paragraph.image_link.field_text_bg_padding_x
@@ -42,12 +44,13 @@ third_party_settings:
     group_image:
       children:
         - field_image
+        - field_mobile_image
         - field_image_link
         - field_width
         - field_width_unit
         - field_mobile_height
-        - field_padding
         - field_align
+        - field_padding
       label: Image
       region: content
       parent_name: ''
@@ -126,6 +129,7 @@ third_party_settings:
       children:
         - field_link_text
         - field_link_text_halign
+        - field_link_text_sp_halign
         - field_link_text_valign
       label: 'Link text'
       region: content
@@ -214,7 +218,7 @@ content:
     third_party_settings: {  }
   field_image_link:
     type: link_default
-    weight: 2
+    weight: 3
     region: content
     settings:
       placeholder_url: ''
@@ -287,22 +291,38 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_link_text_valign:
+  field_link_text_sp_halign:
     type: options_select
     weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_link_text_valign:
+    type: options_select
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_mobile_height:
     type: number
-    weight: 5
+    weight: 6
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
+  field_mobile_image:
+    type: image_image
+    weight: 2
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings:
+      imce:
+        enabled: true
   field_padding:
     type: options_select
-    weight: 6
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -347,14 +367,14 @@ content:
     third_party_settings: {  }
   field_width:
     type: number
-    weight: 3
+    weight: 4
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_width_unit:
     type: options_select
-    weight: 4
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }

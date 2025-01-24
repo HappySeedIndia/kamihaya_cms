@@ -18,8 +18,10 @@ dependencies:
     - field.field.paragraph.image_link.field_image_text_valign
     - field.field.paragraph.image_link.field_link_text
     - field.field.paragraph.image_link.field_link_text_halign
+    - field.field.paragraph.image_link.field_link_text_sp_halign
     - field.field.paragraph.image_link.field_link_text_valign
     - field.field.paragraph.image_link.field_mobile_height
+    - field.field.paragraph.image_link.field_mobile_image
     - field.field.paragraph.image_link.field_padding
     - field.field.paragraph.image_link.field_text_bg_color
     - field.field.paragraph.image_link.field_text_bg_padding_x
@@ -35,8 +37,6 @@ dependencies:
     - link
     - options
     - svg_image
-_core:
-  default_config_hash: ULJ_8hui0SSu1KUryjMXNVKP2OXJMcTY7GCyIOsbXnY
 id: paragraph.image_link.default
 targetEntityType: paragraph
 bundle: image_link
@@ -184,6 +184,13 @@ content:
     third_party_settings: {  }
     weight: 12
     region: content
+  field_link_text_sp_halign:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 23
+    region: content
   field_link_text_valign:
     type: list_key
     label: hidden
@@ -200,12 +207,27 @@ content:
     third_party_settings: {  }
     weight: 9
     region: content
+  field_mobile_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: ''
+      image_loading:
+        attribute: lazy
+      svg_attributes:
+        width: null
+        height: null
+      svg_render_as_image: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
   field_padding:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 14
+    weight: 18
     region: content
   field_text_bg_color:
     type: color_field_formatter_text

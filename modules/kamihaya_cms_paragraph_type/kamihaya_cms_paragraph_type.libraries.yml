@@ -83,3 +83,8 @@ anchor-link-css:
   css:
     base:
       assets/css/anchor-link.css: {}
+
+background-image-css:
+  css:
+    base:
+      assets/css/background-image.css: {}

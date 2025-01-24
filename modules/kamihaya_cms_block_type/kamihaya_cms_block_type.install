@@ -59,6 +59,13 @@ function kamihaya_cms_block_type_update_10004() {
 }
 
 /**
+ * Update configs.
+ */
+function kamihaya_cms_block_type_update_10005() {
+  _kamihaya_cms_common_add_paragraph('block_content', 'kamihaya_block', 'background_image', 'field_body');
+}
+
+/**
  * Implements hook_update_dependencies().
  */
 function kamihaya_cms_block_type_update_dependencies() {
@@ -71,6 +78,9 @@ function kamihaya_cms_block_type_update_dependencies() {
     ],
     10004 => [
       'kamihaya_cms_paragraph_type' => 10012,
+    ],
+    10005 => [
+      'kamihaya_cms_paragraph_type' => 10013,
     ],
   ];
   return $dependencies;

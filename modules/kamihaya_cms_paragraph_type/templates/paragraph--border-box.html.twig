@@ -74,11 +74,11 @@
       {%
         set style = [
           width ? (width_unit == 'px' ? ('width: 100%; max-width: ' ~ width ~ width_unit ~ ';') : ('width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;'))) : 'width: 100%;',
-          bg_color ? 'background-color: ' ~ bg_color  ~ ';' : '',
-          bd_top_color ? 'border-top-color: ' ~ bd_top_color  ~ ';' : '',
-          bd_bottom_color ? 'border-bottom-color: ' ~ bd_bottom_color  ~ ';' : '',
-          bd_left_color ? 'border-left-color: ' ~ bd_left_color  ~ ';' : '',
-          bd_right_color ? 'border-right-color: ' ~ bd_right_color  ~ ';' : '',
+          bg_color ? 'background-color: ' ~ bg_color  ~ ';',
+          bd_top_color ? 'border-top-color: ' ~ bd_top_color  ~ ';',
+          bd_bottom_color ? 'border-bottom-color: ' ~ bd_bottom_color  ~ ';',
+          bd_left_color ? 'border-left-color: ' ~ bd_left_color  ~ ';',
+          bd_right_color ? 'border-right-color: ' ~ bd_right_color  ~ ';',
         ]
       %}
       {% if width_unit == 'vw' %}

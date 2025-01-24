@@ -1,0 +1,72 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.background_image.field_align
+    - field.field.paragraph.background_image.field_background_image
+    - field.field.paragraph.background_image.field_background_mobile_image
+    - field.field.paragraph.background_image.field_body
+    - field.field.paragraph.background_image.field_width
+    - field.field.paragraph.background_image.field_width_unit
+    - paragraphs.paragraphs_type.background_image
+  module:
+    - layout_paragraphs
+    - media_library
+id: paragraph.background_image.default
+targetEntityType: paragraph
+bundle: background_image
+mode: default
+content:
+  field_align:
+    type: options_select
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_background_image:
+    type: media_library_widget
+    weight: 0
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_background_mobile_image:
+    type: media_library_widget
+    weight: 1
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_body:
+    type: layout_paragraphs
+    weight: 7
+    region: content
+    settings:
+      view_mode: preview
+      preview_view_mode: default
+      form_display_mode: default
+      nesting_depth: 0
+      require_layouts: 0
+      empty_message: ''
+    third_party_settings: {  }
+  field_width:
+    type: number
+    weight: 4
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_width_unit:
+    type: options_select
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  layout_paragraphs_fields:
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

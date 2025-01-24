@@ -6,6 +6,7 @@ dependencies:
     - field.storage.commerce_product.field_body
     - paragraphs.paragraphs_type.accordion
     - paragraphs.paragraphs_type.anchor_link
+    - paragraphs.paragraphs_type.background_image
     - paragraphs.paragraphs_type.block
     - paragraphs.paragraphs_type.border_box
     - paragraphs.paragraphs_type.divider
@@ -70,6 +71,7 @@ settings:
       block: block
       views: views
       border_box: border_box
+      background_image: background_image
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -80,6 +82,9 @@ settings:
         enabled: false
       anchor_link:
         weight: -41
+        enabled: true
+      background_image:
+        weight: -40
         enabled: true
       block:
         weight: -39

@@ -36,3 +36,11 @@
 .paragraph--type--two-col-table table > tbody > tr > td > .paragraph {
   margin: 0;
 }
+
+.paragraph--type--layout-paragraph .layout__region > .paragraph:first-child {
+  margin-top: 0;
+}
+
+.paragraph--type--layout-paragraph .layout__region > .paragraph:last-child {
+  margin-bottom: 0;
+}

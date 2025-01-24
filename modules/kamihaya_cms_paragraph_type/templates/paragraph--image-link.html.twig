@@ -122,7 +122,7 @@
         set style = [
           size ? 'font-size: '  ~  size  ~  'px;' : 'font-size: 16px;',
           color ? 'color: '  ~ color  ~ ';' : 'color: #fff;',
-          bold ? 'font-weight: bold;' : '',
+          bold ? 'font-weight: bold;',
         ]
       %}
       {% set dec_size = paragraph.field_image_desc_text_size.0.value %}
@@ -157,7 +157,15 @@
 
         {# Image #}
         {% if content.field_image|render %}
+          {% if content.field_mobile_image|render %}
+            {% set mobileImageUrl = file_url(content.field_mobile_image.0['#item'].entity.uri.value) %}
+              <picture>
+                <source srcset="{{ mobileImageUrl }}" media="(max-width:767px)">
+          {% endif %}
           <img src="{{ imageUrl }}" alt="{{ content.field_image.0['#item'].alt }}" class="w-100"/>
+          {% if content.field_mobile_image|render %}
+            </picture>
+          {% endif %}
         {% endif %}
 
         {# Text #}
@@ -185,11 +193,13 @@
         {% endif %}
         {# Text #}
         {% if content.field_link_text|render %}
+          {% set mobile_align = content.field_link_text_sp_halign|render|striptags|trim|lower %}
           {%
             set link_text_classes = [
               'link-text',
               content.field_link_text_halign|render ? 'link-text-halign-' ~ paragraph.field_link_text_halign.0.value,
               content.field_link_text_valign|render ? 'link-text-valign-' ~ paragraph.field_link_text_valign.0.value,
+              mobile_align ? 'sp-align-' ~ mobile_align,
             ]
           %}
           <div class="link-text-mask"{% if padding %} class="{{ padding }};"{% endif %}>
