@@ -115,8 +115,15 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
     if ($this->getSetting(self::SETTING_SKIP_TRANSLATED_ITEM) && !empty($item->getSource()['translation'])) {
       return $data;
     }
+    $id = $data;
+    if (is_array($data)) {
+      $id = !empty($data['ID']) ? $data['ID'] : '(JSON data)';
+    }
     $values = [
-      'title' => $this->t('Temporary feed for additional feeds import'),
+      'title' => $this->t('Temporary feed for additional feeds import: Feed type: @type - ID: @id', [
+        '@type' => $this->getSetting(self::SETTING_FEEDS),
+        '@id' => $id,
+      ]),
       'type' => $this->getSetting(self::SETTING_FEEDS),
       'feeds_log' => FALSE,
     ];

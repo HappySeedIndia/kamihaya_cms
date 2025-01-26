@@ -323,7 +323,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    * @return int
    *   The file id.
    */
-  protected function createMediaFile(FeedInterface $feed, FetcherResultInterface $fetcher_result, FieldTargetDefinition $target, $file_id, $file_name, $langcode = '') {
+  protected function createMediaFile(FeedInterface $feed, FetcherResultInterface $fetcher_result, FieldTargetDefinition $target, $file_id, $file_name, $langcode = '', $retry = FALSE) {
     $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
     $processor_config = $feed->getType()->getProcessor()->getConfiguration();
     $field_name = $target->getFieldDefinition()->getName();
@@ -337,8 +337,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     try {
       $url = $fetcher_config['json_api_url'];
       $data_url = "/core/v1/file/downloadurl/$file_id";
-
       $download_url = $this->getData($feed, $url, $data_url, $fetcher_result->getAccessToken());
+
       if (empty($download_url)) {
         return NULL;
       }
@@ -349,6 +349,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         RequestOptions::HEADERS => [
           'Authorization' => "Bearer {$fetcher_result->getAccessToken()}",
         ],
+        RequestOptions::HTTP_ERRORS => FALSE,
       ];
 
       if (!empty($langcode)) {
@@ -356,6 +357,25 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
       }
 
       $response = $this->httpClient->get($download_url, $options);
+      $status_code = $response->getStatusCode();
+      if ($status_code == 401 || $status_code == 403) {
+        $token = $this->getAccessToken($feed, $url);
+        $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
+        if (!empty($feed_config['access_token'])) {
+          $feed_config['access_token'] = $token;
+          $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
+        }
+        $options[RequestOptions::HEADERS]['Authorization'] = "Bearer $token";
+        // Get the data with the new access token.
+        $response = $this->httpClient->get($download_url, $options);
+        $status_code = $response->getStatusCode();
+      }
+      if ($status_code == 429 && !$retry) {
+        $sleep_seconds = !empty($response->getHeader('Retry-After')[0]) ? $response->getHeader('Retry-After')[0] : 30;
+        sleep($sleep_seconds);
+        return $this->createMediaFile($feed, $fetcher_result, $target, $file_id, $file_name, $langcode, TRUE);
+      }
+
       /** @var \GuzzleHttp\Psr7\Stream $stream */
       $stream = $response->getBody();
       if (empty($stream) || !($stream instanceof Stream)) {

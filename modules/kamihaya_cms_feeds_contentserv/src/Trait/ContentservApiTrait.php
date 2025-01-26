@@ -21,7 +21,7 @@ trait ContentservApiTrait {
    * @return string
    *   The access token.
    */
-  public function getAccessToken(FeedInterface $feed, $url) {
+  public function getAccessToken(FeedInterface $feed, $url, $retry = FALSE) {
     $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
     $options = [
       RequestOptions::TIMEOUT => $fetcher_config['request_timeout'],
@@ -29,10 +29,20 @@ trait ContentservApiTrait {
         'Content-Type' => 'application/json',
         'Authorization' => "CSAuth {$fetcher_config['api_key']}:{$fetcher_config['secret']}",
       ],
+      RequestOptions::HTTP_ERRORS => FALSE,
     ];
     $auth_url = "$url/auth/v1/token";
     // Get the access token.
     $response = $this->httpClient->get($auth_url, $options);
+    $status_code = $response->getStatusCode();
+    if ($status_code == 429 && !$retry) {
+      $sleep_seconds = !empty($response->getHeader('Retry-After')[0]) ? $response->getHeader('Retry-After')[0] : 30;
+      sleep($sleep_seconds);
+      return $this->getAccessToken($feed, $url);
+    }
+    if ($status_code != 200) {
+      throw new FetchException($this->t('Faild to get the access token'));
+    }
     $result = json_decode($response->getBody()->getContents(), TRUE);
     $token = !empty($result['access_token']) ? $result['access_token'] : '';
     if (empty($token)) {
@@ -54,8 +64,10 @@ trait ContentservApiTrait {
    *   The access token.
    * @param array $options
    *   The options to get the data.
+   * @param bool $retry
+   *   The flag to retry.
    */
-  public function getData(FeedInterface $feed, string $bace_url, string $additional_url, string $token, array $options = []) {
+  public function getData(FeedInterface $feed, string $bace_url, string $additional_url, string $token, array $options = [], $retry = FALSE) {
     $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
     $options += [
       RequestOptions::TIMEOUT => $fetcher_config['request_timeout'],
@@ -80,7 +92,12 @@ trait ContentservApiTrait {
       $response = $this->httpClient->get("{$bace_url}{$additional_url}", $options);
       $status_code = $response->getStatusCode();
     }
-    if ($status_code !== 200) {
+    if ($status_code == 429 && !$retry) {
+      $sleep_seconds = !empty($response->getHeader('Retry-After')[0]) ? $response->getHeader('Retry-After')[0] : 30;
+      sleep($sleep_seconds);
+      return $this->getData($feed, $bace_url, $additional_url, $token, $options, TRUE);
+    }
+    if ($status_code != 200) {
       throw new FetchException($this->t('Faild to get the data'));
     }
     return $response->getBody()->getContents();
