@@ -68,11 +68,14 @@ class ContentservApiDataParser extends ContentservApiParser {
         if (!empty($value) && $target = $this->getMediaTarget($feed, $key)) {
           $label = $this->getAttributeValue($result_data[$data_type], 'Label');
           if (!$this->checkFileExtention($target, $label)) {
-            $state->report(StateType::SKIP, 'Skipped because the file extentioon is not correct.', [
-              'feed' => $feed,
-              'item' => $item,
-            ]);
-            return $result;
+            if ($data_type == 'File') {
+              $state->report(StateType::SKIP, 'Skipped because the file extentioon is not correct.', [
+                'feed' => $feed,
+                'item' => $item,
+              ]);
+              return $result;
+            }
+            continue;
           }
           $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
         }
