@@ -116,13 +116,13 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
 
     switch ($matching_condition) {
       case 'includes':
-        if (strpos($data, $condition_value) === FALSE) {
+        if (strpos($data, $condition_value) !== FALSE) {
           throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
         }
         break;
 
       case 'not_includes':
-        if (strpos($data, $condition_value) !== FALSE) {
+        if (strpos($data, $condition_value) === FALSE) {
           throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
         }
         break;
@@ -139,7 +139,7 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
   /**
    * {@inheritdoc}
    */
-  public function preSavetamper(EntityInterface $entity, ?TamperableItemInterface $item = NULL, $source) {
+  public function preSavetamper(EntityInterface $entity, ?TamperableItemInterface $item, $source) {
     $skip_condition = $this->getSetting(self::SETTING_SKIP_CONDITION);
     if ($skip_condition && !$entity->isNew()) {
       return;
@@ -159,13 +159,13 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
 
     switch ($matching_condition) {
       case 'includes':
-        if (strpos($value, $condition_value) === FALSE) {
+        if (strpos($value, $condition_value) !== FALSE) {
           throw new SkipTamperItemException("Skip item with condition: $source $matching_condition $condition_value.");
         }
         break;
 
       case 'not_includes':
-        if (strpos($value, $condition_value) !== FALSE) {
+        if (strpos($value, $condition_value) === FALSE) {
           throw new SkipTamperItemException("Skip item with condition: $source $matching_condition $condition_value.");
         }
         break;
