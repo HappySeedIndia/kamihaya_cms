@@ -123,6 +123,7 @@ class ContentservApiDataParser extends ContentservApiParser {
           }
         }
       }
+
       $item->set('access_token', $fetcher_result->getAccessToken());
       $result->addItem($item);
       $state->pointer = 1;

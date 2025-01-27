@@ -21,6 +21,6 @@ interface KamihayaTamperInterface extends TamperInterface {
    * @param string $source
    *   The source name to alter.
    */
-  public function preSavetamper(EntityInterface $entit, TamperableItemInterface $item = NULL, $source);
+  public function preSavetamper(EntityInterface $entit, TamperableItemInterface $item, $source);
 
 }

@@ -151,7 +151,7 @@ class SetValueWithCondition extends TamperBase {
         break;
 
       case 'not_includes':
-        if (strpos($value, $condition_value) !== FALSE) {
+        if (strpos($value, $condition_value) === FALSE) {
           return $data_value;
         }
         break;
