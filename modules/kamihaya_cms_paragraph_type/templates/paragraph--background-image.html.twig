@@ -55,9 +55,16 @@
       {% set width = paragraph.field_width.0.value %}
       {% set width_unit = paragraph.field_width_unit.0.value %}
       {% set align = content.field_align|render|striptags|trim|lower %}
+      {% set position = content.field_background_position|render|striptags|trim|lower %}
+      {% set repeat = content.field_background_repeat|render|striptags|trim|lower %}
+      {% set size = content.field_background_size|render|striptags|trim|lower %}
       {%
         set style = [
           width ? (width_unit == 'px' ? ('width: 100%; max-width: ' ~ width ~ width_unit ~ ';') : ('width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;'))) : 'width: 100%;',
+          imageUrl ? 'background-image: url(' ~ imageUrl ~ ');',
+          size ? 'background-size: ' ~ size ~ ';',
+          position ? 'background-position: ' ~ position ~ ';',
+          'background-repeat: ' ~ (repeat == 1? 'repeat;' : 'no-repeat;'),
         ]
       %}
       {% if width_unit == 'vw' %}
@@ -68,7 +75,16 @@
           ])
         %}
       {% endif %}
-
+      {% if content.field_background_mobile_image|render %}
+        {% set mobileImageUrl = file_url(content.field_background_mobile_image.0['#item'].entity.uri.value) %}
+        <style>
+          @media (max-width: 767px) {
+            .bg-image {
+              background-image: url('{{ mobileImageUrl }}');
+            }
+          }
+        </style>
+      {% endif %}
       {% set bg_attribute = create_attribute() %}
       {%
         set bg_classes = [
@@ -78,24 +94,8 @@
       %}
 
       <div{{bg_attribute.addClass(bg_classes).setAttribute('style', style|join(' '))}} class="">
-        {# Image #}
-        {% if content.field_background_image|render %}
-          {% if content.field_background_mobile_image|render %}
-            {% set mobileImageUrl = file_url(content.field_background_mobile_image.0['#item'].entity.uri.value) %}
-              <picture>
-                <source srcset="{{ mobileImageUrl }}" media="(max-width:767px)">
-          {% endif %}
-          <img src="{{ imageUrl }}" alt="{{ content.field_image.0['#item'].alt }}" class="w-100"/>
-          {% if content.field_background_mobile_image|render %}
-            </picture>
-          {% endif %}
-        {% endif %}
-
-        {# Body #}
-        <div class="mask">
-          <div class="bg-image-item">
-            {{ content.field_body }}
-          </div>
+        <div class="bg-image-item">
+          {{ content.field_body }}
         </div>
       </div>
     </div>
