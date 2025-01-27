@@ -376,10 +376,15 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         return $this->createMediaFile($feed, $fetcher_result, $target, $file_id, $file_name, $langcode, TRUE);
       }
 
+      if ($status_code != 200) {
+        $args = ['%status' => $status_code];
+        throw new FetchException(strtr('Faild to get the file with status code "%status".', $args));
+      }
+
       /** @var \GuzzleHttp\Psr7\Stream $stream */
       $stream = $response->getBody();
-      if (empty($stream) || !($stream instanceof Stream)) {
-        return NULL;
+      if (empty($stream) || !($stream instanceof Stream) || !file_exists($file_destination)) {
+        throw new FetchException('Faild to get the file because the stream is not correct.');
       }
       // Save the file.
       $file_uri = $stream->getMetadata('uri');
@@ -411,7 +416,6 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         $file->save();
         return $file->id();
       }
-
     }
     catch (RequestException $e) {
       $args = ['%error' => $e->getMessage()];
