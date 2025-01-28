@@ -856,6 +856,8 @@ function kamihaya_cms_paragraph_type_update_10013() {
     'field_background_position',
     'field_background_repeat',
     'field_background_size',
+    'field_component_id',
+    'field_css_class',
     'field_width',
     'field_width_unit',
     'field_align',
@@ -867,6 +869,12 @@ function kamihaya_cms_paragraph_type_update_10013() {
     'modal_dialog' => 'field_dialog_body',
     'two_col_table_row' => 'field_row_data',
   ], 'optional');
+
+  // Add fields to Image Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'border_box', [
+    'field_component_id',
+    'field_css_class',
+  ]);
 
   // Add fields to Image Paragraph.
   _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image', ['field_mobile_image']);
