@@ -71,6 +71,14 @@
       {% set bd_radius_size = content.field_radius_size|render|striptags|trim|lower %}
       {% set padding = content.field_padding|render|striptags|trim|lower %}
       {% set align = content.field_align|render|striptags|trim|lower %}
+      {# Component ID #}
+      {% if content.field_component_id|render %}
+        {% set component_id = content.field_component_id|render|striptags|trim %}
+      {% endif %}
+      {# CSS Class #}
+      {% if content.field_css_class|render %}
+        {% set css_class = content.field_css_class|render|striptags|trim %}
+      {% endif %}
       {%
         set style = [
           width ? (width_unit == 'px' ? ('width: 100%; max-width: ' ~ width ~ width_unit ~ ';') : ('width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;'))) : 'width: 100%;',
@@ -101,10 +109,11 @@
           bd_radius_type ? 'rounded-' ~ bd_radius_type,
           bd_radius_size ? 'rounded-' ~ bd_radius_size,
           align ? 'align-' ~ align,
+          css_class ? css_class,
         ]
       %}
 
-      <div{{box_attribute.addClass(box_classes).setAttribute('style', style|join(' '))}}>
+      <div{{box_attribute.addClass(box_classes).setAttribute('style', style|join(' '))}}{% if component_id %} id="{{ component_id }}"{% endif %}>
         <div class="border-box-item {{ padding ? padding }}">
           {{ content.field_border_box_item }}
         </div>

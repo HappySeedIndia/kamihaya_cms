@@ -14,6 +14,8 @@ dependencies:
     - field.field.paragraph.border_box.field_border_style
     - field.field.paragraph.border_box.field_border_top_color
     - field.field.paragraph.border_box.field_border_top_width
+    - field.field.paragraph.border_box.field_component_id
+    - field.field.paragraph.border_box.field_css_class
     - field.field.paragraph.border_box.field_padding
     - field.field.paragraph.border_box.field_radius_size
     - field.field.paragraph.border_box.field_radius_type
@@ -58,9 +60,11 @@ third_party_settings:
         - field_radius_size
         - field_width
         - field_width_unit
-        - field_padding
         - field_align
         - field_vertical_margin
+        - field_padding
+        - field_component_id
+        - field_css_class
       label: 'Box style'
       region: content
       parent_name: ''
@@ -83,7 +87,7 @@ mode: default
 content:
   field_align:
     type: options_select
-    weight: 8
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -205,9 +209,25 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_component_id:
+    type: string_textfield
+    weight: 10
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_css_class:
+    type: string_textfield
+    weight: 11
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_padding:
     type: options_select
-    weight: 7
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -225,7 +245,7 @@ content:
     third_party_settings: {  }
   field_vertical_margin:
     type: options_select
-    weight: 9
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }

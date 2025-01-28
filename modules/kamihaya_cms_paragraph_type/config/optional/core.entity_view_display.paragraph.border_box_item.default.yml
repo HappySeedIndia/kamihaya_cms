@@ -1,3 +1,4 @@
+uuid: dde05edc-e696-4265-a7d5-e6bdab6f683a
 langcode: en
 status: true
 dependencies:
@@ -6,6 +7,8 @@ dependencies:
     - paragraphs.paragraphs_type.border_box_item
   module:
     - layout_paragraphs
+_core:
+  default_config_hash: I1fKCIXqxIcTmkimO6noCyA2Vf1fMp9q0rh9U_vAAI4
 id: paragraph.border_box_item.default
 targetEntityType: paragraph
 bundle: border_box_item
