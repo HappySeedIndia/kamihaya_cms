@@ -73,3 +73,13 @@ font-awesome:
   css:
     theme:
       https://site-assets.fontawesome.com/releases/v6.7.1/css/all.css: { type: external, minified: true }
+
+landing-page:
+  css:
+    theme:
+      css/components/footer-menu.css: {}
+
+paragraph-banner:
+  css:
+    theme:
+      css/components/paragraph-banner.css: {}
