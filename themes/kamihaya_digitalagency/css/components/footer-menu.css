@@ -1,0 +1,23 @@
+
+/* Landing page specific footer */
+.lp-footer .menu--footer .navbar-nav .menu-item {
+  font-weight: normal;
+  font-size: 15px;
+  float: left;
+}
+.lp-footer .menu--footer .navbar-nav .menu-item a {
+  color: #fff;
+}
+@media (min-width: 992px) {
+  .lp-footer .menu--footer .navbar-nav {
+    flex-direction: row;
+    justify-content: unset;
+    flex-wrap: wrap;
+  }
+  .lp-footer .menu--footer .navbar-nav .menu-item {
+    margin-right: 15px;
+  }
+  .lp-footer .menu--footer .navbar-nav .menu-item:last-child {
+    margin-right: 0;
+  }
+}

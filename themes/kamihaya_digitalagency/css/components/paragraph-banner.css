@@ -1,0 +1,33 @@
+/* Banner Paragraph */
+.section-banner {
+  position: relative;
+  overflow: hidden;
+}
+.banner-bg {
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 40px 0;
+}
+.section-banner-content {
+  position: relative;
+  overflow: hidden;
+  padding: 40px 0;
+}
+@media (max-width: 767px) {
+  .banner-bg {
+    padding: 20px 0;
+    background-position: top;
+  }
+  .section-banner-content {
+    padding: 20px 0;
+  }
+}
+
+.banner-content h2:after,
+.banner-content h3:after,
+.banner-content h4:after,
+.banner-content h5:after,
+.banner-content h6:after {
+  display: none;
+}
