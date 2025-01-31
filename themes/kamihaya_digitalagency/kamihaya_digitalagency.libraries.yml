@@ -77,7 +77,7 @@ font-awesome:
 landing-page:
   css:
     theme:
-      css/components/footer-menu.css: {}
+      css/components/landing-page.css: {}
 
 paragraph-banner:
   css:
