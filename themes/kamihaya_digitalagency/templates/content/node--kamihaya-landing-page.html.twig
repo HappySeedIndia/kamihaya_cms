@@ -82,14 +82,14 @@
 {{ attach_library('bootstrap5/node') }}
 {{ attach_library('kamihaya_digitalagency/landing-page') }}
 
-{# Banner container width #}
+{# Page container width #}
 {% if content.field_lp_container_width|render %}
   {% set containerWidth = content.field_lp_container_width %}
 {% else %}
   {% set containerWidth = '1080' %}
 {% endif %}
 
-{# Banner container width unit #}
+{# Page container width unit #}
 {% if content.field_lp_width_units|render %}
   {% set containerWidthUnit = content.field_lp_width_units.0 %}
 {% else %}
@@ -112,11 +112,53 @@
     }
   }
 </style>
+
+{# Header container width #}
+{% if content.field_header_container_width|render %}
+  {% set headerContainerWidth = content.field_header_container_width %}
+{% else %}
+  {% set headerContainerWidth = '1200' %}
+{% endif %}
+
+{# Header container width unit #}
+{% if content.field_header_width_units|render %}
+  {% set headerContainerWidthUnit = content.field_header_width_units.0 %}
+{% else %}
+  {% set headerContainerWidthUnit = 'px' %}
+{% endif %}
+
+{% if headerContainerWidth is not empty and headerContainerWidthUnit is not empty %}
+  {% set headerContainerClass = headerContainerWidth|render|striptags|trim~headerContainerWidthUnit|render|striptags|trim %}
+{% endif %}
+
+<style type="text/css">
+  .header-container {
+    max-width: {{ headerContainerClass }};
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  @media (max-width: 991px) {
+    .header-container {
+      max-width: 100%;
+    }
+  }
+</style>
+
+ {# Logo #}
+ {% if content.field_lp_header|render %}
+<section class="lp-header">
+  <div class="container header-container clearfix">
+    {{ content.field_lp_header}}
+  </div>
+</section>
+{% endif %}
+
 <div{{attributes.addClass(classes)}}>
-  {# Page Banner #}
-  {% if content.field_lp_page_banner|render %}
+ 
+  {# Hero Banner #}
+  {% if content.field_lp_hero_banner|render %}
     <div class="lp-banner clearfix">
-      {{ content.field_lp_page_banner }}
+      {{ content.field_lp_hero_banner }}
     </div>
   {% endif %}
 
