@@ -82,6 +82,36 @@
 {{ attach_library('bootstrap5/node') }}
 {{ attach_library('kamihaya_digitalagency/landing-page') }}
 
+{# Banner container width #}
+{% if content.field_lp_container_width|render %}
+  {% set containerWidth = content.field_lp_container_width %}
+{% else %}
+  {% set containerWidth = '1080' %}
+{% endif %}
+
+{# Banner container width unit #}
+{% if content.field_lp_width_units|render %}
+  {% set containerWidthUnit = content.field_lp_width_units.0 %}
+{% else %}
+  {% set containerWidthUnit = 'px' %}
+{% endif %}
+
+{% if containerWidth is not empty and containerWidthUnit is not empty %}
+  {% set containerClass = containerWidth|render|striptags|trim~containerWidthUnit|render|striptags|trim %}
+{% endif %}
+
+<style type="text/css">
+  .pc-container {
+    max-width: {{ containerClass }};
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  @media (max-width: 991px) {
+    .pc-container {
+      max-width: 100%;
+    }
+  }
+</style>
 <div{{attributes.addClass(classes)}}>
   {# Page Banner #}
   {% if content.field_lp_page_banner|render %}
@@ -91,28 +121,28 @@
   {% endif %}
 
   {% if content.field_lp_description|render or content.field_lp_contents|render %}
-  <div class="container clearfix">
-    {# Page Description #}
-    {% if content.field_lp_description|render %}
-      <div class="lp-description clearfix">
-        {{ content.field_lp_description }}
-      </div>
-    {% endif %}
+    <div class="container pc-container clearfix">
+      {# Page Description #}
+      {% if content.field_lp_description|render %}
+        <div class="lp-description clearfix">
+          {{ content.field_lp_description }}
+        </div>
+      {% endif %}
 
-    {# Page content #}
-    {% if content.field_lp_contents|render %}
-    <div class="lp-contents clearfix">
-      {{ content.field_lp_contents }}
+      {# Page content #}
+      {% if content.field_lp_contents|render %}
+      <div class="lp-contents clearfix">
+        {{ content.field_lp_contents }}
+      </div>
+      {% endif %}
     </div>
-    {% endif %}
-  </div>
   {% endif %}
 </div>
 
 {% set footerBgColor = content.field_footer_bg_color|render|striptags|trim %}
 {% if content.field_footer_contents|render %}
-<section class="clearfix lp-footer mt-5" {% if footerBgColor is not empty %} style="background-color:{{ footerBgColor }}" {% endif %}>
-  <div class="container">
+<section class="clearfix lp-footer mt-5 py-3" {% if footerBgColor is not empty %} style="background-color:{{ footerBgColor }}" {% endif %}>
+  <div class="container pc-container clearfix">
     {{ content.field_footer_contents }}
   </div>
 </section>

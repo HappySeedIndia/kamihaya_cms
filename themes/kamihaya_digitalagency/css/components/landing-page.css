@@ -1,0 +1,92 @@
+/* Landing Page specific css */
+
+.kamihaya-lp-page body {
+  font-family: "ヒラギノ角ゴシック", "Hiragino Sans", sans-serif;
+  font-size: 16px;
+}
+.kamihaya-lp-page h1:after
+.kamihaya-lp-page h2:after,
+.kamihaya-lp-page h3:after,
+.kamihaya-lp-page h4:after,
+.kamihaya-lp-page h5:after {
+  display: none;
+}
+
+.kamihaya-lp-page h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+}
+
+
+.kamihaya-lp-page h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.08rem;
+  margin-bottom: 2.1875rem;
+}
+
+.kamihaya-lp-page h3 {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.7;
+  margin-bottom: 2.6875rem;
+}
+
+.kamihaya-lp-page h4 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.06rem;
+  line-height: 1.7;
+}
+
+.kamihaya-lp-page h5 {
+  font-size: 1.25rem;
+  margin-bottom: 3.125rem;
+}
+
+@media (max-width: 767px) {
+  .kamihaya-lp-page h1 {
+    font-size: 3.75rem;
+  }
+  .kamihaya-lp-page h2 {
+    font-size: 3rem;
+  }
+  .kamihaya-lp-page h3 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 0.8125rem;
+  }
+  .kamihaya-lp-page h4 {
+    font-size: 2rem;
+    letter-spacing: 0.06rem;
+    line-height: 1.5;
+  }
+  .kamihaya-lp-page h5 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Landing page specific footer */
+.lp-footer .menu--footer .navbar-nav .menu-item {
+  font-weight: normal;
+  font-size: 15px;
+  float: left;
+}
+.lp-footer .menu--footer .navbar-nav .menu-item a {
+  color: #fff;
+}
+@media (min-width: 992px) {
+  .lp-footer .menu--footer .navbar-nav {
+    flex-direction: row;
+    justify-content: unset;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .lp-footer .menu--footer .navbar-nav .menu-item {
+    margin-right: 15px;
+  }
+  .lp-footer .menu--footer .navbar-nav .menu-item:last-child {
+    margin-right: 0;
+  }
+}

@@ -728,3 +728,12 @@ function _kamihaya_digitalagency_get_rgb_color($color) {
   $blue = (($color & 0x0000FF));
   return "$red, $green, $blue";
 }
+
+/**
+ * Implements hook_theme_suggestions_html_alter().
+ */
+function kamihaya_digitalagency_theme_suggestions_html_alter(array &$suggestions, array $variables) {
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+	$suggestions[] = 'html__' . $node->bundle();
+  }
+}

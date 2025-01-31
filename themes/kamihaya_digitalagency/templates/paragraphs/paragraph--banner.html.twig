@@ -62,7 +62,7 @@
 
 {# Banner content classes #}
 {% set content_classes = (content.field_banner_content|render and content.field_banner_image|render) ?
-  'col-12 col-md-6' : ((content.field_banner_content|render or content.field_banner_image|render) ?
+  'col-12 col-lg-6' : ((content.field_banner_content|render or content.field_banner_image|render) ?
   'col-12' : 'col-12 main-content' ) %}
 
 {# Banner logo URL #}
@@ -85,11 +85,42 @@
   {% set bannerImgPositionClass = 'd-flex flex-row' %}
 {% endif %}
 
+{# Banner container width #}
+{% if content.field_banner_content_width|render %}
+  {% set containerWidth = content.field_banner_content_width %}
+{% else %}
+  {% set containerWidth = '1200' %}
+{% endif %}
 
+{# Banner container width unit #}
+{% if content.field_banner_content_width_units|render %}
+  {% set containerWidthUnit = content.field_banner_content_width_units.0 %}
+{% else %}
+  {% set containerWidthUnit = 'px' %}
+{% endif %}
+
+{% if containerWidth is not empty and containerWidthUnit is not empty %}
+  {% set bannerContainerClass = containerWidth|render|striptags|trim~containerWidthUnit|render|striptags|trim %}
+{% endif %}
+
+<style type="text/css">
+  .pc-banner-container {
+    max-width: {{ bannerContainerClass }};
+    margin: 0 auto;
+  }
+  @media (max-width: 991px) {
+    .pc-banner-container {
+      max-width: 100%;
+    }
+  }
+</style>
+
+
+{# Banner content #}
 {% block paragraph %}
   {% block content %}
     <section{{ attributes.addClass(classes) }}>
-      {# Banner Logo #}
+      {# Banner Logo SP #}
       {% if content.field_banner_logo|render %}
       <div class="container d-block d-md-none mb-3 clearfix">
         <img src="{{ logoUrl }}" alt="{{ paragraph.field_banner_logo.alt }}" class="img-fluid" />
@@ -106,7 +137,7 @@
           {% if pcImgUrl is not empty %}
             <div class="banner-bg d-none d-md-block clearfix" style="background-image: url('{{ pcImgUrl }}')">
               {# Banner Details #}
-              <div class="container">
+              <div class="container pc-banner-container clearfix">
                 {# Banner Logo #}
                 {% if content.field_banner_logo|render %}
                 <div class="banner-logo d-none d-md-block mb-3">
@@ -141,7 +172,7 @@
             <div class="banner-bg d-block d-md-none clearfix" style="background-image: url('{{ pcImgUrl }}')">
           {% endif %}
             {# Banner Details #}
-            <div class="container">
+            <div class="container pc-banner-container ">
               {# Content and Image #}
               <div class="row {{ bannerImgPositionClass }}">
                 {# Banner content #}
@@ -162,7 +193,8 @@
           </div>
         {% else %}
           {# Banner Details #}
-          <div class="container">
+          <div class="container pc-banner-container clearfix">
+
             {# Content and Image #}
             <div class="row {{ bannerImgPositionClass }}">
               {# Banner content #}
