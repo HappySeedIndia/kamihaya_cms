@@ -858,6 +858,7 @@ function kamihaya_cms_paragraph_type_update_10013() {
     'field_background_size',
     'field_component_id',
     'field_css_class',
+    'field_vertical_margin',
     'field_width',
     'field_width_unit',
     'field_align',
@@ -870,16 +871,17 @@ function kamihaya_cms_paragraph_type_update_10013() {
     'two_col_table_row' => 'field_row_data',
   ], 'optional');
 
-  // Add fields to Image Paragraph.
+  // Add fields to Border box Paragraph.
   _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'border_box', [
     'field_component_id',
     'field_css_class',
+    'field_vertical_margin',
   ]);
 
   // Add fields to Image Paragraph.
   _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image', ['field_mobile_image']);
 
-  // Add fields to Image Paragraph.
+  // Add fields to Image link Paragraph.
   _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image_link', [
     'field_font_bold',
     'field_image_desc_color',
@@ -896,8 +898,6 @@ function kamihaya_cms_paragraph_type_update_10013() {
 
   // Add fields to Headings Paragraph.
   _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'headings', ['field_text_size']);
-  // Add fields to Border box Paragraph.
-  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'border_box', ['field_vertical_margin'], 'optional');
   // Change field display of Headings Paragraph.
   _kamihaya_cms_common_set_field_display('kamihaya_cms_paragraph_type', 'paragraph', 'headings', 'field_color');
   // Change field display of Border box item Paragraph.

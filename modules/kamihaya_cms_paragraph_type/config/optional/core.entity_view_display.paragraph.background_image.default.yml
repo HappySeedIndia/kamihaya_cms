@@ -11,6 +11,7 @@ dependencies:
     - field.field.paragraph.background_image.field_body
     - field.field.paragraph.background_image.field_component_id
     - field.field.paragraph.background_image.field_css_class
+    - field.field.paragraph.background_image.field_vertical_margin
     - field.field.paragraph.background_image.field_width
     - field.field.paragraph.background_image.field_width_unit
     - paragraphs.paragraphs_type.background_image
@@ -164,6 +165,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 12
+    region: content
+  field_vertical_margin:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 17
     region: content
   field_width:
     type: number_integer
