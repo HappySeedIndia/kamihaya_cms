@@ -40,12 +40,17 @@
 #}
 {{  attach_library('kamihaya_cms_paragraph_type/background-image-css') }}
 
+{% set v_margin = paragraph.field_vertical_margin.0.value %}
+{% set paragraph_id = paragraph.id() %}
+
 {%
   set classes = [
     'paragraph',
+    paragraph_id ? 'paragraph-id--' ~ paragraph_id,
     'paragraph--type--' ~ paragraph.bundle|clean_class,
     view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
     not paragraph.isPublished() ? 'paragraph--unpublished',
+    v_margin ? v_margin,
   ]
 %}
 {% block paragraph %}
@@ -87,8 +92,8 @@
         {% set mobileImageUrl = file_url(content.field_background_mobile_image.0['#item'].entity.uri.value) %}
         <style>
           @media (max-width: 767px) {
-            .bg-image {
-              background-image: url('{{ mobileImageUrl }}');
+            .paragraph-id--{{ paragraph_id }} .bg-image {
+              background-image: url('{{ mobileImageUrl }}') !important;
             }
           }
         </style>
