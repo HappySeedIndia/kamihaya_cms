@@ -600,7 +600,9 @@ html[lang='ja'] .form-required:after {
   font-size: 1.5rem;
 }
 
-.table.td-file td .file.file--application-pdf a {
+.table.td-file td .file.file--application-pdf a,
+.table.td-file td .file.file--general a,
+.table.td-file td .file.file--text a {
   width: 100%;
   display: flex;
   align-items: center;
@@ -611,7 +613,9 @@ html[lang='ja'] .form-required:after {
 }
 
 .table.td-file td .file.file--application-pdf a:before,
-.table.td-file td .file.file--application-pdf a:after {
+.table.td-file td .file a:after,
+.table.td-file td .file.file--general a:before,
+.table.td-file td .file.file--text a:before {
   font-family:'Font Awesome 6 Pro';
   font-weight: 900;
   font-size: 1.5rem;
@@ -621,6 +625,23 @@ html[lang='ja'] .form-required:after {
   content: '\f1c1';
   font-weight: 400;
   margin-right: 0.5rem;
+}
+
+.table.td-file td .file.file.file--general a:before {
+  content: '\f15b';
+  font-weight: 400;
+  margin-right: 0.5rem;
+}
+
+.table.td-file td .file.file.file--text a:before {
+  content: '\f15c';
+  font-weight: 400;
+  margin-right: 0.5rem;
+}
+
+.table.td-file td .file.file.file--general,
+.table.td-file td .file.file.file--text {
+  background-image: none;
 }
 
 .table.td-file td .field--type-entity-reference.field--label-inline {
@@ -635,7 +656,7 @@ html[lang='ja'] .form-required:after {
   content: '';
 }
 
-.table.no-th td .file.file--application-pdf a:after {
+.table.no-th td .file a:after {
   content: '\f019';
   position: absolute;
   right: 0;
@@ -643,6 +664,7 @@ html[lang='ja'] .form-required:after {
 
 .table tr.type-entity-reference td {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;;
 }
 
