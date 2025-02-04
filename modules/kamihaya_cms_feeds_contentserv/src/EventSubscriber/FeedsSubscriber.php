@@ -6,11 +6,15 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\feeds\Event\EntityEvent;
 use Drupal\feeds\Event\FeedsEvents;
+use Drupal\feeds\Event\ParseEvent;
+use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds_tamper\Adapter\TamperableFeedItemAdapter;
 use Drupal\feeds_tamper\FeedTypeTamperManagerInterface;
 use Drupal\kamihaya_cms_feeds_contentserv\Feeds\Processor\MultiLanguageEntityProcessorBase;
 use Drupal\kamihaya_cms_feeds_contentserv\Plugin\Tamper\KamihayaTamperInterface;
+use Drupal\tamper\Exception\SkipTamperDataException;
+use Drupal\tamper\Exception\SkipTamperItemException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -26,9 +30,96 @@ class FeedsSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     $events = [];
+    $events[FeedsEvents::PARSE][] = ['afterParse', FeedsEvents::AFTER];
     $events[FeedsEvents::PROCESS_ENTITY_PRESAVE][] = 'preSave';
     $events[FeedsEvents::PROCESS_ENTITY_POSTSAVE][] = 'postSave';
     return $events;
+  }
+
+    /**
+   * Acts on parser result.
+   */
+  public function afterParse(ParseEvent $event) {
+    /** @var \Drupal\feeds\FeedInterface $feed */
+    $feed = $event->getFeed();
+
+    /** @var \Drupal\feeds_tamper\FeedTypeTamperMetaInterface $tamper_meta */
+    $tamper_meta = $this->tamperManager->getTamperMeta($feed->getType());
+
+    // Load the tamper plugins that need to be applied to Feeds.
+    $tampers_by_source = $tamper_meta->getTampersGroupedBySource();
+
+    // Abort if there are no tampers to apply on the current feed.
+    if (empty($tampers_by_source)) {
+      return;
+    }
+
+    /** @var \Drupal\feeds\Result\ParserResultInterface $result */
+    $result = $event->getParserResult();
+
+    for ($i = 0; $i < $result->count(); $i++) {
+      if (!$result->offsetExists($i)) {
+        break;
+      }
+
+      /** @var \Drupal\feeds\Feeds\Item\ItemInterface $item */
+      $item = $result->offsetGet($i);
+
+      try {
+        $this->alterItem($feed, $item, $tampers_by_source);
+      }
+      catch (SkipTamperItemException $e) {
+        $result->offsetUnset($i);
+        $i--;
+      }
+    }
+  }
+
+  /**
+   * Alters a single item.
+   *
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed.
+   * @param \Drupal\feeds\Feeds\Item\ItemInterface $item
+   *   The item to make modifications on.
+   * @param \Drupal\tamper\TamperInterface[][] $tampers_by_source
+   *   A list of tampers to apply, grouped by source.
+   */
+  protected function alterItem(FeedInterface $feed, ItemInterface $item, array $tampers_by_source) {
+    $tamperable_item = new TamperableFeedItemAdapter($item);
+    foreach ($tampers_by_source as $source => $tampers) {
+      try {
+        // Get the value for a source.
+        $item_value = $item->get($source);
+        $multiple = is_array($item_value) && !empty($item_value);
+
+        /** @var \Drupal\tamper\TamperInterface $tamper */
+        foreach ($tampers as $tamper) {
+          if (!($tamper instanceof KamihayaTamperInterface)) {
+            continue;
+          }
+          $definition = $tamper->getPluginDefinition();
+          if ($multiple && !$definition['handle_multiples']) {
+            $new_value = [];
+            // @todo throw exception if $item_value is not an array.
+            foreach ($item_value as $scalar_value) {
+              $new_value[] = $tamper->postParseTamper($feed, $scalar_value, $tamperable_item);
+            }
+            $item_value = $new_value;
+          }
+          else {
+            $item_value = $tamper->postParseTamper($feed, $item_value, $tamperable_item);
+            $multiple = $tamper->multiple();
+          }
+        }
+
+        // Write the changed value.
+        $item->set($source, $item_value);
+      }
+      catch (SkipTamperDataException $e) {
+        $item->set($source, NULL);
+      }
+    }
   }
 
   /**
@@ -54,20 +145,21 @@ class FeedsSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $this->alterEntity($entity, $item, $tampers_by_source);
+    $this->alterEntity($feed, $entity, $item, $tampers_by_source);
   }
 
   /**
    * Alters a single item.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed.@param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to alter.
    * @param \Drupal\feeds\Feeds\Item\ItemInterface $item
    *   The item to alter.
    * @param \Drupal\tamper\TamperInterface[][] $tampers_by_source
    *   A list of tampers to apply, grouped by source.
    */
-  protected function alterEntity(EntityInterface $entity, ItemInterface $item, array $tampers_by_source) {
+  protected function alterEntity(FeedInterface $feed, EntityInterface $entity, ItemInterface $item, array $tampers_by_source) {
     $tamperable_item = new TamperableFeedItemAdapter($item);
     foreach ($tampers_by_source as $source => $tampers) {
       /** @var \Drupal\tamper\TamperInterface $tamper */
@@ -75,7 +167,7 @@ class FeedsSubscriber implements EventSubscriberInterface {
         if (!($tamper instanceof KamihayaTamperInterface)) {
           continue;
         }
-        $tamper->preSavetamper($entity, $tamperable_item, $source);
+        $tamper->preSaveTamper($feed, $entity, $tamperable_item, $source);
       }
     }
   }

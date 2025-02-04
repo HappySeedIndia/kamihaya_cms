@@ -2,12 +2,13 @@
 
 namespace Drupal\kamihaya_cms_feeds_contentserv\Plugin\Tamper;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\feeds\Entity\Feed;
-use Drupal\feeds\StateInterface;
-use Drupal\tamper\Exception\SkipTamperDataException;
+use Drupal\feeds\FeedInterface;
 use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -23,7 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   handle_multiples = TRUE
  * )
  */
-class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPluginInterface {
+class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPluginInterface, KamihayaTamperInterface {
 
   const SETTING_FEEDS = 'feeds';
   const SETTING_SKIP_TRANSLATED_ITEM = 'skip_translated_item';
@@ -41,8 +42,10 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
    *   A definition of which sources there are that Tamper plugins can use.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entityTypeBundleInfo
    *   The entity type bundle info.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, $source_definition, protected EntityTypeBundleInfoInterface $entityTypeBundleInfo) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, $source_definition, protected EntityTypeBundleInfoInterface $entityTypeBundleInfo, protected EntityTypeManagerInterface $entityTypeManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $source_definition);
   }
 
@@ -55,7 +58,8 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
       $plugin_id,
       $plugin_definition,
       $configuration['source_definition'],
-      $container->get('entity_type.bundle.info')
+      $container->get('entity_type.bundle.info'),
+      $container->get('entity_type.manager'),
     );
   }
 
@@ -109,48 +113,65 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public function tamper($data, TamperableItemInterface $item = NULL) {
+    return $data;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postParseTamper(FeedInterface $feed, $data, TamperableItemInterface $item) {
     if (is_null($data) || (is_array($data) && empty($data)) || (!is_array($data) && strlen($data) === 0)) {
-      return $data;
+      return;
     }
     if ($this->getSetting(self::SETTING_SKIP_TRANSLATED_ITEM) && !empty($item->getSource()['translation'])) {
-      return $data;
+      return;
     }
-    $id = $data;
-    if (is_array($data)) {
-      $id = !empty($data['ID']) ? $data['ID'] : '(JSON data)';
-    }
-    $values = [
-      'title' => $this->t('Temporary feed for additional feeds import: Feed type: @type - ID: @id', [
-        '@type' => $this->getSetting(self::SETTING_FEEDS),
-        '@id' => $id,
-      ]),
-      'type' => $this->getSetting(self::SETTING_FEEDS),
-      'feeds_log' => FALSE,
-    ];
 
-    $feed = Feed::create($values);
+    $name = $feed->label() . ' - ' . $this->getSetting(self::SETTING_FEEDS);
+    $feeds = $this->entityTypeManager->getStorage('feeds_feed')->loadByProperties(['title' => $name]);
+    if (!empty($feeds)) {
+      $feed = reset($feeds);
+    }
+    else {
+      $values = [
+        'title' => $name,
+        'type' => $this->getSetting(self::SETTING_FEEDS),
+        'feeds_log' => FALSE,
+      ];
+      $feed = Feed::create($values);
+    }
+
     if ($feed->hasField('field_json_data') && is_array($data)) {
+      // Save the JSON data to the feed.
       $feed->set('field_json_data', json_encode($data));
     }
     else {
+      // Save the data as a source to the feed.
       $feed->setSource($data);
     }
     if (!empty($item->getSource()['access_token'])) {
+      // Set the access token to the feed configuration.
       $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
       $feed_config['access_token'] = $item->getSource()['access_token'];
       $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
     }
     $feed->save();
     try {
+      // Execute the import.
       $feed->import();
     } catch (\Exception $e) {
       $feed->unlock();
       throw $e;
-    } finally {
-      $feed->delete();
     }
 
     return $data;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function preSaveTamper(FeedInterface $feed, EntityInterface $entity, ?TamperableItemInterface $item, $source) {
+    return;
   }
 
 }

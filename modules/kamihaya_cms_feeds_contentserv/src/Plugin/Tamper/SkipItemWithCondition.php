@@ -4,6 +4,7 @@ namespace Drupal\kamihaya_cms_feeds_contentserv\Plugin\Tamper;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\feeds\FeedInterface;
 use Drupal\tamper\Exception\SkipTamperItemException;
 use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
@@ -41,14 +42,6 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form[self::SETTING_CONDITION_VALUE] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Condition value'),
-      '#required' => TRUE,
-      '#default_value' => $this->getSetting(self::SETTING_CONDITION_VALUE),
-      '#description' => $this->t('The source value to check the condition.'),
-    ];
-
     $form[self::SETTING_MATCHING_CONDITION] = [
       '#type' => 'radios',
       '#title' => $this->t('Matching condition'),
@@ -58,9 +51,39 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
         '!=' => $this->t('Not equal'),
         'includes' => $this->t('Includes'),
         'not_includes' => $this->t('Not includes'),
+        'empty' => $this->t('Empty'),
+        'not_empty' => $this->t('Not empty'),
       ],
       '#default_value' => $this->getSetting(self::SETTING_MATCHING_CONDITION),
       '#description' => $this->t('The matching condition.'),
+    ];
+
+
+    $form[self::SETTING_CONDITION_VALUE] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Condition value'),
+      '#default_value' => $this->getSetting(self::SETTING_CONDITION_VALUE),
+      '#description' => $this->t('The source value to check the condition.'),
+      '#states' => [
+        'invisible' => [
+          'input[name="plugin_configuration[matching_condition]"]' =>  [
+            ['value' => 'empty'],
+            'or',
+            ['value' => 'not_empty'],
+          ],
+        ],
+        'required' => [
+          'input[name="plugin_configuration[matching_condition]"]' => [
+            ['value' => '=='],
+            'or',
+            ['value' => '!='],
+            'or',
+            ['value' => 'includes'],
+            'or',
+            ['value' => 'not_includes'],
+          ],
+        ],
+      ],
     ];
 
     $form[self::SETTING_SKIP_EMPTY] = [
@@ -127,6 +150,18 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
         }
         break;
 
+      case 'empty':
+        if ((is_array($data) && empty($data)) || strlen($data) == 0) {
+          throw new SkipTamperItemException("Skip item with condition: $matching_condition.");
+        }
+        break;
+
+      case 'not_empty':
+        if ((is_array($data) && !empty($data)) || strlen($data) != 0) {
+          throw new SkipTamperItemException("Skip item with condition: $matching_condition.");
+        }
+        break;
+
       default:
         if (eval("return '$data' $matching_condition '$condition_value';")) {
           throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
@@ -139,7 +174,14 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
   /**
    * {@inheritdoc}
    */
-  public function preSavetamper(EntityInterface $entity, ?TamperableItemInterface $item, $source) {
+  public function postParseTamper(FeedInterface $feed, $data, TamperableItemInterface $item) {
+    return $data;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function preSaveTamper(FeedInterface $feed, EntityInterface $entity, ?TamperableItemInterface $item, $source) {
     $skip_condition = $this->getSetting(self::SETTING_SKIP_CONDITION);
     if ($skip_condition && !$entity->isNew()) {
       return;
@@ -153,26 +195,66 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
       $value = '';
     }
 
+    $label = $entity->label();
+    $type = $entity->getEntityTypeId();
     if ($skip_empty && strlen($value) === 0) {
-      throw new SkipTamperItemException("Skip item with empty value.");
+      throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with empty value.", ['@label' => $label]));
     }
 
     switch ($matching_condition) {
       case 'includes':
         if (strpos($value, $condition_value) !== FALSE) {
-          throw new SkipTamperItemException("Skip item with condition: $source $matching_condition $condition_value.");
+          throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @source @condition @value.", [
+            '@label' => $label,
+            '@type' => $type,
+            '@source' => $source,
+            '@condition' => $matching_condition,
+            '@value' => $condition_value,
+          ]));
         }
         break;
 
       case 'not_includes':
         if (strpos($value, $condition_value) === FALSE) {
-          throw new SkipTamperItemException("Skip item with condition: $source $matching_condition $condition_value.");
+          throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @source @condition @value.", [
+            '@label' => $label,
+            '@type' => $type,
+            '@source' => $source,
+            '@condition' => $matching_condition,
+            '@value' => $condition_value,
+          ]));
+        }
+        break;
+
+      case 'empty':
+        if ((is_array($value) && empty($value)) || strlen($value) == 0) {
+          throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @condition.", [
+            '@label' => $label,
+            '@type' => $type,
+            '@condition' => $matching_condition,
+          ]));
+        }
+        break;
+
+      case 'not_empty':
+        if ((is_array($value) && !empty($value)) || strlen($value) != 0) {
+          throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @condition.", [
+            '@label' => $label,
+            '@type' => $type,
+            '@condition' => $matching_condition,
+          ]));
         }
         break;
 
       default:
         if (eval("return '$value' $matching_condition '$condition_value';")) {
-          throw new SkipTamperItemException("Skip item with condition: $source $matching_condition $condition_value.");
+          throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @source @condition @value.", [
+            '@label' => $label,
+            '@type' => $type,
+            '@source' => $source,
+            '@condition' => $matching_condition,
+            '@value' => $condition_value,
+          ]));
         }
         break;
     }

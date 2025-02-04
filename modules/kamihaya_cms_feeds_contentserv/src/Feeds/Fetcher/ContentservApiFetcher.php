@@ -91,8 +91,9 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
       $response = $this->getData($feed, $url, "$list_url{$this->configuration['folder_id']}", $token, $options);
       $result = json_decode($response, TRUE);
       if (empty($result['Meta']['Total'])) {
-        $state->setMessage($this->t('No data found.'));
-        throw new EmptyFeedException();
+        // Throw an exception if Total value is empty.
+        $state->setMessage($this->t('No data found while fetching data.'));
+        throw new EmptyFeedException(strtr('@name: No data found while fetching data.', ['@name' => $feed->label()]));
       }
       $results = $result["{$data_type}s"] ? $result["{$data_type}s"] : [];
 
@@ -100,20 +101,25 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
       if ($result['Meta']['Total'] > $this->configuration['limit']) {
         $count = ceil($result['Meta']['Total'] / $this->configuration['limit']) - 1;
         for ($i = 1; $i <= $count; $i++) {
+          // Set the page number to get the additional data.
           $options[RequestOptions::QUERY]['page'] = $i;
           $response = $this->getData($feed, $url, "$list_url{$this->configuration['folder_id']}", $token, $options);
           $result = json_decode($response, TRUE);
           if (empty($result["{$data_type}s"])) {
-            $state->setMessage($this->t('No additional data found.'));
-            throw new EmptyFeedException();
+            // Throw an exception if no additional data found.
+            $state->setMessage($this->t('No additional data found while fetching data.'));
+            throw new EmptyFeedException(strtr('@name: No additional data found while fetching data.', ['@name' => $feed->label()]));
           }
           $results = array_merge($results, $result["{$data_type}s"]);
         }
       }
     }
     catch (GuzzleException $e) {
-      $args = ['%error' => $e->getMessage()];
-      throw new FetchException(strtr('The error occurs while getting data because of error "%error".', $args));
+      $args = [
+        '@name' => $feed->label(),
+        '%error' => $e->getMessage(),
+      ];
+      throw new FetchException(strtr('@name:  The error occurs while fetched data because of error "%error".', $args));
     }
 
     return new ContentservApiFetcherResult($results, $token);
