@@ -43,6 +43,22 @@ class SetValueWithCondition extends TamperBase {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+    $form[self::SETTING_MATCHING_CONDITION] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Matching condition'),
+      '#required' => TRUE,
+      '#options' => [
+        '==' => $this->t('Equal'),
+        '!=' => $this->t('Not equal'),
+        'includes' => $this->t('Includes'),
+        'not_includes' => $this->t('Not includes'),
+        'empty' => $this->t('Empty'),
+        'not_empty' => $this->t('Not empty'),
+      ],
+      '#default_value' => $this->getSetting(self::SETTING_MATCHING_CONDITION),
+      '#description' => $this->t('The matching condition.'),
+    ];
+
     $form[self::SETTING_CONDITION_SOURCE] = [
       '#type' => 'textfield',
       '#title' => $this->t('Condition source'),
@@ -54,23 +70,28 @@ class SetValueWithCondition extends TamperBase {
     $form[self::SETTING_CONDITION_VALUE] = [
       '#type' => 'textfield',
       '#title' => $this->t('Condition value'),
-      '#required' => TRUE,
       '#default_value' => $this->getSetting(self::SETTING_CONDITION_VALUE),
       '#description' => $this->t('The source value to check the condition.'),
-    ];
-
-    $form[self::SETTING_MATCHING_CONDITION] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Matching condition'),
-      '#required' => TRUE,
-      '#options' => [
-        '==' => $this->t('Equal'),
-        '!=' => $this->t('Not equal'),
-        'includes' => $this->t('Includes'),
-        'not_includes' => $this->t('Not includes'),
+      '#states' => [
+        'invisible' => [
+          'input[name="plugin_configuration[matching_condition]"]' =>  [
+            ['value' => 'empty'],
+            'or',
+            ['value' => 'not_empty'],
+          ],
+        ],
+        'required' => [
+          'input[name="plugin_configuration[matching_condition]"]' => [
+            ['value' => '=='],
+            'or',
+            ['value' => '!='],
+            'or',
+            ['value' => 'includes'],
+            'or',
+            ['value' => 'not_includes'],
+          ],
+        ],
       ],
-      '#default_value' => $this->getSetting(self::SETTING_MATCHING_CONDITION),
-      '#description' => $this->t('The matching condition.'),
     ];
 
     $form[self::SETTING_OTEHR_TAMPER_CONDITION] = [
@@ -142,7 +163,6 @@ class SetValueWithCondition extends TamperBase {
     if ($other_condition === 'or' && $data == $data_value) {
       return $data_value;
     }
-
     switch ($matching_condition) {
       case 'includes':
         if (strpos($value, $condition_value) !== FALSE) {
@@ -152,6 +172,18 @@ class SetValueWithCondition extends TamperBase {
 
       case 'not_includes':
         if (strpos($value, $condition_value) === FALSE) {
+          return $data_value;
+        }
+        break;
+
+      case 'empty':
+        if ((is_array($value) && empty($value)) || strlen($value) == 0) {
+          return $data_value;
+        }
+        break;
+
+      case 'not_empty':
+        if ((is_array($value) && !empty($value)) || strlen($value) != 0) {
           return $data_value;
         }
         break;

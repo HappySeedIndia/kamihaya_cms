@@ -7,7 +7,6 @@ use Drupal\Core\File\FileSystemInterface;
 use GuzzleHttp\Psr7\Stream;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\feeds\Exception\EmptyFeedException;
-use Drupal\feeds\Exception\FetchException;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\DynamicItem;
 use Drupal\feeds\Feeds\Parser\ParserBase;
@@ -20,9 +19,8 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\kamihaya_cms_feeds_contentserv\Trait\ContentservApiTrait;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\RequestOptions;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\RequestOptions;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -90,87 +88,149 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
       }
     }
 
+    // Get the fetcher configuration.
     $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
+    // Get the processor configuration.
     $processor_config = $feed->getType()->getProcessor()->getConfiguration();
+    // Get the additional language code.
     $langcode = !empty($processor_config['addtional_langcode']) ? $processor_config['addtional_langcode'] : '';
+    $data_id = '';
 
     /** @var \Drupal\kamihaya_cms_feeds_contentserv\Result\ContentservApiFetcherResultInterface $fetcher_result */
     if (empty($fetcher_result->getResults())) {
-      throw new EmptyFeedException();
+      throw new EmptyFeedException(strtr('@name: There is no fetched data.', ['@name' => $feed->label()]));
     }
     $result = new ParserResult();
     $mappings = $feed->getType()->getMappings();
 
-    try {
-      $data_type = $fetcher_config['data_type'];
-      $url = $fetcher_config['json_api_url'];
-      $data_url = "/core/v1/" . strtolower($data_type) . '/';
+    $data_type = $fetcher_config['data_type'];
+    $url = $fetcher_config['json_api_url'];
+    $data_url = "/core/v1/" . strtolower($data_type) . '/';
 
-      if (empty($state->pointer)) {
-        $state->pointer = 0;
-      }
-      $results = array_slice($fetcher_result->getResults(), $state->pointer, $this->configuration['data_limit']);
-      foreach ($results as $result_data) {
+    if (empty($state->pointer)) {
+      $state->pointer = 0;
+    }
+    $results = array_slice($fetcher_result->getResults(), $state->pointer, $this->configuration['data_limit']);
+    foreach ($results as $result_data) {
+      try {
         // Get the detail of product.
-        $response = $this->getData($feed, $url, "$data_url{$result_data['ID']}", $fetcher_result->getAccessToken());
+        $data_id = $result_data['ID'];
+        $options = [];
+        if ($this->hasTagsInSource($feed)) {
+          // Set the expand query if the feed has 'Tags' in source.
+          $options[RequestOptions::QUERY] = ['expand' => 'Tags'];
+        }
+        $response = $this->getData($feed, $url, "$data_url{$data_id}", $fetcher_result->getAccessToken(), $options);
         $data = json_decode($response, TRUE);
         if (empty($data[$data_type])) {
           continue;
         }
         $item = new DynamicItem();
+        // Set the sources to the item.
         foreach ($sources as $key => $json_key) {
           if (isset($skip_sources[$key])) {
             continue;
           }
-
+          // Get the value from the result data.
           $value = $this->getAttributeValue($data[$data_type], $json_key);
+          // Check if the target is media.
           if (!empty($value) && $target = $this->getMediaTarget($feed, $key)) {
+            // Get the label of the file.
             $label = $this->getAttributeValue($data[$data_type], 'Label');
+            // Check the file extension.
             if (!$this->checkFileExtention($target, $label)) {
-              $state->report(StateType::SKIP, 'Skipped because the file extentioon is not correct.', [
+              // Skip the file if the file extension is not correct.
+              $state->report(StateType::SKIP, strtr('Skipped file because the file extentioon is not correct. [@type ID: @id, File label: @label, File ID: @value]', [
+                '@type' => $data_type,
+                '@id' => $data_id,
+                '@label' => $label,
+                '@value' => $value,
+              ]), [
                 'feed' => $feed,
                 'item' => $item,
               ]);
-              continue 2;
+              continue;
             }
-            $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
+
+            try {
+              // Create the media file.
+               $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
+            } catch (GuzzleException $e) {
+              // Skip the file if failed to create media.
+              $state->report(StateType::SKIP, strtr('Skipped file because the file extentioon is not correct. [@type ID: @id, File label: @label, File ID: @value]', [
+                '@type' => $data_type,
+                '@id' => $data_id,
+                '@label' => $label,
+                '@value' => $value,
+              ]), [
+                'feed' => $feed,
+                'item' => $item,
+              ]);
+              continue;
+            }
           }
           $item->set($key, $value);
         }
 
         if (!empty($langcode)) {
           // Get additional language data.
-          $add_options = [];
+          $add_options = $options;
+          //  Add the language code to the query.
           $add_options[RequestOptions::QUERY] = ['lang' => $langcode];
+          // Get the additional data.
           $response = $this->getData($feed, $url, "$data_url{$result_data['ID']}", $fetcher_result->getAccessToken(), $add_options);
           $data = json_decode($response, TRUE);
           if (!empty($data[$data_type])) {
             $add_item = new DynamicItem();
+            // Set the sources to the item.
             foreach ($sources as $key => $json_key) {
               if (isset($skip_sources[$key])) {
                 continue;
               }
+              // Get the value from the result data.
               $value = $this->getAttributeValue($data[$data_type], $json_key);
 
               $alt = FALSE;
+              // Skip the value is not set or the value is same as the original language value and not alt or description.
               foreach ($mappings as $mapping) {
                 if (empty($mapping['map']['alt']) || $mapping['map']['alt'] !== $key) {
                   continue;
                 }
                 $alt = TRUE;
               }
+              // Skip the value is not set or the value is same as the original language value and not alt or description.
               if (strlen($value) === 0 || ($value === $item->get($key) && !$alt)) {
                 continue;
               }
+              // Check if the target is media.
               if (!empty($value) && $target = $this->getMediaTarget($feed, $key)) {
+                // Get the label of the file.
                 $label = $this->getAttributeValue($data[$data_type], 'Label');
+                // Check the file extension.
                 if (!$this->checkFileExtention($target, $label)) {
                   continue;
                 }
-                $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
+                try {
+                  // Create the media file.
+                  $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
+                } catch (GuzzleException $e) {
+                  // Skip the file if failed to create media.
+                  $state->report(StateType::SKIP, strtr('Skipped file because the file extentioon is not correct. [@type ID: @id, File label: @label, File ID: @value, Language: @lang]', [
+                    '@type' => $data_type,
+                    '@id' => $data_id,
+                    '@label' => $label,
+                    '@value' => $value,
+                    '@lang' => $langcode,
+                  ]), [
+                    'feed' => $feed,
+                    'item' => $item,
+                  ]);
+                  continue;
+                }
               }
               $add_item->set($key, $value);
             }
+            // Add the additional language data to the item.
             if (count($add_item->toArray())) {
               $add_item->set('translation', TRUE);
               $item->set($langcode, $add_item);
@@ -181,17 +241,22 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         $result->addItem($item);
         $state->pointer++;
       }
-
-      // Report progress.
-      $state->total = count($fetcher_result->getResults());
-      $state->progress($state->total, $state->pointer);
-
+      catch (GuzzleException $e) {
+        $args = [
+          '%error' => $e->getMessage(),
+          '@type' => $data_type,
+          '@id' => $data_id,
+        ];
+        $state->report(StateType::FAIL, strtr('The error occurs while getting data because of error "%error" [@type ID: @id].', $args), [
+          'feed' => $feed,
+          'item' => $item,
+        ]);
+      }
     }
-    catch (GuzzleException $e) {
-      $state->setCompleted();
-      $args = ['%error' => $e->getMessage()];
-      throw new FetchException(strtr('The error occurs while getting data because of error "%error".', $args));
-    }
+
+    // Report progress.
+    $state->total = count($fetcher_result->getResults());
+    $state->progress($state->total, $state->pointer);
 
     // Set progress to complete if no more results are parsed.
     if (!$result->count()) {
@@ -251,6 +316,9 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         }
       }
     }
+    if (is_array($value) && empty($value)) {
+      return '';
+    }
     if (is_array($value)) {
       return json_encode($value);
     }
@@ -301,7 +369,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     if (!preg_match($regex, $uri)) {
       return FALSE;
     }
-    return TRUE;;
+    return TRUE;
   }
 
   /**
@@ -324,103 +392,107 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    *   The file id.
    */
   protected function createMediaFile(FeedInterface $feed, FetcherResultInterface $fetcher_result, FieldTargetDefinition $target, $file_id, $file_name, $langcode = '', $retry = FALSE) {
+    // Get the fetcher and processor configuration.
     $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
     $processor_config = $feed->getType()->getProcessor()->getConfiguration();
+    // Get the file destination.
     $field_name = $target->getFieldDefinition()->getName();
     $field_storage = FieldStorageConfig::loadByName($target->getFieldDefinition()->getTargetEntityTypeId(), $field_name);
     $direcotry = $target->getFieldDefinition()->getSetting('file_directory');
     $destination = $field_storage->getSetting('uri_scheme');
     $file_destination = "{$destination}://{$direcotry}";
+    // Prepare the directory.
     $this->fileSystem->prepareDirectory($file_destination, FileSystemInterface::CREATE_DIRECTORY);
     $file_destination = "{$file_destination}/{$file_name}";
+    // Create the file resource.
     $resource = fopen($file_destination, 'w');
-    try {
-      $url = $fetcher_config['json_api_url'];
-      $data_url = "/core/v1/file/downloadurl/$file_id";
-      $download_url = $this->getData($feed, $url, $data_url, $fetcher_result->getAccessToken());
+    $url = $fetcher_config['json_api_url'];
+    $data_url = "/core/v1/file/downloadurl/$file_id";
+    // Get the download url.
+    $download_url = $this->getData($feed, $url, $data_url, $fetcher_result->getAccessToken());
 
-      if (empty($download_url)) {
-        return NULL;
+    if (empty($download_url)) {
+      return NULL;
+    }
+    // Remove the escape characters.
+    $download_url = str_replace(["\\", '"'], '', $download_url);
+    $options = [
+      RequestOptions::TIMEOUT => $fetcher_config['request_timeout'],
+      RequestOptions::SINK => $resource,
+      RequestOptions::HEADERS => [
+        'Authorization' => "Bearer {$fetcher_result->getAccessToken()}",
+      ],
+      RequestOptions::HTTP_ERRORS => FALSE,
+    ];
+
+    if (!empty($langcode)) {
+      $options[RequestOptions::QUERY] = ['lang' => $langcode];
+    }
+
+    // Get the file.
+    $response = $this->httpClient->get($download_url, $options);
+    $status_code = $response->getStatusCode();
+    if ($status_code == 401 || $status_code == 403) {
+      // Get the access token if the status code is 401 or 403.
+      $token = $this->getAccessToken($feed, $url);
+      $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
+      if (!empty($feed_config['access_token'])) {
+        $feed_config['access_token'] = $token;
+        $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
       }
-      $download_url = str_replace(["\\", '"'], '', $download_url);
-      $options = [
-        RequestOptions::TIMEOUT => $fetcher_config['request_timeout'],
-        RequestOptions::SINK => $resource,
-        RequestOptions::HEADERS => [
-          'Authorization' => "Bearer {$fetcher_result->getAccessToken()}",
-        ],
-        RequestOptions::HTTP_ERRORS => FALSE,
-      ];
-
-      if (!empty($langcode)) {
-        $options[RequestOptions::QUERY] = ['lang' => $langcode];
-      }
-
+      // Set the new access token to the header.
+      $options[RequestOptions::HEADERS]['Authorization'] = "Bearer $token";
+      // Get the data with the new access token.
       $response = $this->httpClient->get($download_url, $options);
       $status_code = $response->getStatusCode();
-      if ($status_code == 401 || $status_code == 403) {
-        $token = $this->getAccessToken($feed, $url);
-        $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
-        if (!empty($feed_config['access_token'])) {
-          $feed_config['access_token'] = $token;
-          $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
-        }
-        $options[RequestOptions::HEADERS]['Authorization'] = "Bearer $token";
-        // Get the data with the new access token.
-        $response = $this->httpClient->get($download_url, $options);
-        $status_code = $response->getStatusCode();
-      }
-      if ($status_code == 429 && !$retry) {
-        $sleep_seconds = !empty($response->getHeader('Retry-After')[0]) ? $response->getHeader('Retry-After')[0] : 30;
-        sleep($sleep_seconds);
-        return $this->createMediaFile($feed, $fetcher_result, $target, $file_id, $file_name, $langcode, TRUE);
-      }
-
-      if ($status_code != 200) {
-        $args = ['%status' => $status_code];
-        throw new FetchException(strtr('Faild to get the file with status code "%status".', $args));
-      }
-
-      /** @var \GuzzleHttp\Psr7\Stream $stream */
-      $stream = $response->getBody();
-      if (empty($stream) || !($stream instanceof Stream) || !file_exists($file_destination)) {
-        throw new FetchException('Faild to get the file because the stream is not correct.');
-      }
-      // Save the file.
-      $file_uri = $stream->getMetadata('uri');
-      if ($file_uri) {
-        $files = $this->entityTypeManager->getStorage('file')->loadByProperties(['uri' => $file_uri]);
-        if (!empty($files)) {
-          /** @var \Drupal\file\FileInterface $file */
-          $file = reset($files);
-          $file->setChangedTime(time());
-        }
-        else {
-          // Create the file entity.
-          $entity_values = [
-            'uri' => $file_uri,
-            'status' => FileInterface::STATUS_PERMANENT,
-          ];
-          if (!empty($langcode)) {
-            $entity_values['langcode'] = $langcode;
-          }
-          if ($processor_config['owner_feed_author']) {
-            $entity_values['uid'] = $feed->getOwnerId();
-          }
-          else {
-            $entity_values['uid'] = $processor_config['owner_id'];
-          }
-          $file = File::create($entity_values);
-        }
-
-        $file->save();
-        return $file->id();
-      }
     }
-    catch (RequestException $e) {
-      $args = ['%error' => $e->getMessage()];
-      throw new FetchException(strtr('The error occurs while getting data because of error "%error".', $args));
+    if ($status_code == 429 && !$retry) {
+      // Retry if the status code is 429.
+      $sleep_seconds = !empty($response->getHeader('Retry-After')[0]) ? $response->getHeader('Retry-After')[0] : 30;
+      // Sleep the seconds which is set in the header as Retry-After.
+      sleep($sleep_seconds);
+      // Retry to get the file.
+      return $this->createMediaFile($feed, $fetcher_result, $target, $file_id, $file_name, $langcode, TRUE);
     }
+
+    if ($status_code != 200) {
+      // Throw an exception if the status code is not 200.
+      $args = ['%status' => $status_code];
+      throw new GuzzleException(strtr('Faild to get the file with status code "%status".', $args));
+    }
+
+    /** @var \GuzzleHttp\Psr7\Stream $stream */
+    $stream = $response->getBody();
+    if (empty($stream) || !($stream instanceof Stream) || !is_readable($file_destination)) {
+      // Throw an exception if the stream is not correct.
+      throw new GuzzleException('Faild to get the file because the stream is not correct.');
+    }
+    // Save the file.
+    $files = $this->entityTypeManager->getStorage('file')->loadByProperties(['uri' => $file_destination]);
+    if (!empty($files)) {
+      /** @var \Drupal\file\FileInterface $file */
+      $file = reset($files);
+      $file->setChangedTime(time());
+    }
+    else {
+      // Create the file entity.
+      $entity_values = [
+        'uri' => $file_destination,
+        'status' => FileInterface::STATUS_PERMANENT,
+      ];
+      if (!empty($langcode)) {
+        $entity_values['langcode'] = $langcode;
+      }
+      if ($processor_config['owner_feed_author']) {
+        $entity_values['uid'] = $feed->getOwnerId();
+      }
+      else {
+        $entity_values['uid'] = $processor_config['owner_id'];
+      }
+      $file = File::create($entity_values);
+    }
+    $file->save();
+    return $file->id();
   }
 
   /**
