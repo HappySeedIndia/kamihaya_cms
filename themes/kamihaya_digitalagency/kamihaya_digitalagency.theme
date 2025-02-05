@@ -560,7 +560,7 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
   }
 
   if (theme_get_setting('button_radius') !== NULL) {
-    $css_vars['.btn']['--bs-btn-border-radius'] = theme_get_setting('button_radius');
+    $css_vars['.btn']['--bs-btn-border-radius'] = theme_get_setting('button_radius') . 'px';
   }
 
   $buttons = [

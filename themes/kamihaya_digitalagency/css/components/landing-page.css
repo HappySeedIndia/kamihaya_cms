@@ -68,6 +68,11 @@
   display: none !important;
 }
 
+.kamihaya-lp-page a:hover,
+.kamihaya-lp-page .btn:hover {
+  opacity: 0.8;
+}
+
 /* Landing page specific footer */
 .lp-footer .menu--footer .navbar-nav .menu-item {
   font-weight: normal;
