@@ -4,7 +4,7 @@
   overflow: hidden;
 }
 .banner-bg {
-  background-size: cover; 
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   padding: 40px 0;
@@ -13,9 +13,8 @@
   position: relative;
   overflow: hidden;
   padding: 40px 0;
-  width: 50%;
 }
-.hero-title {
+.hero-title h1 {
   font-size: 3.25rem;
   font-weight: 700;
   letter-spacing: 0.07rem;
@@ -29,41 +28,19 @@
   margin: 0 auto 1.875rem;
 }
 
-.hero-link{
+.hero-link a {
   display: block;
   text-align: center;
-  font-size: 1rem;
-  /* width: 27.5rem; */
-  background-color: #0060e6;
-  background-image: radial-gradient(circle at 49% 50%, rgb(34, 120, 241), rgb(0, 96, 230));
-  -webkit-box-shadow: inset -7px 7px 26px 7px rgb(4, 96, 224), inset -6px -2px 2px -12px;
-  box-shadow: inset -7px 7px 26px 7px rgb(4, 96, 224), inset -6px -2px 2px -12px;
   border-radius: 5px;
   padding: 20px 34px;
   margin-bottom: 1.875rem;
   position: relative;
-  font-size: 25px;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #fff;
   text-decoration: none;
-  width: 75%;
+  width: 400px;
 }
-.hero-link a {
-  position: relative;
-  font-size: 25px;
-  font-weight: 700;
-  color: #fff;
-  text-decoration: none;
-}
-.hero-link a:after {
-  position: absolute;
-  content: "";
-  background: url(../../images/icon01.webp) no-repeat center / cover;
-  width: 1.5rem;
-  height: 1.5rem;
-  top: 0;
-  right: -22%;
-}
+
 .hero-small-text {
   position: relative;
   font-size: 12px;
@@ -80,7 +57,7 @@
     padding: 20px 0;
     width: 100%;
   }
-  .hero-title {
+  .hero-title h1 {
     font-size: 2.375rem;
     font-weight: 600;
     letter-spacing: 0.1rem;
@@ -93,36 +70,16 @@
     letter-spacing: 0.06rem;
     margin-bottom: 2rem;
   }
-  .hero-link {
+  .hero-link a {
     display: flex;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    font-size: 1rem;
-    background-color: #0060e6;
-    background-image: radial-gradient(circle at 49% 50%, rgb(34, 120, 241), rgb(0, 96, 230));
-    -webkit-box-shadow: inset -7px 7px 26px 7px rgb(4, 96, 224), inset -6px -2px 2px -12px;
-    box-shadow: inset -7px 7px 26px 7px rgb(4, 96, 224), inset -6px -2px 2px -12px;
+    font-size: 1.25rem;
     padding: 20px;
     margin-bottom: 2.25rem;
     border-radius: 5px;
-    width: 50%;
     justify-content: center;
-  }
-  .hero-link a {
-    position: relative;
-    font-size: 19px;
-    font-weight: 700;
-    color: #fff;
-  }
-  .hero-link a:after {
-    position: absolute;
-    content: "";
-    background: url(../../images/icon01.webp) no-repeat center / cover;
-    width: 20px;
-    height: 20px;
-    top: 2px;
-    /* right: -6.4rem; */
   }
   .hero-small-text {
     position: relative;
@@ -133,7 +90,7 @@
 }
 
 @media(max-width: 767px) {
-  .hero-link {
+  .hero-link a {
     width: 100%;
   }
 }

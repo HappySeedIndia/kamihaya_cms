@@ -60,7 +60,23 @@
   {% set spImgUrl = content.field_hero_sp_bg_image|render|striptags|trim %}
 {% endif %}
 
+{# Colors #}
+{% set color = content.field_hero_title_color|render|striptags|trim|lower %}
+{% set desc_color = content.field_hero_description_color|render|striptags|trim|lower %}
+{% set link_color = content.field_hero_link_color|render|striptags|trim|lower %}
+{% set link_text_color = content.field_hero_link_text_color|render|striptags|trim|lower %}
+{% set small_text_color = content.field_hero_small_text_color|render|striptags|trim|lower %}
 
+{# Link #}
+{% set link = content.field_hero_link.0['#url'] %}
+{% set link_text = content.field_hero_link.0['#title'] %}
+{% set style = [
+  link_text_color ? 'color: ' ~ link_text_color ~ ';',
+  link_color ? 'background-color: ' ~ link_color ~ ';',
+] %}
+
+{# Banner container class #}
+{% set bannerContainerClass = '' %}
 
 {# Banner container width #}
 {% if content.field_hero_container_width|render %}
@@ -107,13 +123,13 @@
                   {# Title #}
                   {% if content.field_hero_title|render %}
                     <div class="hero-title">
-                    {{ content.field_hero_title }}
+                      <h1{% if color is not empty %} style="color: {{ color }};"{% endif %}>{{ paragraph.field_hero_title.0.value|striptags('<br>')|raw }}</h1>
                     </div>
                   {% endif %}
 
                   {# Description #}
                   {% if content.field_hero_description|render %}
-                    <div class="hero-description">
+                    <div class="hero-description"{% if desc_color is not empty %} style="color: {{ desc_color }};"{% endif %}>
                     {{ content.field_hero_description }}
                     </div>
                   {% endif %}
@@ -121,13 +137,13 @@
                   {# Link #}
                   {% if content.field_hero_link|render %}
                     <div class="hero-link">
-                    {{ content.field_hero_link }}
+                      <a href="{{ link }}"{% if style %} style="{{ style|join(' ') }}"{% endif %}>{{ link_text }}</a>
                     </div>
                   {% endif %}
 
                   {# small text #}
                   {% if content.field_hero_small_text|render %}
-                    <div class="hero-small-text">
+                    <div class="hero-small-text"{% if small_text_color is not empty %} style="color: {{ small_text_color }};"{% endif %}>
                     {{ content.field_hero_small_text }}
                     </div>
                   {% endif %}
@@ -147,13 +163,13 @@
                 {# Title #}
                 {% if content.field_hero_title|render %}
                   <div class="hero-title">
-                  {{ content.field_hero_title }}
+                    <h1{% if color is not empty %} style="color: {{ color }};"{% endif %}>{{ paragraph.field_hero_title.0.value|striptags('<br>')|raw }}</h1>
                   </div>
                 {% endif %}
 
                 {# Description #}
                 {% if content.field_hero_description|render %}
-                  <div class="hero-description">
+                  <div class="hero-description"{% if desc_color is not empty %} style="color: {{ desc_color }};"{% endif %}>
                   {{ content.field_hero_description }}
                   </div>
                 {% endif %}
@@ -161,13 +177,13 @@
                 {# Link #}
                 {% if content.field_hero_link|render %}
                   <div class="hero-link">
-                  {{ content.field_hero_link }}
+                      <a href="{{ link }}"{% if style %} style="{{ style|join(' ') }}"{% endif %}>{{ link_text }}</a>
                   </div>
                 {% endif %}
 
                 {# small text #}
                 {% if content.field_hero_small_text|render %}
-                  <div class="hero-small-text">
+                  <div class="hero-small-text"{% if small_text_color is not empty %} style="color: {{ small_text_color }};"{% endif %}>
                   {{ content.field_hero_small_text }}
                   </div>
                 {% endif %}
