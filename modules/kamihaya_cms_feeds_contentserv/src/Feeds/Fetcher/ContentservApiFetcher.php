@@ -14,6 +14,7 @@ use Drupal\kamihaya_cms_feeds_contentserv\Trait\ContentservApiTrait;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -44,8 +45,10 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
    *   The plugin definition.
    * @param \GuzzleHttp\ClientInterface $httpClient
    *   The Guzzle client.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, protected ClientInterface $httpClient) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, protected ClientInterface $httpClient, protected LoggerInterface $logger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -58,6 +61,7 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
       $plugin_id,
       $plugin_definition,
       $container->get('http_client'),
+      $container->get('logger.factory')->get('kamihaya_cms_feeds_contentserv')
     );
   }
 
@@ -97,6 +101,10 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
       }
       $results = $result["{$data_type}s"] ? $result["{$data_type}s"] : [];
 
+      array_walk($results, function (&$item) {
+        $item = array_intersect_key($item, ['ID' => '']);
+      });
+
       // Get the rest of the data if the total count is more than the limit.
       if ($result['Meta']['Total'] > $this->configuration['limit']) {
         $count = ceil($result['Meta']['Total'] / $this->configuration['limit']) - 1;
@@ -110,6 +118,9 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
             $state->setMessage($this->t('No additional data found while fetching data.'));
             throw new EmptyFeedException(strtr('@name: No additional data found while fetching data.', ['@name' => $feed->label()]));
           }
+          array_walk($result["{$data_type}s"], function (&$item) {
+            $item = array_intersect_key($item, ['ID' => '']);
+          });
           $results = array_merge($results, $result["{$data_type}s"]);
         }
       }

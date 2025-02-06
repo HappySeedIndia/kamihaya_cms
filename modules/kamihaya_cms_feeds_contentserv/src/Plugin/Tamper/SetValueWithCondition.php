@@ -150,7 +150,7 @@ class SetValueWithCondition extends TamperBase {
     $other_condition = $this->getSetting(self::SETTING_OTEHR_TAMPER_CONDITION);
     $data_value = $this->getSetting(self::SETTING_DATA_VALUE);
     $not_match_value = $this->getSetting(self::SETTING_NOT_MATCH_VALUE);
-    $value = $item->getSource()[$condition_source];
+    $value = array_key_exists($condition_source, $item->getSource()) ? $item->getSource()[$condition_source] : '';
 
     if (!isset($value)) {
       $value = '';
