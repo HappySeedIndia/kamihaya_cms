@@ -136,7 +136,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         if (empty($data[$data_type])) {
           continue;
         }
-        dpm($data);
+
         $item = new DynamicItem();
         // Set the sources to the item.
         foreach ($sources as $key => $json_key) {
