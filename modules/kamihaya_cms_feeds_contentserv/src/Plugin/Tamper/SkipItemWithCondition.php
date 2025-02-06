@@ -189,7 +189,7 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
     $condition_value = $this->getSetting(self::SETTING_CONDITION_VALUE);
     $matching_condition = $this->getSetting(self::SETTING_MATCHING_CONDITION);
     $skip_empty = $this->getSetting(self::SETTING_SKIP_EMPTY);
-    $value = $item->getSource()[$source];
+    $value = array_key_exists($source, $item->getSource()) ? $item->getSource()[$source] : '';
 
     if (!isset($value)) {
       $value = '';
@@ -198,7 +198,11 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
     $label = $entity->label();
     $type = $entity->getEntityTypeId();
     if ($skip_empty && strlen($value) === 0) {
-      throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with empty value.", ['@label' => $label]));
+      throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label, source: @source ] with empty value.", [
+        '@label' => $label,
+        '@type' => $type,
+        '@source' => $source
+      ]));
     }
 
     switch ($matching_condition) {

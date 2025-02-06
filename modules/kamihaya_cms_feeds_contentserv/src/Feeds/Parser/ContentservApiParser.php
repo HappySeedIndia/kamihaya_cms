@@ -22,6 +22,7 @@ use Drupal\kamihaya_cms_feeds_contentserv\Trait\ContentservApiTrait;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
 use GuzzleHttp\Exception\GuzzleException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -52,8 +53,17 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    *   The file system.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, protected ClientInterface $httpClient, protected FileSystemInterface $fileSystem, protected EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct
+    (array $configuration,
+    $plugin_id,
+    array $plugin_definition,
+    protected ClientInterface $httpClient,
+    protected FileSystemInterface $fileSystem,
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected LoggerInterface $logger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -68,6 +78,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
       $container->get('http_client'),
       $container->get('file_system'),
       $container->get('entity_type.manager'),
+      $container->get('logger.factory')->get('kamihaya_cms_feeds_contentserv'),
     );
   }
 
@@ -125,6 +136,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         if (empty($data[$data_type])) {
           continue;
         }
+        dpm($data);
         $item = new DynamicItem();
         // Set the sources to the item.
         foreach ($sources as $key => $json_key) {

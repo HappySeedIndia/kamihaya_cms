@@ -40,6 +40,8 @@ trait ContentservApiTrait {
     if ($status_code == 429 && !$retry) {
       // Retry if the status code is 429.
       $sleep_seconds = !empty($response->getHeader('Retry-After')[0]) ? $response->getHeader('Retry-After')[0] : 30;
+
+      $this->logger->warning('Request status code is 429. Retry-After: ' . $sleep_seconds);
       // Sleep the seconds which is set in the header as Retry-After.
       sleep($sleep_seconds);
       // Retry to get the access token.
@@ -107,6 +109,8 @@ trait ContentservApiTrait {
     if ($status_code == 429 && !$retry) {
       // Retry if the status code is 429.
       $sleep_seconds = !empty($response->getHeader('Retry-After')[0]) ? $response->getHeader('Retry-After')[0] : 30;
+
+      $this->logger->warning('Request status code is 429. Retry-After: ' . $sleep_seconds);
       // Sleep the seconds which is set in the header as Retry-After.
       sleep($sleep_seconds);
       // Retry to get the data.
