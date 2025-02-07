@@ -165,25 +165,25 @@ class SetValueWithCondition extends TamperBase {
     }
     switch ($matching_condition) {
       case 'includes':
-        if (strpos($value, $condition_value) !== FALSE) {
+        if ((is_array($value) && in_array($condition_value, $value)) || (!is_array($value) && strpos($value, $condition_value) !== FALSE)) {
           return $data_value;
         }
         break;
 
       case 'not_includes':
-        if (strpos($value, $condition_value) === FALSE) {
+        if ((is_array($value) && !in_array($condition_value, $value)) || (!is_array($value) && strpos($value, $condition_value) === FALSE)) {
           return $data_value;
         }
         break;
 
       case 'empty':
-        if ((is_array($value) && empty($value)) || strlen($value) == 0) {
+        if ((is_array($value) && empty($value)) || (!is_array($value) && strlen($value) == 0)) {
           return $data_value;
         }
         break;
 
       case 'not_empty':
-        if ((is_array($value) && !empty($value)) || strlen($value) != 0) {
+        if ((is_array($value) && !empty($value)) || U(!is_array($value) && strlen($value) != 0)) {
           return $data_value;
         }
         break;
