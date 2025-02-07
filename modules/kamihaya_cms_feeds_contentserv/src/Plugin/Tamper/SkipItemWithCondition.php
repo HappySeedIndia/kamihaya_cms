@@ -133,31 +133,31 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
       $data = '';
     }
 
-    if ($skip_empty && strlen($data) === 0) {
+    if ($skip_empty && ((is_array($data) && empty($data)) || (!is_array($data) && strlen($data))) === 0) {
       throw new SkipTamperItemException("Skip item with empty value.");
     }
 
     switch ($matching_condition) {
       case 'includes':
-        if (strpos($data, $condition_value) !== FALSE) {
+        if ((is_array($data) && in_array($condition_value, $data)) || (!is_array($data) && strpos($data, $condition_value) !== FALSE)) {
           throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
         }
         break;
 
       case 'not_includes':
-        if (strpos($data, $condition_value) === FALSE) {
+        if ((is_array($data) && !in_array($condition_value, $data)) || (!is_array($data) && strpos($data, $condition_value) === FALSE)) {
           throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
         }
         break;
 
       case 'empty':
-        if ((is_array($data) && empty($data)) || strlen($data) == 0) {
+        if ((is_array($data) && empty($data)) || (!is_array($data) && strlen($data) == 0)) {
           throw new SkipTamperItemException("Skip item with condition: $matching_condition.");
         }
         break;
 
       case 'not_empty':
-        if ((is_array($data) && !empty($data)) || strlen($data) != 0) {
+        if ((is_array($data) && !empty($data)) || U(!is_array($data) && strlen($data) != 0)) {
           throw new SkipTamperItemException("Skip item with condition: $matching_condition.");
         }
         break;
@@ -197,7 +197,7 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
 
     $label = $entity->label();
     $type = $entity->getEntityTypeId();
-    if ($skip_empty && strlen($value) === 0) {
+    if ($skip_empty && ((is_array($value) && empty($value)) || (!is_array($value) && strlen($value))) === 0) {
       throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label, source: @source ] with empty value.", [
         '@label' => $label,
         '@type' => $type,
@@ -207,7 +207,7 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
 
     switch ($matching_condition) {
       case 'includes':
-        if (strpos($value, $condition_value) !== FALSE) {
+        if ((is_array($value) && in_array($condition_value, $value)) || (!is_array($value) && strpos($value, $condition_value) !== FALSE)) {
           throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @source @condition @value.", [
             '@label' => $label,
             '@type' => $type,
@@ -219,7 +219,7 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
         break;
 
       case 'not_includes':
-        if (strpos($value, $condition_value) === FALSE) {
+        if ((is_array($value) && !in_array($condition_value, $value)) || (!is_array($value) && strpos($value, $condition_value) === FALSE)) {
           throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @source @condition @value.", [
             '@label' => $label,
             '@type' => $type,
@@ -231,7 +231,7 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
         break;
 
       case 'empty':
-        if ((is_array($value) && empty($value)) || strlen($value) == 0) {
+        if ((is_array($value) && empty($value)) || (!is_array($value) && strlen($value) == 0)) {
           throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @condition.", [
             '@label' => $label,
             '@type' => $type,
@@ -241,7 +241,7 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
         break;
 
       case 'not_empty':
-        if ((is_array($value) && !empty($value)) || strlen($value) != 0) {
+        if ((is_array($value) && !empty($value)) || (!is_array($value) && strlen($value) != 0)) {
           throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @condition.", [
             '@label' => $label,
             '@type' => $type,
