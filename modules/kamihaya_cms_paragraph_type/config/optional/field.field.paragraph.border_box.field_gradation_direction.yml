@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_gradation_direction
+    - paragraphs.paragraphs_type.border_box
+  module:
+    - options
+id: paragraph.border_box.field_gradation_direction
+field_name: field_gradation_direction
+entity_type: paragraph
+bundle: border_box
+label: 'Gradation direction'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
