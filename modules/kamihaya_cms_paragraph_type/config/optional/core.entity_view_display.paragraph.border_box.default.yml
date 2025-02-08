@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.paragraph.border_box.field_align
     - field.field.paragraph.border_box.field_bg_color
+    - field.field.paragraph.border_box.field_bg_color_gd_end
     - field.field.paragraph.border_box.field_border_bottom_color
     - field.field.paragraph.border_box.field_border_bottom_width
     - field.field.paragraph.border_box.field_border_box_item
@@ -16,6 +17,7 @@ dependencies:
     - field.field.paragraph.border_box.field_border_top_width
     - field.field.paragraph.border_box.field_component_id
     - field.field.paragraph.border_box.field_css_class
+    - field.field.paragraph.border_box.field_gradation_direction
     - field.field.paragraph.border_box.field_padding
     - field.field.paragraph.border_box.field_radius_size
     - field.field.paragraph.border_box.field_radius_type
@@ -47,6 +49,15 @@ content:
       opacity: true
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_bg_color_gd_end:
+    type: color_field_formatter_text
+    label: hidden
+    settings:
+      format: rgb
+      opacity: true
+    third_party_settings: {  }
+    weight: 19
     region: content
   field_border_bottom_color:
     type: color_field_formatter_text
@@ -143,6 +154,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 12
+    region: content
+  field_gradation_direction:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 20
     region: content
   field_padding:
     type: list_key

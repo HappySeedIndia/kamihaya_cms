@@ -173,136 +173,34 @@ function kamihaya_cms_paragraph_type_update_10003() {
 }
 
 /**
- * Update configs.
+ * Add fields to Image link Paragraph.
  */
 function kamihaya_cms_paragraph_type_update_10004() {
-  $configs = [];
-  $field_config = FieldStorageConfig::loadByName('paragraph', 'field_image_description');
-  if (!$field_config) {
-    $configs = array_merge($configs, [
-      'field.storage.paragraph.field_image_description.yml',
-      'field.field.paragraph.image_link.field_image_description.yml',
-    ]);
-  }
-  $field_config = FieldStorageConfig::loadByName('paragraph', 'field_image_desc_text_size');
-  if (!$field_config) {
-    $configs = array_merge($configs, [
-      'field.storage.paragraph.field_image_desc_text_size.yml',
-      'field.field.paragraph.image_link.field_image_desc_text_size.yml',
-    ]);
-  }
-  _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $configs, 'install');
-
-  if ($field_config) {
-    return;
-  }
-
-  $fields = [
-    'field_image_description' => [
-      'form' => 'string_textarea',
-      'view' => 'basic_string',
-    ],
-    'field_image_desc_text_size' => [
-      'form' => 'number',
-      'view' => 'number_integer',
-    ],
-  ];
-
-  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-  $display_repository = \Drupal::service('entity_display.repository');
-
-  foreach($fields as $field => $type) {
-    $display_repository->getFormDisplay('paragraph', 'image_link')
-      ->setComponent($field, [
-        'type' => $type['form'],
-      ])
-      ->save();
-
-    $display_repository->getViewDisplay('paragraph', 'image_link')
-      ->setComponent($field, [
-        'label' => 'hidden',
-        'type' => $type['view'],
-      ])
-      ->save();
-  }
-
-  _kamihaya_cms_common_save_translation_configs([
-    'field.field.paragraph.image_link.field_image_description.yml',
-    'field.field.paragraph.image_link.field_meta_tag.yml',
-  ], 'ja');
-
+  // Add fields to Image link Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image_link', [
+    'field_image_description',
+    'field_image_desc_text_size',
+  ]);
 }
 
 /**
- * Update configs.
+ * Add fields to Image and Image Link paragraphs.
  */
 function kamihaya_cms_paragraph_type_update_10005() {
-  $storage_configs = [];
-  $field_configs = [];
-  $fields = [
-    'image' => [
-      'field_width' => 'number',
-      'field_width_unit' => 'options_select',
-      'field_height' => 'number',
-      'field_height_unit' => 'options_select',
-    ],
-    'image_link' => [
-      'field_width' => 'number',
-      'field_width_unit' => 'options_select',
-      'field_mobile_height' => 'number',
-    ],
-  ];
+  // Add fields to Image Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image', [
+    'field_width',
+    'field_width_unit',
+    'field_height',
+    'field_height_unit',
+  ]);
 
-  foreach($fields as $type => $para_fields) {
-    foreach($para_fields as $field => $field_type) {
-      $field_config = FieldStorageConfig::loadByName('paragraph', $field);
-      if ($field_config) {
-        continue;
-      }
-      if (!in_array("field.storage.paragraph.{$field}.yml", $storage_configs)) {
-        $storage_configs[] = "field.storage.paragraph.{$field}.yml";
-      }
-      $field_configs[] = "field.field.paragraph.{$type}.{$field}.yml";
-    }
-  }
-  $comfigs = array_merge($storage_configs, $field_configs);
-  _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $comfigs, 'install');
-
-  if (empty($comfigs)) {
-    return;
-  }
-
-  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-  $display_repository = \Drupal::service('entity_display.repository');
-
-  foreach($fields as $type => $para_fields) {
-    foreach($para_fields as $field => $field_type) {
-      $display_repository->getFormDisplay('paragraph', $type)
-        ->setComponent($field, [
-          'type' => $field_type,
-         ])
-        ->save();
-
-    $display = $field_type == 'number' ? 'number_integer' : 'list_default';
-    $display_repository->getViewDisplay('paragraph', $type)
-      ->setComponent($field, [
-        'label' => 'hidden',
-        'type' => $display,
-      ])
-      ->save();
-    }
-  }
-
-  _kamihaya_cms_common_save_translation_configs([
-    'field.field.paragraph.image.field_width.yml',
-    'field.field.paragraph.image.field_width_unit.yml',
-    'field.field.paragraph.image.field_height.yml',
-    'field.field.paragraph.image.field_height_unit.yml',
-    'field.field.paragraph.image_link.field_width.yml',
-    'field.field.paragraph.image_link.field_width_unit.yml',
-    'field.field.paragraph.image_link.field_mobile_height.yml',
-  ], 'ja');
-
+    // Add fields to Image link Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image_link', [
+    'field_width',
+    'field_width_unit',
+    'field_mobile_height',
+  ]);
 }
 
 /**
@@ -324,364 +222,139 @@ function kamihaya_cms_paragraph_type_update_10006() {
 }
 
 /**
- * Update configs.
+ * Create Block and Views Paragraph.
  */
 function kamihaya_cms_paragraph_type_update_10007() {
-  $configs = [];
-  $trans_configs = [];
-  if (empty(ParagraphsType::load('block'))) {
-    $configs[] = 'paragraphs.paragraphs_type.block.yml';
-    $configs[] = 'field.storage.paragraph.field_block.yml';
-    $configs[] = 'field.field.paragraph.block.field_block.yml';
-    $configs[] = 'core.entity_form_display.paragraph.block.default.yml';
-    $configs[] = 'core.entity_view_display.paragraph.block.default.yml';
-    $trans_configs[] = 'paragraphs.paragraphs_type.block.yml';
-    $trans_configs[] = 'field.field.paragraph.block.field_block.yml';
-  }
-  if (empty(ParagraphsType::load('views'))) {
-    $configs[] = 'paragraphs.paragraphs_type.views.yml';
-    $configs[] = 'field.storage.paragraph.field_views.yml';
-    $configs[] = 'field.field.paragraph.views.field_views.yml';
-    $configs[] = 'core.entity_form_display.paragraph.views.default.yml';
-    $configs[] = 'core.entity_view_display.paragraph.views.default.yml';
-    $trans_configs[] = 'paragraphs.paragraphs_type.views.yml';
-    $trans_configs[] = 'field.field.paragraph.views.field_views.yml';
-  }
-
-  _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $configs, 'install');
-  _kamihaya_cms_common_save_translation_configs($trans_configs, 'ja');
-
-  $paragraph_types = ['block', 'views'];
-  $paragraph_fields = [
+  // Create Block and Views Paragraph.
+  _kamihaya_cms_common_create_paragraph('block', [
+    'field_block',
+  ], [
     'accordion_item' => 'field_accordion_body',
     'drawer' => 'field_drawer_body',
     'modal_dialog' => 'field_dialog_body',
     'two_col_table_row' => 'field_row_data',
-  ];
+  ]);
 
-  foreach($paragraph_fields ?: [] as $paragraph_name => $field) {
-    $field_config = \Drupal::configFactory()->getEditable("field.field.paragraph.{$paragraph_name}.{$field}");
-    if (empty($field_config)) {
-      return;
-    }
-    $dependencies = $field_config->get('dependencies.config');
-    $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
-    $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
-    $max_weight = 0;
-    foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
-      if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
-        continue;
-      }
-      $max_weight = $target_bundle['weight'];
-    }
-
-    foreach($paragraph_types ?: [] as $paragraph_type) {
-      $paragraph = "paragraphs.paragraphs_type.{$paragraph_type}";
-      if (!empty($dependencies) && !in_array($paragraph, $dependencies)) {
-        $dependencies[] = $paragraph;
-      }
-      if (!empty($target_bundles) && !in_array($paragraph_type, $target_bundles)) {
-        $target_bundles[$paragraph_type] = $paragraph_type;
-      }
-      if (!empty($target_bundles_drag_drop) && !in_array($paragraph_type, $target_bundles_drag_drop)) {
-        $target_bundles_drag_drop[$paragraph_type] = [
-          'enabled' => TRUE,
-          'weight' => ++$max_weight,
-        ];
-      }
-    }
-    $field_config->set('dependencies.config', $dependencies);
-    $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
-    $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
-    $field_config->save(TRUE);
-  }
+  // Create Views Paragraph.
+  _kamihaya_cms_common_create_paragraph('views', [
+    'field_views',
+  ], [
+    'accordion_item' => 'field_accordion_body',
+    'drawer' => 'field_drawer_body',
+    'modal_dialog' => 'field_dialog_body',
+    'two_col_table_row' => 'field_row_data',
+  ]);
 }
 
 /**
- * Update configs.
+ * Create border box item and border box paragraphs.
  */
 function kamihaya_cms_paragraph_type_update_10008() {
-  $configs = [];
-  $trans_configs = [];
-  if (empty(ParagraphsType::load('border_box_item'))) {
-    $configs[] = 'paragraphs.paragraphs_type.border_box_item.yml';
-    $configs[] = 'field.storage.paragraph.field_border_box_body.yml';
-    $configs[] = 'field.field.paragraph.border_box_item.field_border_box_body.yml';
-    $configs[] = 'core.entity_form_display.paragraph.border_box_item.default.yml';
-    $configs[] = 'core.entity_view_display.paragraph.border_box_item.default.yml';
-    $trans_configs[] = 'paragraphs.paragraphs_type.border_box_item.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box_item.field_border_box_body.yml';
-  }
-  if (empty(ParagraphsType::load('border_box'))) {
-    $configs[] = 'paragraphs.paragraphs_type.border_box.yml';
-    $configs[] = 'field.storage.paragraph.field_border_box_item.yml';
-    $configs[] = 'field.storage.paragraph.field_bg_color.yml';
-    $configs[] = 'field.storage.paragraph.field_border_top_color.yml';
-    $configs[] = 'field.storage.paragraph.field_border_bottom_color.yml';
-    $configs[] = 'field.storage.paragraph.field_border_left_color.yml';
-    $configs[] = 'field.storage.paragraph.field_border_right_color.yml';
-    $configs[] = 'field.storage.paragraph.field_border_top_width.yml';
-    $configs[] = 'field.storage.paragraph.field_border_bottom_width.yml';
-    $configs[] = 'field.storage.paragraph.field_border_left_width.yml';
-    $configs[] = 'field.storage.paragraph.field_border_right_width.yml';
-    $configs[] = 'field.storage.paragraph.field_border_style.yml';
-    $configs[] = 'field.storage.paragraph.field_radius_type.yml';
-    $configs[] = 'field.storage.paragraph.field_radius_size.yml';
-    $configs[] = 'field.storage.paragraph.field_width.yml';
-    $configs[] = 'field.storage.paragraph.field_width_unit.yml';
-    $configs[] = 'field.storage.paragraph.field_padding.yml';
-    $configs[] = 'field.storage.paragraph.field_align.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_border_box_item.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_bg_color.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_border_top_color.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_border_bottom_color.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_border_left_color.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_border_right_color.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_border_top_width.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_border_bottom_width.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_border_left_width.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_border_right_width.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_border_style.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_radius_type.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_radius_size.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_width.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_width_unit.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_padding.yml';
-    $configs[] = 'field.field.paragraph.border_box.field_align.yml';
-    $configs[] = 'core.entity_form_display.paragraph.border_box.default.yml';
-    $configs[] = 'core.entity_view_display.paragraph.border_box.default.yml';
-    $trans_configs[] = 'paragraphs.paragraphs_type.border_box.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_border_box_item.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_bg_color.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_border_top_color.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_border_bottom_color.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_border_left_color.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_border_right_color.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_border_top_width.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_border_bottom_width.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_border_left_width.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_border_right_width.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_border_style.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_radius_type.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_radius_size.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_width.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_width_unit.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_padding.yml';
-    $trans_configs[] = 'field.field.paragraph.border_box.field_align.yml';
-  }
+    // Create Boeder box item Paragraph.
+  _kamihaya_cms_common_create_paragraph('border_box_item', [
+    'field_border_box_body',
+    'field_bg_color',
+    'field_border_top_color',
+    'field_border_bottom_color',
+    'field_border_left_color',
+    'field_border_right_color',
+    'field_border_top_width',
+    'field_border_bottom_width',
+    'field_border_left_width',
+    'field_border_right_width',
+    'field_border_style',
+    'field_radius_type',
+    'field_radius_size',
+    'field_width',
+    'field_width_unit',
+    'field_padding',
+    'field_align',
+  ], [], 'optional');
 
-  _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $configs, 'optional');
-  _kamihaya_cms_common_save_translation_configs($trans_configs, 'ja');
-
-  $paragraph_type = 'border_box';
-  $paragraph_fields = [
+  // Create Boeder box Paragraph.
+  _kamihaya_cms_common_create_paragraph('border_box', [
+    'field_border_box_item',
+    'field_bg_color',
+    'field_border_top_color',
+    'field_border_bottom_color',
+    'field_border_left_color',
+    'field_border_right_color',
+    'field_border_top_width',
+    'field_border_bottom_width',
+    'field_border_left_width',
+    'field_border_right_width',
+    'field_border_style',
+    'field_radius_type',
+    'field_radius_size',
+    'field_width',
+    'field_width_unit',
+    'field_padding',
+    'field_align',
+  ],
+  [
     'accordion_item' => 'field_accordion_body',
+    'border_box_item' => 'field_border_box_body',
     'drawer' => 'field_drawer_body',
     'modal_dialog' => 'field_dialog_body',
     'two_col_table_row' => 'field_row_data',
-  ];
-
-  foreach($paragraph_fields ?: [] as $paragraph_name => $field) {
-    $field_config = \Drupal::configFactory()->getEditable("field.field.paragraph.{$paragraph_name}.{$field}");
-    if (empty($field_config)) {
-      return;
-    }
-    $dependencies = $field_config->get('dependencies.config');
-    $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
-    $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
-    $max_weight = 0;
-    foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
-      if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
-        continue;
-      }
-      $max_weight = $target_bundle['weight'];
-    }
-
-    $paragraph = "paragraphs.paragraphs_type.{$paragraph_type}";
-    if (!empty($dependencies) && !in_array($paragraph, $dependencies)) {
-      $dependencies[] = $paragraph;
-    }
-    if (!empty($target_bundles) && !in_array($paragraph_type, $target_bundles)) {
-      $target_bundles[$paragraph_type] = $paragraph_type;
-    }
-    if (!empty($target_bundles_drag_drop) && !in_array($paragraph_type, $target_bundles_drag_drop)) {
-      $target_bundles_drag_drop[$paragraph_type] = [
-        'enabled' => TRUE,
-        'weight' => ++$max_weight,
-      ];
-    }
-
-    $field_config->set('dependencies.config', $dependencies);
-    $field_config->set('settings.handler_settings.target_bundles', $target_bundles);
-    $field_config->set('settings.handler_settings.target_bundles_drag_drop', $target_bundles_drag_drop);
-    $field_config->save(TRUE);
-  }
+  ], 'optional');
 }
 
 /**
- * Update configs.
+ * Add align field to some paragraphs.
  */
 function kamihaya_cms_paragraph_type_update_10009() {
-  $storage_configs = [];
-  $install_configs = [];
-  $option_configs = [];
-  $paragraphs = [
-    'divider',
-    'image',
-    'image_link',
-    'link_button',
-    'file_download',
-    'two_col_table',
-    'video',
-  ];
+  // Add fields to Divider Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'divider', [
+    'field_align',
+  ]);
 
-  $field_config = FieldStorageConfig::loadByName('paragraph', 'field_align');
-  if (!$field_config) {
-    $storage_configs[] = "field.storage.paragraph.field_align.yml";
-  }
-  foreach($paragraphs as $paragraph) {
-    if ($paragraph === 'divider') {
-      $field_config = FieldConfig::loadByName('paragraph', $paragraph, 'field_width');
-      if (!$field_config) {
-        $install_configs[] = "field.field.paragraph.{$paragraph}.field_width.yml";
-      }
-      $field_config = FieldConfig::loadByName('paragraph', $paragraph, 'field_width_unit');
-      if (!$field_config) {
-        $install_configs[] = "field.field.paragraph.{$paragraph}.field_width_unit.yml";
-      }
-    }
-    $field_config = FieldConfig::loadByName('paragraph', $paragraph, 'field_align');
-    if ($field_config) {
-      continue;
-    }
-    if ($paragraph === 'two_col_table') {
-      $option_configs[] = "field.field.paragraph.{$paragraph}.field_align.yml";
-      continue;
-    }
-    $install_configs[] = "field.field.paragraph.{$paragraph}.field_align.yml";
-  }
+  // Add fields to Image Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image', [
+    'field_align',
+  ]);
 
-  if (empty($storage_configs) &&empty($option_configs) && empty($install_configs)) {
-    return;
-  }
-  if (!empty($storage_configs)) {
-    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $storage_configs, 'optional');
-  }
-  if (!empty($option_configs)) {
-    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $option_configs, 'optional');
-  }
-  if (!empty($install_configs)) {
-    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $install_configs, 'install');
-  }
+  // Add fields to Image link Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image_link', [
+    'field_align',
+  ]);
 
-  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-  $display_repository = \Drupal::service('entity_display.repository');
+  // Add fields to Link button Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'link_button', [
+    'field_align',
+  ]);
 
-  foreach($paragraphs as $paragraph) {
-    if ($paragraph === 'divider') {
-      $display_repository->getFormDisplay('paragraph', $paragraph)
-        ->setComponent('field_width', [
-          'type' => 'number',
-        ])
-        ->setComponent('field_width_unit', [
-          'type' => 'options_select',
-        ])
-        ->save();
-      $display_repository->getViewDisplay('paragraph', $paragraph)
-        ->setComponent('field_width', [
-          'label' => 'hidden',
-          'type' => 'number_integer',
-        ])
-        ->setComponent('field_width_unit', [
-          'label' => 'hidden',
-          'type' => 'list_key',
-        ])
-        ->save();
-    }
-    $display_repository->getFormDisplay('paragraph', $paragraph)
-      ->setComponent('field_align', [
-        'type' => 'options_select',
-        ])
-      ->save();
+  // Add fields to File download Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'file_download', [
+    'field_align',
+  ]);
 
-    $display_repository->getViewDisplay('paragraph', $paragraph)
-      ->setComponent('field_align', [
-        'label' => 'hidden',
-        'type' => 'list_key',
-      ])
-      ->save();
-  }
+  // Add fields to Two col table Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'two_col_table', [
+    'field_align',
+  ]);
 
-  _kamihaya_cms_common_save_translation_configs(array_merge($install_configs, $option_configs), 'ja');
-
+  // Add fields to Video Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'video', [
+    'field_align',
+  ]);
 }
 
 /**
- * Update configs.
+ * Add fields to Image link Paragraph.
  */
 function kamihaya_cms_paragraph_type_update_10010() {
-  $storage_configs = [];
-  $install_configs = [];
-
-  $fields = [
+    // Add fields to Image link Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image_link', [
     'field_link_text',
     'field_link_text_halign',
     'field_link_text_valign',
     'field_image_desc_text_align',
-  ];
-
-  foreach($fields as $field) {
-    $field_config = FieldStorageConfig::loadByName('paragraph', $field);
-    if ($field_config) {
-      continue;
-    }
-    $storage_configs[] = "field.storage.paragraph.{$field}.yml";
-    $install_configs[] = "field.field.paragraph.image_link.{$field}.yml";
-  }
-
-  if (empty($storage_configs) && empty($install_configs)) {
-    return;
-  }
-  if (!empty($storage_configs)) {
-    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $storage_configs, 'install');
-  }
-  if (!empty($install_configs)) {
-    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $install_configs, 'install');
-    _kamihaya_cms_common_save_translation_configs($install_configs, 'ja');
-  }
-
-  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-  $display_repository = \Drupal::service('entity_display.repository');
-  $form_display = $display_repository->getFormDisplay('paragraph', 'image_link');
-  $view_display = $display_repository->getViewDisplay('paragraph', 'image_link');
-
-  foreach($fields as $field) {
-    if ($field === 'field_link_text') {
-      $form_display->setComponent($field, [
-        'type' => 'paragraphs',
-      ])
-      ->save();
-      $view_display->setComponent($field, [
-        'label' => 'hidden',
-        'type' => 'entity_reference_revisions_entity_view',
-      ])
-      ->save();
-      continue;
-    }
-    $form_display->setComponent($field, [
-      'type' => 'options_select',
-    ])
-    ->save();
-    $view_display->setComponent($field, [
-      'label' => 'hidden',
-      'type' => 'list_key',
-    ])
-    ->save();
-  }
+  ]);
 }
 
 /**
- * Update configs.
+ * Change field settings of Link button Paragraph and add fields to some paragraphs.
  */
 function kamihaya_cms_paragraph_type_update_10011() {
   $field_storage = FieldStorageConfig::loadByName('paragraph', 'field_button_link');
@@ -702,150 +375,60 @@ function kamihaya_cms_paragraph_type_update_10011() {
     $field_config->save();
   }
 
-  $storage_configs = [];
-  $install_configs = [];
-  $option_configs = [];
+  // Add fields to Modal dialog Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'modal_dialog', [
+    'field_cookie_name',
+    'field_default_open',
+    'field_one_time',
+    'field_modal_width',
+    'field_width_unit',
+  ], 'optional');
 
-  $paragraphs = [
-    'modal_dialog' => [
-      'field_cookie_name' => 'string_textfield',
-      'field_default_open' => 'boolean_checkbox',
-      'field_one_time' => 'boolean_checkbox',
-      'field_modal_width' => 'number',
-      'field_width_unit' => 'options_select',
-    ],
-    'headings' => [
-      'field_align' => 'options_select',
-    ],
-    'video' => [
-      'field_width' => 'number',
-      'field_width_unit' => 'options_select',
-    ],
-  ];
+  // Add fields to Headings Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'headings', [
+    'field_align',
+  ]);
 
-  foreach($paragraphs as $paragraph => $fields) {
-    foreach(array_keys($fields) as $field) {
-      $field_storage = FieldStorageConfig::loadByName('paragraph', $field);
-      if (!$field_storage) {
-        $storage_configs[] = "field.storage.paragraph.{$field}.yml";
-      }
-      $field_config = FieldConfig::loadByName('paragraph', $paragraph, $field);
-      if (!$field_config) {
-        continue;
-      }
-      if ($paragraph === 'modal_dialog') {
-        $option_configs[] = "field.field.paragraph.{$paragraph}.{$field}.yml";
-      }
-      else {
-        $install_configs[] = "field.field.paragraph.{$paragraph}.{$field}.yml";
-      }
-    }
-  }
-
-  if (empty($storage_configs) && empty($install_configs) && empty($option_configs)) {
-    return;
-  }
-  if (!empty($storage_configs)) {
-    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $storage_configs, 'optional');
-  }
-  if (!empty($install_configs)) {
-    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $install_configs, 'install');
-    _kamihaya_cms_common_save_translation_configs($install_configs, 'ja');
-  }
-  if (!empty($option_configs)) {
-    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $option_configs, 'optional');
-    _kamihaya_cms_common_save_translation_configs($option_configs, 'ja');
-  }
-
-  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-  $display_repository = \Drupal::service('entity_display.repository');
-
-  foreach($paragraphs as $paragraph => $fields) {
-    $form_display = $display_repository->getFormDisplay('paragraph', $paragraph);
-    foreach($fields as $field => $type) {
-      $form_display->setComponent($field, [
-        'type' => $type,
-      ])
-      ->save();
-    }
-  }
+  // Add fields to Video Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'video', [
+    'field_width',
+    'field_width_unit',
+  ]);
 }
 
 /**
- * Update configs.
+ * Create Anchor link paragraph and add fields to some paragraphs.
  */
 function kamihaya_cms_paragraph_type_update_10012() {
-  $storage_configs = [];
-  $install_configs = [];
 
-  $paragraphs = [
-    'anchor_link' => [
-      'field_link_item' => 'entity_reference_revisions',
-    ],
-    'headings' => [
-      'field_anchor_link_id' => 'string_textfield',
-    ],
-    'h2_title' => [
-      'field_anchor_link_id' => 'string_textfield',
-    ],
-    'h3_title' => [
-      'field_anchor_link_id' => 'string_textfield',
-    ],
-    'h4_title' => [
-      'field_anchor_link_id' => 'string_textfield',
-    ],
-  ];
+  // Create Anchor link Paragraph.
+  _kamihaya_cms_common_create_paragraph('anchor_link', [
+    'field_link_item',
+  ]);
 
-  foreach($paragraphs as $paragraph => $fields) {
-    foreach(array_keys($fields) as $field) {
-      $field_storage = FieldStorageConfig::loadByName('paragraph', $field);
-      if (!$field_storage && !in_array("field.storage.paragraph.{$field}.yml", $storage_configs)) {
-        $storage_configs[] = "field.storage.paragraph.{$field}.yml";
-      }
-      $field_config = FieldConfig::loadByName('paragraph', $paragraph, $field);
-      if (!$field_config) {
-        continue;
-      }
-      $install_configs[] = "field.field.paragraph.{$paragraph}.{$field}.yml";
-    }
-  }
+    // Add fields to Headings Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'headings', [
+    'field_anchor_link_id',
+  ]);
 
-  if (empty(ParagraphsType::load('anchor_link'))) {
-    $install_configs = array_merge([
-      'paragraphs.paragraphs_type.anchor_link.yml',
-    ], $install_configs);
-    $storage_configs[] = "field.storage.paragraph.{$field}.yml";
-    $install_configs[] = 'core.entity_form_display.paragraph.anchor_link.default.yml';
-    $install_configs[] =  'core.entity_view_display.paragraph.anchor_link.default.yml';
-  }
+  // Add fields to H2 title Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'h2_title', [
+    'field_anchor_link_id',
+  ]);
 
-  if (empty($storage_configs) && empty($install_configs)) {
-    return;
-  }
-  if (!empty($storage_configs)) {
-    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $storage_configs, 'install');
-  }
-  if (!empty($install_configs)) {
-    _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $install_configs, 'install');
-    _kamihaya_cms_common_save_translation_configs($install_configs, 'ja');
-  }
+  // Add fields to H3 title Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'h3_title', [
+    'field_anchor_link_id',
+  ]);
 
-  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-  $display_repository = \Drupal::service('entity_display.repository');
-
-  foreach($paragraphs as $paragraph => $fields) {
-    $form_display = $display_repository->getFormDisplay('paragraph', $paragraph);
-    foreach($fields as $field => $type) {
-      $form_display->setComponent($field, [
-        'type' => $type,
-      ])
-      ->save();
-    }
-  }
+  // Add fields to H4 title Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'h4_title', [
+    'field_anchor_link_id',
+  ]);
 }
 
 /**
- * Update configs.
+ * Create background image paragraph and add fields to some paragraphs.
  */
 function kamihaya_cms_paragraph_type_update_10013() {
   // Create Background Image Paragraph.
@@ -876,7 +459,7 @@ function kamihaya_cms_paragraph_type_update_10013() {
     'field_component_id',
     'field_css_class',
     'field_vertical_margin',
-  ]);
+  ], 'optional');
 
   // Add fields to Image Paragraph.
   _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image', ['field_mobile_image']);
@@ -918,4 +501,16 @@ function kamihaya_cms_paragraph_type_update_10013() {
   }
   $field_storage->setSetting('allowed_values', $allowed_values);
   $field_storage->save();
+}
+
+/**
+ * Add fields to Border box Paragraph.
+ */
+function kamihaya_cms_paragraph_type_update_10014() {
+  // Add fields to Border box Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'border_box', [
+    'field_bg_color_gd_end',
+    'field_gradation_direction',
+  ], 'optional');
+
 }

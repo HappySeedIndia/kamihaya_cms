@@ -58,6 +58,8 @@
       {% set width = paragraph.field_width.0.value %}
       {% set width_unit = paragraph.field_width_unit.0.value %}
       {% set bg_color = content.field_bg_color|render|striptags|trim|lower %}
+      {% set bg_gd_end_color = content.field_bg_color_gd_end|render|striptags|trim|lower %}
+      {% set gd_dir = content.field_gradation_direction|render|striptags|trim|lower %}
       {% set bd_style = content.field_border_style|render|striptags|trim|lower %}
       {% set bd_top_color = content.field_border_top_color|render|striptags|trim|lower %}
       {% set bd_bottom_color = content.field_border_bottom_color|render|striptags|trim|lower %}
@@ -79,10 +81,24 @@
       {% if content.field_css_class|render %}
         {% set css_class = content.field_css_class|render|striptags|trim %}
       {% endif %}
+      {% if bg_gd_end_color %}
+        {% set gd_style = 'linear-gradient(' ~ bg_color ~ ', ' ~ bg_gd_end_color ~ ');'%}
+        {% if gd_dir == 'horizontal' %}
+          {% set gd_style = 'linear-gradient(to right, ' ~ bg_color ~ ', ' ~ bg_gd_end_color ~ ');' %}
+        {% elseif gd_dir == 'vertical' %}
+          {% set gd_style = 'linear-gradient(to bottom, ' ~ bg_color ~ ', ' ~ bg_gd_end_color ~ ');' %}
+        {% elseif gd_dir == 'right_down' %}
+          {% set gd_style = 'linear-gradient(to bottom right, ' ~ bg_color ~ ', ' ~ bg_gd_end_color ~ ');' %}
+        {% elseif gd_dir == 'right_up' %}
+          {% set gd_style = 'linear-gradient(to top right, ' ~ bg_color ~ ', ' ~ bg_gd_end_color ~ ');' %}
+        {% elseif gd_dir == 'radial' %}
+          {% set gd_style = 'radial-gradient(' ~ bg_color ~ ', ' ~ bg_gd_end_color ~ ');' %}
+        {% endif %}
+      {% endif %}
       {%
         set style = [
           width ? (width_unit == 'px' ? ('width: 100%; max-width: ' ~ width ~ width_unit ~ ';') : ('width: ' ~ width ~ (width_unit ? width_unit ~ ';' : 'px;'))) : 'width: 100%;',
-          bg_color ? 'background-color: ' ~ bg_color  ~ ';',
+          gd_style ? 'background: ' ~ gd_style : (bg_color ? 'background-color: ' ~ bg_color ~ ';'),
           bd_top_color ? 'border-top-color: ' ~ bd_top_color  ~ ';',
           bd_bottom_color ? 'border-bottom-color: ' ~ bd_bottom_color  ~ ';',
           bd_left_color ? 'border-left-color: ' ~ bd_left_color  ~ ';',
