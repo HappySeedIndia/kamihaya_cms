@@ -215,6 +215,24 @@ class KamihahyaExposedForm extends BetterExposedFilters {
    */
   public function exposedFormAlter(&$form, FormStateInterface $form_state): void {
     parent::exposedFormAlter($form, $form_state);
+    if (!empty($form['secondary'])) {
+      // Open the secondary option if the filter is selected.
+      $request_params = array_merge($this->request->query->all(), $this->request->request->all());
+      foreach($request_params as $key => $value) {
+        if ($key === 'sort_by') {
+          continue;
+        }
+        if (empty($form[$key]) || empty($form[$key]['#group'])) {
+          continue;
+        }
+        $group = $form[$key]['#group'];
+        if (empty($form[$group]) || empty($form[$group]['#group']) || $form[$group]['#group'] !== 'secondary') {
+          continue;
+        }
+        $form['secondary']['#open'] = TRUE;
+      }
+    }
+
     foreach ($form as $key => &$field) {
       if (!is_array($field) || empty($field['#type'])) {
         continue;
