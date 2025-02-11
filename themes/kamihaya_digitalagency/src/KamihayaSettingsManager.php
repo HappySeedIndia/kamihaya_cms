@@ -403,7 +403,7 @@ class KamihayaSettingsManager extends SettingsManager {
 
     $form['site_common']['b5_back_to_top_shape'] = [
       '#type' => 'select',
-      '#title' => $this->t('Gack to top link shape:'),
+      '#title' => $this->t('Back to top link shape:'),
       '#default_value' => theme_get_setting('b5_back_to_top_shape'),
       '#description' => $this->t("The shape of the back to top link."),
       '#options' => [

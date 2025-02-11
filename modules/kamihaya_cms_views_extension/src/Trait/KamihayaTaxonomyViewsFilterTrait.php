@@ -119,6 +119,9 @@ trait KamihayaTaxonomyViewsFilterTrait {
 
     // Loop through all the filters configured in the current view.
     foreach ($this->view->filter ?: [] as $name => $filter) {
+      if (empty($filter->options)) {
+        continue;
+      }
       // Ignore non-taxonomy filters and continue.
       if (strpos($filter->options['plugin_id'], 'taxonomy_index_tid') === FALSE || !in_array($filter->options['vid'], $bundles)) {
         continue;
