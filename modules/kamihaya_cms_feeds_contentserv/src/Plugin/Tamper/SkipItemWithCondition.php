@@ -157,7 +157,7 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
         break;
 
       case 'not_empty':
-        if ((is_array($data) && !empty($data)) || U(!is_array($data) && strlen($data) != 0)) {
+        if ((is_array($data) && !empty($data)) || (!is_array($data) && strlen($data) != 0)) {
           throw new SkipTamperItemException("Skip item with condition: $matching_condition.");
         }
         break;
@@ -198,7 +198,8 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
     $label = $entity->label();
     $type = $entity->getEntityTypeId();
     if ($skip_empty && ((is_array($value) && empty($value)) || (!is_array($value) && strlen($value))) === 0) {
-      throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label, source: @source ] with empty value.", [
+      throw new SkipTamperItemException(strtr("@name - Skip item[ type: @type, name: @label, source: @source ] with empty value.", [
+        '@name' => $feed->label(),
         '@label' => $label,
         '@type' => $type,
         '@source' => $source
@@ -208,7 +209,8 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
     switch ($matching_condition) {
       case 'includes':
         if ((is_array($value) && in_array($condition_value, $value)) || (!is_array($value) && strpos($value, $condition_value) !== FALSE)) {
-          throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @source @condition @value.", [
+          throw new SkipTamperItemException(strtr("@name - Skip item[ type: @type, name: @label ] with condition: @source @condition @value.", [
+            '@name' => $feed->label(),
             '@label' => $label,
             '@type' => $type,
             '@source' => $source,
@@ -220,7 +222,8 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
 
       case 'not_includes':
         if ((is_array($value) && !in_array($condition_value, $value)) || (!is_array($value) && strpos($value, $condition_value) === FALSE)) {
-          throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @source @condition @value.", [
+          throw new SkipTamperItemException(strtr("@name - Skip item[ type: @type, name: @label ] with condition: @source @condition @value.", [
+            '@name' => $feed->label(),
             '@label' => $label,
             '@type' => $type,
             '@source' => $source,
@@ -232,7 +235,8 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
 
       case 'empty':
         if ((is_array($value) && empty($value)) || (!is_array($value) && strlen($value) == 0)) {
-          throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @condition.", [
+          throw new SkipTamperItemException(strtr("@name - Skip item[ type: @type, name: @label ] with condition: @condition.", [
+            '@name' => $feed->label(),
             '@label' => $label,
             '@type' => $type,
             '@condition' => $matching_condition,
@@ -242,7 +246,8 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
 
       case 'not_empty':
         if ((is_array($value) && !empty($value)) || (!is_array($value) && strlen($value) != 0)) {
-          throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @condition.", [
+          throw new SkipTamperItemException(strtr("@name - Skip item[ type: @type, name: @label ] with condition: @condition.", [
+            '@name' => $feed->label(),
             '@label' => $label,
             '@type' => $type,
             '@condition' => $matching_condition,
@@ -252,7 +257,8 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
 
       default:
         if (eval("return '$value' $matching_condition '$condition_value';")) {
-          throw new SkipTamperItemException(strtr("Skip item[ type: @type, name: @label ] with condition: @source @condition @value.", [
+          throw new SkipTamperItemException(strtr("@name - Skip item[ type: @type, name: @label ] with condition: @source @condition @value.", [
+            '@name' => $feed->label(),
             '@label' => $label,
             '@type' => $type,
             '@source' => $source,

@@ -152,7 +152,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
             // Check the file extension.
             if (!$this->checkFileExtention($target, $label)) {
               // Skip the file if the file extension is not correct.
-              $state->report(StateType::SKIP, strtr('Skipped file because the file extentioon is not correct. [@type ID: @id, File label: @label, File ID: @value]', [
+              $state->report(StateType::SKIP, strtr('Skipped the file because the file extentioon is not correct. [@type ID: @id, File label: @label, File ID: @value]', [
                 '@type' => $data_type,
                 '@id' => $data_id,
                 '@label' => $label,
@@ -161,6 +161,13 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
                 'feed' => $feed,
                 'item' => $item,
               ]);
+              $state->setMessage(strtr('@name - Skipped the file because the file extentioon is not correct. [@type ID: @id, File label: @label, File ID: @value]', [
+                '@name' => $feed->label(),
+                '@type' => $data_type,
+                '@id' => $data_id,
+                '@label' => $label,
+                '@value' => $value,
+              ]), 'warning');
               continue;
             }
 
@@ -169,7 +176,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
                $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
             } catch (GuzzleException $e) {
               // Skip the file if failed to create media.
-              $state->report(StateType::SKIP, strtr('Skipped file because the file extentioon is not correct. [@type ID: @id, File label: @label, File ID: @value]', [
+              $state->report(StateType::FAIL, strtr('Skipped the file because failed to create the media file. [@type ID: @id, File label: @label, File ID: @value]', [
                 '@type' => $data_type,
                 '@id' => $data_id,
                 '@label' => $label,
@@ -178,6 +185,14 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
                 'feed' => $feed,
                 'item' => $item,
               ]);
+              $state->setMessage(strtr('@name - Skipped the file because failed to create the media file. [@type ID: @id, File label: @label, File ID: @value, error: @error]', [
+                '@name' => $feed->label(),
+                '@type' => $data_type,
+                '@id' => $data_id,
+                '@label' => $label,
+                '@value' => $value,
+                '@error' => $e->getMessage(),
+              ]), 'error');
               continue;
             }
           }
@@ -227,7 +242,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
                   $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
                 } catch (GuzzleException $e) {
                   // Skip the file if failed to create media.
-                  $state->report(StateType::SKIP, strtr('Skipped file because the file extentioon is not correct. [@type ID: @id, File label: @label, File ID: @value, Language: @lang]', [
+                  $state->report(StateType::SKIP, strtr('Skipped the file because failed to create the media file. [@type ID: @id, File label: @label, File ID: @value, Language: @lang]', [
                     '@type' => $data_type,
                     '@id' => $data_id,
                     '@label' => $label,
@@ -237,6 +252,15 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
                     'feed' => $feed,
                     'item' => $item,
                   ]);
+                  $state->setMessage(strtr('@name - Skipped the file because failed to create the media file. [@type ID: @id, File label: @label, File ID: @value, Language: @lang, error: %error]', [
+                    '@name' => $feed->label(),
+                    '@type' => $data_type,
+                    '@id' => $data_id,
+                    '@label' => $label,
+                    '@value' => $value,
+                    '@lang' => $langcode,
+                    '%error' => $e->getMessage(),
+                  ]), 'error');
                   continue;
                 }
               }
@@ -255,11 +279,12 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
       }
       catch (GuzzleException $e) {
         $args = [
+          '@name' => $feed->label(),
           '%error' => $e->getMessage(),
           '@type' => $data_type,
           '@id' => $data_id,
         ];
-        $state->report(StateType::FAIL, strtr('The error occurs while getting data because of error "%error" [@type ID: @id].', $args), [
+        $state->report(StateType::FAIL, strtr('@name - The error occurs while getting data because of error "%error" [@type ID: @id].', $args), [
           'feed' => $feed,
           'item' => $item,
         ]);
