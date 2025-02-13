@@ -373,6 +373,9 @@ function kamihaya_cms_views_extension_preprocess_views_view_table(&$variables) {
  * Implements hook_form_views_exposed_form_alter().
  */
 function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form, FormStateInterface $form_state) {
+  // Disable cache for this form.
+  // @see https://www.drupal.org/project/drupal/issues/3395776.
+  $form['#cache']['max-age'] = 0;
   // Get current request
   $request = \Drupal::request();
   // Set sort_by option to default.
