@@ -4,6 +4,7 @@ namespace Drupal\kamihaya_cms_feeds_contentserv\Feeds\Parser;
 
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Exception\FetchException;
+use Drupal\feeds\Exception\SkipItemException;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\DynamicItem;
 use Drupal\feeds\Result\FetcherResultInterface;
@@ -87,6 +88,13 @@ class ContentservApiDataParser extends ContentservApiParser {
               'feed' => $feed,
               'item' => $item,
             ]);
+            $state->setMessage(strtr('@name - Skipped because the file extentioon is not correct. [@type ID: @id, File label: @label, File ID: @value]', [
+              '@name' => $feed->label(),
+              '@type' => $data_type,
+              '@id' => $data_id,
+              '@label' => $label,
+              '@value' => $value,
+            ]), 'warning');
             if ($data_type == 'File') {
               return $result;
             }
@@ -96,7 +104,7 @@ class ContentservApiDataParser extends ContentservApiParser {
             // Create the media file.
             $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
           } catch (GuzzleException $e) {
-            $state->report(StateType::SKIP, strtr('Skipped file because the file extentioon is not correct. [@type ID: @id, File label: @label, File ID: @value]', [
+            $state->report(StateType::FAIL, strtr('Skipped file because the file extentioon is not correct. [@type ID: @id, File label: @label, File ID: @value]', [
               '@type' => $data_type,
               '@id' => $data_id,
               '@label' => $label,
@@ -105,7 +113,14 @@ class ContentservApiDataParser extends ContentservApiParser {
               'feed' => $feed,
               'item' => $item,
             ]);
-            continue;
+            throw new SkipItemException(strtr('@name - Failed to create file. [@type ID: @id, File label: @label, File ID: @value, error: %error]', [
+              '@name' => $feed->label(),
+              '@type' => $data_type,
+              '@id' => $data_id,
+              '@label' => $label,
+              '@value' => $value,
+              '%error' => $e->getMessage(),
+            ]));
           }
         }
         $item->set($key, $value);
@@ -158,17 +173,14 @@ class ContentservApiDataParser extends ContentservApiParser {
                 // Create the media file.
                 $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
               } catch (GuzzleException $e) {
-                $state->report(StateType::SKIP, strtr('Skipped file because the file extentioon is not correct. [@type ID: @id, File label: @label, File ID: @value, Language: @lang]', [
+                throw new SkipItemException(strtr('@name - Failed to create file. [@type ID: @id, File label: @label, File ID: @value, error: %error]', [
+                  '@name' => $feed->label(),
                   '@type' => $data_type,
                   '@id' => $data_id,
                   '@label' => $label,
                   '@value' => $value,
-                  '@lang' => $langcode,
-                ]), [
-                  'feed' => $feed,
-                  'item' => $item,
-                ]);
-                continue;
+                  '%error' => $e->getMessage(),
+                ]));
               }
             }
             $add_item->set($key, $value);
@@ -192,8 +204,10 @@ class ContentservApiDataParser extends ContentservApiParser {
     }
     catch (GuzzleException $e) {
       $state->setCompleted();
-      $args = ['%error' => $e->getMessage()];
-      throw new FetchException(strtr('The error occurs while getting detailed data because of error "%error".', $args));
+      $args = [
+        '@name' => $feed->label(),
+        '%error' => $e->getMessage()];
+      throw new FetchException(strtr('@name - The error occurs while getting detailed data because of error "%error".', $args));
     }
 
     // Set progress to complete if no more results are parsed.
