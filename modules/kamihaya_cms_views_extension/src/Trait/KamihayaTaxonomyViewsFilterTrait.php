@@ -68,12 +68,19 @@ trait KamihayaTaxonomyViewsFilterTrait {
       return;
     }
 
-    if (empty($this->options['display_depth']) && !empty($this->options['reduce_by_relation'])) {
+    if (!empty($this->options['display_depth'])) {
+      $tree = $this->termStorage->loadTree($vocabulary->id(), 0, $this->options['display_depth'], TRUE);
+      $terms = [];
+      foreach ($tree as $term) {
+        $terms[$term->id()] = $term;
+      }
+      $form['value']['#options'] = array_intersect_key($form['value']['#options'], $terms);
+    }
+    if (!empty($this->options['reduce_by_relation'])) {
        $this->reduceTermByRelation($form, $form['value']['#options']);
       return;
     }
 
-    $tree = $this->termStorage->loadTree($vocabulary->id(), 0, $this->options['display_depth'], TRUE);
     if (empty($tree)) {
       return;
     }
