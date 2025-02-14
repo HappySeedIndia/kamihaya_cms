@@ -608,41 +608,56 @@ html[lang='ja'] .form-required:after {
   align-items: center;
 }
 
-.table.td-file td .file.file--application-pdf:before {
+.table.td-file td .file:before {
   display: none;
 }
 
-.table.td-file td .file.file--application-pdf a:before,
-.table.td-file td .file a:after,
-.table.td-file td .file.file--general a:before,
-.table.td-file td .file.file--text a:before {
+.table.td-file td .file {
+  background-image: none;
+}
+
+.table.td-file td .file a:before {
   font-family:'Font Awesome 6 Pro';
-  font-weight: 900;
+  font-weight: 400;
   font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.table.td-file td .file a:after {
+  font-family: 'Font Awesome 6 Pro';
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.table.td-file td .file a:before {
+  content: '\f15b';
 }
 
 .table.td-file td .file.file--application-pdf a:before {
   content: '\f1c1';
-  font-weight: 400;
-  margin-right: 0.5rem;
+}
+
+.table.td-file td .file.file--x-office-document a:before {
+  content: '\f1c2';
+}
+
+.table.td-file td .file.file--x-office-spreadsheet a:before {
+  content: '\f1c3';
+}
+
+.table.td-file td .file.file--x-office-presentation a:before {
+  content: '\f1c4';
 }
 
 .table.td-file td .file.file.file--general a:before {
   content: '\f15b';
-  font-weight: 400;
-  margin-right: 0.5rem;
 }
 
 .table.td-file td .file.file.file--text a:before {
   content: '\f15c';
-  font-weight: 400;
-  margin-right: 0.5rem;
 }
 
-.table.td-file td .file.file.file--general,
-.table.td-file td .file.file.file--text {
-  background-image: none;
-}
+
 
 .table.td-file td .field--type-entity-reference.field--label-inline {
   display: flex;
