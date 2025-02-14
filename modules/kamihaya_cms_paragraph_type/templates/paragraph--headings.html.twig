@@ -100,7 +100,7 @@
     {% if headingTag|render and content.field_title_text|render %}
     <div class="title-{{ headingStyle }}">
       <{{ headingTag }}{% if style %} style="{{ style|join(' ') }}"{% endif %}{% if anchorLinkID %} id="{{ anchorLinkID }}"{% endif %}>
-        {{ content.field_title_text.0 }}
+        {{ paragraph.field_title_text.0.value|striptags('<br>')|raw }}
       </{{ headingTag }}>
     </div>
     {% endif %}
