@@ -109,7 +109,7 @@ function kamihaya_cms_common_update_10004() {
     $editor_config->save(TRUE);
   }
 
-  // Uninstall CKEditor4 font plugin.
+  // Uninstall CKEditor font plugin.
   if (\Drupal::moduleHandler()->moduleExists('ckeditor_font')) {
     $module_installer->uninstall(['ckeditor_font']);
   }
