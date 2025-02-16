@@ -12548,6 +12548,7 @@ td > .form-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  white-space: normal;
 }
 
 .navbar-nav .nav-link.dropdown-toggle {
