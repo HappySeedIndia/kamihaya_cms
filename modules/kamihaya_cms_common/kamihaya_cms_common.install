@@ -77,6 +77,45 @@ function kamihaya_cms_common_update_10003() {
 }
 
 /**
+ * Update full HTML edotor config.
+ */
+function kamihaya_cms_common_update_10004() {
+  /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
+  $module_installer = \Drupal::service("module_installer");
+  $modules = [];
+  // Install CKEditor5 plugin pack modules.
+  if (\Drupal::moduleHandler()->moduleExists('ckeditor5_plugin_pack')) {
+    $modules[] = 'ckeditor5_plugin_pack';
+  }
+  if (\Drupal::moduleHandler()->moduleExists('ckeditor5_plugin_pack_font')) {
+    $modules[] = 'ckeditor5_plugin_pack_font';
+  }
+  if (!empty($modules)) {
+    $module_installer->install($modules);
+  }
+
+  // Update full HTML editor config.
+  $editor_config = \Drupal::configFactory()->getEditable('editor.editor.full_html');
+  $file_config = _kamihaya_cms_common_load_config_file('kamihaya_cms_common', 'editor.editor.full_html.yml', 'optional');
+  if (!empty($editor_config) && !empty($file_config)) {
+    $items = !empty($file_config['settings']['toolbar']['items']) ? $file_config['settings']['toolbar']['items'] : [];
+    $plugins = !empty($file_config['settings']['plugins']) ? $file_config['settings']['plugins'] : [];
+    if (!empty($items)) {
+      $editor_config->set('settings.toolbar.items', _kamihaya_cms_common_merge_config($editor_config->get('settings.toolbar.items') ?: [], $items));
+    }
+    if (!empty($plugins)) {
+      $editor_config->set('settings.plugins', _kamihaya_cms_common_merge_config($editor_config->get('settings.plugins') ?: [], $plugins));
+    }
+    $editor_config->save(TRUE);
+  }
+
+  // Uninstall CKEditor font plugin.
+  if (\Drupal::moduleHandler()->moduleExists('ckeditor_font')) {
+    $module_installer->uninstall(['ckeditor_font']);
+  }
+}
+
+/**
  * Merge config array.
  *
  * @param array $base_config
