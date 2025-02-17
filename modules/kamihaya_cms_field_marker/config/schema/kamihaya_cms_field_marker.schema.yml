@@ -1,0 +1,62 @@
+field.field.*.*.*.third_party.kamihaya_cms_field_marker:
+  type: mapping
+  label: 'Kamihaya CMS Field Marker Settings'
+  mapping:
+    display_marker:
+      type: boolean
+      label: 'Display marker'
+    condtion:
+      type: boolean
+      label: 'Reverse condition'
+    operator:
+      type: string
+      label: 'Operator'
+      enum:
+        - '>'
+        - '>='
+        - '=='
+        - '!='
+        - '<='
+        - '<'
+    marker_label:
+      type: text
+      label: 'Marker label'
+    label_color:
+      type: mapping
+      label: "Label color settings"
+      mapping:
+        marker_label_color:
+          type: string
+          label: 'Marker label color'
+    bg_color:
+      type: mapping
+      label: "Background color settings"
+      mapping:
+        marker_bg_color:
+          type: string
+          label: 'Marker background color'
+    border_color:
+      type: mapping
+      label: "Border color settings"
+      mapping:
+        marker_border_color:
+          type: string
+          label: 'Marker border color'
+    marker_position:
+      type: string
+      label: 'Marker position'
+      enum:
+        - title_left
+        - title_right
+        - left
+        - right
+    marker_view_position:
+      type: string
+      label: 'Marker view position'
+      enum:
+        - title_left
+        - title_right
+        - img_top_left
+        - img_top_right
+        - img_bottom_left
+        - img_bottom_right
