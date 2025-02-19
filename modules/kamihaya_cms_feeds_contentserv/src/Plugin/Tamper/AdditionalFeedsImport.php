@@ -159,9 +159,15 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
     try {
       // Execute the import.
       $feed->import();
-    } catch (\Exception $e) {
-      $feed->unlock();
+    }
+    catch (\Exception $e) {
       throw $e;
+    }
+    finally {
+      // Unlock the feed if it was locked.
+      if ($feed->isLocked()) {
+        $feed->unlock();
+      }
     }
 
     return $data;
