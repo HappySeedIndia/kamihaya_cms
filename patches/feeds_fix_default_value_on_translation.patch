@@ -1,0 +1,24 @@
+diff --git a/src/Feeds/Target/EntityReference.php b/src/Feeds/Target/EntityReference.php
+index 25c2fec2..97401b71 100644
+--- a/src/Feeds/Target/EntityReference.php
++++ b/src/Feeds/Target/EntityReference.php
+@@ -141,10 +141,16 @@ class EntityReference extends FieldTargetBase implements ConfigurableTargetInter
+       if ($entity_target) {
+         $item_list = $entity_target->get($field_name);
+ 
+-        // Append these values to the existing values.
+-        $values = array_merge($item_list->getValue(), $values);
++        $field_def = $item_list->getFieldDefinition()->getDefaultValueLiteral();
++        if (empty($field_def)) {
++          // Append these values to the existing values.
++         $values = array_merge($item_list->getValue(), $values);
++        }
++        else {
++          // Don't append the default value.
++          $item_list->setValue($values);
++        }
+ 
+-        $item_list->setValue($values);
+       }
+     }
+   }
