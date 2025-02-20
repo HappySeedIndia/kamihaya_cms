@@ -583,6 +583,7 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
           if ($button === 'primary') {
             $css_vars['.form-checkbox']=
             [
+              '--bs-form-check-border-color' => $color,
               '--bs-form-check-checked-bg' => $color,
               '--bs-form-check-checked-border-color' => $color
             ];
