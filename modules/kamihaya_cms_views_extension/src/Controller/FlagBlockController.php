@@ -46,8 +46,6 @@ class FlagBlockController extends ControllerBase {
       if ($view) {
         $view->setDisplay($display_id);
         $view->execute();
-
-        // Dependency Injection を使用して View をレンダリング
         $rendered_view = $this->renderer->render($view->buildRenderable($display_id));
 
         return new JsonResponse(['view' => $rendered_view]);
