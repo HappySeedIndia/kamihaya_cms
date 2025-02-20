@@ -1,0 +1,7 @@
+flag_block_refresh:
+  path: '/ajax/flag-block-refresh'
+  defaults:
+    _controller: '\Drupal\kamihaya_cms_views_extension\Controller\FlagBlockController::refreshFlagBlock'
+    _title: 'Refesh Flag Block'
+  requirements:
+    _permission: 'access content'

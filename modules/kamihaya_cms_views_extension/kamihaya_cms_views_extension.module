@@ -520,6 +520,7 @@ function kamihaya_cms_views_extension_views_plugins_style_alter(array &$plugins)
  * Implements hook_preprocess_views_view_table().
  */
 function kamihaya_cms_views_extension_preprocess_flag(&$variables) {
+  $variables['#attached']['library'][] = 'kamihaya_cms_views_extension/flag-block-refresh';
   $route = Drupal::routeMatch()->getRouteName();
   if (strpos($route, 'view.') !== 0) {
     return;
