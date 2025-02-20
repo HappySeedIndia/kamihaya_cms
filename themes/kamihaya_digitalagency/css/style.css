@@ -2393,8 +2393,8 @@ textarea.form-control-lg {
   --bs-form-check-checked-border-color: var(--bs-primary);
   --bs-form-check-focus-border-color: #86b7fe;
   flex-shrink: 0;
-  width: 1em;
-  height: 1em;
+  width: 1.3em;
+  height: 1.3em;
   margin-top: 0.25em;
   vertical-align: top;
   appearance: none;

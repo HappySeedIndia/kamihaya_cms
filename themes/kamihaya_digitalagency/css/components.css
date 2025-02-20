@@ -1240,6 +1240,10 @@ h2.accordion-header::after {
   color: #FFC802 !important;
 }
 
+.flag .ajax-progress {
+  display: none !important;
+}
+
 /* Dropdown icons */
 .dropdown-toggle::before {
   width: 16px;

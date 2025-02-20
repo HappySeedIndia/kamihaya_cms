@@ -11,3 +11,10 @@ exposed-form:
     - core/jquery
     - core/drupal
     - core/drupalSettings
+
+flag-block-refresh:
+  js:
+    assets/js/flag-block-refresh.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
