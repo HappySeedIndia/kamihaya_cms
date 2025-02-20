@@ -97,6 +97,9 @@
             },
             "drupal/views_bulk_operations":{
                 "https://www.drupal.org/project/views_bulk_operations/issues/3479950": "https://www.drupal.org/files/issues/2024-10-10/3479950-views_bulk_operations-fixes-label-message-override-config-translations-2.patch"
+            },
+            "drupal/feeds": {
+              "KD-491: Fix default value issue on translation during feed import": "https://raw.githubusercontent.com/HappySeedIndia/kamihaya_cms/refs/heads/develop/patches/feeds_fix_default_value_on_translation.patch"
             }
         }
     },
@@ -134,6 +137,7 @@
         "drupal/eu_cookie_compliance": "^1.24",
         "drupal/expand_collapse_formatter": "^2.0",
         "drupal/externalauth": "^2.0",
+        "drupal/feeds": "^3.0",
         "drupal/field_formatter": "^3.0",
         "drupal/field_group_table": "^1.1",
         "drupal/fontawesome": "^2.26",
