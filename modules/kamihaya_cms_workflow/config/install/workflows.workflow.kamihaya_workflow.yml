@@ -17,7 +17,7 @@ type_settings:
       label: Archived
       weight: 1
       published: false
-      default_revision: false
+      default_revision: true
     draft:
       label: Draft
       weight: -2
