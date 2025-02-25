@@ -215,6 +215,9 @@ function kamihaya_cms_field_marker_preprocess_layout(array &$variables) {
       continue;
     }
     $marker = _kamihaya_cms_field_marker_create_marker($marker_setting, $name, $field_config->getType(), $node->get($name)->value, !empty($param_node));
+    if (empty($marker)) {
+      continue;
+    }
     $position = !empty($param_node) ? $marker_setting['marker_position'] : $marker_setting['marker_view_position'];
     _kamihaya_cms_field_marker_add_marker($variables, $bundle_fields, $position, $marker);
   }
