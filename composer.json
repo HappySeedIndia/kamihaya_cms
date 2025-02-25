@@ -90,7 +90,8 @@
             },
             "drupal/core": {
                 "https://www.drupal.org/project/drupal/issues/2842525": "https://www.drupal.org/files/issues/2024-09-18/2842525-159.patch",
-                "https://www.drupal.org/project/drupal/issues/3273068" : "https://www.drupal.org/files/issues/2024-12-30/3273068-d11-with-test.patch"
+                "https://www.drupal.org/project/drupal/issues/3273068" : "https://www.drupal.org/files/issues/2024-12-30/3273068-d11-with-test.patch",
+                "https://www.drupal.org/project/drupal/issues/1874838" : "https://www.drupal.org/files/issues/2021-11-11/1874838-26.patch"
             },
             "drupal/expand_collapse_formatter": {
                 "KD-465": "https://raw.githubusercontent.com/HappySeedIndia/kamihaya_cms/refs/heads/KD-465/patches/expand_collapse_formatter.patch"
