@@ -22,10 +22,10 @@ use Symfony\Component\HttpFoundation\Request;
   id: 'kamihaya_exposed_form',
   title: new TranslatableMarkup('Kamihaya Exposed Form'),
 )]
-class KamihahyaExposedForm extends BetterExposedFilters {
+class KamihayaExposedForm extends BetterExposedFilters {
 
   /**
-   * BetterExposedFilters constructor.
+   * KamihayaExposedForm constructor.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -261,9 +261,11 @@ class KamihahyaExposedForm extends BetterExposedFilters {
       if (empty($form['actions']['submit']['#attributes']['class'])) {
         $form['actions']['submit']['#attributes']['class'] = [];
       }
-      $form['actions']['submit']['#attributes']['class'][] = 'submit-icon';
-      $form['actions']['submit']['#prefix'] = '<div class="button-wrapper btn-primary">';
-      $form['actions']['submit']['#suffix'] = '</div>';
+      if (empty($this->options['bef']['general']['autosubmit_hide'])) {
+        $form['actions']['submit']['#attributes']['class'][] = 'submit-icon';
+        $form['actions']['submit']['#prefix'] = '<div class="button-wrapper btn-primary">';
+        $form['actions']['submit']['#suffix'] = '</div>';
+      }
       if (!empty($this->options['bef']['general']['autosubmit_exclude_textfield'])
         && !empty($this->options['bef']['general']['autosubmit_exclude_textfield'])) {
         $text_fields = [];
