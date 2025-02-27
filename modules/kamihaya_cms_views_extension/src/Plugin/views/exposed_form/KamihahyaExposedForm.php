@@ -9,6 +9,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\better_exposed_filters\Plugin\BetterExposedFiltersWidgetManager;
 use Drupal\better_exposed_filters\Plugin\views\exposed_form\BetterExposedFilters;
+use Drupal\Core\Theme\ThemeManagerInterface;
 use Drupal\views\Attribute\ViewsExposedForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +25,8 @@ use Symfony\Component\HttpFoundation\Request;
 )]
 class KamihahyaExposedForm extends BetterExposedFilters {
 
-  /**
-   * BetterExposedFilters constructor.
+    /**
+   * KamihahyaExposedForm constructor.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -41,13 +42,12 @@ class KamihahyaExposedForm extends BetterExposedFilters {
    *   The better exposed filter widget manager for sort widgets.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
    *   Manage drupal modules.
+   * @param \Drupal\Core\Theme\ThemeManagerInterface $themeManager
+   *   Manage drupal themes.
    * @param \Drupal\Core\Render\ElementInfoManagerInterface $elementInfo
    *   The element info manager.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The Request object.
-   *
-   * @patam \Drupal\Core\Routing\RouteMatchInterface
-   *  The currently active route match object.
    */
   public function __construct(
     array $configuration,
@@ -57,11 +57,12 @@ class KamihahyaExposedForm extends BetterExposedFilters {
     protected BetterExposedFiltersWidgetManager $pagerWidgetManager,
     protected BetterExposedFiltersWidgetManager $sortWidgetManager,
     protected ModuleHandlerInterface $moduleHandler,
+    protected ThemeManagerInterface $themeManager,
     protected ElementInfoManagerInterface $elementInfo,
     protected Request $request,
     protected RouteMatchInterface $routeMatch,
   ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $filterWidgetManager, $pagerWidgetManager, $sortWidgetManager, $moduleHandler, $elementInfo, $request);
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $filterWidgetManager, $pagerWidgetManager, $sortWidgetManager, $moduleHandler, $themeManager, $elementInfo, $request);
   }
 
   /**
@@ -77,6 +78,7 @@ class KamihahyaExposedForm extends BetterExposedFilters {
       $container->get('plugin.manager.better_exposed_filters_pager_widget'),
       $container->get('plugin.manager.better_exposed_filters_sort_widget'),
       $container->get('module_handler'),
+      $container->get('theme.manager'),
       $container->get('element_info'),
       $container->get('request_stack')->getCurrentRequest(),
       $container->get('current_route_match')
@@ -261,9 +263,11 @@ class KamihahyaExposedForm extends BetterExposedFilters {
       if (empty($form['actions']['submit']['#attributes']['class'])) {
         $form['actions']['submit']['#attributes']['class'] = [];
       }
-      $form['actions']['submit']['#attributes']['class'][] = 'submit-icon';
-      $form['actions']['submit']['#prefix'] = '<div class="button-wrapper btn-primary">';
-      $form['actions']['submit']['#suffix'] = '</div>';
+      if (empty($this->options['bef']['general']['autosubmit_hide'])) {
+        $form['actions']['submit']['#attributes']['class'][] = 'submit-icon';
+        $form['actions']['submit']['#prefix'] = '<div class="button-wrapper btn-primary">';
+        $form['actions']['submit']['#suffix'] = '</div>';
+      }
       if (!empty($this->options['bef']['general']['autosubmit_exclude_textfield'])
         && !empty($this->options['bef']['general']['autosubmit_exclude_textfield'])) {
         $text_fields = [];
