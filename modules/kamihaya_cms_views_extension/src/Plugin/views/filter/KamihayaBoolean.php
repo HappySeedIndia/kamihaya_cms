@@ -81,8 +81,11 @@ class KamihayaBoolean extends BooleanOperator {
       parent::queryOpBoolean($field, $query_operator);
       return;
     }
+    if (!$this->value) {
+      return;
+    }
     $value = $this->value ? $this->options['value'] : !$this->options['value'];
-    $this->query->addWhere($this->options['group'], $field, intval($value), $query_operator);
+    $this->query->addWhere($this->options['group'], $field, intval($this->options['value']), $query_operator);
   }
 
 }
