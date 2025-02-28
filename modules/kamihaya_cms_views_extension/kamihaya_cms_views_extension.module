@@ -85,6 +85,33 @@ function kamihaya_cms_views_extension_views_post_execute(ViewExecutable $view) {
  * Implements hook_views_pre_render().
  */
 function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
+  // Check if the view uses the 'infinite_scroll' pager and has a VBO field.
+  $is_vbo = FALSE;
+  $is_infinite_scroll = FALSE;
+
+  // Check if the view is using the Infinite Scroll pager.
+  if (!empty($view->display_handler->getOption('pager'))) {
+    $pager_options = $view->display_handler->getOption('pager');
+    
+    // Check if Infinite Scroll is enabled.
+    if (!empty($pager_options['type']) && $pager_options['type'] === 'infinite_scroll') {
+      $is_infinite_scroll = TRUE;
+    }
+  }
+
+  // Check if any field in the view is a VBO operation.
+  foreach ($view->field as $field) {
+    if ($field->definition['id'] === 'views_bulk_operations_bulk_form') {
+      $is_vbo = TRUE;
+      break;
+    }
+  }
+  // If both VBO and Infinite Scroll are used, re-apply vbo events jss.
+  if ($is_vbo && $is_infinite_scroll) {
+    // @see https://www.drupal.org/project/views_bulk_operations/issues/2964765.
+    $view->element['#attached']['library'][] = 'kamihaya_cms_views_extension/reapply-vbo-events';
+  }
+  
   if (empty($view->pager) || !($view->pager instanceof Full)) {
     return;
   }
