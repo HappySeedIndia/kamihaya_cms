@@ -1,39 +1,68 @@
 
-(function ($, Drupal) {
+(function ($, Drupal, drupalSettings) {
   'use strict';
   Drupal.behaviors.flagBlockRefresh = {
     attach: function (context, settings) {
-      once('flagBlockRefresh', $('.flag a', context)).forEach(function (element) {
-        $(element).on('click', function () {
-          setTimeout(function () {
-            $('.flag-block').each(function () {
-              var classes = $(this).attr('class');
-              var viewIdMatch = classes.match(/view-id-([\w-]+)/);
-              var displayIdMatch = classes.match(/view-display-id-([\w-]+)/);
+      once('flagBlockRefresh', $('.action-flag a, .action-unflag a', context)).forEach(function (element) {
+        Drupal.behaviors.addFlagEvent(element);
+      });
 
-              if (viewIdMatch && displayIdMatch) {
-                var viewId = viewIdMatch[1];
-                var displayId = displayIdMatch[1];
-                var targetBlock = $(this);
-
-                $.ajax({
-                  url: '/ajax/flag-block-refresh',
-                  type: 'GET',
-                  data: {
-                    view_id: viewId,
-                    display_id: displayId
-                  },
-                  success: function (data) {
-                    if (data.view) {
-                      targetBlock.html(data.view);
-                    }
-                  }
+      const observer = new MutationObserver(function (mutationsList) {
+        mutationsList.forEach(function (mutation) {
+          if (mutation.type === 'childList') {
+            mutation.addedNodes.forEach(function (addedNode) {
+              if (addedNode.nodeType === 1 && (addedNode.matches('.action-flag') || addedNode.matches('.action-unflag'))) {
+                var links = addedNode.querySelectorAll('a');
+                links.forEach(function (link) {
+                  Drupal.behaviors.addFlagEvent(link);
                 });
               }
             });
-          }, 250);
+          }
         });
+      });
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
       });
     }
   };
-})(jQuery, Drupal);
+
+  Drupal.behaviors.addFlagEvent = function (link) {
+    $(link).on('click', function (e) {
+      setTimeout(function () {
+        $('.flag-block').each(function () {
+          const classes = $(this).attr('class');
+          const viewIdMatch = classes.match(/view-id-([\w-]+)/);
+          const displayIdMatch = classes.match(/view-display-id-([\w-]+)/);
+
+          if (viewIdMatch && displayIdMatch) {
+            const viewId = viewIdMatch[1];
+            const displayId = displayIdMatch[1];
+            const targetBlock = $(this);
+            const default_lang = drupalSettings.default_language || 'en';
+            const lang = $('html').attr('lang');
+            const url = default_lang === lang
+              ? '/ajax/flag-block-refresh'
+              : '/' + lang + '/ajax/flag-block-refresh';
+            $.ajax({
+              url: url,
+              type: 'GET',
+              data: {
+                view_id: viewId,
+                display_id: displayId
+              },
+              success: function (data) {
+                if (data.view) {
+                  targetBlock.html(data.view);
+                }
+              }
+            });
+          }
+        });
+      }, 250);
+    });
+  };
+
+})(jQuery, Drupal, drupalSettings);

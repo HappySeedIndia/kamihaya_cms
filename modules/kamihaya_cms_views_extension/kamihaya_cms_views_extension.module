@@ -92,7 +92,7 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
   // Check if the view is using the Infinite Scroll pager.
   if (!empty($view->display_handler->getOption('pager'))) {
     $pager_options = $view->display_handler->getOption('pager');
-    
+
     // Check if Infinite Scroll is enabled.
     if (!empty($pager_options['type']) && $pager_options['type'] === 'infinite_scroll') {
       $is_infinite_scroll = TRUE;
@@ -111,7 +111,7 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
     // @see https://www.drupal.org/project/views_bulk_operations/issues/2964765.
     $view->element['#attached']['library'][] = 'kamihaya_cms_views_extension/reapply-vbo-events';
   }
-  
+
   if (empty($view->pager) || !($view->pager instanceof Full)) {
     return;
   }
@@ -547,7 +547,10 @@ function kamihaya_cms_views_extension_views_plugins_style_alter(array &$plugins)
  * Implements hook_preprocess_views_view_table().
  */
 function kamihaya_cms_views_extension_preprocess_flag(&$variables) {
+  $default_language = \Drupal::languageManager()->getDefaultLanguage();
+  $default_lang_code = $default_language->getId();
   $variables['#attached']['library'][] = 'kamihaya_cms_views_extension/flag-block-refresh';
+  $variables['#attached']['drupalSettings']['default_language'] = $default_lang_code;
   $route = Drupal::routeMatch()->getRouteName();
   if (strpos($route, 'view.') !== 0) {
     return;
