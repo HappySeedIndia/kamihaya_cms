@@ -42,7 +42,6 @@ install:
   - blazy
   - block_field
   - ckeditor_bs_grid
-  - ckeditor_font
   - colorbutton
   - color_field
   - content_access
