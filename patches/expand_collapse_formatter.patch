@@ -1,8 +1,31 @@
 diff --git a/js/expand_collapse_formatter.js b/js/expand_collapse_formatter.js
-index 4fe18ea..c6b4a35 100644
+index 4fe18ea..ea1baff 100644
 --- a/js/expand_collapse_formatter.js
 +++ b/js/expand_collapse_formatter.js
-@@ -52,7 +52,9 @@
+@@ -18,11 +18,21 @@
+     // Attach click event to toggle link.
+     if (typeof formatter.toggleLink !== 'undefined') {
+       formatter.toggle();
++      // Kamihaya CMS: Change touchend to touchstart.
++      formatter.toggleLink.addEventListener('touchstart', (event) => {
++        event.preventDefault();
++        formatter.toggle();
++        Drupal.attachBehaviors();
++      });
+ 
+       formatter.toggleLink.addEventListener('click', (event) => {
+         event.preventDefault();
+         formatter.toggle();
+-        Drupal.attachBehaviors();
++        // Kamihaya CMS: Remove Drupal.attachBehaviors().
++        // Drupal.attachBehaviors();
++        setTimeout(() => {
++          Drupal.attachBehaviors();
++        }, 10);
+       });
+     }
+   }
+@@ -52,7 +62,9 @@
      this.linkTextClose = field.getAttribute('data-link-text-close');
      this.linkClassOpen = field.getAttribute('data-link-class-open');
      this.linkClassClose = field.getAttribute('data-link-class-close');
@@ -13,3 +36,15 @@ index 4fe18ea..c6b4a35 100644
      this.html = this.content.innerHTML;
      this.showMore = Drupal.t(this.linkTextOpen);
      this.showLess = Drupal.t(this.linkTextClose);
+@@ -64,7 +76,10 @@
+     if (this.text.length > this.trimLength) {
+       this.toggleLink = document.createElement('a');
+       this.toggleLink.innerHTML = this.showMore;
+-      this.toggleLink.setAttribute('href', `#${this.id}`);
++      // kamihaya CMS: Remove href attribute.
++      // this.toggleLink.setAttribute('href', `#${this.id}`);
++      this.toggleLink.removeAttribute('href');
++
+       this.toggleLink.setAttribute(
+         'class',
+         `ec-toggle-link ${this.linkClassOpen}`,
