@@ -132,7 +132,7 @@ class FeedsSubscriber implements EventSubscriberInterface {
       return;
     }
     $existing_entity_id = $this->existingEntityId($feed, $item);
-    if ($existing_entity_id) {
+    if ($existing_entity_id && $feed->getType()->getProcessor() instanceof MultiLanguageEntityProcessorBase) {
       $entity = $feed->getType()->getProcessor()->loadEntity($existing_entity_id);
       if ($entity instanceof TranslatableInterface && $entity->hasTranslation($langcode)) {
         $base_data = $item->toArray();
