@@ -131,6 +131,17 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
     return $entity;
   }
 
+  /**
+   * Load entity.
+   *
+   * @param string $entity_id
+   *   The entity id.
+   * @return \Drupal\Core\Entity\EntityInterface
+   *   The entity object.
+   */
+  public function loadEntity($entity_id) {
+    return $this->storageController->load($entity_id);
+  }
 
   /**
    * {@inheritdoc}
