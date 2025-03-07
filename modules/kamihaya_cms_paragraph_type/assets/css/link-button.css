@@ -11,6 +11,30 @@
   align-items: center;
 }
 
+.paragraph--type--link-button .btn span {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.paragraph--type--link-button .btn span i {
+  margin: 0 0.5rem;
+}
+
+.paragraph--type--link-button .btn span i.left,
+.paragraph--type--link-button .btn span i.right {
+  position: absolute;
+  margin: 0;
+}
+
+.paragraph--type--link-button .btn span i.left {
+  left: 0;
+}
+
+.paragraph--type--link-button .btn span i.right {
+  right: 0;
+}
+
 @media (max-width: 767px) {
   .paragraph--type--link-button .link-buttons {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
