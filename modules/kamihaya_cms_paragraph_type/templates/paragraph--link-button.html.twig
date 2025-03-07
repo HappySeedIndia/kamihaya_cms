@@ -81,7 +81,7 @@
             {% if key matches '/^\\d+$/' %}
               {% set text %}
                 {% if key == 0 and content.field_button_text|render %}
-                  {{ content.field_button_text.0 }}
+                  {{ paragraph.field_button_text.0.value|striptags('<i>')|raw }}
                 {% else %}
                   {{ item['#title'] }}
                 {% endif %}
