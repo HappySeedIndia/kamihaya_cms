@@ -317,8 +317,12 @@ function kamihaya_digitalagency_preprocess_html(array &$variables) {
   // Footer colour theme.
   $variables['b5_footer_schema'] = theme_get_setting('b5_footer_schema');
   $variables['b5_footer_bg_schema'] = theme_get_setting('b5_footer_bg_schema');
-  if (!empty(theme_get_setting('b5_back_to_top_shape'))) {
+  $back_to_top_type = \Drupal::config('back_to_top.settings')->get('back_to_top_button_type');
+  if (!empty(theme_get_setting('b5_back_to_top_shape')) && $back_to_top_type === 'text') {
     $variables['back_to_top_shape'] = theme_get_setting('b5_back_to_top_shape');
+  }
+  if (!empty($back_to_top_type)) {
+    $variables['back_to_top_type'] = $back_to_top_type;
   }
 }
 
