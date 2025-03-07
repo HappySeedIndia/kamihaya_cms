@@ -235,6 +235,10 @@ body.back-to-top-scquare #backtotop:before {
   content: "\f062";
 }
 
+body.back-to-top-type-image #backtotop {
+  background-color: transparent !important;
+}
+
 /* Form control */
 .form-control,
 .form-element {
@@ -1413,6 +1417,7 @@ h2.accordion-header::after {
   color: var(--bs-body-color);
   text-decoration: none;
   text-align: center;
+  cursor: pointer;
 }
 
 .expand-collapse a:after {

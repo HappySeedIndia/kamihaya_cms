@@ -32,6 +32,7 @@
     (b5_body_schema == 'custom' ? ' text-custom' : (b5_body_schema == 'light' ? ' text-dark' : (b5_body_schema == 'dark' ? ' text-light' :  ' '))),
     (b5_body_bg_schema != 'none' ? " bg-#{b5_body_bg_schema}" : ' '),
     back_to_top_shape ? 'back-to-top-' ~ back_to_top_shape,
+    back_to_top_type ? 'back-to-top-type-' ~ back_to_top_type,
     'd-flex flex-column h-100'
   ]
 %}
