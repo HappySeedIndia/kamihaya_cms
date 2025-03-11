@@ -165,173 +165,265 @@ function kamihaya_cms_views_extension_query_reduce_duplicate_node_alter(Alterabl
 }
 
 /**
- * Implements hook_query_TAG_alter().
+ * Add the current language condition to the query.
+ *
+ * @param \Drupal\Core\Database\Query\AlterableInterface $query
+ *   The query object.
  */
-function kamihaya_cms_views_extension_query_multiple_field_media_alter(AlterableInterface $query) {
-  kamihaya_cms_views_extension_query_reduce_duplicate_node_alter($query);
-  $fields = &$query->getFields();
+function kamihaya_cms_views_extension_query_current_language_alter(AlterableInterface $query) {
   $tables = &$query->getTables();
-  $conditions = &$query->conditions();
-  $order_by = &$query->getOrderBy();
-  $order_by_keys = array_keys($order_by);
-  $order_by_values = array_values($order_by);
-  $node_tables = [];
-  $duplicate_tables = [];
-  $idx = 0;
-  foreach($tables as $alias => $table) {
-    if (empty($node_tables)) {
-      $idx++;
-    }
-    if (in_array($table['table'], array_keys($duplicate_tables))) {
-      $duplicate_tables[$table['table']][] = $alias;
-      unset($tables[$alias]);
-      continue;
-    }
-    if (count(array_filter($tables, function($table) use ($alias) {
-      return $table['table'] === $alias;
-    })) > 1) {
-      $duplicate_tables[$alias] = [];
-    }
-    if ($table['table'] !== 'node_field_data') {
-      continue;
-    }
-    $table['condition'] = str_replace("$alias.", 'node_field_data.', $table['condition']);
-    $table['alias'] = 'node_field_data';
-    $node_tables[$alias] = $table;
-    unset($tables[$alias]);
-  }
-  foreach($tables as $alias => &$table) {
-    foreach(array_keys($node_tables) as $node_alias) {
-      if (empty($table['condition'])) {
-        continue;
-      }
-      if (strpos($table['condition'], "$node_alias.") !== FALSE) {
-        $table['condition'] = str_replace("$node_alias.", 'node_field_data.', $table['condition']);
-        break;
-      }
-    }
-  }
-  if (empty($node_tables)) {
+  if (!array_key_exists('node_field_data', $tables)) {
     return;
   }
-  $condision = [];
-  $arguments = [];
-  foreach($node_tables as $alias => &$table) {
-    $condision[] = '(' . $table['condition'] . ')';
-    $arguments = array_merge($arguments, $table['arguments']);
-  }
-  $tables = array_merge(array_slice($tables, 0, $idx), [
-    'node_field_data' => [
-      'join type' => 'LEFT',
-      'table' => 'node_field_data',
-      'alias' => 'node_field_data',
-      'condition' => implode(' OR ', $condision),
-      'arguments' => $arguments,
-    ]
-    ], array_slice($tables, $idx));
-
-  foreach($fields as $name => &$field) {
-    foreach($duplicate_tables as $alias => $duplicates) {
-      if (!in_array($field['table'], $duplicates)) {
-        continue;
-      }
-      $field['table'] = $alias;
-    }
-    if (!in_array($field['table'], array_keys($node_tables))) {
+  foreach ($tables as $alias => $table) {
+    if ($table['table'] !== 'media_field_data') {
       continue;
     }
-    $field['table'] = 'node_field_data';
+    $media_alias = $alias;
+    break;
+  }
+  if (empty($media_alias)) {
+    return;
   }
 
-  foreach($conditions as &$cons0) {
-    if (!is_array($cons0) || empty($cons0['field'])) {
+  $media_table = $tables[$media_alias];
+  foreach ($tables as $alias => $table) {
+    if ($table['table'] === 'node_field_data' || $table['table'] === 'media_field_data' || empty($table['condition']) || strpos($media_table['condition'], "$alias.") === FALSE) {
       continue;
     }
-    $con0 = &$cons0['field']->conditions();
-    foreach($con0 as &$cons1) {
-      if (!is_array($cons1) || empty($cons1['field'])) {
-        continue;
-      }
+    $media_ref_table = $tables[$alias]['table'];
+    break;
+  }
 
-      if (!is_object($cons1['field'])) {
-        foreach(array_keys($node_tables) as $node_alias) {
-          _kamihaya_cms_views_extension_update_condition($cons1, $node_alias, 'node_field_data', '.nid');
-        }
-        foreach($duplicate_tables as $alias => $duplicates) {
-          foreach($duplicates as $duplicate) {
-            _kamihaya_cms_views_extension_update_condition($cons1, $duplicate, $alias);
-          }
-        }
-        continue;
-      }
-      $con1 = &$cons1['field']->conditions();
-      foreach($con1 as &$cons2) {
-        if (!is_array($cons2) || empty($cons2['field'])) {
-          continue;
-        }
-        if (!is_object($cons2['field'])) {
-          foreach(array_keys($node_tables) as $node_alias) {
-            _kamihaya_cms_views_extension_update_condition($cons2, $node_alias, 'node_field_data', '.nid');
-          }
-          foreach($duplicate_tables as $alias => $duplicates) {
-            foreach($duplicates as $duplicate) {
-              _kamihaya_cms_views_extension_update_condition($cons2, $duplicate, $alias);
-            }
-          }
-          continue;
-        }
-        $con2 = &$cons2['field']->conditions();
-        foreach($con2 as &$cons3) {
-          if (!is_array($cons3) || empty($cons3['field'])) {
-            continue;
-          }
-          if (!is_object($cons3['field'])) {
-            foreach(array_keys($node_tables) as $node_alias) {
-              _kamihaya_cms_views_extension_update_condition($cons3, $node_alias, 'node_field_data', '.nid');
-            }
-            foreach($duplicate_tables as $alias => $duplicates) {
-              foreach($duplicates as $duplicate) {
-                _kamihaya_cms_views_extension_update_condition($cons3, $duplicate, $alias);
-              }
-            }
-            continue;
-          }
-        }
-      }
-    }
+  if (empty($media_ref_table)) {
+    return;
   }
-  foreach($order_by as $name => $order) {
-    foreach(array_keys($node_tables) as $node_alias) {
-      if (strpos($name, "$node_alias.") === 0) {
-        $index = array_search($name, $order_by_keys);
-        $order_by_keys[$index] = str_replace("$node_alias.", 'node_field_data-', $name);
-        continue 2;
-      }
-    }
-    foreach($duplicate_tables as $alias => $duplicates) {
-      foreach($duplicates as $duplicate) {
-        if (strpos($name, "$duplicate.") !== FALSE) {
-          $index = array_search($name, $order_by_keys);
-          $order_by_keys[$index] = str_replace("$duplicate.", "{$alias}-", $name);
-          continue 3;
-        }
-      }
-    }
+
+  // Add the language condition.
+  $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $default_langcode = \Drupal::languageManager()->getDefaultLanguage()->getId();
+
+  if ($langcode === $default_langcode) {
+    $query->condition("$media_ref_table.langcode", $langcode);
+    return;
   }
-  $order_by = array_combine($order_by_keys, $order_by_values);
-  foreach($order_by as $name => $order) {
-    if (strpos($name, 'delta') === FALSE && strpos($name, 'weight') === FALSE) {
+
+  $connection = \Drupal::database();
+  // Create a subquery to check if the media is translated.
+  $subquery = $connection->select($media_ref_table, 'mrt');
+  $subquery->addField('mrt', 'entity_id');
+  $subquery->where("mrt.langcode = '$langcode'");
+  $subquery->where("mrt.entity_id = node_field_data.nid");
+
+  // Add the language condition.
+    $query->where("($media_ref_table.langcode = :langcode
+      OR ($media_ref_table.langcode = :default_langcode
+      AND NOT EXISTS (" . $subquery->__toString()  . ")))", [
+    ':langcode' => $langcode,
+    ':default_langcode' => $default_langcode,
+  ]);
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function kamihaya_cms_views_extension_query_multiple_media_field_union_alter(AlterableInterface $query) {
+  $tables = &$query->getTables();
+  $media_aliases = [];
+  // Find media_field_data table.
+  foreach($tables as $alias => $table) {
+    if ($table['table'] !== 'media_field_data') {
       continue;
     }
-    $field_name = str_replace('-', '.', $name);
-    $value = '-2147483648';
-    if ($order === 'ASC') {
-      $value = '2147483647';
+    $media_aliases[] = $alias;
+  }
+  if (empty($media_aliases) || count($media_aliases) != 2) {
+    return;
+  }
+
+  // Set the union query before working on the base query.
+  $union_query = unserialize(serialize($query));
+  // Working on the base query.
+  _kamihaya_cms_views_extension_media_query_for_union($query, $media_aliases[1], FALSE);
+  // Add the current language condition to the base query.
+  kamihaya_cms_views_extension_query_current_language_alter($query);
+  $fields = &$query->getFields();
+  $field_alias = array_keys($fields);
+  $order_by = &$query->getOrderBy();
+
+  // Working on the union queries.
+  _kamihaya_cms_views_extension_media_query_for_union($union_query, $media_aliases[0]);
+  // Add the current language condition to the union query.
+  kamihaya_cms_views_extension_query_current_language_alter($union_query);
+  $union_fields = &$union_query->getFields();
+  $field_values = array_values($union_fields);
+  // Align the field alias to the base query.
+  $union_fields = array_combine($field_alias, $field_values);
+  foreach($union_fields as $alias => &$field) {
+    $field['alias'] = $alias;
+  }
+  // Change the order by fields to sort data after the result of the base query.
+  foreach ($order_by as $alias => $order) {
+    if (!array_key_exists($alias, $union_fields)) {
+      continue;
     }
-    $query->addExpression("CASE WHEN $field_name IS NULL THEN $value ELSE $field_name END", $name);
+    $field = &$union_fields[$alias];
+    $union_query->addExpression("({$field['table']}.{$field['field']} + 999999)", $alias);
+    unset($union_fields[$alias]);
+  }
+
+  // Change the order of order by fields in the base query.
+  foreach ($order_by as $alias => $order) {
+    if (!array_key_exists($alias, $fields)) {
+      continue;
+    }
+    $field = &$fields[$alias];
+    unset($fields[$alias]);
+    $fields[$alias] = $field;
+  }
+
+  // Add the union query to the base query.
+  $query->union($union_query);
+}
+
+/**
+ * Check if the condition is related to the remove tables.
+ *
+ * @param array $condition
+ *   The condition array.
+ * @param array $remove_tables
+ *   The tables to be removed.
+ * @return bool
+ *   TRUE if the condition is related to the remove tables.
+ */
+function _kamihaya_cms_views_extension_check_condition(array $condition, array $remove_tables) {
+  if (!is_array($condition) || empty($condition['field']) || !is_string($condition['field'])) {
+    return FALSE;
+  }
+  foreach($remove_tables as $table) {
+    if (strpos($condition['field'], "$table.") === FALSE) {
+      continue;
+    }
+    return TRUE;
   }
 }
 
+/**
+ * Update the query for union.
+ *
+ * @param SelectInterface $query
+ *   The union query.
+ * @param string $media_alias
+ *   The media alias.
+ * @param bool $union
+ *   TRUE if the query is for union.
+ */
+function _kamihaya_cms_views_extension_media_query_for_union(SelectInterface $query, $media_alias, $union = TRUE) {
+  $remove_tables = [];
+  $tables = &$query->getTables();
+  $media_table = $tables[$media_alias];
+  $fields = &$query->getFields();
+  $conditions = &$query->conditions();
+  $order_by = &$query->getOrderBy();
+  if ($union) {
+    $query->range(NULL, NULL);
+    $order_by = [];
+  }
+  // Remove tables for other query.
+  foreach($tables as $alias => &$table) {
+    if ($table['table'] === 'node_field_data' || empty($table['condition'])) {
+      continue;
+    }
+    if ($alias === $media_alias) {
+      $remove_tables[] = $alias;
+      unset($tables[$alias]);
+      continue;
+    }
+    if (strpos($media_table['condition'], "{$alias}.") !== FALSE) {
+      $remove_tables[] = $alias;
+      unset($tables[$alias]);
+      continue;
+    }
+  }
+
+  // Remove fields for other query.
+  foreach($fields as $name => &$field) {
+    if (!in_array($field['table'], $remove_tables)) {
+      continue;
+    }
+    if (array_key_exists($name, $order_by)) {
+      unset($order_by[$name]);
+    }
+    unset($fields[$name]);
+  }
+
+  // Remove conditions for other query.
+  foreach($conditions as $idx => &$condition) {
+    if (!is_array($condition) || empty($condition['field'])) {
+      continue;
+    }
+
+    if (is_string($condition['field']) && _kamihaya_cms_views_extension_check_condition($condition, $remove_tables)) {
+      unset($conditions[$idx]);
+      continue;
+    }
+    if (!is_object($condition['field'])) {
+      continue;
+    }
+    $cons = &$condition['field']->conditions();
+    foreach($cons as $idx1 => &$con) {
+      if (!is_array($con) || empty($con['field'])) {
+        continue;
+      }
+
+      if (is_string($con['field']) && _kamihaya_cms_views_extension_check_condition($con, $remove_tables)) {
+        unset($cons[$idx1]);
+        continue;
+      }
+      if (!is_object($con['field'])) {
+        continue;
+      }
+      $cons2 = &$con['field']->conditions();
+      foreach($cons2 as $idx2 => &$con2) {
+        if (!is_array($con2) || empty($con2['field'])) {
+          continue;
+        }
+
+        if (is_string($con2['field']) && _kamihaya_cms_views_extension_check_condition($con2, $remove_tables)) {
+          unset($cons2[$idx2]);
+          continue;
+        }
+        if (!is_object($con2['field'])) {
+          continue;
+        }
+        $cons3 = &$con2['field']->conditions();
+        foreach($cons3 as $idx3 => &$con3) {
+          if (!is_array($con3) || empty($con3['field'])) {
+            continue;
+          }
+
+          if (is_string($con3['field']) && _kamihaya_cms_views_extension_check_condition($con3, $remove_tables)) {
+            unset($cons3[$idx3]);
+            continue;
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Update condition field and value.
+ *
+ * @param array $condition
+ *   The condition array.
+ * @param string $alias
+ *   The alias to be replaced.
+ * @param string $replace
+ *   The alias to replace.
+ * @param string $field
+ *   The field to be replaced.
+ */
 function _kamihaya_cms_views_extension_update_condition(array &$condition, $alias, $replace, $field = NULL) {
   if (strpos($condition['field'], "$alias.") !== FALSE) {
     $condition['field'] = str_replace("$alias.", "$replace.", $condition['field']);
