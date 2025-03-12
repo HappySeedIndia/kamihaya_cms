@@ -742,3 +742,13 @@ function kamihaya_digitalagency_theme_suggestions_html_alter(array &$suggestions
 	$suggestions[] = 'html__' . $node->bundle();
   }
 }
+
+/**
+ * Implements hook_preprocess_blazy().
+ */
+function kamihaya_digitalagency_preprocess_blazy(&$variables) {
+  // Remove lightbox icon in blazy.
+  if ( !empty($variables['icon']['lightbox'])) {
+    unset($variables['icon']['lightbox']);
+  }
+}
