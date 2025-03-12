@@ -326,4 +326,8 @@
   .node .anchor-links li {
     max-width: unset
   }
+
+  .node details.card.full-width summary .summary-title {
+    line-height: 1;
+  }
 }
