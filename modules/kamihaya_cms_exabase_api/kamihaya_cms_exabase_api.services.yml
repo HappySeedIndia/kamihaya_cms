@@ -1,0 +1,10 @@
+services:
+  kamihaya_cms_exabase_api.client:
+    class: Drupal\kamihaya_cms_exabase_api\ExabaseClient
+    arguments: ['@http_client', '@logger.exabase_log', '@config.factory']
+
+  logger.exabase_log:
+    class: Drupal\kamihaya_cms_exabase_api\Logger\ExabaseLog
+    arguments: ['@logger.log_message_parser']
+    tags:
+      - { name: logger }
