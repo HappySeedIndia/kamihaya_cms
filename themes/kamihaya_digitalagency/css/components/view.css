@@ -1326,3 +1326,12 @@
   position: relative;
   z-index: 1;
 }
+
+.view.header-mb-minus-m.view-grid .no-data-message,
+.view.header-mb-minus-m.view-kamihaya-responsive-table .table:has(.no-data-message) {
+  margin-top: 4.5rem;
+}
+
+.view.header-mb-minus-s.view-grid .no-data-message {
+  margin-top: 2.5rem;
+}
