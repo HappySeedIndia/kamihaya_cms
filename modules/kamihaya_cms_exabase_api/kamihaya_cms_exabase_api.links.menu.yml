@@ -1,0 +1,5 @@
+kamihaya_cms_exabase_api.settings:
+  title: Exabase API Settings
+  parent: system.admin_config_services
+  route_name: kamihaya_cms_exabase_api.settings
+  weight: 10

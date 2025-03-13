@@ -1,0 +1,8 @@
+# Schema for the configuration files of the ExabaseApi module.
+kamihaya_cms_exabase_api.settings:
+  type: config_object
+  label: 'ExabaseApi settings'
+  mapping:
+    endpoint:
+      type: string
+      label: 'Endpoint'

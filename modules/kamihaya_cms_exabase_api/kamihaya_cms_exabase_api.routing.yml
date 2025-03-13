@@ -1,0 +1,7 @@
+kamihaya_cms_exabase_api.settings:
+  path: '/admin/config/system/settings'
+  defaults:
+    _title: 'Exabase API Settings'
+    _form: 'Drupal\kamihaya_cms_exabase_api\Form\SettingsForm'
+  requirements:
+    _permission: 'administer site configuration'
