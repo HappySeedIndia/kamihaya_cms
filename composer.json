@@ -191,6 +191,7 @@
         "drupal/webform_mautic": "^2.0",
         "drupal/webp": "^1.0@RC",
         "drupal/xmlsitemap": "^1.5",
+        "npm-asset/chart.js": "^4.4",
         "npm-asset/jquery": "^2.2"
     }
 }
