@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d29b53790c187d0cf901408bd4b59f50",
+    "content-hash": "f2a83654ef6d4248443dde1c1ae985f7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5676,26 +5676,26 @@
         },
         {
             "name": "drupal/moderation_dashboard",
-            "version": "2.1.5",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/moderation_dashboard.git",
-                "reference": "2.1.5"
+                "reference": "3.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/moderation_dashboard-2.1.5.zip",
-                "reference": "2.1.5",
-                "shasum": "5864fae086ef710cad0615341e6e6214cd2a55a6"
+                "url": "https://ftp.drupal.org/files/projects/moderation_dashboard-3.1.0.zip",
+                "reference": "3.1.0",
+                "shasum": "efe8ce67a4c78291726ef3883f3fb815dfb6f17b"
             },
             "require": {
-                "drupal/core": "^9 || ^10"
+                "drupal/core": "^10.3 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.1.5",
-                    "datestamp": "1694008389",
+                    "version": "3.1.0",
+                    "datestamp": "1725558905",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -10932,6 +10932,30 @@
             },
             "require": {
                 "npm-asset/kurkle--color": ">=0.3.0,<0.4.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/chartjs-adapter-date-fns",
+            "version": "3.0.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/chartjs-adapter-date-fns/-/chartjs-adapter-date-fns-3.0.0.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/chartjs-plugin-datalabels",
+            "version": "2.2.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/chartjs-plugin-datalabels/-/chartjs-plugin-datalabels-2.2.0.tgz"
             },
             "type": "npm-asset",
             "license": [
