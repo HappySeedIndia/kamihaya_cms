@@ -101,9 +101,6 @@
             },
             "drupal/feeds": {
               "KD-491: Fix default value issue on translation during feed import": "https://raw.githubusercontent.com/HappySeedIndia/kamihaya_cms/refs/heads/develop/patches/feeds_fix_default_value_on_translation.patch"
-            },
-            "drupal/moderation_dashboard":{
-              "https://www.drupal.org/project/moderation_dashboard/issues/3450326": "https://git.drupalcode.org/project/moderation_dashboard/-/merge_requests/56.patch"
             }
         }
     },
@@ -198,10 +195,5 @@
         "npm-asset/chartjs-adapter-date-fns": "^3.0",
         "npm-asset/chartjs-plugin-datalabels": "^2.0",
         "npm-asset/jquery": "^2.2"
-    },
-    "scripts": {
-        "clean-chartjs": "chmod +x scripts/clean-chartjs.sh && ./scripts/clean-chartjs.sh",
-        "post-install-cmd": ["@clean-chartjs"],
-        "post-update-cmd": ["@clean-chartjs"]
     }
 }
