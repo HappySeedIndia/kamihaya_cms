@@ -1,0 +1,6 @@
+name: 'Kamihaya CMS AI'
+description: 'Kamihaya CMS AI module.'
+package: Kamihaya
+type: module
+core_version_requirement: '^9.4 || ^10'
+dependencies:

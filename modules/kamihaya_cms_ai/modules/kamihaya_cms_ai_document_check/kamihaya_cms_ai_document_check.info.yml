@@ -1,0 +1,8 @@
+name: 'Kamihaya CMS AI Document Check'
+description: 'Kamihaya CMS AI Document Check module.'
+package: Kamihaya
+type: module
+core_version_requirement: '^9.4 || ^10'
+dependencies:
+  - kamihaya_cms_ai:kamihaya_cms_ai
+  - kamihaya_cms_exabase_api:kamihaya_cms_exabase_api

@@ -1,0 +1,10 @@
+kamihaya_ai:
+  css:
+    base:
+      assets/css/kamihaya-ai.css: {}
+  js:
+    assets/js/kamihaya-ai.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings

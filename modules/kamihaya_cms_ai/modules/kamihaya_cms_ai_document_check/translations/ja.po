@@ -1,0 +1,50 @@
+msgid "Summarize"
+msgstr "要点抽出"
+
+msgid "Copyright check"
+msgstr "著作権法確認"
+
+msgid "Company rule check"
+msgstr "車内ルール確認"
+
+msgid "The request is invalid."
+msgstr "無効なリクエストです。"
+
+msgid "'Failed handling the request."
+msgstr "リクエストの処理に失敗しました。"
+
+msgid "File not found."
+msgstr "ファイルが見つかりません。"
+
+msgid "Failed to summarize the document."
+msgstr "文書の要点抽出に失敗しました。"
+
+msgid "Document summarized."
+msgstr "文書の要点抽出が完了しました。"
+
+msgid "Failed to check copyright."
+msgstr "文書の著作権法の確認に失敗しました。"
+
+msgid "Copyright check completed."
+msgstr "文書の著作権法の確認が完了しました。"
+
+msgid "Failed to check company rule."
+msgstr "文書の車内ルールの確認に失敗しました。"
+
+msgid "Company rule check completed."
+msgstr "文書の車内ルールの確認が完了しました。"
+
+msgid "Starting summarization of the document."
+msgstr "文書の要点抽出中です。"
+
+msgid "Checking the copyright of the document."
+msgstr "文書の著作権法の確認中です。"
+
+msgid "Checking the company rule of the document."
+msgstr "文書の車内ルールの確認中です。"
+
+msgid "Upload a file."
+msgstr "ファイルをアップロードしてください。"
+
+msgid "Check start"
+msgstr "チェックする"

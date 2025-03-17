@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function kamihaya_cms_ai_theme() {
+  return [
+    'kamihaya_ai' => [
+      'variables' => [
+        'background' => NULL,
+        'second_mode' => NULL,
+        'default_mode_name' => NULL,
+        'second_mode_name' => NULL,
+        'bg_image' => NULL,
+        'bg_video' => NULL,
+        'hide_result' => FALSE,
+        'steps' => [],
+        'chat_body' => [],
+      ],
+    ],
+  ];
+}

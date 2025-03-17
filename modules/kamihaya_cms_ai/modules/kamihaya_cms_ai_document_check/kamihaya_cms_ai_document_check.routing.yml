@@ -1,0 +1,22 @@
+kamihaya_cms_ai_document_check.document_check:
+  path: '/ai/document_check'
+  defaults:
+    _controller: '\Drupal\kamihaya_cms_ai_document_check\Controller\KamihayaAiDocumentCheckController::content'
+    _title_callback: '\Drupal\kamihaya_cms_ai_document_check\Controller\KamihayaAiDocumentCheckController::title'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+
+kamihaya_cms_ai_document_check.handler:
+  path: '/ajax-handler-document-check'
+  defaults:
+    _controller: '\Drupal\kamihaya_cms_ai_document_check\Controller\KamihayaAiDocumentCheckAjaxController::handleAjaxRequest'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+
+kamihaya_cms_ai_document_check.settings:
+  path: '/admin/config/application/kamihaya_cms_ai/document_check'
+  defaults:
+    _title: Kamihaya CMS AI Document Check Settings
+    _form: '\Drupal\kamihaya_cms_ai_document_check\Form\Config\KamihayaAiDocumentCheckSettings'
+  requirements:
+    _permission: 'administer site configuration'

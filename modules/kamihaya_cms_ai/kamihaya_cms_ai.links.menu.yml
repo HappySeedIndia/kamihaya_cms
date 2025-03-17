@@ -1,0 +1,5 @@
+kamihaya_cms_ai.settings:
+  title: 'Kamihaya CMS AI Settings'
+  description: 'Kamihaya CMS AI Settings.'
+  route_name: kamihaya_cms_ai.settings
+  parent: system.admin_config_services

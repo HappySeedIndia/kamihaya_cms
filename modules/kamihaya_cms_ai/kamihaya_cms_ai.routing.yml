@@ -1,0 +1,7 @@
+kamihaya_cms_ai.settings:
+  path: '/admin/config/application/kamihaya_cms_ai'
+  defaults:
+    _title: Kamihaya CMS AI Settings
+    _form: '\Drupal\kamihaya_cms_ai\Form\Config\KamihayaAiSettings'
+  requirements:
+    _permission: 'administer site configuration'
