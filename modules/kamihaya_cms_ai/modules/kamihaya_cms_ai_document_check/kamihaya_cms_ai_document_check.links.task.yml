@@ -1,0 +1,6 @@
+kamihaya_cms_ai_document_check.settings:
+  route_name: kamihaya_cms_ai_document_check.settings
+  title: 'Kamihaya CMS AI Document Check Settings'
+  parent: kamihaya_cms_ai.settings
+  description: 'Kamihaya CMS AI Document Check Settings.'
+  weight: 10

@@ -1,0 +1,6 @@
+kamihaya_ai.document_check:
+  js:
+    assets/js/kamihaya-ai-document-check.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings

@@ -1,0 +1,87 @@
+{{  attach_library('kamihaya_cms_ai/kamihaya_ai') }}
+
+{% set class = [
+  'kamihaya-ai-container',
+  background ? 'bg-' ~ background,
+] %}
+
+{# Kamihaya AI Container #}
+<div{{ attributes.addClass(class) }}>
+  {% if background == 'image' and bg_image %}
+    <div class="image-bg">
+      <img src="{{ bg_image }}" alt="{{ image_alt }}">
+    </div>
+  {% elseif background == 'video' %}
+    <div class="video-bg">
+      <video autoplay loop muted playsinline>
+        <source src="{{ bg_video }}" type="video/mp4">
+      </video>
+    </div>
+  {% else %}
+    <div class="gradient-bg">
+      <div class="gradient-bg__holder">
+        <div class="gradient-bg__item gradient-bg__item--1"></div>
+        <div class="gradient-bg__item gradient-bg__item--2"></div>
+      </div>
+    </div>
+  {% endif %}
+  {% if header %}
+    <div class="kamihaya-ai-container-header">
+      {{ header }}
+    </div>
+  {% endif %}
+  {% if sidebar_left %}
+    <div class="sidebar-left">
+      {{ sidebar_left }}
+    </div>
+  {% endif %}
+  <div class="kamihaya-ai-container-main">
+    {% set current_step = current_step is defined ? current_step : 'summarize' %}
+    <input type="hidden" id="current-step" value="{{ current_step }}">
+    <div class="chat-block">
+      <div class="chat-block-body">
+        <div class="chat-block-body-content">
+          {{ chat_body }}
+        </div>
+      </div>
+    </div>
+    <div class="results-block{% if hide_result %} results-block--hidden{% endif %}">
+      {% if steps %}
+        <ul class="results-block-header">
+          {% for key,step in steps %}
+            <li class="results-block-header-item step-{{ key|replace({'_': '-'}) }}" role="presentation">
+              <a href="#step-body-{{ key|replace({'_': '-'}) }}" class="disabled"><span>{{ step.name }}</span></a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      <div class="results-block-body">
+        {% if steps %}
+          {% for key,step in steps %}
+            <div class="results-block-body-item" id="step-body-{{ key|replace({'_': '-'}) }}">
+              {% if step.wait_movie %}
+                <div class="results-block-body-item-movie">
+                  <video loop muted playsinline>
+                    <source src="{{ step.wait_movie }}" type="video/mp4">
+                  </video>
+                </div>
+              {% endif %}
+              {{ step.body }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+  </div>
+  {% if sidebar_right %}
+    <div class="sidebar-right">
+      {{ sidebar_right }}
+    </div>
+  {% endif %}
+    {% if second_mode %}
+      <div class="second-mode-switch">
+        <label for="second-mode-switch">{{ second_mode_name }}</label>
+        <input type="checkbox" id="second-mode-switch" class="second-mode-switch">
+      </div>
+    {% endif %}
+  </div>
+</div>
