@@ -1420,6 +1420,10 @@ h2.accordion-header::after {
   cursor: pointer;
 }
 
+.expand-collapse a:hover {
+  text-decoration: none !important;
+}
+
 .expand-collapse a:after {
   font-family: 'Font Awesome 6 Pro';
   font-weight: 900;

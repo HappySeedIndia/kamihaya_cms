@@ -337,6 +337,11 @@
   background-color: #fafafa;
 }
 
+.views-view-grid .views-col.img-aspect-ratio-even img {
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
 /* .views-view-grid .views-col .views-field {
   height: 100%;
 } */
