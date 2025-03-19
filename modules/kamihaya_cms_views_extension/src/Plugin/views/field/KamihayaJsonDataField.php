@@ -52,12 +52,40 @@ class KamihayaJsonDataField extends FieldPluginBase {
    * {@inheritdoc}
    */
   public function render(ResultRow $row) {
+    // $value = $this->getValue($row);
+    // $render_value = $this->options['render_value'];
+    // if (empty($render_value) || empty($value)) {
+    //   return parent::render($row);;
+    // }
+    // $json = json_decode($value, TRUE);
+    // return $this->getAttributeValue($json, $render_value);
+
+    static $json_cache = [];
+
+    $entity = $row->_entity;
+    $field_name = $this->field;
+    $entity_id = $entity->id();
     $value = $this->getValue($row);
-    $render_value = $this->options['render_value'];
-    if (empty($render_value) || empty($value)) {
-      return parent::render($row);;
+
+    if (empty($field_name) || empty($value)) {
+      return parent::render($row);
     }
-    $json = json_decode($value, TRUE);
+
+    // Create cache key from entity ID and field name.
+    $cache_key = $entity_id . ':' . $field_name;
+
+    // Decode JSON data if not exists in cache.
+    if (empty($json_cache[$cache_key])) {
+      $json_cache[$cache_key] = json_decode($value, TRUE);
+    }
+
+    $json = $json_cache[$cache_key];
+
+    if (!is_array($json)) {
+      return parent::render($row);
+    }
+
+    $render_value = $this->options['render_value'];
     return $this->getAttributeValue($json, $render_value);
   }
 
