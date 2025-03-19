@@ -52,7 +52,7 @@ class KamihayaAiDocumentCheckController extends KamihayaAiControllerBase {
    */
   public function content() {
     $theme = parent::content();
-    $config = $this->config('kamihaya_ai_document_check.settings');
+    $config = $this->config('kamihaya_ai_cms_document_check.settings');
 
     // Get the summarize wait movie.
     $fid = $config->get('summarize');

@@ -45,21 +45,21 @@ class KamihayaAiDocumentCheckSettings extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'kamihaya_ai_document_check_admin_settings';
+    return 'kamihaya_cms_ai_document_check_admin_settings';
   }
 
   /**
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return ['kamihaya_ai_document_check.settings'];
+    return ['kamihaya_cms_ai_document_check.settings'];
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->configFactory()->getEditable('kamihaya_ai_document_check.settings');
+    $config = $this->configFactory()->getEditable('kamihaya_cms_ai_document_check.settings');
     // Design settings.
     $form['waiging_movie'] = [
       '#type' => 'details',
@@ -93,7 +93,7 @@ class KamihayaAiDocumentCheckSettings extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $config = $this->configFactory()->getEditable('kamihaya_ai_document_check.settings');
+    $config = $this->configFactory()->getEditable('kamihaya_cms_ai_document_check.settings');
     $form_state->cleanValues();
 
     foreach ($form_state->getValues() as $key => $value) {
