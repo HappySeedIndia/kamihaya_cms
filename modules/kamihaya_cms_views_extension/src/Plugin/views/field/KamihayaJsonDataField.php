@@ -52,14 +52,6 @@ class KamihayaJsonDataField extends FieldPluginBase {
    * {@inheritdoc}
    */
   public function render(ResultRow $row) {
-    // $value = $this->getValue($row);
-    // $render_value = $this->options['render_value'];
-    // if (empty($render_value) || empty($value)) {
-    //   return parent::render($row);;
-    // }
-    // $json = json_decode($value, TRUE);
-    // return $this->getAttributeValue($json, $render_value);
-
     static $json_cache = [];
 
     $entity = $row->_entity;
