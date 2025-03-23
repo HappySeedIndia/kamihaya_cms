@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\node\Entity\NodeType;
 use Drupal\node\NodeInterface;
@@ -19,6 +20,28 @@ function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
   $links = [];
   $anchor_links = [];
   $full_width = FALSE;
+
+  // Get the current node.
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if (empty($node)) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+  $display_repository = \Drupal::service('entity_display.repository');
+
+  // Get the view display.
+  $view_display = $display_repository->getViewDisplay($node->getEntityTypeId(), $node->bundle(), 'default');
+
+  if (empty($view_display)) {
+    return;
+  }
+  // Get the field group settings.
+  $field_group_settings = $view_display->getThirdPartySettings('field_group');
+  if (empty($field_group_settings)) {
+    return;
+  }
+  $sticky = FALSE;
   foreach($variables['content'] as $name => &$element) {
     if (is_array($element) && array_key_exists('anchor_links', $element)) {
       $anchor_links = &$element['anchor_links'];
@@ -29,11 +52,21 @@ function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
     if (!empty($element['#attributes']['class']) && in_array('full-width', $element['#attributes']['class'])) {
       $full_width = TRUE;
     }
+    if (!$sticky && !empty($field_group_settings[$name]['format_settings']['anchor_link_sticky'])) {
+      $sticky = TRUE;
+    }
 
     $links[$element['#id']] = [
       'title' => $element['#title'],
       'url' => Url::fromUserInput("#{$element['#id']}"),
+      'attributes' => [
+        'class' => ['btn', 'btn-primary'],
+      ],
     ];
+
+    if (!empty($field_group_settings[$name]['format_settings']['anchor_link_sticky'])) {
+      $links[$element['#id']]['attributes']['class'][] = 'sticky-item';
+    }
   }
   if (empty($anchor_links) && !empty($variables['content']['anchor_links'])) {
     $anchor_links = &$variables['content']['anchor_links'];
@@ -43,6 +76,11 @@ function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
   }
   $anchor_links['#links'] = $links;
   $anchor_links['#attributes']['class'] = ['anchor-links'];
+  if ($sticky) {
+    $anchor_links['#attributes']['class'][] = 'sticky';
+    $anchor_links['#prefix'] = '<div class="sticky-end"></div>';
+    $variables['#attached']['library'][] = 'kamihaya_cms_content_type/anchor-link-sticky';
+  }
   if ($full_width) {
     $variables['#attached']['html_head'][] = [
       [
@@ -190,4 +228,58 @@ function kamihaya_cms_content_type_node_load(array $nodes) {
       $node->set($field_name, $media->id());
     }
   }
+}
+
+/**
+ * Implements hook_entity_view_display_alter().
+ */
+function kamihaya_cms_content_type_form_entity_view_display_edit_form_alter(&$form, FormStateInterface $form_state) {
+  $form['#process'][] = 'kamihaya_cms_content_type_entity_view_display_edit_form_process';
+}
+
+/**
+ * Add Regions to 'Manage display' screen.
+ *
+ * @param array $form
+ *   The form to add layout fieldset and extra Display Suite fields.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ *
+ * @return array
+ *   The altered form
+ */
+function kamihaya_cms_content_type_entity_view_display_edit_form_process(array $form, FormStateInterface $form_state) {
+  if (empty($form['#fieldgroups'])) {
+    return;
+  }
+
+  $manager = \Drupal::service('plugin.manager.field_group.formatters');
+  $field_group_form_state = $form_state->get('field_group');
+  if (empty($field_group_form_state)) {
+    return;
+  }
+  foreach ($form['#fieldgroups'] as $field_group) {
+    if (empty($form['fields'][$field_group]['format']['format_settings']['settings']) || empty($field_group_form_state[$field_group])) {
+      continue;
+    }
+
+    $group = $field_group_form_state[$field_group];
+    $plugin = $manager->getInstance([
+      'format_type' => $group->format_type,
+      'configuration' => [
+        'label' => $group->label,
+        'settings' => $group->format_settings,
+      ],
+      'group' => $group,
+    ]);
+
+    $form['fields'][$field_group]['format']['format_settings']['settings']['anchor_link_sticky'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Sticky anchor links'),
+      '#default_value' => $plugin->getSetting('anchor_link_sticky'),
+    ];
+  }
+
+  return $form;
+
 }

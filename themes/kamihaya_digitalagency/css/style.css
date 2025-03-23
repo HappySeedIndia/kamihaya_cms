@@ -732,6 +732,10 @@ progress {
   height: auto !important;
 }
 
+.img-width-auto img {
+  width: auto !important;
+}
+
 .figure {
   display: inline-block;
 }

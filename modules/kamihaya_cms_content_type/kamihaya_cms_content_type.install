@@ -3,8 +3,14 @@
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
-use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\taxonomy\Entity\Vocabulary;
+
+/**
+ * Implements hook_install().
+ */
+function kamihaya_cms_content_type_install() {
+  module_set_weight('kamihaya_cms_content_type', 10);
+}
 
 /**
  * Update configs.
@@ -335,6 +341,13 @@ function kamihaya_cms_content_type_update_10010() {
   foreach($content_types as $content_type) {
     _kamihaya_cms_common_add_paragraph('node', $content_type, 'background_image', 'field_body');
   }
+}
+
+/**
+ * Update the module weight.
+ */
+function kamihaya_cms_content_type_update_10011() {
+  module_set_weight('kamihaya_cms_content_type', 10);
 }
 
 /**
