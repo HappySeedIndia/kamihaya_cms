@@ -297,19 +297,70 @@
   align-items: center;
   text-decoration: none;
   padding: 1rem;
-  background-color: var(--bs-light);
-  color: var(--bs-body-color);
+  background-color: var(--bs-btn-bg);
+  color: var(--bs-btn-color);
   font-size: 1.1rem;
   position: relative;
+  border-radius: var(--bs-border-radius);
 }
 
 .node .anchor-links li a:before {
-  content: '\f063';
+  content: '\f103';
   font-family: 'Font Awesome 6 Pro';
   font-weight: 900;
   font-size: 1.5rem;
   position: absolute;
   left: 15px;
+}
+
+.node .anchor-links.sticky {
+  position: fixed;
+  width: 100vw;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  background-color: rgb(var(--bs-secondary-bg-rgb), 0.7);
+  padding-bottom: 1rem;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.node .anchor-links.sticky.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInSlideUp 0.3s forwards;
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.node .anchor-links.sticky li {
+  display: none;
+}
+
+.node .anchor-links.sticky li:has(a.sticky-item) {
+  display: block;
+}
+
+.node .anchor-links.sticky.normal-position {
+  position: relative;
+  padding-bottom: 3rem;
+  padding-left: 0;
+  padding-right: 0;
+  width: auto;
+  background-color: transparent;
+}
+
+.node .anchor-links.sticky.anchor-links.sticky.normal-position li {
+  display: block;
 }
 
 @media (max-width: 991px) {
@@ -329,5 +380,11 @@
 
   .node details.card.full-width summary .summary-title {
     line-height: 1;
+  }
+
+  .node .anchor-links.sticky {
+    width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 }

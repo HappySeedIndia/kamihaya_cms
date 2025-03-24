@@ -1,0 +1,6 @@
+anchor-link-sticky:
+  version: 1.x
+  js:
+    assets/js/anchor-link-sticky.js: {}
+  dependencies:
+    - core/jquery
