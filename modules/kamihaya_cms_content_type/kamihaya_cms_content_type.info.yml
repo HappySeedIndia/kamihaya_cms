@@ -5,7 +5,7 @@ package: Kamihaya
 description: 'Kamihaya content type for Kamihaya CMS.'
 
 dependencies:
-  - drupa;field
+  - drupal:field
   - drupal:layout_discovery
   - drupal:node
   - drupal:taxonomy
