@@ -164,7 +164,7 @@
     data.step = step;
 
     // Send the ajax request.
-    sendAjaxRequest('/ajax-handler-document-check', data, function(response) {
+    sendAjaxRequest(Drupal.url('ajax-handler-document-check'), data, function(response) {
       ajaxSuccess(response, step, responseKey, loadingAnimation, chatBlock, headerTab);
       if (nextCallback) {
         nextCallback();
