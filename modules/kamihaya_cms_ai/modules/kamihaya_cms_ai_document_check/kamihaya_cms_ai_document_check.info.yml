@@ -6,3 +6,6 @@ core_version_requirement: '^9.4 || ^10'
 dependencies:
   - kamihaya_cms_ai:kamihaya_cms_ai
   - kamihaya_cms_exabase_api:kamihaya_cms_exabase_api
+
+'interface translation project': kamihaya_cms_ai_document_check
+'interface translation server pattern': 'profiles/contrib/kamihaya_cms/modules/kamihaya_cms_ai/modules/kamihaya_cms_ai_document_check/translations/%language.po'

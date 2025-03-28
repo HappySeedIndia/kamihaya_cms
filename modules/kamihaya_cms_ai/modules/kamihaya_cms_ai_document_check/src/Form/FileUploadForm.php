@@ -37,7 +37,7 @@ class FileUploadForm extends FormBase {
 
     $form['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Check starrt'),
+      '#value' => $this->t('Check start'),
       '#attributes' => ['id' => 'document-check-start'],
       '#states' => [
         'visible' => [
