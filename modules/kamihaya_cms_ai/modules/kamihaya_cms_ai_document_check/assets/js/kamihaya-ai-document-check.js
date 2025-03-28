@@ -197,7 +197,7 @@
       // Add message to chat.
       child = document.createElement('div');
       child.className = 'chat-block-body-item chat-block-body-item--info';
-      child.innerHTML = response.message;
+      child.innerHTML = Drupal.t(response.message);
       chatBlock.appendChild(child);
     }
     // Display the result.
@@ -228,7 +228,7 @@
     if (error.message) {
       child = document.createElement('div');
       child.className = 'chat-block-body-item chat-block-body-item--error';
-      child.innerHTML = error.message;
+      child.innerHTML = Drupal.t(error.message);
       chatBlock.appendChild(child);
     }
   }
