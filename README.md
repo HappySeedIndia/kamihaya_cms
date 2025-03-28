@@ -1,6 +1,7 @@
 ## Kamihaya CMS
 
-Kamihaya CMS is Drupal distribution developed specifically to meet Japanese Digital Agency website guidelines 1.3.4. It's packed with essential modules that are included in most Drupal projects, that speed up your development, and provides you with standardized configurations, making your life easier.
+Kamihaya CMS is Drupal distribution developed specifically to meet Japanese Digital Agency website guidelines 1.3.4. 
+It's packed with essential modules that are included in most Drupal projects, that speed up your development, and provides you with standardized configurations, making your life easier.
 
 ## Get Started
 
