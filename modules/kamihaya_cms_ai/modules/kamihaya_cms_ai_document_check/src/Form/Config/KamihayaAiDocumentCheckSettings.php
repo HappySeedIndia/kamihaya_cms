@@ -22,14 +22,14 @@ class KamihayaAiDocumentCheckSettings extends KamihayaAiSettingsBase {
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return ['kamihaya_ai_cms_document_check.settings'];
+    return ['kamihaya_cms_ai_document_check.settings'];
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->configFactory()->getEditable('kamihaya_ai_cms_document_check.settings');
+    $config = $this->configFactory()->getEditable('kamihaya_cms_ai_document_check.settings');
 
     $form = parent::buildForm($form, $form_state);
 
@@ -66,7 +66,7 @@ class KamihayaAiDocumentCheckSettings extends KamihayaAiSettingsBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $config = $this->configFactory()->getEditable('kamihaya_ai_cms_document_check.settings');
+    $config = $this->configFactory()->getEditable('kamihaya_cms_ai_document_check.settings');
     $form_state->cleanValues();
 
     parent::submitForm($form, $form_state);
