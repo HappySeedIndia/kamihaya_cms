@@ -53,6 +53,22 @@ msgstr "文書の著作権法の確認中です。"
 msgid "Checking the company rule of the document."
 msgstr "文書の車内ルールの確認中です。"
 
+#: assets/js/kamihaya-ai-document-check.js:0
+msgid "The process has been stopped."
+msgstr "処理が中断されました。"
+
+#: assets/js/kamihaya-ai-document-check.js:0
+msgid "The result isn't created because the process has been suspended"
+msgstr "処理を途中で止めたため、結果が生成されませんでした。"
+
+#: src/Form/FileUploadForm.php:47
+msgid "<p class='welcome'>Hello @name!</p>"
+msgstr ""
+
+#: src/Form/FileUploadForm.php:52
+msgid "<p>Let's check your document.</p>"
+msgstr ""
+
 #: src/Controller/KamihayaAiDocumentCheckAjaxController.php:59
 msgid "Invalid request."
 msgstr "不正なリクエストです"
@@ -109,22 +125,30 @@ msgstr "著作権法確認"
 msgid "Company rule check"
 msgstr "車内ルール確認"
 
-#: src/Form/FileUploadForm.php:29
+#: src/Form/FileUploadForm.php:47
+msgid "<p class='welcome'>Hello @name!</p>"
+msgstr "<p class='welcome'>こんにちは、@nameさん！</p>"
+
+#: src/Form/FileUploadForm.php:52
+msgid "<p>Let's check your document.</p>"
+msgstr "<p>今日も一緒に文書チェックしましょう！</p>"
+
+#: src/Form/FileUploadForm.php:57
 msgid "Upload a file"
 msgstr "ファイルをアップロードしてください。"
 
-#: src/Form/FileUploadForm.php:31
+#: src/Form/FileUploadForm.php:59
 msgid "Allowed extensions: doc, docx"
 msgstr "許可された拡張子: doc, docx"
 
-#: src/Form/FileUploadForm.php:40
+#: src/Form/FileUploadForm.php:68
 msgid "Check start"
 msgstr "チェックする"
 
-#: src/Form/Config/KamihayaAiDocumentCheckSettings.php:66
+#: src/Form/Config/KamihayaAiDocumentCheckSettings.php:39
 msgid "Waiting Movie"
-msgstr "動画の読み込み中"
+msgstr "処理待ち動画"
 
-#: src/Form/Config/KamihayaAiDocumentCheckSettings.php:67
+#: src/Form/Config/KamihayaAiDocumentCheckSettings.php:40
 msgid "Upload a movie file for waiting ."
-msgstr "読み込み中の動画をアップロードしてください"
+msgstr "処理待ちの動画をアップロードしてください"
