@@ -1,4 +1,6 @@
 (function (Drupal, drupalSettings) {
+  let suspend = false;
+
   Drupal.behaviors.documentCheckStart = {
     attach: function (context, settings) {
       let startButton = document.getElementById('document-check-start');
@@ -40,6 +42,17 @@
           });
         }
       }
+
+      let stopButtons = document.querySelectorAll('.btn-stop');
+      if (stopButtons) {
+        for (let i = 0; i < stopButtons.length; i++) {
+          stopButtons[i].addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            documentCheckSuspend();
+          });
+        }
+      }
     }
   };
 
@@ -60,6 +73,12 @@
     fetch(url, options)
       .then(response => response.json())
       .then(result => {
+        if (suspend) {
+          return;
+        }
+        if (result.status !== 'success') {
+          throw new Error(result.message);
+        }
         if (callback) callback(result);
       })
       .catch(error => {
@@ -111,6 +130,12 @@
 
   // Execute step function.
   function executeStep(step, data, responseKey, chatMessage, nextCallback = null) {
+    // Set the current step.
+    let stepTag = document.getElementById('current-step');
+    if (stepTag) {
+      stepTag.value = step;
+    }
+
     // Add message to chat.
     let chatBlock = document.getElementsByClassName('chat-block-body-content')[0];
     for (let i = 0; i < chatMessage.length; i++) {
@@ -164,7 +189,7 @@
     data.step = step;
 
     // Send the ajax request.
-    sendAjaxRequest(Drupal.url('ajax-handler-document-check'), data, function(response) {
+    sendAjaxRequest(Drupal.url('ajax-handler-document-check'), data, function (response) {
       ajaxSuccess(response, step, responseKey, loadingAnimation, chatBlock, headerTab);
       if (nextCallback) {
         nextCallback();
@@ -195,15 +220,17 @@
 
     if (response.message) {
       // Add message to chat.
-      child = document.createElement('div');
+      let child = document.createElement('div');
       child.className = 'chat-block-body-item chat-block-body-item--info';
-      child.innerHTML = Drupal.t(response.message);
+      child.innerHTML = response.message;
       chatBlock.appendChild(child);
     }
     // Display the result.
-    let result = response[responseKey];
-    let resultBlock = document.getElementById('step-body-' + step.replace('_', '-'));
-    resultBlock.innerHTML = '<div class="result ' + responseKey.replace('_', '-') + '">' + result + '</div>';
+    if (response[responseKey] !== undefined) {
+      let result = response[responseKey];
+      let resultBlock = document.getElementById('step-body-' + step.replace('_', '-'));
+      resultBlock.innerHTML = '<div class="result ' + responseKey.replace('_', '-') + '">' + result + '</div>';
+    }
   };
 
   // Error handling function.
@@ -225,12 +252,66 @@
       animationTag.remove();
     }
 
-    if (error.message) {
-      child = document.createElement('div');
+    if (error) {
+      // Add message to chat.
+      console.error('Ajax Error:', error);
+      let child = document.createElement('div');
       child.className = 'chat-block-body-item chat-block-body-item--error';
-      child.innerHTML = Drupal.t(error.message);
+      child.innerHTML = error;
       chatBlock.appendChild(child);
+
+      // Display the error to body.
+      let resultBlock = document.getElementById('step-body-' + step.replace('_', '-'));
+      resultBlock.innerHTML = '<div class="result error">' + error + '</div>';
     }
+  }
+
+  // Suspend handling function.
+  function documentCheckSuspend() {
+    // If the process is already suspended, return.
+    if (suspend) return;
+
+    // Get the current step.
+    let stepTag = document.getElementById('current-step');
+    let step;
+    if (stepTag) {
+      step = stepTag.value;
+    }
+
+    if (!step) return;
+
+    // Stop the loading animation.
+    let loadingAnimation = document.querySelector('#step-body-' + step.replace('_', '-') + ' video');
+    if (loadingAnimation) {
+      loadingAnimation.pause();
+    }
+
+    // Change the class of header tab.
+    let headerTab = document.querySelector('.results-block-header-item.step-' + step.replace('_', '-'));
+    if (headerTab) {
+      headerTab.classList.remove('running');
+      headerTab.classList.add('suspended');
+    }
+
+    // Remove the animation tag.
+    let animationTag = document.querySelector('#step-body-' + step + ' .results-block-body-item-movie');
+    if (animationTag) {
+      animationTag.remove();
+    }
+
+    // Add message to chat.
+    let chatBlock = document.getElementsByClassName('chat-block-body-content')[0];
+    let child = document.createElement('div');
+    child.className = 'chat-block-body-item chat-block-body-item--info';
+    child.innerHTML = Drupal.t('The process has been stopped.');
+    chatBlock.appendChild(child);
+
+    // Display the error to body.
+    let resultBlock = document.getElementById('step-body-' + step.replace('_', '-'));
+    resultBlock.innerHTML = '<div class="result suspended">' + Drupal.t("The result isn't created because the process has been suspended"); + '</div>';
+
+    // Set the suspend flag.
+    suspend = true;
   }
 
 })(Drupal, drupalSettings);

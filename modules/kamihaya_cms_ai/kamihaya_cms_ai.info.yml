@@ -4,3 +4,4 @@ package: Kamihaya
 type: module
 core_version_requirement: '^9.4 || ^10'
 dependencies:
+configure: kamihaya_cms_ai.settings

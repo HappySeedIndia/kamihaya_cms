@@ -47,11 +47,16 @@
     </div>
     <div class="results-block{% if hide_result %} results-block--hidden{% endif %}">
       {% if steps %}
-        <ul class="results-block-header">
+        <ul class="results-block-header{% if step_design %} step-design-{{ step_design }}{% endif %}">
+          {% set idx = 0 %}
           {% for key,step in steps %}
+            {% set idx = idx + 1 %}
             <li class="results-block-header-item step-{{ key|replace({'_': '-'}) }}" role="presentation">
               <a href="#step-body-{{ key|replace({'_': '-'}) }}" class="disabled"><span>{{ step.name }}</span></a>
             </li>
+            {% if step_design == 'slider' and idx < steps|length %}
+              <span class="results-block-header-item step-arrow"></span>
+            {% endif %}
           {% endfor %}
         </ul>
       {% endif %}
@@ -64,6 +69,11 @@
                   <video loop muted playsinline>
                     <source src="{{ step.wait_movie }}" type="video/mp4">
                   </video>
+                {% if stoppable %}
+                  <div class="results-block-body-item-stop">
+                    <button class="btn btn-primary button--small btn-stop">{{ 'Suspend'|t }}</button>
+                  </div>
+                {% endif %}
                 </div>
               {% endif %}
               {{ step.body }}

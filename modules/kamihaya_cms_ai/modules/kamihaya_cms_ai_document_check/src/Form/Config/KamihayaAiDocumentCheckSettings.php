@@ -2,44 +2,14 @@
 
 namespace Drupal\kamihaya_cms_ai_document_check\Form\Config;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\file\Entity\File;
+use Drupal\kamihaya_cms_ai\Form\Config\KamihayaAiSettingsBase;
 
 /**
  * Class Kamihaya AI Document Check Settings.
  */
-class KamihayaAiDocumentCheckSettings extends ConfigFormBase {
-
-  /**
-   * Constructs a \Drupal\system\ConfigFormBase object.
-   *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The factory for configuration objects.
-   * @param \Drupal\Core\Config\TypedConfigManagerInterface|null $typedConfigManager
-   *   The typed config manager.
-   * @param \Drupal\Core\Extension\ModuleHandlerInterface|null $moduleHandler
-   *   The module handler.
-   */
-  public function __construct(
-    ConfigFactoryInterface $config_factory,
-    protected $typedConfigManager = NULL,
-    protected $moduleHandler = NULL,
-  ) {
-    parent::__construct($config_factory, $typedConfigManager);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-    $container->get('config.factory'),
-    $container->get('config.typed'),
-    $container->get('module_handler')
-    );
-  }
+class KamihayaAiDocumentCheckSettings extends KamihayaAiSettingsBase {
 
   /**
    * {@inheritdoc}
@@ -52,15 +22,18 @@ class KamihayaAiDocumentCheckSettings extends ConfigFormBase {
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return ['kamihaya_cms_ai_document_check.settings'];
+    return ['kamihaya_ai_cms_document_check.settings'];
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->configFactory()->getEditable('kamihaya_cms_ai_document_check.settings');
-    // Design settings.
+    $config = $this->configFactory()->getEditable('kamihaya_ai_cms_document_check.settings');
+
+    $form = parent::buildForm($form, $form_state);
+
+    // Waiting movie settings.
     $form['waiging_movie'] = [
       '#type' => 'details',
       '#title' => $this->t('Waiting Movie'),
@@ -86,22 +59,28 @@ class KamihayaAiDocumentCheckSettings extends ConfigFormBase {
       ];
     }
 
-    return parent::buildForm($form, $form_state);
+    return $form;
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $config = $this->configFactory()->getEditable('kamihaya_cms_ai_document_check.settings');
+    $config = $this->configFactory()->getEditable('kamihaya_ai_cms_document_check.settings');
     $form_state->cleanValues();
 
-    foreach ($form_state->getValues() as $key => $value) {
-      $config->set($key, $value);
-    }
-    $config->save();
-
     parent::submitForm($form, $form_state);
+
+    foreach ($form_state->getValues() as $key => $value) {
+      if ($key === 'step_design' | empty($value[0])) {
+        continue;
+      }
+      $file = File::load($value[0]);
+      if (!empty($file)) {
+        $file->setPermanent();
+        $file->save();
+      }
+    }
   }
 
 }

@@ -7,11 +7,26 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\user\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * File upload form.
  */
 class FileUploadForm extends FormBase {
+
+  public function __construct(protected AccountProxyInterface $currentUser) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('current_user')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -24,6 +39,19 @@ class FileUploadForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $user = User::load($this->currentUser->id());
+    $name = $user->hasField('field_name') ? $user->get('field_name')->value : $user->getUsername();
+
+    $form['welcome'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t("<p class='welcome'>Hello @name!</p>", ['@name' => $name]),
+    ];
+
+    $form['message'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t("<p>Let's check your document.</p>"),
+    ];
+
     $form['file_upload'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Upload a file'),

@@ -32,6 +32,7 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
     protected ExabaseClient $exabaseClient,
     protected Request $request,
   ) {
+    $this->logger = $this->getLogger('kamihaya_cms_ai_document_check');
   }
 
   /**
@@ -56,7 +57,7 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
     if (empty($data) || empty($data['step'])) {
       return new JsonResponse([
         'status' => 'error',
-        'message' => $this->t('Invalid request.'),
+        'message' => $this->t('The request is invalid.'),
       ], 500);
     }
     $step = $data['step'];
@@ -100,14 +101,14 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
     if (empty($data['fid'])) {
       return [
         'status' => 'error',
-        'message' => $this->t('The request is invalid'),
+        'message' => $this->t('The request is invalid.'),
       ];
     }
     $fid = $data['fid'];
     if (!$fid) {
       return [
         'status' => 'error',
-        'message' => $this->t('The request is invalid'),
+        'message' => $this->t('The request is invalid.'),
       ];
     }
     $file = File::load($fid);
@@ -128,9 +129,11 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
         ];
       }
 
+      $file_name = substr($file->getFilename(), 0, strrpos($file->getFilename(), '.'));
       // Save the result to the session.
       $api_response = [
         'spec_summary' => $result['spec_summary'],
+        'file_name' => $file_name,
       ];
       $session->set(self::SESSION_KEY, $api_response);
 
@@ -141,6 +144,7 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
       ];
     }
     catch (\Exception $e) {
+      $this->logger->error('Exception occurred while summarizing the document: ' . $e->getMessage());
       return [
         'status' => 'error',
         'message' => $this->t('Failed to summarize the document.'),
@@ -177,14 +181,17 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
 
       $api_response['checkresult'] = $result['checkresult'];
       $session->set(self::SESSION_KEY, $api_response);
+
+      $file_name = '<div class="file-name">' . $api_response['file_name'] . '</div>';
       return [
         'status' => 'success',
         'message' => $this->t('Copyright check completed.'),
-        'checkresult' => str_replace(PHP_EOL, '<br/>', $result['checkresult']),
+        'checkresult' => $file_name . $this->convertToTable($result['checkresult']),
       ];
     }
     catch (\Exception $e) {
       $session->remove(self::SESSION_KEY);
+      $this->logger->error('Exception occurred while chacking copyright of the document: ' . $e->getMessage());
       return [
         'status' => 'error',
         'message' => $this->t('Failed to check copyright.'),
@@ -208,6 +215,8 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
     try {
       // Call the check endpoint.
       $result = $this->exabaseClient->postReCheck($api_response['spec_summary'], $api_response['checkresult']);
+      $file_name = '<div class="file-name">' . $api_response['file_name'] . '</div>';
+
       $session->remove(self::SESSION_KEY);
       if (empty($result) || empty($result['recheckresult'])) {
         return [
@@ -219,10 +228,11 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
       return [
         'status' => 'success',
         'message' => $this->t('Company rule check completed.'),
-        'recheckresult' => str_replace(PHP_EOL, '<br/>', $result['recheckresult']),
+        'checkresult' => $file_name . $this->convertToTable($result['checkresult']),
       ];
     }
     catch (\Exception $e) {
+      $this->logger->error('Exception occurred while chacking company rule of the document: ' . $e->getMessage());
       return [
         'status' => 'error',
         'message' => $this->t('Failed to check company rule.'),
@@ -231,6 +241,40 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
     finally {
       $session->remove(self::SESSION_KEY);
     }
+  }
+
+  /**
+   * Convert the result to table.
+   *
+   * @param string $result
+   * @return string
+   *   The result in table format.
+   */
+  private function convertToTable($result) {
+    $result_arry = explode(PHP_EOL, $result);
+    if (empty($result_arry) || count($result_arry) === 1) {
+      return $result;
+    }
+    $table = '<table><thead><tr>';
+    $heads = explode('|', $result_arry[0]);
+    foreach ($heads as $head) {
+      $table .= '<th>' . $head . '</th>';
+    }
+    $table .= '</tr></thead><tbody>';
+    for ($i = 1; $i < count($result_arry); $i++) {
+      $row = str_replace(['-', '|', ''], '', $result_arry[$i]);
+      if (empty($row)) {
+        continue;
+      }
+      $row = explode('|', $result_arry[$i]);
+      $table .= '<tr>';
+      foreach ($row as $cell) {
+        $table .= '<td>' . $cell . '</td>';
+      }
+      $table .= '</tr>';
+    }
+    $table .= '</tbody></table>';
+    return $table;
   }
 
 }

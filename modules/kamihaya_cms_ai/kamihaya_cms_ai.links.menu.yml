@@ -1,4 +1,4 @@
-kamihaya_cms_ai.settings:
+kamihaya_cms_ai.config_menu:
   title: 'Kamihaya CMS AI Settings'
   description: 'Kamihaya CMS AI Settings.'
   route_name: kamihaya_cms_ai.settings

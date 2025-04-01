@@ -16,6 +16,9 @@ function kamihaya_cms_ai_theme() {
         'hide_result' => FALSE,
         'steps' => [],
         'chat_body' => [],
+        'step_design' => NULL,
+        'step_completed' => t('Completed'),
+        'stoppable' => FALSE,
       ],
     ],
   ];

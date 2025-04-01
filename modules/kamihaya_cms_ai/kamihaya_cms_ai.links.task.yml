@@ -1,4 +1,5 @@
 kamihaya_cms_ai.settings:
   route_name: kamihaya_cms_ai.settings
-  title: 'Kamihaya CMS AI Settings'
   base_route: kamihaya_cms_ai.settings
+  title: 'Kamihaya CMS AI Settings'
+  weight: 0
