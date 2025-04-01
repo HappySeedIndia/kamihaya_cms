@@ -699,3 +699,30 @@ function kamihaya_cms_views_extension_preprocess_views_view_flipped_table(array 
     }
   }
 }
+
+/**
+ * Implements hook_views_data().
+ */
+function kamihaya_cms_views_extension_views_data_alter(array &$data): void {
+  $data['views']['table']['group'] = t('Kamihaya Views');
+  $data['views']['table']['join'] = [
+    // #global is a special flag which allows a table to appear all the time.
+    '#global' => [],
+  ];
+
+  $data['views']['kamihaya_cms_views_extension_quantity'] = [
+    'title' => t('Quantity'),
+    'help' => t('Allow to estimate the price based on quantity.'),
+    'field' => [
+      'id' => 'kamihaya_cms_views_extension_quantity',
+    ],
+  ];
+  $data['views']['kamihaya_cms_views_extension_estimate'] = [
+    'title' => t('Price'),
+    'help' => t('Display the estimate.'),
+    'field' => [
+      'id' => 'custom',
+    ],
+  ];
+
+}
