@@ -51,7 +51,11 @@ msgstr "文書の著作権法の確認中です。"
 
 #: assets/js/kamihaya-ai-document-check.js:0
 msgid "Checking the company rule of the document."
-msgstr "文書の車内ルールの確認中です。"
+msgstr "文書の社内ルールの確認中です。"
+
+#: assets/js/kamihaya-ai-document-check.js:0
+msgid "Suspend"
+msgstr "途中で止める"
 
 #: assets/js/kamihaya-ai-document-check.js:0
 msgid "The process has been stopped."
