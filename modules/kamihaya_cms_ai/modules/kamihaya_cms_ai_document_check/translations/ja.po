@@ -61,14 +61,6 @@ msgstr "処理が中断されました。"
 msgid "The result isn't created because the process has been suspended"
 msgstr "処理を途中で止めたため、結果が生成されませんでした。"
 
-#: src/Form/FileUploadForm.php:47
-msgid "<p class='welcome'>Hello @name!</p>"
-msgstr ""
-
-#: src/Form/FileUploadForm.php:52
-msgid "<p>Let's check your document.</p>"
-msgstr ""
-
 #: src/Controller/KamihayaAiDocumentCheckAjaxController.php:59
 msgid "Invalid request."
 msgstr "不正なリクエストです"
