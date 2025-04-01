@@ -99,11 +99,11 @@ msgstr "文書の著作権法の確認が完了しました。"
 
 #: src/Controller/KamihayaAiDocumentCheckAjaxController.php:204;215;228
 msgid "Failed to check company rule."
-msgstr "文書の車内ルールの確認に失敗しました。"
+msgstr "文書の社内ルールの確認に失敗しました。"
 
 #: src/Controller/KamihayaAiDocumentCheckAjaxController.php:221
 msgid "Company rule check completed."
-msgstr "文書の車内ルールの確認が完了しました。"
+msgstr "文書の社内ルールの確認が完了しました。"
 
 #: src/Controller/KamihayaAiDocumentCheckController.php:44
 msgid "Document Check"
@@ -119,7 +119,7 @@ msgstr "著作権法確認"
 
 #: src/Controller/KamihayaAiDocumentCheckController.php:91 src/Form/Config/KamihayaAiDocumentCheckSettings.php:74
 msgid "Company rule check"
-msgstr "車内ルール確認"
+msgstr "社内ルール確認"
 
 #: src/Form/FileUploadForm.php:47
 msgid "<p class='welcome'>Hello @name!</p>"
