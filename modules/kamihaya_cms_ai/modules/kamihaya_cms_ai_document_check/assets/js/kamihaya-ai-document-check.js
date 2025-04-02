@@ -308,7 +308,7 @@
 
     // Display the error to body.
     let resultBlock = document.getElementById('step-body-' + step.replace('_', '-'));
-    resultBlock.innerHTML = '<div class="result suspended">' + Drupal.t("The result isn't created because the process has been suspended"); + '</div>';
+    resultBlock.innerHTML = '<div class="result suspended">' + Drupal.t("The result isn't created because the process has been suspended."); + '</div>';
 
     // Set the suspend flag.
     suspend = true;

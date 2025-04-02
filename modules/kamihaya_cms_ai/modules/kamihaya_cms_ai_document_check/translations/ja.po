@@ -62,7 +62,7 @@ msgid "The process has been stopped."
 msgstr "処理が中断されました。"
 
 #: assets/js/kamihaya-ai-document-check.js:0
-msgid "The result isn't created because the process has been suspended"
+msgid "The result isn't created because the process has been suspended."
 msgstr "処理を途中で止めたため、結果が生成されませんでした。"
 
 #: src/Controller/KamihayaAiDocumentCheckAjaxController.php:59
@@ -122,12 +122,12 @@ msgid "Company rule check"
 msgstr "社内ルール確認"
 
 #: src/Form/FileUploadForm.php:47
-msgid "<p class='welcome'>Hello @name!</p>"
-msgstr "<p class='welcome'>こんにちは、@nameさん！</p>"
+msgid "Hello @name!"
+msgstr "こんにちは、@nameさん！"
 
 #: src/Form/FileUploadForm.php:52
-msgid "<p>Let's check your document.</p>"
-msgstr "<p>今日も一緒に文書チェックしましょう！</p>"
+msgid "Let's check your document."
+msgstr "今日も一緒に文書チェックしましょう！"
 
 #: src/Form/FileUploadForm.php:57
 msgid "Upload a file"

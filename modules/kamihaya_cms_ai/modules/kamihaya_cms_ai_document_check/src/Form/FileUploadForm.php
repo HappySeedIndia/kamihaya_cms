@@ -40,16 +40,16 @@ class FileUploadForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $user = User::load($this->currentUser->id());
-    $name = $user->hasField('field_name') ? $user->get('field_name')->value : $user->getUsername();
+    $name = $user->hasField('field_name') && !empty($user->get('field_name')->value) ? $user->get('field_name')->value : $user->getUsername();
 
     $form['welcome'] = [
       '#type' => 'markup',
-      '#markup' => $this->t("<p class='welcome'>Hello @name!</p>", ['@name' => $name]),
+      '#markup' => "<p class='welcome'>" . $this->t("Hello @name!", ['@name' => $name]) . '</p>',
     ];
 
     $form['message'] = [
       '#type' => 'markup',
-      '#markup' => $this->t("<p>Let's check your document.</p>"),
+      '#markup' => '<p>' . $this->t("Let's check your document.") . '</p>',
     ];
 
     $form['file_upload'] = [

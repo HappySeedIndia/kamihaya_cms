@@ -228,7 +228,7 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
       return [
         'status' => 'success',
         'message' => $this->t('Company rule check completed.'),
-        'checkresult' => $file_name . $this->convertToTable($result['checkresult']),
+        'recheckresult' => $file_name . $this->convertToTable($result['recheckresult']),
       ];
     }
     catch (\Exception $e) {
@@ -251,30 +251,55 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
    *   The result in table format.
    */
   private function convertToTable($result) {
-    $result_arry = explode(PHP_EOL, $result);
-    if (empty($result_arry) || count($result_arry) === 1) {
+    $result_array = explode(PHP_EOL, $result);
+    if (empty($result_array) || count($result_array) === 1) {
       return $result;
     }
-    $table = '<table><thead><tr>';
-    $heads = explode('|', $result_arry[0]);
-    foreach ($heads as $head) {
-      $table .= '<th>' . $head . '</th>';
+    $formated_result = '';
+    $idx = 0;
+    if (strpos($result_array[$idx], '|') === FALSE) {
+      $formated_result .= '<div class="message">' . $result_array[$idx] . '</div>';
+      $idx++;
     }
-    $table .= '</tr></thead><tbody>';
-    for ($i = 1; $i < count($result_arry); $i++) {
-      $row = str_replace(['-', '|', ''], '', $result_arry[$i]);
+    $formated_result .= '<table class="table table-bordered result-table my-4">';
+    $heads = explode('|', $result_array[$idx]);
+    if (!empty($heads)) {
+      $formated_result .= '<thead><tr>';
+      foreach ($heads as $head) {
+        if (empty($head)) {
+          continue;
+        }
+        $formated_result .= '<th>' . $head . '</th>';
+      }
+      $formated_result .= '</tr></thead>';
+    }
+    $idx++;
+    $formated_result .= '<tbody>';
+    for ($i = $idx; $i < count($result_array); $i++) {
+      $idx++;
+      if (strpos($result_array[$i], '|') === FALSE) {
+        break;
+      }
+      $row = str_replace(['-', '|', ' '], '', $result_array[$i]);
       if (empty($row)) {
         continue;
       }
-      $row = explode('|', $result_arry[$i]);
-      $table .= '<tr>';
+
+      $row = explode('|', $result_array[$i]);
+      $formated_result .= '<tr>';
       foreach ($row as $cell) {
-        $table .= '<td>' . $cell . '</td>';
+        if (empty($cell)) {
+          continue;
+        }
+        $formated_result .= '<td>' . $cell . '</td>';
       }
-      $table .= '</tr>';
+      $formated_result .= '</tr>';
     }
-    $table .= '</tbody></table>';
-    return $table;
+    $formated_result .= '</tbody></table>';
+    if ($idx < count($result_array)) {
+      $formated_result .= '<div class="message">' . $result_array[$idx] . '</div>';
+    }
+    return $formated_result;
   }
 
 }
