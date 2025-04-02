@@ -25,3 +25,9 @@ reapply-vbo-events:
     js/reapply-vbo-events.js : {}
   dependencies:
     - core/jquery
+
+estimate:
+  js:
+    js/estimate.js : {}
+  dependencies:
+    - core/jquery
