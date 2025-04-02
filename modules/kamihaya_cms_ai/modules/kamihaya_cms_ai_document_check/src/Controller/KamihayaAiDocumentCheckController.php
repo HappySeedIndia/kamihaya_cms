@@ -8,7 +8,7 @@ use Drupal\kamihaya_cms_ai_document_check\Form\FileUploadForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Base controller for Kamihaya AI.
+ * Controller for handling the document check.
  */
 class KamihayaAiDocumentCheckController extends KamihayaAiControllerBase {
 

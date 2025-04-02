@@ -248,9 +248,9 @@
 }
 
 .chat-block-body-content .welcome {
-  font-size: 2rem;
+  font-size: 1.9rem;
   font-weight: bold;
-  letter-spacing: 1.6px;
+  letter-spacing: 1.2px;
 }
 
 .chat-block-body-content .chat-block-body-item {
@@ -368,7 +368,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 1rem 0.5rem 1.7rem;
+  padding: 0.5rem 1.7rem;
   border-radius: 10px;
   height: 100%;
 }
@@ -441,6 +441,7 @@
 }
 
 .results-block-body .results-block-body-item > div.result {
+  position: relative;
   background-color: #fff;
   border-radius: 10px;
   padding: 1rem;
@@ -449,6 +450,38 @@
   overflow: auto;
   height: 100%;
   width: 100%;
+}
+
+.results-block-body .results-block-body-item>div.result .result-table,
+.results-block-body .results-block-body-item>div.result .message {
+  font-size: 0.9rem;
+}
+
+.results-block-body .results-block-body-item>div.result .result-table > :not(caption) > * > * {
+  padding: 0.5rem;
+}
+
+/* Scrollbar design */
+.results-block-body .results-block-body-item > div.result::-webkit-scrollbar {
+  position: absolute;
+  right: -1.5rem;
+  width: 1rem;
+}
+
+.results-block-body .results-block-body-item > div.result::-webkit-scrollbar-track {
+  border-radius: 20px;
+  border: 1.9px solid #FFF;
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(15px);
+}
+
+.results-block-body .results-block-body-item > div.result::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #FFF;
+}
+
+.results-block-body .results-block-body-item > div.result::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .results-block-body .results-block-body-item > div.result.error {
