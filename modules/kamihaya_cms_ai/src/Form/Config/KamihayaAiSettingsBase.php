@@ -36,6 +36,11 @@ abstract class KamihayaAiSettingsBase extends ConfigFormBase {
       '#default_value' => $config->get('step_design'),
     ];
 
+    $steps = $this->getSteps();
+    if (empty($steps)) {
+      return parent::buildForm($form, $form_state);
+    }
+
     // Waiting movie settings.
     $form['waiging_movie'] = [
       '#type' => 'details',
@@ -43,12 +48,6 @@ abstract class KamihayaAiSettingsBase extends ConfigFormBase {
       '#description' => $this->t('Upload a movie file for waiting .'),
       '#open' => TRUE,
     ];
-
-    $steps = $this->getSteps();
-
-    if (empty($steps)) {
-      return parent::buildForm($form, $form_state);
-    }
 
     foreach ($steps as $key => $step) {
       $form['waiging_movie'][$key] = [
