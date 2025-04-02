@@ -137,10 +137,11 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
       ];
       $session->set(self::SESSION_KEY, $api_response);
 
+      $file_name = '<div class="file-name">' . $api_response['file_name'] . '</div>';
       return [
         'status' => 'success',
         'message' => $this->t('Document summarized.'),
-        'spec_summary' => str_replace(PHP_EOL, '<br/>', $result['spec_summary']),
+        'spec_summary' => $file_name . str_replace(PHP_EOL, '<br/>', $result['spec_summary']),
       ];
     }
     catch (\Exception $e) {

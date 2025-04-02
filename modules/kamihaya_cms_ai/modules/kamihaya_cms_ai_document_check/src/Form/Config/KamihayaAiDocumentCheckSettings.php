@@ -28,43 +28,6 @@ class KamihayaAiDocumentCheckSettings extends KamihayaAiSettingsBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->configFactory()->getEditable('kamihaya_cms_ai_document_check.settings');
-
-    $form = parent::buildForm($form, $form_state);
-
-    // Waiting movie settings.
-    $form['waiging_movie'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Waiting Movie'),
-      '#description' => $this->t('Upload a movie file for waiting .'),
-      '#open' => TRUE,
-    ];
-
-    $steps = [
-      'summarize' => $this->t('Summarize'),
-      'copyright_check' => $this->t('Copyright check'),
-      'company_check' => $this->t('Company rule check'),
-    ];
-
-    foreach ($steps as $key => $step) {
-      $form['waiging_movie'][$key] = [
-        '#type' => 'managed_file',
-        '#title' => $step,
-        '#upload_location' => 'public://document_chheck/waiting_movie/',
-        '#default_value' => $config->get($key),
-        '#upload_validators' => [
-          'file_validate_extensions' => ['mp4'],
-        ],
-      ];
-    }
-
-    return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->configFactory()->getEditable('kamihaya_cms_ai_document_check.settings');
     $form_state->cleanValues();
@@ -81,6 +44,18 @@ class KamihayaAiDocumentCheckSettings extends KamihayaAiSettingsBase {
         $file->save();
       }
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getSteps()
+  {
+    return [
+      'summarize' => $this->t('Summarize'),
+      'copyright_check' => $this->t('Copyright check'),
+      'company_check' => $this->t('Company rule check'),
+    ];
   }
 
 }
