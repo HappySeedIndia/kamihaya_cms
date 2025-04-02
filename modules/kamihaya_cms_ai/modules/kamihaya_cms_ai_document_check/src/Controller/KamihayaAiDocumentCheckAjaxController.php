@@ -137,7 +137,7 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
       ];
       $session->set(self::SESSION_KEY, $api_response);
 
-      $file_name = '<div class="file-name">' . $api_response['file_name'] . '</div>';
+      $file_name = '<div class="file-name">' . $file_name . '</div>';
       return [
         'status' => 'success',
         'message' => $this->t('Document summarized.'),
