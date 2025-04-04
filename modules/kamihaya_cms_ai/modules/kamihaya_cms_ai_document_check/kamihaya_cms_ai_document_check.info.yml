@@ -7,5 +7,7 @@ dependencies:
   - kamihaya_cms_ai:kamihaya_cms_ai
   - kamihaya_cms_exabase_api:kamihaya_cms_exabase_api
 
+configure: kamihaya_cms_ai_document_check.settings
+
 'interface translation project': kamihaya_cms_ai_document_check
 'interface translation server pattern': 'profiles/contrib/kamihaya_cms/modules/kamihaya_cms_ai/modules/kamihaya_cms_ai_document_check/translations/%language.po'

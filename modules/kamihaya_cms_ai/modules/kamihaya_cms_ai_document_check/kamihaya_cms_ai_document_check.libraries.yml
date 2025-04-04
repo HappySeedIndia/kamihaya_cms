@@ -4,3 +4,4 @@ kamihaya_ai.document_check:
   dependencies:
     - core/drupal
     - core/drupalSettings
+    - kamihaya_cms_ai/kamihaya_ai

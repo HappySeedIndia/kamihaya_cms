@@ -1,12 +1,14 @@
 :root,
 .kamihaya-ai-container {
   --text-color: 255, 255, 255;
-  --bg-color: 34, 30, 32;
+  --bg-color: 23, 23, 49;
   --glass-color: 255, 255, 255;
   --glass-border-color: 175, 175, 175;
-  --bg-item-color-0: 54, 169, 225;
-  --bg-item-color-1: 255, 223, 108;
-  --bg-item-color-2: 135, 13, 104;
+  --bg-item-color-0: 57, 55, 205;
+  --bg-item-color-1: 219, 40, 170;
+  --bg-item-color-2: 113, 54, 180;
+  --bg-item-color-2-1: 185, 54, 97;
+  --bg-item-color-2-2: 243, 199, 134;
   --bg-chat-item: 255, 255, 255;
   --light-text-alert: #b97e96;
   --font-family: Noto Sans, Noto Sans JP, sans-serif;
@@ -73,7 +75,7 @@
   filter: blur(9vw);
   width: 35vw;
   height: 35vw;
-  background-color: rgba(var('--bg-item-color-0'), .5);
+  background-color: rgba(var(--bg-item-color-0), .5);
 }
 
 .kamihaya-ai-container .gradient-bg__holder,
@@ -151,44 +153,44 @@
 @-webkit-keyframes move2 {
   0% {
     transform: translateX(-10%) rotate(0);
-    background-color: rgba(135, 13, 104, .5)
+    background-color: rgba(var(-bg-item-color-2), .5)
   }
 
   33% {
     transform: translateX(30%) rotate(-130deg);
-    background-color: rgba(255, 0, 0, .5)
+    background-color: rgba(var(--bg-item-color-2-1), .5)
   }
 
   66% {
     transform: translateX(15%) rotate(-230deg);
-    background-color: rgba(27, 173, 100, .5)
+    background-color: rgba(var(--bg-item-color-2-2)), .5)
   }
 
   100% {
     transform: translateX(-10%) rotate(-360deg);
-    background-color: rgba(135, 13, 104, .5)
+    background-color: rgba(var(-bg-item-color-2), .5)
   }
 }
 
 @keyframes move2 {
   0% {
     transform: translateX(-10%) rotate(0);
-    background-color: rgba(135, 13, 104, .5)
+    background-color: rgba(var(-bg-item-color-2), .5)
   }
 
   33% {
     transform: translateX(30%) rotate(-130deg);
-    background-color: rgba(255, 0, 0, .5)
+    background-color: rgba(var(--bg-item-color-2-1), .5)
   }
 
   66% {
     transform: translateX(15%) rotate(-230deg);
-    background-color: rgba(27, 173, 100, .5)
+    background-color: rgba(var(--bg-item-color-2-2), .5)
   }
 
   100% {
     transform: translateX(-10%) rotate(-360deg);
-    background-color: rgba(135, 13, 104, .5)
+    background-color: rgba(var(-bg-item-color-2), .5)
   }
 }
 
@@ -245,7 +247,8 @@
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .chat-block-body-content .welcome {
@@ -507,9 +510,27 @@
   backdrop-filter: blur(30px);
 }
 
-
 .results-block-body .results-block-body-item>div.result .file-name {
   font-size: 1.2rem;
   font-weight: bold;
   margin: 2rem auto;
+}
+
+.results-block-body .results-block-body-item>div.result h3,
+.results-block-body .results-block-body-item>div.result h4 {
+  padding-left: 0;
+  font-weight: bold;
+}
+
+.results-block-body .results-block-body-item > div.result h3:after,
+.results-block-body .results-block-body-item > div.result h4:before {
+  display: none;
+}
+
+.results-block-body .results-block-body-item>div.result hr{
+  margin: 1.5rem 0;
+}
+
+.results-block-body .results-block-body-item>div.result p {
+  margin-bottom: 0;
 }

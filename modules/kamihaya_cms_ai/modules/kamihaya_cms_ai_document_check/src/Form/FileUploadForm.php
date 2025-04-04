@@ -67,43 +67,8 @@ class FileUploadForm extends FormBase {
       '#type' => 'submit',
       '#value' => $this->t('Check start'),
       '#attributes' => ['id' => 'document-check-start'],
-      '#states' => [
-        'visible' => [
-          ':input[name="files[file]"]' => ['filled' => TRUE],
-        ],
-      ],
     ];
     return $form;
-  }
-
-  /**
-   * Ajax callback for the submit button.
-   *
-   * @param array $form
-   *   The form.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The form state.
-   */
-  public function ajaxSubmitCallback(array &$form, FormStateInterface $form_state) {
-    $response = new AjaxResponse();
-
-    $file = $form_state->getValue('file_upload');
-    if (!empty($file[0])) {
-      $file_entity = File::load($file[0]);
-      $file_entity->setPermanent();
-      $file_entity->save();
-
-      // 成功メッセージを追加.
-      $message = '<p class="success">File uploaded successfully: ' . $file_entity->getFilename() . '</p>';
-      $response->addCommand(new HtmlCommand('#upload-message', $message));
-    }
-    else {
-      // エラーメッセージ.
-      $message = '<p class="error">Upload failed. Please try again.</p>';
-      $response->addCommand(new HtmlCommand('#upload-message', $message));
-    }
-
-    return $response;
   }
 
   /**
