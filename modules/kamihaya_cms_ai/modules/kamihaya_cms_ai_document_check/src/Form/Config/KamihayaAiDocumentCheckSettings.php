@@ -28,27 +28,6 @@ class KamihayaAiDocumentCheckSettings extends KamihayaAiSettingsBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    $config = $this->configFactory()->getEditable('kamihaya_cms_ai_document_check.settings');
-    $form_state->cleanValues();
-
-    parent::submitForm($form, $form_state);
-
-    foreach ($form_state->getValues() as $key => $value) {
-      if ($key === 'step_design' | empty($value[0])) {
-        continue;
-      }
-      $file = File::load($value[0]);
-      if (!empty($file)) {
-        $file->setPermanent();
-        $file->save();
-      }
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function getSteps()
   {
     return [

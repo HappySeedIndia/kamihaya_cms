@@ -1,0 +1,22 @@
+kamihaya_cms_ai_loan_proposal_draft.loan_proposal_draft:
+  path: '/ai/loan_proposal_draft'
+  defaults:
+    _controller: '\Drupal\kamihaya_cms_ai_loan_proposal_draft\Controller\KamihayaAiLoanProposalDraftController::content'
+    _title_callback: '\Drupal\kamihaya_cms_ai_loan_proposal_draft\Controller\KamihayaAiLoanProposalDraftController::title'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+
+kamihaya_cms_ai_loan_proposal_draft.handler:
+  path: '/ajax-handler-loan-proposal-draft'
+  defaults:
+    _controller: '\Drupal\kamihaya_cms_ai_loan_proposal_draft\Controller\KamihayaAiLoanProposalDraftAjaxController::handleAjaxRequest'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+
+kamihaya_cms_ai_loan_proposal_draft.settings:
+  path: '/admin/config/application/kamihaya_cms_ai/loan_proposal_draft'
+  defaults:
+    _title: Kamihaya CMS AI Loan Proposal Draft Settings
+    _form: '\Drupal\kamihaya_cms_ai_loan_proposal_draft\Form\Config\KamihayaAiLoanProposalDraftSettings'
+  requirements:
+    _permission: 'administer site configuration'

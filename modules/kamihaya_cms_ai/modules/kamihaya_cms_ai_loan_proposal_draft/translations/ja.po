@@ -1,0 +1,155 @@
+# $Id$
+#
+# Japanese translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  assets/js/kamihaya-ai-loan-proposal-draft.js: n/a
+#  src/Controller/KamihayaAiLoanProposalDraftAjaxController.php: n/a
+#  src/Controller/KamihayaAiLoanProposalDraftController.php: n/a
+#  src/Form/Config/KamihayaAiLoanProposalDraftSettings.php: n/a
+#  src/Form/CompanySelectForm.php: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-08 10:58+0900\n"
+"PO-Revision-Date: 2025-04-08 12:39+0900\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+
+#: src/Form/Config/KamihayaAiLoanProposalDraftSettings.php:34
+msgid "Summary Extraction"
+msgstr "要点抽出"
+
+#: src/Form/Config/KamihayaAiLoanProposalDraftSettings.php:35
+#: src/Controller/KamihayaAiLoanProposalDraftController.php:44
+#: src/Controller/KamihayaAiLoanProposalDraftController.php:137
+msgid "Loan Proposal Draft"
+msgstr "融資稟議書ドラフト"
+
+#: src/Form/CompanySelectForm.php:51
+msgid "Hello @name!"
+msgstr "こんにちは、@nameさん!"
+
+#: src/Form/CompanySelectForm.php:56
+msgid "Which company do you want to create a Loan Proposal?"
+msgstr "今日はどの企業の融資稟議書を作成したいですか？"
+
+#: src/Form/CompanySelectForm.php:63
+msgid "There are no companies to select."
+msgstr "企業が選択されていません"
+
+#: src/Form/CompanySelectForm.php:70
+msgid "Select a company"
+msgstr "企業を選択する"
+
+#: src/Form/CompanySelectForm.php:97
+msgid "Past loan proposal documents"
+msgstr "過去の融資稟議書をアップロードしてください"
+
+#: src/Form/CompanySelectForm.php:99
+msgid "Allowed extensions: pdf"
+msgstr "使用可能な拡張子: pdf"
+
+#: src/Form/CompanySelectForm.php:112
+msgid "Do you wan to check the prompt or draft a loan proposal?"
+msgstr ""
+"稟議書を作成しますか？\n"
+"プロンプトチェックをしますか？"
+
+#: src/Form/CompanySelectForm.php:117
+msgid "Prompt check"
+msgstr "プロンプトチェックをする"
+
+#: src/Form/CompanySelectForm.php:126
+msgid "Draft loan proposal"
+msgstr "稟議書を作成する"
+
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:60
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:104
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:113
+msgid "The request is invalid."
+msgstr "リクエストは無効です"
+
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:79
+msgid "Failed handling the request."
+msgstr "リクエストの処理に失敗しました"
+
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:120
+msgid "File not found."
+msgstr "ファイルが見つかりません"
+
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:131
+msgid "Failed to extract the document."
+msgstr "文書の抽出に失敗しました"
+
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:141
+msgid "Failed to get the pdf summary prompt."
+msgstr "pdfの要約プロンプトの取得に失敗しました"
+
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:159
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:189
+msgid "Failed to summarize the document."
+msgstr "文書の要約に失敗しました"
+
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:179
+msgid "Document summarized."
+msgstr "文書の要約が完了しました"
+
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:207
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:248
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:266
+msgid "Failed to draft the loan proposal."
+msgstr "融資稟議書の作成に失敗しました"
+
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:216
+msgid "Failed to get company detail."
+msgstr "会社の詳細を取得できませんでした"
+
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:226
+msgid "Failed to get the loan document prompt."
+msgstr "融資稟議のプロンプトを取得できませんでした"
+
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:254
+msgid "Loan proposal drafted."
+msgstr "融資稟議書作成が完了しました"
+
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:284
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:299
+msgid "Failed to get the prompt."
+msgstr "プロンプトを取得できませんでした"
+
+#: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:290
+msgid "Prompt retrieved."
+msgstr "プロンプトを取得しました"
+
+#: src/Controller/KamihayaAiLoanProposalDraftController.php:133
+msgid "Summarize"
+msgstr "要点"
+
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:58
+msgid "Starting summarization of the document."
+msgstr "文書の要点抽出中です"
+
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:66
+msgid "Drafting the loan proposal."
+msgstr "融資稟議書の作成中です"
+
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:129
+msgid "Execute with the edited prompt"
+msgstr "プロンプトを上書きして稟議書を作成する"
+
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:136
+msgid "Execute without the edited prompt"
+msgstr "プロンプトを上書きせずに稟議書を作成する"
+
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:189
+msgid "Starting summarization of the document with edited prompts."
+msgstr "編集されたプロンプトで文書の要約を開始する"

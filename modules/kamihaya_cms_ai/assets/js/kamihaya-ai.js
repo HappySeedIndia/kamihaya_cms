@@ -83,20 +83,22 @@
   }
 
   // Execute step function.
-  executeStep = function(step, data, responseKey, chatMessage, nextCallback = null) {
+  executeStep = function (step, data, responseKey, chatMessage, nextCallback = null, promptKey = null) {
     // Set the current step.
     let stepTag = document.getElementById('current-step');
     if (stepTag) {
       stepTag.value = step;
     }
 
-    // Add message to chat.
     let chatBlock = document.getElementsByClassName('chat-block-body-content')[0];
-    for (let i = 0; i < chatMessage.length; i++) {
-      let child = document.createElement('div');
-      child.className = 'chat-block-body-item chat-block-body-item--info';
-      child.innerHTML = chatMessage[i];
-      chatBlock.appendChild(child);
+    // Add message to chat.
+    if (chatMessage.length > 0) {
+      for (let i = 0; i < chatMessage.length; i++) {
+        let child = document.createElement('div');
+        child.className = 'chat-block-body-item chat-block-body-item--info';
+        child.innerHTML = chatMessage[i];
+        chatBlock.appendChild(child);
+      }
     }
 
     // Display result body.
@@ -143,8 +145,8 @@
     data.step = step;
 
     // Send the ajax request.
-    sendAjaxRequest(Drupal.url('ajax-handler-document-check'), data, function (response) {
-      ajaxSuccess(response, step, responseKey, loadingAnimation, chatBlock, headerTab);
+    sendAjaxRequest(Drupal.url(drupalSettings.ajax_url), data, function (response) {
+      ajaxSuccess(response, step, responseKey, loadingAnimation, chatBlock, headerTab, promptKey);
       if (nextCallback) {
         nextCallback();
       }
@@ -154,7 +156,7 @@
   };
 
   // Ajax success handling function.
-  ajaxSuccess = function(response, step, responseKey, loadingAnimation, chatBlock, headerTab) {
+  ajaxSuccess = function (response, step, responseKey, loadingAnimation, chatBlock, headerTab, promptKey = null) {
     // Stop the loading animation.
     if (loadingAnimation) {
       loadingAnimation.pause();
@@ -183,8 +185,16 @@
     if (response[responseKey] !== undefined) {
       let result = response[responseKey];
       let resultBlock = document.getElementById('step-body-' + step.replace('_', '-'));
-      resultBlock.innerHTML = '<div class="result ' + responseKey.replace('_', '-') + '">' + result + '</div>';
+
+      let promptHTML = '';
+      // Display the prompt.
+      if (response[promptKey] !== undefined) {
+        let prompt = response[promptKey];
+        promptHTML = '<div class="prompt ' + responseKey.replace('_', '-') + '">' + prompt + '</div>';
+      }
+      resultBlock.innerHTML = '<div class="result ' + responseKey.replace('_', '-') + '">' + result + '</div>' + promptHTML;
     }
+
   };
 
   // Error handling function.

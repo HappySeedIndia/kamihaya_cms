@@ -1,0 +1,19 @@
+step_design: slider
+summarize:
+  - '265'
+draft:
+  - '266'
+summary_format: ''
+output_rule: ''
+start_image:
+  - '297'
+summarize_image:
+  - '294'
+draft_image:
+  - '295'
+complete_image:
+  - '296'
+error_image:
+  - '298'
+new_image:
+  - '299'

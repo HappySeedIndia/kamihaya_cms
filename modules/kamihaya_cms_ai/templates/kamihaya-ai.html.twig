@@ -44,44 +44,79 @@
           {{ chat_body }}
         </div>
       </div>
+      {% if process %}
+        <div class="chat-block-process chat-block-process-hidden">
+          <div class="chat-block-process-content">
+          </div>
+        </div>
+      {% endif %}
     </div>
+
     <div class="results-block{% if hide_result %} results-block--hidden{% endif %}">
       {% if steps %}
+        {% set disp_steps = steps | filter((v, k) => v.name) %}
         <ul class="results-block-header{% if step_design %} step-design-{{ step_design }}{% endif %}">
           {% set idx = 0 %}
-          {% for key,step in steps %}
+          {% for key,step in disp_steps %}
             {% set idx = idx + 1 %}
             <li class="results-block-header-item step-{{ key|replace({'_': '-'}) }}" role="presentation">
               <a href="#step-body-{{ key|replace({'_': '-'}) }}" class="disabled"><span>{{ step.name }}</span></a>
             </li>
-            {% if step_design == 'slider' and idx < steps|length %}
+            {% if step_design == 'slider' and idx < disp_steps|length %}
               <span class="results-block-header-item step-arrow"></span>
             {% endif %}
           {% endfor %}
         </ul>
-      {% endif %}
-      <div class="results-block-body">
-        {% if steps %}
-          {% for key,step in steps %}
-            <div class="results-block-body-item" id="step-body-{{ key|replace({'_': '-'}) }}">
-              {% if step.wait_movie %}
-                <div class="results-block-body-item-movie">
-                  <video loop muted playsinline>
-                    <source src="{{ step.wait_movie }}" type="video/mp4">
-                  </video>
-                {% if stoppable %}
-                  <div class="results-block-body-item-stop">
-                    <button class="btn btn-primary button--small btn-stop">{{ 'Suspend'|t }}</button>
+        <div class="results-block-body">
+          {% if disp_steps %}
+            {% for key,step in disp_steps %}
+              <div class="results-block-body-item" id="step-body-{{ key|replace({'_': '-'}) }}">
+                {% if step.wait_movie %}
+                  <div class="results-block-body-item-movie">
+                    <video loop muted playsinline>
+                      <source src="{{ step.wait_movie }}" type="video/mp4">
+                    </video>
+                    {% if stoppable %}
+                      <div class="results-block-body-item-stop">
+                        <button class="btn btn-primary button--small btn-stop">{{ 'Suspend'|t }}</button>
+                      </div>
+                    {% endif %}
                   </div>
                 {% endif %}
-                </div>
-              {% endif %}
-              {{ step.body }}
-            </div>
-          {% endfor %}
-        {% endif %}
-      </div>
+                {{ step.body }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
   </div>
+  {% if edit_prompt %}
+    <div class="edit-prompt hidden">
+      <div class="edit-prompt-header">
+        <div class="edit-prompt-header-title">
+          {{ 'Check Prompt'|t }}
+        </div>
+        <div class="edit-prompt-header-close">
+          <a href="#" class="prompt-close" aria-label="{{ 'Close'|t }}">
+            <span class="visually-hidden">{{ 'Close'|t }}</span>
+          </a>
+        </div>
+      </div>
+      <div class="edit-prompt-body">
+        <div class="edit-prompt-body-content">
+        </div>
+        <div class="edit-prompt-body-buttons">
+          <button class="btn btn-secondary button--small btn-edit-prompt">{{ 'Edit Prompt'|t }}</button>
+          <button class="btn btn-primary button--small btn-edit-prompt-cancel">{{ 'Cancel'|t }}</button>
+      </div>
+    </div>
+  {% endif %}
+  {% if sidebar_bottom %}
+    <div class="sidebar-bottom">
+      {{ sidebar_bottom }}
+    </div>
+  {% endif %}
   {% if sidebar_right %}
     <div class="sidebar-right">
       {{ sidebar_right }}

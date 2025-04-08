@@ -1,0 +1,6 @@
+kamihaya_ai.loan_proposal_draft:
+  js:
+    assets/js/kamihaya-ai-loan-proposal-draft.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
