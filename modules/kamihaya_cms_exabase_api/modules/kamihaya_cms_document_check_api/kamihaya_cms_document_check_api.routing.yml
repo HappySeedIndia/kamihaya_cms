@@ -1,0 +1,7 @@
+kamihaya_cms_document_check_api.settings:
+  path: '/admin/config/system/settings/document_check_api'
+  defaults:
+    _title: 'Document Check API Settings'
+    _form: 'Drupal\kamihaya_cms_document_check_api\Form\SettingsForm'
+  requirements:
+    _permission: 'administer site configuration'

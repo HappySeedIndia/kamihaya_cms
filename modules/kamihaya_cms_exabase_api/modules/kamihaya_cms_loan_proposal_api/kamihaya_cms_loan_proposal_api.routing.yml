@@ -1,0 +1,7 @@
+kamihaya_cms_loan_proposal_api.settings:
+  path: '/admin/config/system/settings/loan_proposal_api'
+  defaults:
+    _title: 'Loan Proposal API Settings'
+    _form: 'Drupal\kamihaya_cms_loan_proposal_api\Form\SettingsForm'
+  requirements:
+    _permission: 'administer site configuration'

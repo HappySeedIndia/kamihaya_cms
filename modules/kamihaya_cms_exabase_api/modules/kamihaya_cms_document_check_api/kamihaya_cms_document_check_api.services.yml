@@ -1,0 +1,4 @@
+services:
+  kamihaya_cms_document_check_api.client:
+    class: Drupal\kamihaya_cms_document_check_api\ExabaseClient
+    arguments: ['@http_client', '@logger.exabase_log', '@config.factory']

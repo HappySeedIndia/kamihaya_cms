@@ -1,0 +1,8 @@
+# Schema for the configuration files of the Loan Proposal API module.
+kamihaya_cms_loan_proposal_api.settings:
+  type: config_object
+  label: 'Loan Proposal API settings'
+  mapping:
+    endpoint:
+      type: string
+      label: 'Endpoint'

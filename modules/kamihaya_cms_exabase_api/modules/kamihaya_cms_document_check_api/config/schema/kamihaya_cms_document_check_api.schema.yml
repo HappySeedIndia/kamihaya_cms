@@ -1,0 +1,8 @@
+# Schema for the configuration files of the Document Check API module.
+kamihaya_cms_document_check_api.settings:
+  type: config_object
+  label: 'Document Check API Settings'
+  mapping:
+    endpoint:
+      type: string
+      label: 'Endpoint'

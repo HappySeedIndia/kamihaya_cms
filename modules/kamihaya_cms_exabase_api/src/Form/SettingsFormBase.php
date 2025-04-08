@@ -10,7 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Configure ExabaseApi settings for this site.
  */
-final class SettingsForm extends ConfigFormBase {
+class SettingsFormBase extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
@@ -30,10 +30,11 @@ final class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
+    $config = $this->configFactory()->getEditable($this->getEditableConfigNames()[0]);
     $form['endpoint'] = [
       '#type' => 'url',
       '#title' => $this->t('Exabase API Endpoint'),
-      '#default_value' => $this->config('kamihaya_cms_exabase_api.settings')->get('endpoint'),
+      '#default_value' => $config->get('endpoint'),
     ];
     return parent::buildForm($form, $form_state);
   }
@@ -50,9 +51,8 @@ final class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    $this->config('kamihaya_cms_exabase_api.settings')
-      ->set('endpoint', $form_state->getValue('endpoint'))
-      ->save();
+    $config = $this->configFactory()->getEditable($this->getEditableConfigNames()[0]);
+    $config->set('endpoint', $form_state->getValue('endpoint'))->save();
     parent::submitForm($form, $form_state);
   }
 
