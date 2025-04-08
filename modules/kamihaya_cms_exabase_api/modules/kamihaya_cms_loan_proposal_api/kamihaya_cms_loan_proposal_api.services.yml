@@ -1,0 +1,4 @@
+services:
+  kamihaya_cms_loan_proposal_api.client:
+    class: Drupal\kamihaya_cms_loan_proposal_api\ExabaseClient
+    arguments: ['@http_client', '@logger.exabase_log', '@config.factory']

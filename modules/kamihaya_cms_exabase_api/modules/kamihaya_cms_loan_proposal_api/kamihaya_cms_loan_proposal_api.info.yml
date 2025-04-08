@@ -1,0 +1,10 @@
+name: 'Kamihaya CMS Loan Proposal API'
+type: module
+description: 'Provide integration with Exabase API for loan proposal.'
+package: Exabase
+core_version_requirement: ^10 || ^11
+
+dependencies:
+  - kamihaya_cms_exabase_api:kamihaya_cms_exabase_api
+
+configure: kamihaya_cms_loan_proposal_api.settings

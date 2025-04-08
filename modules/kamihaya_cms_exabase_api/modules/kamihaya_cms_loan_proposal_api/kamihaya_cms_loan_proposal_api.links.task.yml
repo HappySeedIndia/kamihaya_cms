@@ -1,0 +1,5 @@
+kamihaya_cms_loan_proposal_api.settings:
+  route_name: kamihaya_cms_loan_proposal_api.settings
+  base_route: kamihaya_cms_exabase_api.settings
+  title: 'Kamihaya CMS Loan Proposal API Settings'
+  weight: 10

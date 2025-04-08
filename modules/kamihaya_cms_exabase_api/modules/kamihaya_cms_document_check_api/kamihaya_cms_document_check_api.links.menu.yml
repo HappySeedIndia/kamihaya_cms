@@ -1,0 +1,4 @@
+kamihaya_cms_document_check_api.config_menu:
+  title: 'Kamihaya CMS Exabase API Settings'
+  route_name: kamihaya_cms_document_check_api.settings
+  parent: system.admin_config_services
