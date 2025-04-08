@@ -1,0 +1,13 @@
+name: 'Kamihaya CMS AI Loan Proposal Draft'
+description: 'Kamihaya CMS AI Loan Proposal Draft module'
+package: Kamihaya
+type: module
+core_version_requirement: '^9.4 || ^10'
+dependencies:
+  - kamihaya_cms_ai:kamihaya_cms_ai
+  - kamihaya_cms_loan_proposal_api:kamihaya_cms_loan_proposal_api
+
+configure: kamihaya_cms_ai_loan_proposal_draft.settings
+
+'interface translation project': kamihaya_cms_ai_loan_proposal_draft
+'interface translation server pattern': 'profiles/contrib/kamihaya_cms/modules/kamihaya_cms_ai/modules/kamihaya_cms_ai_loan_proposal_draft/translations/%language.po'

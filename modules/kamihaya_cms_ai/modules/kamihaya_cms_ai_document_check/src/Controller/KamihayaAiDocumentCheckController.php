@@ -105,6 +105,7 @@ class KamihayaAiDocumentCheckController extends KamihayaAiControllerBase {
     $theme['#step_completed'] = $this->t('Check completed');
     $theme['#stoppable'] = TRUE;
     $theme['#attached']['library'][] = 'kamihaya_cms_ai_document_check/kamihaya_ai.document_check';
+    $theme['#attached']['drupalSettings']['ajax_url'] = 'ajax-handler-document-check';
     return $theme;
   }
 

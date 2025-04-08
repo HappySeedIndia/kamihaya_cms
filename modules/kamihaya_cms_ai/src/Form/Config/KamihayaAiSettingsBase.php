@@ -61,6 +61,34 @@ abstract class KamihayaAiSettingsBase extends ConfigFormBase {
       ];
     }
 
+    // Process image settings.
+    $form['process_image'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Process Image'),
+      '#description' => $this->t('Upload a process image.'),
+      '#open' => TRUE,
+    ];
+
+    $steps = array_merge([
+      'new' => $this->t('New'),
+      'start' => $this->t('Start'),
+    ], $steps, [
+      'complete' => $this->t('Complete'),
+      'error' => $this->t('Error'),
+    ]);
+
+    foreach ($steps as $key => $step) {
+      $form['process_image']["{$key}_image"] = [
+        '#type' => 'managed_file',
+        '#title' => $step,
+        '#upload_location' => 'public://waiting_movie/',
+        '#default_value' => $config->get("{$key}_image"),
+        '#upload_validators' => [
+          'file_validate_extensions' => ['png', 'jpg', 'jpeg', 'gif'],
+        ],
+      ];
+    }
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -70,9 +98,17 @@ abstract class KamihayaAiSettingsBase extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->configFactory()->getEditable($this->getEditableConfigNames()[0]);
     $form_state->cleanValues();
-
     foreach ($form_state->getValues() as $key => $value) {
       $config->set($key, $value);
+
+      if ((strpos($key, '_image') === FALSE && !array_key_exists($key, $this->getSteps())) || empty($value[0])) {
+        continue;
+      }
+      $file = File::load($value[0]);
+      if (!empty($file)) {
+        $file->setPermanent();
+        $file->save();
+      }
     }
     $config->save();
 

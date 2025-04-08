@@ -19,6 +19,8 @@ function kamihaya_cms_ai_theme() {
         'step_design' => NULL,
         'step_completed' => t('Completed'),
         'stoppable' => FALSE,
+        'process' => FALSE,
+        'edit_prompt' => FALSE,
       ],
     ],
   ];

@@ -1,0 +1,5 @@
+kamihaya_cms_ai_loan_proposal_draft.settings:
+  route_name: kamihaya_cms_ai_loan_proposal_draft.settings
+  base_route: kamihaya_cms_ai.settings
+  title: 'Kamihaya CMS AI Loan Proposal Draft'
+  weight: 10
