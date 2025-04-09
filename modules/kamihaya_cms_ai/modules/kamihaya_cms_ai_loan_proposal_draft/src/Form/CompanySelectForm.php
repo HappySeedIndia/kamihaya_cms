@@ -4,9 +4,6 @@ namespace Drupal\kamihaya_cms_ai_loan_proposal_draft\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\file\Entity\File;
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\kamihaya_cms_loan_proposal_api\ExabaseClient;
 use Drupal\user\Entity\User;
@@ -44,7 +41,7 @@ class CompanySelectForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $user = User::load($this->currentUser->id());
-    $name = $user->hasField('field_name') && !empty($user->get('field_name')->value) ? $user->get('field_name')->value : $user->getUsername();
+    $name = $user->hasField('field_name') && !empty($user->get('field_name')->value) ? $user->get('field_name')->value : $user->getAccountName();
 
     $form['welcome'] = [
       '#type' => 'markup',

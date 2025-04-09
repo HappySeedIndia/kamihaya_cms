@@ -15,6 +15,7 @@ function kamihaya_cms_ai_theme() {
         'bg_video' => NULL,
         'hide_result' => FALSE,
         'steps' => [],
+        'process_form' => [],
         'chat_body' => [],
         'step_design' => NULL,
         'step_completed' => t('Completed'),
