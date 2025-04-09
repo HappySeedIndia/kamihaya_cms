@@ -2,37 +2,14 @@
 
 namespace Drupal\kamihaya_cms_ai_loan_proposal_draft\Controller;
 
-use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\kamihaya_cms_ai\Controller\KamihayaAiControllerBase;
+use Drupal\kamihaya_cms_ai_document_check\Form\ProcessForm;
 use Drupal\kamihaya_cms_ai_loan_proposal_draft\Form\CompanySelectForm;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Controller for handling the loan proposal draft.
  */
 class KamihayaAiLoanProposalDraftController extends KamihayaAiControllerBase {
-
-  /**
-   * Constructs a new KamihayaAiLoanProposalDraftController object.
-   *
-   * @param \Drupal\Core\File\FileUrlGeneratorInterface $fileUrlGenerator
-   *   The file system.
-   */
-  public function __construct(
-    protected FileUrlGeneratorInterface $fileUrlGenerator,
-  ) {
-    $this->formBuilder();
-    $this->entityTypeManager();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('file_url_generator'),
-    );
-  }
 
   /**
    * Set the title of the page.
@@ -75,6 +52,16 @@ class KamihayaAiLoanProposalDraftController extends KamihayaAiControllerBase {
     }
 
     // Get the proccess images.
+    // New.
+    $fid = $config->get('new_image');
+    if (!empty($fid)) {
+      /** @var \Drupal\file\FileInterface $file */
+      $file = $this->entityTypeManager->getStorage('file')->load($fid[0]);
+      if (!empty($file)) {
+        $new = $this->fileUrlGenerator->generate($file->getFileUri());
+      }
+    }
+
     // Start.
     $fid = $config->get('start_image');
     if (!empty($fid)) {
@@ -126,16 +113,21 @@ class KamihayaAiLoanProposalDraftController extends KamihayaAiControllerBase {
     }
 
     $theme['#steps'] = [
+      'new' => [
+        'process_image' => $new ?? '',
+      ],
       'start' => [
         'process_image' => $start ?? '',
       ],
       'summarize' => [
         'name' => $this->t('Summarize'),
         'wait_movie' => $summarize ?? '',
+        'process_image' => $summarize_image ?? '',
       ],
       'draft' => [
         'name' => $this->t('Loan Proposal Draft'),
         'wait_movie' => $draft ?? '',
+        'process_image' => $draft_image ?? '',
       ],
       'complete' => [
         'process_image' => $complete ?? '',
@@ -144,8 +136,10 @@ class KamihayaAiLoanProposalDraftController extends KamihayaAiControllerBase {
         'process_image' => $error ?? '',
       ],
     ];
-    $first_screne = \Drupal::formBuilder()->getForm(CompanySelectForm::class);
+    $first_screne = $this->formBuilder->getForm(CompanySelectForm::class);
     $theme['#chat_body'] = $first_screne;
+    $process_form = $this->formBuilder->getForm(ProcessForm::class);
+    $theme['#process_form'] = $process_form;
     $theme['#hide_result'] = TRUE;
     $theme['#step_design'] = $config->get('step_design');
     $theme['#stoppable'] = TRUE;
@@ -153,6 +147,9 @@ class KamihayaAiLoanProposalDraftController extends KamihayaAiControllerBase {
     $theme['#edit_prompt'] = TRUE;
     $theme['#attached']['library'][] = 'kamihaya_cms_ai_loan_proposal_draft/kamihaya_ai.loan_proposal_draft';
     $theme['#attached']['drupalSettings']['ajax_url'] = 'ajax-handler-loan-proposal-draft';
+    $theme['#attached']['drupalSettings']['process_name'] = $this->t('Loan proposal');
+    $theme['#attached']['drupalSettings']['task_name'] = $this->t('Loan proposal drafting');
+    $theme['#attached']['drupalSettings']['last_task_name'] = $this->t('Research on historical records and borrower companies');
     return $theme;
   }
 

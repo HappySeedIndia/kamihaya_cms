@@ -3,11 +3,36 @@
 namespace Drupal\kamihaya_cms_ai\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\File\FileUrlGeneratorInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base controller for Kamihaya AI.
  */
 class KamihayaAiControllerBase extends ControllerBase {
+
+  /**
+   * Constructs a new KamihayaAiControllerBase object.
+   *
+   * @param \Drupal\Core\File\FileUrlGeneratorInterface $fileUrlGenerator
+   *   The file system.
+   */
+  public function __construct(
+    protected FileUrlGeneratorInterface $fileUrlGenerator,
+  ) {
+    $this->formBuilder();
+    $this->entityTypeManager();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('file_url_generator'),
+    );
+  }
+
 
   /**
    * Set the title of the page.

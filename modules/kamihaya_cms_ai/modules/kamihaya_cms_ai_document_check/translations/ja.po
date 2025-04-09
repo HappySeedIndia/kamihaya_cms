@@ -121,6 +121,18 @@ msgstr "著作権法確認"
 msgid "Company rule check"
 msgstr "社内ルール確認"
 
+#: src/Controller/KamihayaAiDocumentCheckController.php:199
+msgid "Contract"
+msgstr "契約業務"
+
+#: src/Controller/KamihayaAiDocumentCheckController.php:200
+msgid "Contract drafting"
+msgstr "契約書作成"
+
+#: src/Controller/KamihayaAiDocumentCheckController.php:201
+msgid "Receiving the proposal"
+msgstr "提案書受領"
+
 #: src/Form/FileUploadForm.php:47
 msgid "Hello @name!"
 msgstr "こんにちは、@nameさん！"
@@ -140,6 +152,10 @@ msgstr "許可された拡張子: doc, docx"
 #: src/Form/FileUploadForm.php:68
 msgid "Check start"
 msgstr "チェックする"
+
+#: src/Form/ProcessForm.php:23
+msgid "Would you like to start a new contract task,<br/> or continue with the ongoing work?"
+msgstr "今日は新しく文書作成をしますか？<br/>それとも前回の続きから作業をしますか？"
 
 #: src/Form/Config/KamihayaAiDocumentCheckSettings.php:39
 msgid "Waiting Movie"

@@ -45,7 +45,6 @@
     if (!fid) return;
 
     let company = document.getElementsByName('company')[0].value;
-    console.log(document.getElementsByName('company'));
     if (!company) return;
 
     // Remove the form.
@@ -55,7 +54,7 @@
     }
 
     let data = { fid: fid, company: company };
-    let chatMessage = [Drupal.t('Starting summarization of the document.')];
+    let chatMessage = [Drupal.t('Starting summarization of the text from PDF.')];
 
     // Execute step function.
     executeStep('summarize', data, 'pdf_summary', chatMessage, draftLoanProposal, 'pdf_summary_used_prompt');
@@ -107,18 +106,39 @@
           let promptCntent = promptBlock.getElementsByClassName('edit-prompt-body-content')[0];
           if (promptCntent) {
             if (!summaryPrompt) {
+              // Create a prompt container.
+              let container = document.createElement('div');
+              container.classList.add('prompt-container');
+              promptCntent.appendChild(container);
+              // Create a prompt name.
+              let promptName = document.createElement('div');
+              promptName.classList.add('prompt-name');
+              promptName.innerHTML = Drupal.t('Prompt for PDF summarization');
+              container.appendChild(promptName);
+
               // Create a new textarea for the PDF summary prompt.
               summaryPrompt = document.createElement('textarea');
               summaryPrompt.id = 'edit-summary-prompt';
-              promptCntent.appendChild(summaryPrompt);
+              container.appendChild(summaryPrompt);
             }
             summaryPrompt.value = pdf_summary_prompt;
 
             if (!loanPrompt) {
+              // Create a prompt container.
+              let container = document.createElement('div');
+              container.classList.add('prompt-container');
+              promptCntent.appendChild(container);
+
+              // Create a prompt name.
+              let promptName = document.createElement('div');
+              promptName.classList.add('prompt-name');
+              promptName.innerHTML = Drupal.t('Prompt for loan proposal');
+              container.appendChild(promptName);
+
               // Create a new textarea for the loan document prompt.
               loanPrompt = document.createElement('textarea');
               loanPrompt.id = 'edit-loan-prompt';
-              promptCntent.appendChild(loanPrompt);
+              container.appendChild(loanPrompt);
             }
             loanPrompt.value = loan_document_prompt;
           }

@@ -26,7 +26,7 @@ msgstr ""
 
 #: src/Form/Config/KamihayaAiLoanProposalDraftSettings.php:34
 msgid "Summary Extraction"
-msgstr "要点抽出"
+msgstr "要約の抽出"
 
 #: src/Form/Config/KamihayaAiLoanProposalDraftSettings.php:35
 #: src/Controller/KamihayaAiLoanProposalDraftController.php:44
@@ -72,6 +72,10 @@ msgstr "プロンプトチェックをする"
 msgid "Draft loan proposal"
 msgstr "稟議書を作成する"
 
+#: src/Form/ProcessForm.php:23
+msgid "Would you like to start a new contract task,<br/> or continue with the ongoing work?"
+msgstr "今日は新しく融資稟議プロセスを開始しますか？<br/>それとも前回の続きから作業をしますか？"
+
 #: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:60
 #: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:104
 #: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:113
@@ -87,21 +91,21 @@ msgid "File not found."
 msgstr "ファイルが見つかりません"
 
 #: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:131
-msgid "Failed to extract the document."
-msgstr "文書の抽出に失敗しました"
+msgid "Failed to extract the text from the PDF."
+msgstr "PDFからテキストの抽出に失敗しました"
 
 #: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:141
 msgid "Failed to get the pdf summary prompt."
-msgstr "pdfの要約プロンプトの取得に失敗しました"
+msgstr "PDFの要約プロンプトの取得に失敗しました"
 
 #: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:159
 #: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:189
-msgid "Failed to summarize the document."
-msgstr "文書の要約に失敗しました"
+msgid "Failed to summarize the text from the PDF."
+msgstr "PDFテキストの要約に失敗しました"
 
 #: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:179
-msgid "Document summarized."
-msgstr "文書の要約が完了しました"
+msgid "Text of the PDF summarized."
+msgstr "PEFテキストの要約が完了しました"
 
 #: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:207
 #: src/Controller/KamihayaAiLoanProposalDraftAjaxController.php:248
@@ -134,19 +138,39 @@ msgstr "プロンプトを取得しました"
 msgid "Summarize"
 msgstr "要点"
 
+#: src/Controller/KamihayaAiLoanProposalDraftController.php:174
+msgid "Loan proposal"
+msgstr "融資稟議"
+
+#: src/Controller/KamihayaAiLoanProposalDraftController.php:175
+msgid "Loan proposal drafting"
+msgstr "融資稟議書の素案作成"
+
+#: src/Controller/KamihayaAiLoanProposalDraftController.php:176
+msgid "Research on historical records and borrower companies"
+msgstr "過去資料・融資先企業の調査"
+
 #: assets/js/kamihaya-ai-loan-proposal-draft.js:58
-msgid "Starting summarization of the document."
-msgstr "文書の要点抽出中です"
+msgid "Starting summarization of the text from the PDF."
+msgstr "PDFテキストの要点抽出中です"
 
 #: assets/js/kamihaya-ai-loan-proposal-draft.js:66
 msgid "Drafting the loan proposal."
 msgstr "融資稟議書の作成中です"
 
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:116
+msgid "Prompt for PDF summarization"
+msgstr "テキスト要約プロンプト"
+
 #: assets/js/kamihaya-ai-loan-proposal-draft.js:129
 msgid "Execute with the edited prompt"
 msgstr "プロンプトを上書きして稟議書を作成する"
 
-#: assets/js/kamihaya-ai-loan-proposal-draft.js:136
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:135
+msgid "Prompt for loan proposal"
+msgstr "融資稟議書作成プロンプト"
+
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:149
 msgid "Execute without the edited prompt"
 msgstr "プロンプトを上書きせずに稟議書を作成する"
 

@@ -128,7 +128,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
       if (empty($result || empty($result['pdf_text']))) {
         return [
           'status' => 'error',
-          'message' => $this->t('Failed to extract the document.'),
+          'message' => $this->t('Failed to extract the text from the PDF.'),
         ];
       }
       $pdf_text = $result['pdf_text'];
@@ -156,7 +156,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
       if (empty($result)) {
         return [
           'status' => 'error',
-          'message' => $this->t('Failed to summarize the document.'),
+          'message' => $this->t('Failed to summarize the text from the PDF.'),
         ];
       }
 
@@ -176,17 +176,17 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
 
       return [
         'status' => 'success',
-        'message' => $this->t('Document summarized.'),
+        'message' => $this->t('Text of the PDF summarized.'),
         'pdf_summary' => $this->formatResult($result),
         'pdf_summary_prompt' => $this->formatResult($summary_prompt),
         'pdf_summary_used_prompt' => $this->formatResult($prompt),
       ];
     }
     catch (\Exception $e) {
-      $this->logger->error('Exception occurred while summarizing the document: ' . $e->getMessage());
+      $this->logger->error('Exception occurred while summarizing the text from PDF: ' . $e->getMessage());
       return [
         'status' => 'error',
-        'message' => $this->t('Failed to summarize the document.'),
+        'message' => $this->t('Failed to summarize the text from the PDF.'),
       ];
     }
     finally {

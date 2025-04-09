@@ -25,6 +25,13 @@
       form.remove();
     }
 
+    // Hide the main block.
+    let mainBlock = document.getElementsByClassName('chat-block-body-content-main')[0];
+    if (mainBlock) {
+      mainBlock.classList.remove('glassmorphism');
+      mainBlock.classList.add('hidden');
+    }
+
     let data = { fid: fid };
     let chatMessage = [Drupal.t('Starting summarization of the document.')];
 
