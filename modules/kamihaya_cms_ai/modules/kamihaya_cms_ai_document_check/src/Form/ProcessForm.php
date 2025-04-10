@@ -20,7 +20,7 @@ class ProcessForm extends ProcessFormBase {
    * {@inheritdoc}
    */
   protected function getMessage() {
-    return $this->t('Would you like to start a new loan proposal process,<br/> or continue with the ongoing work?');
+    return $this->t('Would you like to start a new contract process,<br/> or continue with the ongoing work?');
   }
 
 }

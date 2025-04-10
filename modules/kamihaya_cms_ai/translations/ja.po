@@ -69,6 +69,10 @@ msgstr "@type のプロセスを設計しました"
 msgid "I’ll assist you with @type step."
 msgstr "@type のステップでは私がお手伝いいたします︎"
 
+#: assets/js/kamihaya-ai.js:364
+msgid "Back to top"
+msgstr "最初の画面に戻る"
+
 #: assets/js/kamihaya-ai.js:379
 msgid "You selected 'Resume'."
 msgstr "前回の続きからですね"

@@ -23,6 +23,14 @@
   display: none !important;
 }
 
+.form-item input.form-file.error {
+  font-size: 0.9rem;
+  width: 100%;
+  border-width: 5px;
+  color: var(--light-text-alert);
+  background-color: rgb(var(--text-color));
+}
+
 .kamihaya-ai-container a {
   color: rgb(var(--text-color));
   text-decoration: none;
@@ -217,7 +225,7 @@
 
 .kamihaya-ai-container-main.grid {
   display: grid;
-  grid-template-columns: 425px auto;
+  grid-template-columns: 425px 1fr;
 }
 
 .kamihaya-ai-container-main.grid .chat-block {
@@ -363,6 +371,19 @@
   background-color: var(--light-text-alert);
   backdrop-filter: blur(10px);
   border-radius: 10px;
+}
+
+.chat-block-body-content .chat-block-body-item--proceed:before,
+.chat-block-body-content-main.glassmorphism.proceed:before {
+  content: '';
+  background-image: url(../images/process-chat-icon.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  width: 1.3rem;
+  height: 1.3rem;
+  left: -1.6rem
 }
 
 .chat-block-body-content-main .form-required {
@@ -535,8 +556,8 @@
   width: 100%;
 }
 
-.results-block-body .results-block-body-item > div.result,
-.results-block-body .results-block-body-item > div.prompt {
+.results-block-body .results-block-body-item div.result,
+.results-block-body .results-block-body-item div.prompt {
   background-color: #fff;
   border-radius: 10px;
   padding: 1rem;
@@ -547,22 +568,27 @@
   width: 100%;
 }
 
-.results-block-body .results-block-body-item > div.prompt {
+.results-block-body .results-block-body-item div.prompt-container {
+  width: 100%;
   height: 25%;
 }
 
-.results-block-body .results-block-body-item>div.result .result-table,
-.results-block-body .results-block-body-item>div.result .message {
+.results-block-body .results-block-body-item div.prompt {
+  max-height: 8rem;
+};
+
+.results-block-body .results-block-body-item div.result .result-table,
+.results-block-body .results-block-body-item div.result .message {
   font-size: 0.9rem;
 }
 
-.results-block-body .results-block-body-item>div.result .result-table > :not(caption) > * > * {
+.results-block-body .results-block-body-item div.result .result-table > :not(caption) > * > * {
   padding: 0.5rem;
 }
 
 /* Scrollbar design */
-.results-block-body .results-block-body-item > div.result::-webkit-scrollbar,
-.results-block-body .results-block-body-item > div.prompt::-webkit-scrollbar {
+.results-block-body .results-block-body-item div.result::-webkit-scrollbar,
+.results-block-body .results-block-body-item div.prompt::-webkit-scrollbar {
   width: 1.5rem;
   background: rgb(23 23 49 / 10%);
   border-radius: 20px;
@@ -575,16 +601,16 @@
   border-radius: 20px;
 }
 
-.results-block-body .results-block-body-item > div.result::-webkit-scrollbar-track,
-.results-block-body .results-block-body-item > div.prompt::-webkit-scrollbar-track,
+.results-block-body .results-block-body-item div.result::-webkit-scrollbar-track,
+.results-block-body .results-block-body-item div.prompt::-webkit-scrollbar-track,
 .chat-block-body-scroll::-webkit-scrollbar-track,
 .edit-prompt .edit-prompt-body .edit-prompt-body-content textarea::-webkit-scrollbar-track {
   border-radius: 20px;
   backdrop-filter: blur(15px);
 }
 
-.results-block-body .results-block-body-item > div.result::-webkit-scrollbar-thumb,
-.results-block-body .results-block-body-item > div.prompt::-webkit-scrollbar-thumb,
+.results-block-body .results-block-body-item div.result::-webkit-scrollbar-thumb,
+.results-block-body .results-block-body-item div.prompt::-webkit-scrollbar-thumb,
 .chat-block-body-scroll::-webkit-scrollbar-thumb,
 .edit-prompt .edit-prompt-body .edit-prompt-body-content textarea::-webkit-scrollbar-thumb {
   border-radius: 20px;
@@ -592,14 +618,14 @@
   border: 1px solid #d2d2d2;
 }
 
-.results-block-body .results-block-body-item > div.result::-webkit-scrollbar-thumb:hover,
-.results-block-body .results-block-body-item > div.prompt::-webkit-scrollbar-thumb:hover,
+.results-block-body .results-block-body-item div.result::-webkit-scrollbar-thumb:hover,
+.results-block-body .results-block-body-item div.prompt::-webkit-scrollbar-thumb:hover,
 .chat-block-body-scroll::-webkit-scrollbar-thumb:hover,
 .edit-prompt .edit-prompt-body .edit-prompt-body-content textarea::-webkit-scrollbar-thumb:hover {
   background: #d2d2d2;
 }
 
-.results-block-body .results-block-body-item > div.result.error {
+.results-block-body .results-block-body-item div.result.error {
   color: #ff484c;
   font-weight: bold;
   display: flex;
@@ -610,7 +636,7 @@
   backdrop-filter: blur(30px);
 }
 
-.results-block-body .results-block-body-item > div.result.suspended {
+.results-block-body .results-block-body-item div.result.suspended {
   color: #fad859;
   font-weight: bold;
   display: flex;
@@ -621,31 +647,31 @@
   backdrop-filter: blur(30px);
 }
 
-.results-block-body .results-block-body-item > div.result .file-name {
+.results-block-body .results-block-body-item div.result .file-name {
   font-size: 1.2rem;
   font-weight: bold;
   margin: 2rem auto;
 }
 
-.results-block-body .results-block-body-item > div.result h2,
-.results-block-body .results-block-body-item > div.result h3,
-.results-block-body .results-block-body-item > div.result h4 {
+.results-block-body .results-block-body-item div.result h2,
+.results-block-body .results-block-body-item div.result h3,
+.results-block-body .results-block-body-item div.result h4 {
   padding-left: 0;
   font-weight: bold;
 }
 
-.results-block-body .results-block-body-item > div.result h2:after,
-.results-block-body .results-block-body-item > div.result h3:after,
-.results-block-body .results-block-body-item > div.result h4:before {
+.results-block-body .results-block-body-item div.result h2:after,
+.results-block-body .results-block-body-item div.result h3:after,
+.results-block-body .results-block-body-item div.result h4:before {
   display: none;
 }
 
-.results-block-body .results-block-body-item > div.result hr {
+.results-block-body .results-block-body-item div.result hr {
   margin: 1.5rem 0;
 }
 
-.results-block-body .results-block-body-item > div.result p,
-.results-block-body .results-block-body-item > div.prompt p {
+.results-block-body .results-block-body-item div.result p,
+.results-block-body .results-block-body-item div.prompt p {
   margin-bottom: 0;
 }
 
@@ -660,6 +686,23 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  backdrop-filter: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.edit-prompt:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-color: rgpa(var(--glass-color), 0.10);
+  backdrop-filter: blur(30px);
+  border: 0.5px solid rgba(var(--glass-border-color), 1);
+  border-radius: 10px;
 }
 
 .edit-prompt .edit-prompt-header {
@@ -725,6 +768,11 @@
 }
 
 /* Process design */
+.process-block {
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 .process-block--hidden {
   display: none;
   height: auto;
@@ -732,6 +780,11 @@
 
 .process-block-item img {
   max-width: 100%;;
+}
+
+.process-block .back-to-top {
+  width: 100%;
+  text-align: right;
 }
 
 /* Process switcher design */

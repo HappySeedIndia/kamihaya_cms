@@ -67,15 +67,6 @@ class CompanySelectForm extends FormBase {
       '#title' => $this->t('Select a company'),
       '#options' => array_combine(array_values($company_list), $company_list),
       '#required' => TRUE,
-      // '#ajax' => [
-      //   'callback' => '::ajaxSelectCompanyCallback',
-      //   'event' => 'change',
-      //   'wrapper' => 'file-upload',
-      //   'progress' => [
-      //     'type' => 'throbber',
-      //     'message' => '',
-      //   ],
-      // ],
     ];
 
     $form['container'] = [

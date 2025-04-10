@@ -61,7 +61,7 @@ class KamihayaAiDocumentCheckController extends KamihayaAiControllerBase {
       }
     }
 
-        // Get the proccess images.
+    // Get the proccess images.
     // New.
     $fid = $config->get('new_image');
     if (!empty($fid)) {
@@ -69,6 +69,16 @@ class KamihayaAiDocumentCheckController extends KamihayaAiControllerBase {
       $file = $this->entityTypeManager->getStorage('file')->load($fid[0]);
       if (!empty($file)) {
         $new = $this->fileUrlGenerator->generate($file->getFileUri());
+      }
+    }
+
+    // Task.
+    $fid = $config->get('task_image');
+    if (!empty($fid)) {
+      /** @var \Drupal\file\FileInterface $file */
+      $file = $this->entityTypeManager->getStorage('file')->load($fid[0]);
+      if (!empty($file)) {
+        $task = $this->fileUrlGenerator->generate($file->getFileUri());
       }
     }
 
@@ -135,6 +145,9 @@ class KamihayaAiDocumentCheckController extends KamihayaAiControllerBase {
     $theme['#steps'] = [
       'new' => [
         'process_image' => $new ?? '',
+      ],
+      'task' => [
+        'process_image' => $task ?? '',
       ],
       'start' => [
         'process_image' => $start ?? '',
