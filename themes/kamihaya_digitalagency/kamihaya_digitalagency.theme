@@ -569,7 +569,7 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
 
   $buttons = [
     'primary' => '.btn-primary, .button--small, #backtotop, details summary[role="button"]',
-    'secondary' => 'btn-secondary',
+    'secondary' => '.btn-secondary',
   ];
 
   foreach($buttons as $button => $selector) {
