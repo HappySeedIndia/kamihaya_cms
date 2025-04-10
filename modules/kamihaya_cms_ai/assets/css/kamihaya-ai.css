@@ -10,6 +10,7 @@
   --bg-item-color-2-1: 185, 54, 97;
   --bg-item-color-2-2: 243, 199, 134;
   --bg-chat-item: 255, 255, 255;
+  --chat-icon-color: 117, 117, 117;
   --light-text-alert: #b97e96;
   --font-family: Noto Sans, Noto Sans JP, sans-serif;
   font-family: var(--font-family);
@@ -367,7 +368,7 @@
   width: 1rem;
   height: 1rem;
   border: 1.8px solid rgba(255, 255, 255, 0.00);
-  background-color: var(--light-text-alert);
+  background-color: rgb(var(--chat-icon-color));
   backdrop-filter: blur(10px);
   border-radius: 10px;
 }
@@ -485,9 +486,18 @@
   height: 100%;
 }
 
+.results-block-header.step-design-slider .results-block-header-item.active a span {
+  border-bottom: 2px solid rgb(var(--text-color));
+  padding-bottom: 0.1rem;
+}
+
 .results-block-header.step-design-slider .results-block-header-item.running a {
   background-color: rgb(var(--text-color));
   color: rgb(var(--bg-color));
+}
+
+.results-block-header.step-design-slider .results-block-header-item.running.active a span {
+  border-bottom-color: rgb(var(--bg-color));
 }
 
 .results-block-header.step-design-slider .results-block-header-item span:before {
