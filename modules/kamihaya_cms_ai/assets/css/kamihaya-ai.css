@@ -257,7 +257,6 @@
   max-height: 280px;
   min-height: 0;
   position: relative;
-  cursor: zoom-in;
 }
 
 .kamihaya-ai-container-main.grid.process .maximized {
