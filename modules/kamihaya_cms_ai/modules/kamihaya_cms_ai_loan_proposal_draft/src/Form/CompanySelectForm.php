@@ -64,7 +64,6 @@ class CompanySelectForm extends FormBase {
       }
     }
     catch (\Exception $e) {
-      $this->logger('kamihaya_cms_ai_loan_proposal_draft')->error($e->getMessage());
       $this->logger('kamihaya_cms_ai_loan_proposal_draft')->error($this->t('Error fetching company list: @message', ['@message' => $e->getMessage()]));
       $form['message'] = [
         '#type' => 'markup',
