@@ -53,11 +53,21 @@ class CompanySelectForm extends FormBase {
       '#markup' => '<p>' . $this->t("Which company do you want to create a Loan Proposal?") . '</p>',
     ];
 
-    $company_list = $this->exabaseClient->getCompanyList();
-    if (empty($company_list)) {
+    try {
+      $company_list = $this->exabaseClient->getCompanyList();
+      if (empty($company_list)) {
+        $form['message'] = [
+          '#type' => 'markup',
+          '#markup' => '<p>' . $this->t("There are no companies to select.") . '</p>',
+        ];
+        return $form;
+      }
+    }
+    catch (\Exception $e) {
+      $this->logger('kamihaya_cms_ai_loan_proposal_draft')->error($this->t('Error fetching company list: @message', ['@message' => $e->getMessage()]));
       $form['message'] = [
         '#type' => 'markup',
-        '#markup' => '<p>' . $this->t("There are no companies to select.") . '</p>',
+        '#markup' => '<p>' . $this->t("There was an error fetching the company list.") . '</p>',
       ];
       return $form;
     }
