@@ -3,7 +3,7 @@
 namespace Drupal\kamihaya_cms_ai_loan_proposal_draft\Controller;
 
 use Drupal\kamihaya_cms_ai\Controller\KamihayaAiControllerBase;
-use Drupal\kamihaya_cms_ai_document_check\Form\ProcessForm;
+use Drupal\kamihaya_cms_ai_loan_proposal_draft\Form\ProcessForm;
 use Drupal\kamihaya_cms_ai_loan_proposal_draft\Form\CompanySelectForm;
 
 /**
@@ -62,6 +62,16 @@ class KamihayaAiLoanProposalDraftController extends KamihayaAiControllerBase {
       }
     }
 
+    // Task.
+    $fid = $config->get('task_image');
+    if (!empty($fid)) {
+      /** @var \Drupal\file\FileInterface $file */
+      $file = $this->entityTypeManager->getStorage('file')->load($fid[0]);
+      if (!empty($file)) {
+        $task = $this->fileUrlGenerator->generate($file->getFileUri());
+      }
+    }
+
     // Start.
     $fid = $config->get('start_image');
     if (!empty($fid)) {
@@ -116,11 +126,14 @@ class KamihayaAiLoanProposalDraftController extends KamihayaAiControllerBase {
       'new' => [
         'process_image' => $new ?? '',
       ],
+      'task' => [
+        'process_image' => $task ?? '',
+      ],
       'start' => [
         'process_image' => $start ?? '',
       ],
       'summarize' => [
-        'name' => $this->t('Summarize'),
+        'name' => $this->t('Summarize PDF text'),
         'wait_movie' => $summarize ?? '',
         'process_image' => $summarize_image ?? '',
       ],

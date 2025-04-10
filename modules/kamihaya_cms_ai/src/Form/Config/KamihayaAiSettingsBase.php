@@ -71,6 +71,7 @@ abstract class KamihayaAiSettingsBase extends ConfigFormBase {
 
     $steps = array_merge([
       'new' => $this->t('New'),
+      'task' => $this->t('Task'),
       'start' => $this->t('Start'),
     ], $steps, [
       'complete' => $this->t('Complete'),

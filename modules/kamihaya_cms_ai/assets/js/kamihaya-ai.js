@@ -115,7 +115,7 @@
 
     // Add message to chat.
     if (chatMessage.length > 0) {
-      addChatMessages(chatMessage, 'info', 0);
+      addChatMessages(chatMessage, 'proceed', 0);
     }
 
     // Change the main container to grid.
@@ -245,8 +245,8 @@
       // Display the prompt.
       if (response[promptKey] !== undefined) {
         let prompt = response[promptKey];
-        promptHTML = '<div class="prompt-title">' + Drupal.t('Prompt') + '</div>';
-        promptHTML += '<div class="prompt ' + responseKey.replace('_', '-') + '">' + prompt + '</div>';
+        promptHTML = '<div class="prompt-container"><div class="prompt-title">' + Drupal.t('Prompt') + '</div>';
+        promptHTML += '<div class="prompt ' + responseKey.replace('_', '-') + '">' + prompt + '</div></div>';
       }
       resultBlock.innerHTML = '<div class="result ' + responseKey.replace('_', '-') + '">' + result + '</div>' + promptHTML;
     }
@@ -317,7 +317,7 @@
     }
 
     // Add message to chat.
-    addChatMessages([Drupal.t('The process has been suspended.')], 'info', 0);
+    addChatMessages([Drupal.t('The process has been suspended.')], 'proceed', 0);
 
     // Display the error to body.
     let resultBlock = document.getElementById('step-body-' + step.replace('_', '-'));
@@ -355,11 +355,31 @@
 
       let process = document.getElementsByClassName('process-block')[0];
       if (process && process.classList.contains('process-block--hidden')) {
+        // Add the back to top button
+        let backToTop = document.createElement('div');
+        backToTop.className = 'back-to-top';
+        let backToTopLink = document.createElement('a');
+        backToTopLink.href = '#top';
+        backToTopLink.className = 'back-to-top-link btn btn-primary button--small';
+        backToTopLink.innerHTML = Drupal.t('Back to top');
+        backToTopLink.addEventListener('click', function(event) {
+          event.preventDefault();
+          event.stopPropagation();
+          // Reload the page.
+          window.location.reload();
+        });
+        backToTop.appendChild(backToTopLink);
+        process.appendChild(backToTop);
+        // Display the process block.
         process.classList.remove('process-block--hidden');
       }
 
-      // Add message to chat.
-      addChatMessages(messages.slice(3), 'proceed');
+      setTimeout(function() {
+        // Add message to chat.
+        addChatMessages(messages.slice(3), 'proceed');
+        // Display the task process.
+        switchProcess('task');
+      }, 2000);
     }, messages.length * 1000);
 
   }
@@ -412,13 +432,20 @@
           labels[i].remove();
           i--;
         }
+        // Change the chat status.
+        addChatMessages([], 'info', 0);
+        // Display the main block.
         mainBlock.classList.remove('hidden');
         mainBlock.classList.add('glassmorphism');
+        mainBlock.classList.add('proceed');
 
         // Scroll donw the chat block.
         let chatBlockScroll = document.getElementsByClassName('chat-block-body-scroll')[0];
         if (chatBlockScroll) {
-          chatBlockScroll.scrollTop = chatBlockScroll.scrollHeight;
+          chatBlockScroll.scrollTo({
+            top: chatBlockScroll.scrollHeight,
+            behavior: 'smooth'
+          });
         }
       }
 
@@ -452,9 +479,13 @@
         for (let i = 0; i < proceedsMessages.length; i++) {
           proceedsMessages[i].classList.add('chat-block-body-item--info');
           proceedsMessages[i].classList.remove('chat-block-body-item--proceed');
+          i--;
         }
       }
 
+      if (messages.length === 0) {
+        return;
+      }
       // Add new messages.
       for (let i = 0; i < messages.length; i++) {
         setTimeout(function () {
@@ -462,14 +493,49 @@
           child.className = 'chat-block-body-item chat-block-body-item--' + status;
           child.innerHTML = messages[i];
           chatBlock.appendChild(child);
+
           // Scroll donw the chat block.
           let chatBlockScroll = document.getElementsByClassName('chat-block-body-scroll')[0];
           if (chatBlockScroll) {
-            chatBlockScroll.scrollTop = chatBlockScroll.scrollHeight;
+            chatBlockScroll.scrollTo({
+              top: chatBlockScroll.scrollHeight,
+              behavior: 'smooth'
+            });
           }
         }, i * interval);
       }
     }
+  }
+
+  // Resize observer to scroll down the chat block.
+  let chatBlockScroll = document.getElementsByClassName('chat-block-body-scroll')[0];
+  let chatContent = document.getElementsByClassName('chat-block-body-content-main')[0];
+
+  if (chatBlockScroll && chatContent) {
+    const resizeObserver = new ResizeObserver(() => {
+      // Scroll donw the chat block.
+      chatBlockScroll.scrollTo({
+        top: chatBlockScroll.scrollHeight,
+        behavior: 'smooth'
+      });
+    });
+
+    // Observe the chat block.
+    resizeObserver.observe(chatBlockScroll);
+
+    // Oberver for the chat content.
+    const mutationObserver = new MutationObserver(() => {
+      chatBlockScroll.scrollTo({
+        top: chatBlockScroll.scrollHeight,
+        behavior: 'smooth'
+      });
+    });
+
+    // Observe the chat content.
+    mutationObserver.observe(chatContent, {
+      childList: true,
+      subtree: true
+    });
   }
 
   // Switch blocks function.

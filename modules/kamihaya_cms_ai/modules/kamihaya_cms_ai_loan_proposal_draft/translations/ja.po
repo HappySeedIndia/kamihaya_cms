@@ -135,8 +135,8 @@ msgid "Prompt retrieved."
 msgstr "プロンプトを取得しました"
 
 #: src/Controller/KamihayaAiLoanProposalDraftController.php:133
-msgid "Summarize"
-msgstr "要点"
+msgid "Summarize PDF text"
+msgstr "テキスト要約"
 
 #: src/Controller/KamihayaAiLoanProposalDraftController.php:174
 msgid "Loan proposal"

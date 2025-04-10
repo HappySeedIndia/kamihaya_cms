@@ -30,6 +30,27 @@
             promptBlock.classList.add('hidden');
           }
         });
+
+        // Add event listeners to the company select.
+        let companySelect = document.getElementsByName('company')[0];
+        if (companySelect) {
+          companySelect.addEventListener('change', function (event) {
+            if (companySelect.value === '') {
+              return;
+            }
+            setTimeout(function () {
+              // Scroll donw the chat block.
+              let chatBlockScroll = document.getElementsByClassName('chat-block-body-scroll')[0];
+              if (chatBlockScroll) {
+                chatBlockScroll.scrollTo({
+                  top: chatBlockScroll.scrollHeight,
+                  behavior: 'smooth'
+                });
+              }
+            }, 100);
+          });
+        }
+
       }
       initKamihayaAi();
     }
@@ -42,7 +63,19 @@
     event.stopPropagation();
     // Get the file id.
     let fid = document.getElementsByName('file_upload[fids]')[0].value;
-    if (!fid) return;
+    if (!fid) {
+      let fileField = document.getElementsByName('files[file_upload]')[0];
+      if (fileField) {
+        fileField.classList.add('error');
+      }
+
+      // Enable the check button.
+      let checkButton = document.getElementById('prompt-check');
+      if (checkButton && checkButton.getAttribute('disabled') === 'disabled') {
+        checkButton.removeAttribute('disabled');
+      }
+      return;
+    }
 
     let company = document.getElementsByName('company')[0].value;
     if (!company) return;
@@ -144,10 +177,10 @@
           }
 
           // Change the button text and add event listeners.
-          let etidBtn = document.getElementsByClassName('btn-edit-prompt')[0];
-          if (etidBtn) {
-            etidBtn.innerHTML = Drupal.t('Execute with the edited prompt');
-            etidBtn.addEventListener('click', draftLoanProposalWithPrompt);
+          let editBtn = document.getElementsByClassName('btn-edit-prompt')[0];
+          if (editBtn) {
+            editBtn.innerHTML = Drupal.t('Execute with the edited prompt');
+            editBtn.addEventListener('click', draftLoanProposalWithPrompt);
           }
 
           // Change the cancel button text and add event listeners.
@@ -189,13 +222,27 @@
 
     // Get the file id.
     let fid = document.getElementsByName('file_upload[fids]')[0].value;
-    if (!fid) return;
+    if (!fid) {
+      let fileField = document.getElementsByName('files[file_upload]')[0];
+      if (fileField) {
+        fileField.classList.add('error');
+      }
+
+      // Enable the check button.
+      let checkButton = document.getElementById('prompt-check');
+      if (checkButton && checkButton.getAttribute('disabled') === 'disabled') {
+        checkButton.removeAttribute('disabled');
+      }
+      return;
+    }
 
     let company = document.getElementsByName('company')[0].value;
     if (!company) return;
 
     let summaryPrompt = document.getElementById('edit-summary-prompt').value;
     let loanPrompt = document.getElementById('edit-loan-prompt').value;
+    console.log('summaryPrompt', summaryPrompt);
+    console.log('loanPrompt', loanPrompt);
     if (!summaryPrompt || !loanPrompt) return;
     // Send the ajax request.
     let data = { fid: fid, company: company, summary_prompt: summaryPrompt, loan_prompt: loanPrompt };
