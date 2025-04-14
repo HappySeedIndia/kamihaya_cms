@@ -53,6 +53,7 @@ install:
   - layout_paragraphs
   - menu_link_attributes
   - metatag
+  - metatag_views
   - paragraphs
   - pathauto
   - password_policy
