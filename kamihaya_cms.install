@@ -164,8 +164,8 @@ function kamihaya_cms_update_10007() {
 }
 
 /**
- * Install Metatags Views module.
+ * Install Metatag Views module.
  */
 function kamihaya_cms_update_10008() {
-  \Drupal::service('module_installer')->install(['metatags_views'], TRUE);
+  \Drupal::service('module_installer')->install(['metatag_views'], TRUE);
 }
