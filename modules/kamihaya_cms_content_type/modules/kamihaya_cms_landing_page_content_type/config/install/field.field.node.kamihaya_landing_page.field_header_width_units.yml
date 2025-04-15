@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_header_width_units
+    - node.type.kamihaya_landing_page
+  module:
+    - options
+id: node.kamihaya_landing_page.field_header_width_units
+field_name: field_header_width_units
+entity_type: node
+bundle: kamihaya_landing_page
+label: 'Header Container Width Units'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

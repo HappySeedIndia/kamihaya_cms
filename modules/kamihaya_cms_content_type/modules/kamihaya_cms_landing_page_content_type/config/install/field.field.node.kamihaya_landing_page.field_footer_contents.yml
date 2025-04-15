@@ -1,0 +1,128 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_footer_contents
+    - node.type.kamihaya_landing_page
+    - paragraphs.paragraphs_type.block
+    - paragraphs.paragraphs_type.headings
+    - paragraphs.paragraphs_type.image
+    - paragraphs.paragraphs_type.layout_paragraph
+    - paragraphs.paragraphs_type.wysiwyg_editor
+  module:
+    - entity_reference_revisions
+id: node.kamihaya_landing_page.field_footer_contents
+field_name: field_footer_contents
+entity_type: node
+bundle: kamihaya_landing_page
+label: 'Footer Contents'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      block: block
+      headings: headings
+      image: image
+      layout_paragraph: layout_paragraph
+      wysiwyg_editor: wysiwyg_editor
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: 32
+        enabled: false
+      accordion_item:
+        weight: 33
+        enabled: false
+      anchor_link:
+        weight: 34
+        enabled: false
+      banner:
+        weight: 35
+        enabled: false
+      block:
+        weight: 36
+        enabled: true
+      border_box:
+        weight: 37
+        enabled: false
+      border_box_item:
+        weight: 38
+        enabled: false
+      divider:
+        weight: 39
+        enabled: false
+      drawer:
+        weight: 40
+        enabled: false
+      embed_tag:
+        weight: 41
+        enabled: false
+      featured_content:
+        weight: 42
+        enabled: false
+      file_download:
+        weight: 43
+        enabled: false
+      h2_title:
+        weight: 44
+        enabled: false
+      h3_title:
+        weight: 45
+        enabled: false
+      h4_title:
+        weight: 46
+        enabled: false
+      headings:
+        weight: 47
+        enabled: true
+      image:
+        weight: 48
+        enabled: true
+      image_link:
+        weight: 49
+        enabled: false
+      layout_paragraph:
+        weight: 50
+        enabled: true
+      left_image_text:
+        weight: 51
+        enabled: false
+      link_button:
+        weight: 52
+        enabled: false
+      modal_dialog:
+        weight: 53
+        enabled: false
+      q_a:
+        weight: 54
+        enabled: false
+      right_image_text:
+        weight: 55
+        enabled: false
+      slider:
+        weight: 56
+        enabled: false
+      slider_item:
+        weight: 57
+        enabled: false
+      two_col_table:
+        weight: 58
+        enabled: false
+      two_col_table_row:
+        weight: 59
+        enabled: false
+      video:
+        weight: 60
+        enabled: false
+      views:
+        weight: 61
+        enabled: false
+      wysiwyg_editor:
+        weight: 62
+        enabled: true
+field_type: entity_reference_revisions

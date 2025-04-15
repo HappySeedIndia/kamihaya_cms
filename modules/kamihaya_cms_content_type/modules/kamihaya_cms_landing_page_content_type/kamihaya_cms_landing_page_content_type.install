@@ -1,0 +1,63 @@
+<?php
+
+use Drupal\block\Entity\Block;
+use Drupal\node\Entity\NodeType;
+
+/**
+ * Implements hook_install().
+ *
+ * Hide the page title block for a landing page content type.
+ */
+function kamihaya_cms_landing_page_content_type_install() {
+  // Target content type to hide the page title block.
+  $target_content_type = 'kamihaya_landing_page';
+  // Theme name.
+  $theme = 'kamihaya_digitalagency';
+
+  // Block ID for the page title block.
+  $block_id = 'kamihaya_digitalagency_page_title';
+
+  // Get the block instance.
+  $block = Block::load($block_id);
+  if (!$block) {
+    return;
+  }
+  $plugin_id = 'entity_bundle:node';
+
+  // Get the visibility settings for the block.
+  $visibility = $block->getVisibility();
+
+  // Check if the plugin ID already exists in the visibility settings.
+  if (isset($visibility[$plugin_id])) {
+    // Get the existing bundles.
+    $existing_bundles = $visibility[$plugin_id]['bundles'];
+
+    // Check if the target content type is already in the bundles.
+    if (isset($existing_bundles[$target_content_type])) {
+      unset($existing_bundles[$target_content_type]);
+    }
+
+    // Set the visibility configuration for the block.
+    $block->setVisibilityConfig($plugin_id, [
+      'id' => $plugin_id,
+      'bundles' => $existing_bundles,
+    ]);
+  }
+  else {
+    // If the plugin ID does not exist, add it to the visibility settings.
+    $all_types = NodeType::loadMultiple();
+    $bundles = [];
+    foreach ($all_types as $type_id => $type) {
+      if ($type_id !== $target_content_type) {
+        $bundles[$type_id] = $type_id;
+      }
+    }
+
+    $block->setVisibilityConfig($plugin_id, [
+      'id' => $plugin_id,
+      'bundles' => $bundles,
+    ]);
+  }
+
+  $block->save();
+}

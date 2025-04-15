@@ -1,0 +1,141 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.hero_banner.field_hero_container_width
+    - field.field.paragraph.hero_banner.field_hero_description
+    - field.field.paragraph.hero_banner.field_hero_description_color
+    - field.field.paragraph.hero_banner.field_hero_link
+    - field.field.paragraph.hero_banner.field_hero_link_color
+    - field.field.paragraph.hero_banner.field_hero_link_text_color
+    - field.field.paragraph.hero_banner.field_hero_pc_bg_image
+    - field.field.paragraph.hero_banner.field_hero_small_text
+    - field.field.paragraph.hero_banner.field_hero_small_text_color
+    - field.field.paragraph.hero_banner.field_hero_sp_bg_image
+    - field.field.paragraph.hero_banner.field_hero_title
+    - field.field.paragraph.hero_banner.field_hero_title_color
+    - field.field.paragraph.hero_banner.field_hero_width_units
+    - paragraphs.paragraphs_type.hero_banner
+  module:
+    - color_field
+    - link
+    - options
+    - svg_image
+    - text
+id: paragraph.hero_banner.default
+targetEntityType: paragraph
+bundle: hero_banner
+mode: default
+content:
+  field_hero_container_width:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_hero_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_hero_description_color:
+    type: color_field_formatter_text
+    label: hidden
+    settings:
+      format: rgb
+      opacity: true
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  field_hero_link:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_hero_link_color:
+    type: color_field_formatter_text
+    label: hidden
+    settings:
+      format: rgb
+      opacity: true
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_hero_link_text_color:
+    type: color_field_formatter_text
+    label: hidden
+    settings:
+      format: rgb
+      opacity: true
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_hero_pc_bg_image:
+    type: image_url
+    label: hidden
+    settings:
+      image_style: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_hero_small_text:
+    type: basic_string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_hero_small_text_color:
+    type: color_field_formatter_text
+    label: hidden
+    settings:
+      format: rgb
+      opacity: true
+    third_party_settings: {  }
+    weight: 13
+    region: content
+  field_hero_sp_bg_image:
+    type: image_url
+    label: hidden
+    settings:
+      image_style: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_hero_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_hero_title_color:
+    type: color_field_formatter_text
+    label: hidden
+    settings:
+      format: rgb
+      opacity: true
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_hero_width_units:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+hidden: {  }

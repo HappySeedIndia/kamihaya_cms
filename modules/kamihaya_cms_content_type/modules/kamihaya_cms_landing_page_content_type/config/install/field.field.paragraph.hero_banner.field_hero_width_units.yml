@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_hero_width_units
+    - paragraphs.paragraphs_type.hero_banner
+  module:
+    - options
+id: paragraph.hero_banner.field_hero_width_units
+field_name: field_hero_width_units
+entity_type: paragraph
+bundle: hero_banner
+label: 'Hero Container Width Units'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
