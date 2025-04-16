@@ -1,0 +1,48 @@
+
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.kamihaya_landing_page.field_footer_bg_color
+    - field.field.node.kamihaya_landing_page.field_footer_contents
+    - field.field.node.kamihaya_landing_page.field_header_container_width
+    - field.field.node.kamihaya_landing_page.field_header_width_units
+    - field.field.node.kamihaya_landing_page.field_lp_container_width
+    - field.field.node.kamihaya_landing_page.field_lp_contents
+    - field.field.node.kamihaya_landing_page.field_lp_description
+    - field.field.node.kamihaya_landing_page.field_lp_header
+    - field.field.node.kamihaya_landing_page.field_lp_hero_banner
+    - field.field.node.kamihaya_landing_page.field_lp_width_units
+    - field.field.node.kamihaya_landing_page.field_meta_tag
+    - node.type.kamihaya_landing_page
+  module:
+    - user
+id: node.kamihaya_landing_page.teaser
+targetEntityType: node
+bundle: kamihaya_landing_page
+mode: teaser
+content:
+  anchor_links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_footer_bg_color: true
+  field_footer_contents: true
+  field_header_container_width: true
+  field_header_width_units: true
+  field_lp_container_width: true
+  field_lp_contents: true
+  field_lp_description: true
+  field_lp_header: true
+  field_lp_hero_banner: true
+  field_lp_width_units: true
+  field_meta_tag: true
+  langcode: true

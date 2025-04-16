@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_hero_container_width
+    - paragraphs.paragraphs_type.hero_banner
+id: paragraph.hero_banner.field_hero_container_width
+field_name: field_hero_container_width
+entity_type: paragraph
+bundle: hero_banner
+label: 'Hero Container Width'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

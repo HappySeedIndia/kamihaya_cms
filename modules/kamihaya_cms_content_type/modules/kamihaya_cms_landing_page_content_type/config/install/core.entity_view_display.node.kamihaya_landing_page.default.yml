@@ -1,0 +1,136 @@
+langcode: eb
+status: true
+dependencies:
+  config:
+    - field.field.node.kamihaya_landing_page.field_footer_bg_color
+    - field.field.node.kamihaya_landing_page.field_footer_contents
+    - field.field.node.kamihaya_landing_page.field_header_container_width
+    - field.field.node.kamihaya_landing_page.field_header_width_units
+    - field.field.node.kamihaya_landing_page.field_lp_container_width
+    - field.field.node.kamihaya_landing_page.field_lp_contents
+    - field.field.node.kamihaya_landing_page.field_lp_description
+    - field.field.node.kamihaya_landing_page.field_lp_header
+    - field.field.node.kamihaya_landing_page.field_lp_hero_banner
+    - field.field.node.kamihaya_landing_page.field_lp_width_units
+    - field.field.node.kamihaya_landing_page.field_meta_tag
+    - node.type.kamihaya_landing_page
+  module:
+    - color_field
+    - entity_reference_revisions
+    - layout_paragraphs
+    - metatag
+    - options
+    - text
+    - user
+id: node.kamihaya_landing_page.default
+targetEntityType: node
+bundle: kamihaya_landing_page
+mode: default
+content:
+  anchor_links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_footer_bg_color:
+    type: color_field_formatter_css
+    label: hidden
+    settings:
+      selector: フッター
+      property: color
+      important: '1'
+      opacity: true
+      advanced: false
+      css: ''
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_footer_contents:
+    type: layout_paragraphs
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_header_container_width:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_header_width_units:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 13
+    region: content
+  field_lp_container_width:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_lp_contents:
+    type: layout_paragraphs
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_lp_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_lp_header:
+    type: layout_paragraphs
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  field_lp_hero_banner:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_lp_width_units:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_meta_tag:
+    type: metatag_empty_formatter
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  langcode: true

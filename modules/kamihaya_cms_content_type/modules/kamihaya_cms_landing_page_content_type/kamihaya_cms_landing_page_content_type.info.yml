@@ -1,0 +1,19 @@
+name: Kamihaya CMS Landing Page Content Type
+type: module
+core_version_requirement: ^9 || ^10
+package: Kamihaya
+description: 'Kamihaya landing page content type for Kamihaya CMS.'
+
+dependencies:
+  - drupal:node
+  - drupal:user
+  - color_field:color_field
+  - entity_reference_revisions:entity_reference_revisions
+  - field_group:field_group
+  - metatag:metatag
+  - paragraphs:paragraphs
+  - scheduler:scheduler
+  - kamihaya_cms_content_type:kamihaya_cms_content_type
+  - kamihaya_cms_paragraph_type:kamihaya_cms_paragraph_type
+
+project: 'kamihaya'
