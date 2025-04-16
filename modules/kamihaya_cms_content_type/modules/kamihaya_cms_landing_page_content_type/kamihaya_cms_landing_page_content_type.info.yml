@@ -13,7 +13,7 @@ dependencies:
   - metatag:metatag
   - paragraphs:paragraphs
   - scheduler:scheduler
-  - kanihaya_cms_content_type:kamihaya_cms_content_type
   - kamihaya_cms_content_type:kamihaya_cms_content_type
+  - kamihaya_cms_paragraph_type:kamihaya_cms_paragraph_type
 
 project: 'kamihaya'
