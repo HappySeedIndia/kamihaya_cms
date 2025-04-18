@@ -51,6 +51,12 @@ final class PathAliasProcessor implements InboundPathProcessorInterface {
   public function processInbound($path, Request $request): string|NULL {
     $language_code = $this->languageManager->getCurrentLanguage()->getId();
     $path = $this->aliasManager->getPathByAlias($path, $language_code);
+    // Add an attribute to prevent that the Redirect Module redirects to the
+    // canonical URL when "Enforce clean and canonical URLs" is selected.
+    // We use the request object directly as $request is a cloned object
+    // made in RedirectRequestSubscriber::onKernelRequestCheckRedirect.
+    // @see https://www.drupal.org/project/facets_pretty_paths/issues/2930145
+    \Drupal::request()->attributes->set('_disable_route_normalizer', TRUE);
     return $path;
   }
 
