@@ -1,4 +1,4 @@
-(function ($, Drupal) {
+(function ($, Drupal, drupalSettings) {
   'use strict';
 
   Drupal.behaviors.customVboFix = {
@@ -32,4 +32,4 @@
       });
     }
   };
-})(jQuery, Drupal);
+})(jQuery, Drupal, drupalSettings);
