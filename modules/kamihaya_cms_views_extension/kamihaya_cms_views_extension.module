@@ -726,3 +726,10 @@ function kamihaya_cms_views_extension_views_data_alter(array &$data): void {
   ];
 
 }
+
+/**
+ * Implements hook_page_attachments().
+ */
+function kamihaya_cms_views_extension_page_attachments(array &$attachments) {
+  $attachments['#attached']['drupalSettings']['vboCompareRedirect']['comparePath'] = '/products/spec-compare';
+}

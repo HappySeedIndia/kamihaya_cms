@@ -1,0 +1,171 @@
+diff --git a/src/Plugin/views/field/ViewsBulkOperationsBulkForm.php b/src/Plugin/views/field/ViewsBulkOperationsBulkForm.php
+index ba10d3ed..dde375e0 100644
+--- a/src/Plugin/views/field/ViewsBulkOperationsBulkForm.php
++++ b/src/Plugin/views/field/ViewsBulkOperationsBulkForm.php
+@@ -949,24 +949,10 @@ public function viewsFormSubmit(array &$form, FormStateInterface $form_state): v
+       }
+ 
+       // Update list data with the current page selection.
+-      $selected_keys = [];
+-      $input = $form_state->getUserInput();
+-      foreach ($input[$this->options['id']] as $bulk_form_key) {
+-        $selected_keys[$bulk_form_key] = $bulk_form_key;
+-      }
+-      $select_all = $form_state->getValue('select_all');
++      $selected_keys = $this->getSelectedKeys($form_state);
++      $select_all = $form_state->getValue('select_all') ?? FALSE;
+ 
+-      foreach ($this->tempStoreData['bulk_form_keys'] as $bulk_form_key) {
+-        if (
+-          (isset($selected_keys[$bulk_form_key]) && !$select_all) ||
+-          (!isset($selected_keys[$bulk_form_key]) && $select_all)
+-        ) {
+-          $this->tempStoreData['list'][$bulk_form_key] = $this->getListItem($bulk_form_key);
+-        }
+-        else {
+-          unset($this->tempStoreData['list'][$bulk_form_key]);
+-        }
+-      }
++      $this->tempStoreData['list'] = $this->getSelectedList($this->tempStoreData, $selected_keys, $select_all);
+ 
+       // Update exclude mode setting.
+       $this->tempStoreData['exclude_mode'] = !empty($select_all);
+@@ -1040,14 +1026,24 @@ public function viewsFormValidate(&$form, FormStateInterface $form_state) {
+     }
+ 
+     if (!$form_state->getValue('select_all')) {
+-      // Update tempstore data to make sure we have also
+-      // results selected in other requests and validate if
+-      // anything is selected.
++      // Validate there are form options selected, either on the current page
++      // or selected from previous pages.
+       $this->tempStoreData = $this->getTempstoreData();
+-      $selected = \array_filter($form_state->getValue($this->options['id']) ?? []);
+-      if (empty($this->tempStoreData['list']) && empty($selected)) {
++      $selected_keys = $this->getSelectedKeys($form_state);
++      if (empty($this->tempStoreData['list']) && empty($selected_keys)) {
+         $form_state->setErrorByName('', $this->t('No items selected.'));
+       }
++      // Handle possible issues if a user clicked the browser back button.
++      // Validate there are entities to process. If select_all is FALSE, there
++      // should always be entities to process. Otherwise,
++      // ViewsBulkOperationsActionProcessor::executeProcessing() may process
++      // all entities in the view by mistake.
++      // Get the selected entities to process.
++      $list = $this->getSelectedList($this->tempStoreData, $selected_keys, FALSE);
++      if (empty($list)) {
++        $current_url = Url::fromRoute('<current>')->toString();
++        $form_state->setErrorByName('', $this->t('Unable to determine what items to process. Please <a href=":url">click here</a> to reload the page and try again. To prevent this issue, avoid using the browser\'s back or forward buttons.', [':url' => $current_url]));
++      }
+     }
+ 
+     // Action config validation (if implemented).
+@@ -1083,6 +1083,86 @@ protected function isActionConfigurable($action): bool {
+     return \in_array('Drupal\Core\Plugin\PluginFormInterface', \class_implements($action['class']), TRUE) || \method_exists($action['class'], 'buildConfigurationForm');
+   }
+ 
++  /**
++   * Gets list of selected entities to be processed by the VBO action.
++   *
++   * Reviews entities listed on the current view page, as provided by the
++   * `$tempStoreData['bulk_form_keys']` array, to determine if they
++   * should be added or removed from the list of entities to be processed by
++   * the VBO action.
++   *
++   * If $select_all is FALSE, the list of entities represents an INCLUDE list,
++   * i.e. they will be processed by the VBO action.
++   *
++   * If $select_all is TRUE, the list of entities represents an EXCLUDE list,
++   *  i.e. they will NOT be processed by the VBO action.
++   *
++   * Adds the entity to the list if:
++   *  - $select_all is FALSE AND it's corresponding form option is selected.
++   *  - $select_all is TRUE AND it's corresponding form option is NOT selected.
++   *
++   * Removes the entity from the list if:
++   *   - $select_all is FALSE AND it's corresponding form option is selected.
++   *   - $select_all is TRUE AND it's corresponding form option is NOT selected.
++   *
++   * @param array $tempStoreData
++   *   The Tempstore data.
++   * @param array $selected_keys
++   *   The keys of the selected form options.
++   * @param bool $select_all
++   *   Whether the select_all mode is enabled.
++   *
++   * @return array
++   *   The entities to be processed. If $select_all is FALSE, this is an
++   *   INCLUDE list. If $select_all is TRUE, this an EXCLUDE list.
++   */
++  protected function getSelectedList(array $tempStoreData, array $selected_keys, bool $select_all): array {
++    $list = $tempStoreData['list'];
++    if(!empty($tempStoreData['bulk_form_keys'])) {
++      foreach ($tempStoreData['bulk_form_keys'] as $bulk_form_key) {
++        if (
++          (isset($selected_keys[$bulk_form_key]) && !$select_all) ||
++          (!isset($selected_keys[$bulk_form_key]) && $select_all)
++        ) {
++          $list[$bulk_form_key] = $this->getListItem($bulk_form_key);
++        }
++        else {
++          unset($list[$bulk_form_key]);
++        }
++      }
++    }
++    return $list;
++  }
++
++  /**
++   * Gets the bulk form keys for the selected entities on the current page.
++   *
++   * NOTE: Must use user input rather than FormState values to prevent issues
++   * if the site data has changed since the form was loaded.
++   *
++   * @param \Drupal\Core\Form\FormStateInterface $form_state
++   *   Drupal form state.
++   *
++   * @return array
++   *   Bulk form keys for the selected entities on the current views page.
++   *
++   * @see \Drupal\views_bulk_operations\Form\ViewsBulkOperationsFormTrait::calculateEntityBulkFormKey()
++   */
++  protected function getSelectedKeys(FormStateInterface $form_state): array {
++    $selected_keys = [];
++    $input = \array_filter($form_state->getValue($this->options['id']) ?? []);
++    foreach ($input as $bulk_form_key) {
++      // Given we are using user input we should ensure the data is as expected.
++      // Decode the bulk form key to a list item and assert data assumptions.
++      $list_item = $this->getListItem($bulk_form_key);
++      if (NULL === $list_item || count($list_item) !== 4) {
++        throw new \RuntimeException('Bulk Form Key is not as expected.');
++      }
++      $selected_keys[$bulk_form_key] = $bulk_form_key;
++    }
++    return $selected_keys;
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -1099,4 +1179,4 @@ public function validate() {
+     return $errors;
+   }
+ 
+-}
++}
+
+diff --git a/src/Service/ViewsBulkOperationsActionProcessor.php b/src/Service/ViewsBulkOperationsActionProcessor.php
+index 9d04fe7c..0e0a5e6b 100644
+--- a/src/Service/ViewsBulkOperationsActionProcessor.php
++++ b/src/Service/ViewsBulkOperationsActionProcessor.php
+@@ -519,6 +519,10 @@ public function processResults(array $results, array $previous = []): array {
+    * {@inheritdoc}
+    */
+   public function executeProcessing(array &$data, $view = NULL): RedirectResponse {
++    if (empty($data['list']) && empty($data['exclude_mode'])) {
++      throw new \RuntimeException('The list of items to process is empty when it should be set.');
++    }
++
+     if (empty($data['prepopulated']) && $data['exclude_mode'] && empty($data['exclude_list'])) {
+       $data['exclude_list'] = $data['list'];
+       $data['list'] = [];
