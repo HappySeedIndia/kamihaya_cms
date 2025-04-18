@@ -26,11 +26,6 @@
             labels.push(label);
           }
         });
-        // If no items are selected, show a translated alert
-        if (labels.length === 0) {
-          alert(Drupal.t('Please select at least one item to compare.'));
-          return;
-        }
         const encodedLabels = encodeURIComponent(labels.join('+'));
         window.location.href = `${basePath}/${encodedLabels}`;
       });
