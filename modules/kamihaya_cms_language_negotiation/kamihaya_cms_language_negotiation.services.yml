@@ -1,0 +1,6 @@
+services:
+  path_processor.kamihaya_cms_language_negotiation:
+    class: Drupal\kamihaya_cms_language_negotiation\PathProcessor\PathAliasProcessor
+    arguments: ['@language_manager', '@path_alias.manager']
+    tags:
+      - { name: path_processor_inbound }

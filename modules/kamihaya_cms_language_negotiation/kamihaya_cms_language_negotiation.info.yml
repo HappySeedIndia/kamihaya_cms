@@ -1,0 +1,7 @@
+name: 'Kamihaya CMS Language Negotiation'
+type: module
+description: 'Allows handling of subpath urls for multi-sites.'
+package: Kamihaya
+core_version_requirement: ^10 || ^11
+dependencies:
+  - language:language
