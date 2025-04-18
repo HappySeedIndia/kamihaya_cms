@@ -106,10 +106,40 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
       break;
     }
   }
-  // If both VBO and Infinite Scroll are used, re-apply vbo events jss.
+  // Fetch redirect path from VBO field configuration.
+  $path = '';
+  $fields = $view->display_handler->getOption('fields') ?? [];
+
+  foreach ($fields as $field) {
+    // Check for the VBO field.
+    if ($field['id'] === 'views_bulk_operations_bulk_form' && !empty($field['selected_actions'])) {
+      foreach ($field['selected_actions'] as $action) {
+        if (!empty($action['action_id']) && $action['action_id'] === 'vbo_redirect_to_view_action') {
+          $redirect_view_id = $action['preconfiguration']['redirect_view'] ?? '';
+          if (strpos($redirect_view_id, ':') !== FALSE) {
+            [$redirect_view, $display_id] = explode(':', $redirect_view_id);
+            $target_view = Views::getView($redirect_view);
+
+            if ($target_view && $target_view->access($display_id)) {
+              $target_view->setDisplay($display_id);
+              $path = $target_view->display_handler->getPath();
+              break 2; // Exit both loops once the path is found
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Attach custom JS and settings if VBO + Infinite Scroll are enabled.
   if ($is_vbo && $is_infinite_scroll) {
-    // @see https://www.drupal.org/project/views_bulk_operations/issues/2964765.
     $view->element['#attached']['library'][] = 'kamihaya_cms_views_extension/reapply-vbo-events';
+
+    if (!empty($path)) {
+      $view->element['#attached']['drupalSettings']['vboCompareRedirect'] = [
+        'comparePath' => '/' . trim($path, '/'),
+      ];
+    }
   }
 
   if (empty($view->pager) || !($view->pager instanceof Full)) {
@@ -725,35 +755,4 @@ function kamihaya_cms_views_extension_views_data_alter(array &$data): void {
     ],
   ];
 
-}
-
-/**
- * Implements hook_page_attachments().
- */
-function kamihaya_cms_views_extension_page_attachments(array &$attachments) {
-  $route_match = \Drupal::routeMatch();
-  $current_route = $route_match->getRouteName();
-
-  // Define the allowed view routes.
-  $allowed_routes = [
-    'view.product_search.grid_page',
-    'view.product_search.table_page',
-  ];
-
-  // Only proceed if the current route is among the allowed view pages.
-  if (in_array($current_route, $allowed_routes, TRUE)) {
-    $view_id = 'product_spec_compare';
-    $display_id = 'page_1';
-
-    $view = Views::getView($view_id);
-    if ($view && $view->access($display_id)) {
-      $view->setDisplay($display_id);
-      $redirect_path = $view->display_handler->getPath();
-
-      // Attach the compare path to drupalSettings.
-      $attachments['#attached']['drupalSettings']['vboCompareRedirect'] = [
-        'comparePath' => '/' . trim($redirect_path, '/'),
-      ];
-    }
-  }
 }
