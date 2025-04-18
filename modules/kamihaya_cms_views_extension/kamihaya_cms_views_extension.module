@@ -731,5 +731,29 @@ function kamihaya_cms_views_extension_views_data_alter(array &$data): void {
  * Implements hook_page_attachments().
  */
 function kamihaya_cms_views_extension_page_attachments(array &$attachments) {
-  $attachments['#attached']['drupalSettings']['vboCompareRedirect']['comparePath'] = '/products/spec-compare';
+  $route_match = \Drupal::routeMatch();
+  $current_route = $route_match->getRouteName();
+
+  // Define the allowed view routes.
+  $allowed_routes = [
+    'view.product_search.grid_page',
+    'view.product_search.table_page',
+  ];
+
+  // Only proceed if the current route is among the allowed view pages.
+  if (in_array($current_route, $allowed_routes, TRUE)) {
+    $view_id = 'product_spec_compare';
+    $display_id = 'page_1';
+
+    $view = Views::getView($view_id);
+    if ($view && $view->access($display_id)) {
+      $view->setDisplay($display_id);
+      $redirect_path = $view->display_handler->getPath();
+
+      // Attach the compare path to drupalSettings.
+      $attachments['#attached']['drupalSettings']['vboCompareRedirect'] = [
+        'comparePath' => '/' . trim($redirect_path, '/'),
+      ];
+    }
+  }
 }
