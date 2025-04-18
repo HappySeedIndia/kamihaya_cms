@@ -130,7 +130,7 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
       }
     }
   }
-
+  // If both VBO and Infinite Scroll are used, re-apply vbo events jss.
   // Attach custom JS and settings if VBO + Infinite Scroll are enabled.
   if ($is_vbo && $is_infinite_scroll) {
     $view->element['#attached']['library'][] = 'kamihaya_cms_views_extension/reapply-vbo-events';
