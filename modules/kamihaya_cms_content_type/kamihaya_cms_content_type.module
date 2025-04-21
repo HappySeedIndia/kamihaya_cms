@@ -250,13 +250,13 @@ function kamihaya_cms_content_type_form_entity_view_display_edit_form_alter(&$fo
  */
 function kamihaya_cms_content_type_entity_view_display_edit_form_process(array $form, FormStateInterface $form_state) {
   if (empty($form['#fieldgroups'])) {
-    return;
+    return $form;
   }
 
   $manager = \Drupal::service('plugin.manager.field_group.formatters');
   $field_group_form_state = $form_state->get('field_group');
   if (empty($field_group_form_state)) {
-    return;
+    return $form;
   }
   foreach ($form['#fieldgroups'] as $field_group) {
     if (empty($form['fields'][$field_group]['format']['format_settings']['settings']) || empty($field_group_form_state[$field_group])) {
