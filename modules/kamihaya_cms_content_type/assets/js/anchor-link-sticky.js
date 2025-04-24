@@ -31,4 +31,77 @@
       checkScroll();
     }
   };
+
+  Drupal.behaviors.anchorFix = {
+    attach: function (context, settings) {
+
+      // Handle anchor link clicks inside the sticky .anchor-links container
+      $('.anchor-links.sticky a[href^="#"]', context).each(function () {
+        $(this).off('click').on('click', function (event) {
+          var targetId = this.hash.substring(1);
+          var targetElement = $('#' + targetId);
+          var $stickyBox = $('.anchor-links.sticky');
+
+          // Skip scroll behavior if sticky is in normal-position state
+          if ($stickyBox.hasClass('normal-position')) {
+            return;
+          }
+
+          // If target element exists, scroll to it with offset
+          if (targetElement.length) {
+            event.preventDefault();
+
+            var floatingBoxHeight = $stickyBox.outerHeight();
+
+            // Scroll to the target position + sticky height (pre-adjustment)
+            var initialPosition = targetElement.offset().top + floatingBoxHeight;
+            $('html, body').animate({ scrollTop: initialPosition }, {
+              duration: 0,
+              complete: function () {
+                // Trigger a custom event after scrolling
+                $(document).trigger('anchorScrolled', [targetElement]);
+              }
+            });
+          }
+        });
+      });
+
+      // Custom event to handle fine adjustment of scroll after animation
+      $(document).on('anchorScrolled', function (event, targetElement) {
+        var $stickyBox = $('.anchor-links.sticky');
+        var floatingBoxHeight = $stickyBox.outerHeight();
+        var targetTop = targetElement.offset().top;
+
+        // Wait before final adjustment to ensure any sticky state updates are applied
+        setTimeout(function () {
+          var updatedHeight = $stickyBox.outerHeight();
+          var adjustedPosition = targetTop + updatedHeight;
+
+          // Final scroll adjustment with smooth behavior
+          window.scrollTo({ top: adjustedPosition, behavior: "smooth" });
+        }, 500);
+      });
+
+      // If the page loads with a hash in the URL, scroll to the correct position
+      $(window).on('load', function () {
+        if (window.location.hash) {
+          var targetElement = $(window.location.hash);
+
+          if (targetElement.length) {
+            setTimeout(function () {
+              var floatingBoxHeight = $('.anchor-links.sticky').outerHeight();
+              var targetPosition = targetElement.offset().top - floatingBoxHeight;
+
+              // Scroll to the target position on load
+              window.scrollTo({ top: targetPosition, behavior: "smooth" });
+
+              // Trigger custom adjustment after initial scroll
+              $(document).trigger('anchorScrolled', [targetElement]);
+            }, 1000); // Delay to allow DOM/rendering to complete
+          }
+        }
+      });
+
+    }
+  };
 })(jQuery, Drupal);
