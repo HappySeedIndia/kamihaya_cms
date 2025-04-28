@@ -161,6 +161,7 @@
         "drupal/paragraphs": "^1.15",
         "drupal/password_policy": "^4.0",
         "drupal/pathauto": "^1.11",
+        "drupal/queue_mail": "^1.7",
         "drupal/quick_node_clone": "^1.16",
         "drupal/recaptcha": "^3.2",
         "drupal/recreate_block_content": "^3.0",
