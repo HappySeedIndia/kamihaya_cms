@@ -1,0 +1,7 @@
+datalayer:
+  header: true
+  js:
+    js/datalayer.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
