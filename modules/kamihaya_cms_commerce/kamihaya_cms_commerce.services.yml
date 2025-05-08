@@ -1,0 +1,6 @@
+services:
+  kamihaya_cms_commerce.breadcrumb:
+    class: Drupal\kamihaya_cms_commerce\CommerceProductBreadCrumbBuilder
+    arguments: ['@entity_type.manager', '@entity.repository']
+    tags:
+      - { name: breadcrumb_builder, priority: 1000 }
