@@ -1,0 +1,7 @@
+kamihaya_cms_language_negotiation.negotiation_url:
+  path: '/admin/config/regional/language/detection/site-prefix-language-url'
+  defaults:
+    _form: '\Drupal\kamihaya_cms_language_negotiation\Form\NegotiationForm'
+    _title: 'Language negotiation configuration'
+  requirements:
+    _permission: 'administer languages'
