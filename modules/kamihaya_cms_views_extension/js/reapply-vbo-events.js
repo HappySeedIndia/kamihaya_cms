@@ -1,4 +1,4 @@
-(function ($, Drupal, drupalSettings) {
+(function ($, Drupal, drupalSettings, once) {
   'use strict';
 
   Drupal.behaviors.customVboFix = {
@@ -10,35 +10,31 @@
   };
 
   Drupal.behaviors.vboCompareRedirect = {
-    attach(context, settings) {
+    attach(context) {
       const basePath = drupalSettings.vboCompareRedirect?.comparePath;
-      if (!basePath) return;
+      if (!basePath) {
+        return;
+      }
 
-      $(document).off('click.vboCompare').on('click.vboCompare', 'input[data-vbo="vbo-action"][value="Compare"]', function (e) {
-        e.preventDefault();
+      // Bind the click handler exactly once per Compare button in this context.
+      once('vboCompare', 'input[data-vbo="vbo-action"][value="Compare"]', context)
+        .forEach((el) => {
+          $(el).on('click', (e) => {
+            e.preventDefault();
 
-        // Add a short delay to ensure DOM is stable
-        setTimeout(() => {
-          const labels = [];
-          $('input.js-vbo-checkbox:checked').each(function () {
-            const label = $(this).closest('.form-item').find('label').text().trim();
-            if (label) {
-              labels.push(label);
-            }
+            const labels = [];
+            $('input.js-vbo-checkbox:checked').each(function () {
+              const text = $(this).closest('.form-item').find('label').text().trim();
+              if (text) {
+                labels.push(text);
+              }
+            });
+
+            const encoded = encodeURIComponent(labels.join('+'));
+            window.location.href = `${basePath}/${encoded}`;
           });
-
-          if (labels.length === 0) {
-            location.reload(); // Reload the current page
-            return;
-          }
-          location.reload(); // Reload the current page
-          const encodedLabels = encodeURIComponent(labels.join('+'));
-          const redirectUrl = `${basePath}/${encodedLabels}`;
-
-          window.location.href = redirectUrl;
-        }, 500); // Delay in milliseconds (adjust if needed)
-      });
+        });
     }
   };
 
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal, drupalSettings, once);

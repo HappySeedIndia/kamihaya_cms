@@ -26,6 +26,7 @@ reapply-vbo-events:
   dependencies:
     - core/jquery
     - core/drupalSettings
+    - core/once
 
 estimate:
   js:
