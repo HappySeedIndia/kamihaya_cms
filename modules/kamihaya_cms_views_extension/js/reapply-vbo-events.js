@@ -13,7 +13,7 @@
     attach(context, settings) {
       const basePath = drupalSettings.vboCompareRedirect?.comparePath;
       if (!basePath) return;
-      console.log('basePath:', basePath);
+
       $(document).off('click.vboCompare').on('click.vboCompare', 'input[data-vbo="vbo-action"][value="Compare"]', function (e) {
         e.preventDefault();
 
@@ -28,14 +28,13 @@
           });
 
           if (labels.length === 0) {
-            alert('Please select at least one item to compare.');
+            location.reload(); // Reload the current page
             return;
           }
-
+          location.reload(); // Reload the current page
           const encodedLabels = encodeURIComponent(labels.join('+'));
           const redirectUrl = `${basePath}/${encodedLabels}`;
 
-          console.log('Redirecting to:', redirectUrl);
           window.location.href = redirectUrl;
         }, 500); // Delay in milliseconds (adjust if needed)
       });
