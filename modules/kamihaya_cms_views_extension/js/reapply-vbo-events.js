@@ -11,7 +11,7 @@
 
   Drupal.behaviors.vboCompareRedirect = {
     attach(context) {
-      const basePath = drupalSettings.vboCompareRedirect?.comparePath;
+      const basePath = drupalSettings.vboCompareRedirect.comparePath;
       if (!basePath) {
         return;
       }
