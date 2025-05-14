@@ -149,7 +149,11 @@ function kamihaya_cms_common_update_10005() {
     $config->set('headers_to_remove', ['X-Generator']);
     $config->save(TRUE);
   }
+}
 
+/**
+ * Removal and addition of devices for responsive preview.
+ */
 function kamihaya_cms_common_update_10006() {
   $entity_storage = \Drupal::entityTypeManager()->getStorage('responsive_preview_device');
   $module_handler = \Drupal::service('extension.list.module');
@@ -202,6 +206,4 @@ function kamihaya_cms_common_update_10006() {
       \Drupal::logger('kamihaya_cms_common')->error('Config file not found or invalid for: @config_id', ['@config_id' => $config_id]);
     }
   }
-}
-
 }
