@@ -168,6 +168,11 @@ function kamihaya_cms_common_update_10006() {
     'responsive_preview.device.galaxy_s9',
     'responsive_preview.device.ipad_pro',
     'responsive_preview.device.galaxy_tab_s4',
+    'responsive_preview.device.galaxy_s7',
+    'responsive_preview.device.galaxy_tab_2_10',
+    'responsive_preview.device.ipad_air_2',
+    'responsive_preview.device.iphone_7',
+    'responsive_preview.device.iphone_7plus',
   ];
 
   // Delete old devices if they exist.
