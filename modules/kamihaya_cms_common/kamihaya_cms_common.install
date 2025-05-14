@@ -153,7 +153,7 @@ function kamihaya_cms_common_update_10005() {
 function kamihaya_cms_common_update_10006() {
   $entity_storage = \Drupal::entityTypeManager()->getStorage('responsive_preview_device');
   $module_handler = \Drupal::service('extension.list.module');
-  $module_path = $module_handler->getPath('responsive_preview');
+  $module_path = $module_handler->getPath('kamihaya_cms_common');
   $config_path = $module_path . '/' . InstallStorage::CONFIG_INSTALL_DIRECTORY;
   $file_storage = new FileStorage($config_path);
 
