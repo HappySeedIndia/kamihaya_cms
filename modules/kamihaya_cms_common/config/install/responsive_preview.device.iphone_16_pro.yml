@@ -1,0 +1,10 @@
+status: 1
+dependencies: {  }
+id: iphone_16_pro
+label: 'iPhone 16 Pro'
+weight: 0
+orientation: portrait
+dimensions:
+  width: 1206
+  height: 2622
+  dppx: 3.0

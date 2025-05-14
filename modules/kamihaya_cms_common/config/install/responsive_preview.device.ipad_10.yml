@@ -1,0 +1,10 @@
+status: 1
+dependencies: {  }
+id: ipad_10
+label: 'iPad 10'
+weight: 0
+orientation: portrait
+dimensions:
+  width: 1640
+  height: 2360
+  dppx: 2.0
