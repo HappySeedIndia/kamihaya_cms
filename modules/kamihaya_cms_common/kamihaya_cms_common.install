@@ -163,16 +163,16 @@ function kamihaya_cms_common_update_10006() {
 
   // List of old devices to delete.
   $old_device_ids = [
-    'responsive_preview.device.iphone_xs',
-    'responsive_preview.device.iphone_xs_max',
-    'responsive_preview.device.galaxy_s9',
-    'responsive_preview.device.ipad_pro',
-    'responsive_preview.device.galaxy_tab_s4',
-    'responsive_preview.device.galaxy_s7',
-    'responsive_preview.device.galaxy_tab_2_10',
-    'responsive_preview.device.ipad_air_2',
-    'responsive_preview.device.iphone_7',
-    'responsive_preview.device.iphone_7plus',
+    'iphone_xs',
+    'iphone_xs_max',
+    'galaxy_s9',
+    'ipad_pro',
+    'galaxy_tab_s4',
+    'galaxy_s7',
+    'galaxy_tab_2_10',
+    'ipad_air_2',
+    'iphone_7',
+    'iphone_7plus',
   ];
 
   // Delete old devices if they exist.
