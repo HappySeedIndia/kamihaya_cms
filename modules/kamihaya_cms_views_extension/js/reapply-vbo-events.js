@@ -17,7 +17,7 @@
       }
 
       // Bind the click handler exactly once per Compare button in this context.
-      once('vboCompare', 'input[data-vbo="vbo-action"][value="Compare"]', context)
+      once('vboCompare', 'input[data-vbo="vbo-action"][name="op"]', context)
         .forEach((el) => {
           $(el).on('click', (e) => {
             e.preventDefault();
