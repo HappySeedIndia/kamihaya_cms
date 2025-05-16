@@ -14,6 +14,7 @@ use Drupal\views\Plugin\views\pager\Full;
 use Drupal\views\Plugin\views\pager\Mini;
 use Drupal\views\Views;
 use Drupal\views\ViewExecutable;
+use Drupal\Core\Url;
 
 /**
  * @file
@@ -107,7 +108,7 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
     }
   }
   // Fetch redirect path from VBO field configuration.
-  $path = '';
+  $compare_path = '';
   $fields = $view->display_handler->getOption('fields') ?? [];
 
   foreach ($fields as $field) {
@@ -115,15 +116,32 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
     if ($field['id'] === 'views_bulk_operations_bulk_form' && !empty($field['selected_actions'])) {
       foreach ($field['selected_actions'] as $action) {
         if (!empty($action['action_id']) && $action['action_id'] === 'vbo_redirect_to_view_action') {
+          // Get the view and display ID from the configuration.
           $redirect_view_id = $action['preconfiguration']['redirect_view'] ?? '';
           if (strpos($redirect_view_id, ':') !== FALSE) {
             [$redirect_view, $display_id] = explode(':', $redirect_view_id);
+            // Load the target view.
             $target_view = Views::getView($redirect_view);
-
             if ($target_view && $target_view->access($display_id)) {
               $target_view->setDisplay($display_id);
-              $path = $target_view->display_handler->getPath();
-              break 2; // Exit both loops once the path is found
+
+              // Get language info.
+              $language_manager = \Drupal::languageManager();
+              $langcode = $language_manager->getCurrentLanguage()->getId();
+              $default_langcode = $language_manager->getDefaultLanguage()->getId();
+
+              // Get base path from the view.
+              $base_path = $target_view->display_handler->getPath();
+              $clean_path = ltrim($base_path, '/');
+
+              // Add langcode to the path if it's not default.
+              if ($langcode !== $default_langcode) {
+                $clean_path = $langcode . '/' . $clean_path;
+              }
+
+              // Generate absolute URL.
+              $compare_path = Url::fromUserInput('/' . $clean_path, ['absolute' => TRUE])->toString();
+              break 2; // Exit both loops once a valid path is found.
             }
           }
         }
@@ -135,9 +153,9 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
   if ($is_vbo && $is_infinite_scroll) {
     $view->element['#attached']['library'][] = 'kamihaya_cms_views_extension/reapply-vbo-events';
 
-    if (!empty($path)) {
+    if (!empty($compare_path)) {
       $view->element['#attached']['drupalSettings']['vboCompareRedirect'] = [
-        'comparePath' => '/' . trim($path, '/'),
+        'comparePath' => $compare_path,
       ];
     }
   }
