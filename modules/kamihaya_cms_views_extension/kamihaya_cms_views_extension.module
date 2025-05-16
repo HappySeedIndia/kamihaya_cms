@@ -120,7 +120,7 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
           $redirect_view_id = $action['preconfiguration']['redirect_view'] ?? '';
           if (strpos($redirect_view_id, ':') !== FALSE) {
             [$redirect_view, $display_id] = explode(':', $redirect_view_id);
-              // Load the target view.
+            // Load the target view.
             $target_view = Views::getView($redirect_view);
             if ($target_view && $target_view->access($display_id)) {
               $target_view->setDisplay($display_id);
