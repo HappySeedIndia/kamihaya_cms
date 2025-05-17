@@ -27,27 +27,9 @@
           if (tab) {
             tab = tab.replace('#', '');
           }
-
-          // Deactivate the previous header tab.
-          let previousHeaderTab = document.querySelector('.results-block-header-item.active');
-          if (previousHeaderTab) {
-            previousHeaderTab.classList.remove('active');
-          }
-
-          // Deactivate the previous result body.
-          let previousResultBody = document.querySelector('.results-block-body-item.active');
-          if (previousResultBody) {
-            previousResultBody.classList.remove('active');
-          }
-
-          // Activate the header tab.
-          this.parentElement.classList.add('active');
-
-          // Activate the result body.
-          let resultBody = document.getElementById(tab);
-          if (resultBody) {
-            resultBody.classList.add('active');
-          }
+          let step = tab.replace('step-body-', '');
+          // Switch header tabs ad result body.
+          switchResultBlock(step);
         });
       }
     }
@@ -60,6 +42,22 @@
           event.stopPropagation();
           processSuspend();
         });
+      }
+    }
+
+    let processBlock = document.getElementsByClassName('process-block')[0];
+    if (processBlock) {
+      // Add event listeners to the process image.
+      let processBlockItems = processBlock.getElementsByClassName('process-block-item');
+      if (processBlockItems) {
+        for (let i = 0; i < processBlockItems.length; i++) {
+          let image = processBlockItems[i].getElementsByTagName('img')[0];
+          if (image) {
+            image.addEventListener('click', function (event) {
+              processImageClick(event);
+            });
+          }
+        }
       }
     }
   }
@@ -601,6 +599,122 @@
           anotherMaximizedImage.classList.add('hidden');
         }
       }
+    }
+  }
+
+  // Funntion of the process image click.
+  processImageClick = function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let image = event.target;
+    if (image.tagName !== 'IMG') {
+      image = image.closest('img');
+    }
+    if (!image) return;
+
+    // Get the clicked position.
+    let rect = image.getBoundingClientRect();
+    let x = event.clientX - rect.left;
+    let y = event.clientY - rect.top;
+    let width = rect.width;
+    let height = rect.height;
+
+    // Calculate the percentage of the clicked position.
+    let xPercent = Math.round((x / width) * 1000) / 10;
+    let yPercent = Math.round((y / height) * 1000) / 10;
+    console.log('Clicked position: ' + xPercent + '% ' + yPercent + '%');
+
+    let position = drupalSettings.process_image_position;
+    if (position) {
+      let steps = Object.keys(position);
+      for (let i = 0; i < steps.length; i++) {
+        let step = steps[i];
+        let item = position[step];
+        if (item.x_left <= xPercent && item.x_right >= xPercent && item.y_top <= yPercent && item.y_bottom >= yPercent) {
+          let headerTab = document.querySelector('.results-block-header-item.step-' + step.replace('_', '-'));
+          if (headerTab) {
+            let link = headerTab.querySelector('a');
+            if (link && link.classList.contains('disabled')) {
+              // If the link is disabled, return.
+              return;
+            }
+          }
+          // Minimize the process block if it is maximized.
+          let processBlock = document.getElementsByClassName('process-block')[0];
+          if (processBlock && processBlock.classList.contains('maximized')) {
+            processBlock.classList.remove('maximized');
+            processBlock.classList.add('minimized');
+
+            // Switch the process result switcher.
+            let switchResult = document.getElementsByClassName('process-result-switcher-item-link')[0];
+            if (switchResult && !switchResult.classList.contains('disabled')) {
+              // Add the disabled class.
+              switchResult.classList.add('disabled');
+              // Switch the images.
+              let minimizedImage = switchResult.getElementsByClassName('minimized-image')[0];
+              if (minimizedImage) {
+                minimizedImage.classList.add('hidden');
+              }
+              let maximizedImage = switchResult.getElementsByClassName('maximized-image')[0];
+              if (maximizedImage) {
+                maximizedImage.classList.remove('hidden');
+              }
+              // Switch the process result switcher.
+              let switchProcess = document.getElementsByClassName('process-result-switcher-item-link')[1];
+              if (switchProcess && switchProcess.classList.contains('disabled')) {
+                // Add the disabled class.
+                switchProcess.classList.remove('disabled');
+                // Switch the images.
+                let minimizedImage = switchProcess.getElementsByClassName('minimized-image')[0];
+                if (minimizedImage) {
+                  minimizedImage.classList.remove('hidden');
+                }
+                let maximizedImage = switchProcess.getElementsByClassName('maximized-image')[0];
+                if (maximizedImage) {
+                  maximizedImage.classList.add('hidden');
+                }
+              }
+            }
+
+          }
+          // Maximize the results block.
+          let resultsBlock = document.getElementsByClassName('results-block')[0];
+          if (resultsBlock && resultsBlock.classList.contains('minimized')) {
+            resultsBlock.classList.remove('minimized');
+            resultsBlock.classList.add('maximized');
+          }
+          // Drisplay the step.
+          switchResultBlock(step)
+        }
+      }
+    }
+  }
+
+  // Function to switch the result block.
+  switchResultBlock = function(step) {
+    // Deactivate the previous header tab.
+    let previousHeaderTab = document.querySelector('.results-block-header-item.active');
+    if (previousHeaderTab) {
+      previousHeaderTab.classList.remove('active');
+    }
+
+    // Deactivate the previous result body.
+    let previousResultBody = document.querySelector('.results-block-body-item.active');
+    if (previousResultBody) {
+      previousResultBody.classList.remove('active');
+    }
+
+    // Activate the selected header tab.
+    let headerTab = document.querySelector('.results-block-header-item.step-' + step.replace('_', '-'));
+    if (headerTab) {
+      headerTab.classList.add('active');
+    }
+
+    // Activate the selected result body.
+    let resultBodyItem = document.getElementById('step-body-' + step.replace('_', '-'));
+    if (resultBodyItem) {
+      resultBodyItem.classList.add('active');
     }
   }
 

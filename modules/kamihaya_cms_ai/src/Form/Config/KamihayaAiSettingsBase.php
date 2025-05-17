@@ -2,11 +2,9 @@
 
 namespace Drupal\kamihaya_cms_ai\Form\Config;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class Kamihaya AI Settings base.
@@ -79,14 +77,64 @@ abstract class KamihayaAiSettingsBase extends ConfigFormBase {
     ]);
 
     foreach ($steps as $key => $step) {
-      $form['process_image']["{$key}_image"] = [
-        '#type' => 'managed_file',
+      $form['process_image'][$key] = [
+        '#type' => 'details',
         '#title' => $step,
+        '#open' => TRUE,
+      ];
+
+      $form['process_image']["{$key}"]["{$key}_image"] = [
+        '#type' => 'managed_file',
+        '#title' => $this->t('@step image', ['@step' => $step]),
         '#upload_location' => 'public://waiting_movie/',
         '#default_value' => $config->get("{$key}_image"),
         '#upload_validators' => [
           'file_validate_extensions' => ['png', 'jpg', 'jpeg', 'gif'],
         ],
+      ];
+      $form['process_image'][$key]["{$key}_x_left"] = [
+        '#type' => 'number',
+        '#title' => $this->t('Left'),
+        '#description' => $this->t('Left position in a process image.'),
+        '#default_value' => $config->get("{$key}_x_left"),
+        '#min' => 0,
+        '#max' => 100,
+        '#step' => 1,
+        '#size' => 5,
+        '#field_suffix' => '%',
+      ];
+      $form['process_image'][$key]["{$key}_x_right"] = [
+        '#type' => 'number',
+        '#title' => $this->t('Right'),
+        '#description' => $this->t('Right position in a process image.'),
+        '#default_value' => $config->get("{$key}_x_right"),
+        '#min' => 0,
+        '#max' => 100,
+        '#step' => 1,
+        '#size' => 5,
+        '#field_suffix' => '%',
+      ];
+      $form['process_image'][$key]["{$key}_y_top"] = [
+        '#type' => 'number',
+        '#title' => $this->t('Top'),
+        '#description' => $this->t('Top position in a process image.'),
+        '#default_value' => $config->get("{$key}_y_top"),
+        '#min' => 0,
+        '#max' => 100,
+        '#step' => 1,
+        '#size' => 5,
+        '#field_suffix' => '%',
+      ];
+      $form['process_image'][$key]["{$key}_y_bottom"] = [
+        '#type' => 'number',
+        '#title' => $this->t('Bottom'),
+        '#description' => $this->t('Bottom position in a process image.'),
+        '#default_value' => $config->get("{$key}_y_bottom"),
+        '#min' => 0,
+        '#max' => 100,
+        '#step' => 1,
+        '#size' => 5,
+        '#field_suffix' => '%',
       ];
     }
 
