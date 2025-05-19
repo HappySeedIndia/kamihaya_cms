@@ -152,16 +152,13 @@ function kamihaya_cms_common_update_10005() {
 }
 
 /**
- * Removal and addition of devices for responsive preview.
+ * Removal of old devices and import of new ones for Responsive Preview.
  */
 function kamihaya_cms_common_update_10006() {
+  /** @var \Drupal\Core\Entity\EntityStorageInterface $entity_storage */
   $entity_storage = \Drupal::entityTypeManager()->getStorage('responsive_preview_device');
-  $module_handler = \Drupal::service('extension.list.module');
-  $module_path = $module_handler->getPath('kamihaya_cms_common');
-  $config_path = $module_path . '/' . InstallStorage::CONFIG_INSTALL_DIRECTORY;
-  $file_storage = new FileStorage($config_path);
 
-  // List of old devices to delete.
+  // ---------- 1. Delete obsolete devices ----------------------------------.
   $old_device_ids = [
     'iphone_xs',
     'iphone_xs_max',
@@ -175,17 +172,29 @@ function kamihaya_cms_common_update_10006() {
     'iphone_7plus',
   ];
 
-  // Delete old devices if they exist.
-  $devices = $entity_storage->loadMultiple($old_device_ids);
-  if ($devices) {
-    $entity_storage->delete($devices);
-    \Drupal::logger('kamihaya_cms_common')->notice('Old responsive preview devices deleted: @ids', ['@ids' => implode(', ', array_keys($devices))]);
+  // Load only the devices that actually exist.
+  $devices_to_delete = $entity_storage->loadMultiple($old_device_ids);
+
+  if (!empty($devices_to_delete)) {
+    $entity_storage->delete($devices_to_delete);
+    \Drupal::logger('kamihaya_cms_common')->notice(
+      'Deleted obsolete responsive-preview devices: @ids',
+      ['@ids' => implode(', ', array_keys($devices_to_delete))]
+    );
   }
   else {
-    \Drupal::logger('kamihaya_cms_common')->notice('No old responsive preview devices found to delete.');
+    \Drupal::logger('kamihaya_cms_common')
+      ->debug('No obsolete responsive-preview devices found — deletion skipped.');
   }
 
-  // List of new configs to import.
+  // ---------- 2. Import new device configs --------------------------------.
+  $module_handler = \Drupal::service('extension.list.module');
+  $module_path    = $module_handler->getPath('kamihaya_cms_common');
+  $config_path    = $module_path . '/' . InstallStorage::CONFIG_INSTALL_DIRECTORY;
+  $file_storage   = new FileStorage($config_path);
+
+  // Config names to import (the YAML file *name* inside the module’s
+  // config/install directory, *without* the ".yml" extension).
   $config_ids = [
     'responsive_preview.device.galaxy_24_ultra',
     'responsive_preview.device.galaxy_24',
@@ -200,15 +209,48 @@ function kamihaya_cms_common_update_10006() {
   ];
 
   foreach ($config_ids as $config_id) {
-    $data = $file_storage->read($config_id);
+    // Read raw YAML as an array.
+    if (!$data = $file_storage->read($config_id)) {
+      \Drupal::logger('kamihaya_cms_common')->error(
+        'Config @cfg not found or unreadable – import skipped.',
+        ['@cfg' => $config_id]
+      );
+      continue;
+    }
 
-    if ($data) {
+    // `$data['id']` holds the actual entity ID, e.g. "galaxy_24_ultra".
+    $device_id = $data['id'] ?? NULL;
+    if (!$device_id) {
+      \Drupal::logger('kamihaya_cms_common')->error(
+        'Config @cfg missing "id" key – import skipped.',
+        ['@cfg' => $config_id]
+      );
+      continue;
+    }
+
+    // Skip if the device already exists.
+    if ($entity_storage->load($device_id)) {
+      \Drupal::logger('kamihaya_cms_common')->debug(
+        'Device already exists – not re-importing: @id',
+        ['@id' => $device_id]
+      );
+      continue;
+    }
+
+    // Create and save the entity.
+    try {
       $device = $entity_storage->create($data);
       $device->save();
-      \Drupal::logger('kamihaya_cms_common')->notice('Imported device from config: @id', ['@id' => $device->id()]);
+      \Drupal::logger('kamihaya_cms_common')->notice(
+        'Imported responsive-preview device: @id',
+        ['@id' => $device_id]
+      );
     }
-    else {
-      \Drupal::logger('kamihaya_cms_common')->error('Config file not found or invalid for: @config_id', ['@config_id' => $config_id]);
+    catch (\Exception $e) {
+      \Drupal::logger('kamihaya_cms_common')->error(
+        'Failed importing @id: @msg',
+        ['@id' => $device_id, '@msg' => $e->getMessage()]
+      );
     }
   }
 }
