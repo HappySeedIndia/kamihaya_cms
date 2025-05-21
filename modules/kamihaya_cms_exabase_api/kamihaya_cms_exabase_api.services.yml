@@ -1,6 +1,5 @@
 services:
-  logger.exabase_log:
-    class: Drupal\kamihaya_cms_exabase_api\Logger\ExabaseLog
-    arguments: ['@logger.log_message_parser']
-    tags:
-      - { name: logger }
+  kamihaya_cms_exabase_api.logger_channel:
+    class: Drupal\Core\Logger\LoggerChannel
+    factory: logger.factory:get
+    arguments: ['kamihaya_cms_exabase_api']
