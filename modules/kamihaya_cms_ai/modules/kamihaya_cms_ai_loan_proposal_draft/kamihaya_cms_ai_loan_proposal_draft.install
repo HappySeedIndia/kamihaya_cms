@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * Install new entity type.
+ */
+function kamihaya_cms_ai_loan_proposal_draft_update_10001() {
+  _kamihaya_cms_common_change_configs('kamihaya_cms_ai_loan_proposal_draft', [
+    'node.type.loan_proposal.yml',
+    'language.content_settings.node.loan_proposal.yml',
+    'field.storage.node.field_pdf_summary.yml',
+    'field.storage.node.field_loan_summary.yml',
+    'field.storage.node.field_pdf_prompt.yml',
+    'field.storage.node.field_loan_document.yml',
+    'field.storage.node.field_company_name.yml',
+    'field.field.node.loan_proposal.field_pdf_summary.yml',
+    'field.field.node.loan_proposal.field_loan_summary.yml',
+    'field.field.node.loan_proposal.field_pdf_prompt.yml',
+    'field.field.node.loan_proposal.field_loan_document.yml',
+    'field.field.node.loan_proposal.field_company_name.yml',
+    'field.field.node.loan_proposal.body.yml',
+    'core.entity_view_display.node.loan_proposal.teaser.yml',
+    'core.entity_view_display.node.loan_proposal.default.yml',
+    'core.entity_form_display.node.loan_proposal.default.yml',
+  ], 'install');
+}

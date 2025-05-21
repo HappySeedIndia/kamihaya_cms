@@ -330,6 +330,10 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         'format' => 'full_html',
       ],
       'field_pdf_summary' => [
+        'value' => $api_response['pdf_summary'],
+        'format' => 'full_html',
+      ],
+      'field_pdf_prompt' => [
         'value' => $api_response['pdf_summary_used_prompt'],
         'format' => 'full_html',
       ],
@@ -341,7 +345,6 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         'value' => $result['loan_summary'],
         'format' => 'full_html',
       ],
-      'field_loan_status' => 'in_progress',
     ]);
     $node->save();
   }

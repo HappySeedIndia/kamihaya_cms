@@ -6,12 +6,11 @@ dependencies:
     - field.field.node.loan_proposal.body
     - field.field.node.loan_proposal.field_company_name
     - field.field.node.loan_proposal.field_loan_document
-    - field.field.node.loan_proposal.field_loan_status
     - field.field.node.loan_proposal.field_loan_summary
+    - field.field.node.loan_proposal.field_pdf_prompt
     - field.field.node.loan_proposal.field_pdf_summary
     - node.type.loan_proposal
   module:
-    - options
     - text
     - user
 id: node.loan_proposal.default
@@ -46,19 +45,19 @@ content:
     third_party_settings: {  }
     weight: 107
     region: content
-  field_loan_status:
-    type: list_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 105
-    region: content
   field_loan_summary:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
     weight: 106
+    region: content
+  field_pdf_prompt:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 108
     region: content
   field_pdf_summary:
     type: text_default

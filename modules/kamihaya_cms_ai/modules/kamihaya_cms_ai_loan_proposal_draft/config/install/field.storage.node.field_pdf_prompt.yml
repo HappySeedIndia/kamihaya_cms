@@ -1,0 +1,19 @@
+uuid: 2276c4d4-9228-4237-87ad-ba7bcec30e9a
+langcode: ja
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_pdf_prompt
+field_name: field_pdf_prompt
+entity_type: node
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
