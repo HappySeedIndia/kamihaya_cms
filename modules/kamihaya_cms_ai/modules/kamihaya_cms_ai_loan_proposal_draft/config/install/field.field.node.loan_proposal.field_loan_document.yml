@@ -1,0 +1,24 @@
+uuid: c1591cac-8f23-4d45-8bf7-8634af59314b
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_loan_document
+    - filter.format.full_html
+    - node.type.loan_proposal
+  module:
+    - text
+id: node.loan_proposal.field_loan_document
+field_name: field_loan_document
+entity_type: node
+bundle: loan_proposal
+label: 'Loan Document'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - full_html
+field_type: text_long

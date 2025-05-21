@@ -1,0 +1,11 @@
+uuid: b44e6816-3bbc-474e-969d-5204f90d5ab7
+langcode: ja
+status: true
+dependencies:
+  config:
+    - node.type.loan_proposal
+id: node.loan_proposal
+target_entity_type_id: node
+target_bundle: loan_proposal
+default_langcode: site_default
+language_alterable: false
