@@ -1,0 +1,19 @@
+uuid: 516551dc-0912-43a1-9eb1-11c84902344c
+langcode: ja
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_pdf_summary
+field_name: field_pdf_summary
+entity_type: node
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

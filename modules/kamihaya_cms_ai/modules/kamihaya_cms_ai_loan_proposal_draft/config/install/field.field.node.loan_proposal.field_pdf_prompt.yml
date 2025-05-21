@@ -1,0 +1,24 @@
+uuid: 8a4e90db-a94d-4122-a4c6-e56ea4b0d683
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pdf_prompt
+    - filter.format.full_html
+    - node.type.loan_proposal
+  module:
+    - text
+id: node.loan_proposal.field_pdf_prompt
+field_name: field_pdf_prompt
+entity_type: node
+bundle: loan_proposal
+label: 'PDF Prompt'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - full_html
+field_type: text_long

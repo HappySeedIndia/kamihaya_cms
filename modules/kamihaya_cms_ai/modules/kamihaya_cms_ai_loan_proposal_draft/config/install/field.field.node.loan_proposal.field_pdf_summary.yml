@@ -1,0 +1,22 @@
+uuid: 136c18e1-e627-4ff2-b94d-f36f098e4c78
+langcode: ja
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pdf_summary
+    - node.type.loan_proposal
+  module:
+    - text
+id: node.loan_proposal.field_pdf_summary
+field_name: field_pdf_summary
+entity_type: node
+bundle: loan_proposal
+label: 'PDF Summary'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

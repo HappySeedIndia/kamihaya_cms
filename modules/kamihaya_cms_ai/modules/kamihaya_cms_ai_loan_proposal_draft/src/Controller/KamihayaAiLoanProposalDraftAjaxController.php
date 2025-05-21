@@ -2,6 +2,7 @@
 
 namespace Drupal\kamihaya_cms_ai_loan_proposal_draft\Controller;
 
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\file\Entity\File;
 use Drupal\kamihaya_cms_ai\Controller\KamihayaAiAjaxController;
@@ -17,6 +18,8 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
 
   const SESSION_KEY = 'kamihaya_ai_loan_proposal_draft';
 
+  protected $entityTypeManager;
+
   /**
    * Constructs a new KamihayaAiLoanProposalDraftAjaxController object.
    *
@@ -31,8 +34,11 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
     protected FileSystemInterface $fileSystem,
     protected ExabaseClient $exabaseClient,
     protected Request $request,
+    protected EntityTypeManager $entityManager,
   ) {
+    parent::__construct();
     $this->logger = $this->getLogger('kamihaya_ai_loan_proposal_draft');
+    $this->entityTypeManager = $this->entityManager;
   }
 
   /**
@@ -42,7 +48,8 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
     return new static(
     $container->get('file_system'),
     $container->get('kamihaya_cms_loan_proposal_api.client'),
-    $container->get('request_stack')->getCurrentRequest()
+    $container->get('request_stack')->getCurrentRequest(),
+    $container->get('entity_type.manager'),
     );
   }
 
@@ -173,7 +180,6 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         'loan_document_used_prompt' => empty($data['loan_prompt']) ? $loan_prompt : $data['loan_prompt'],
       ];
       $session->set(self::SESSION_KEY, $api_response);
-
       return [
         'status' => 'success',
         'message' => $this->t('Text of the PDF summarized.'),
@@ -249,6 +255,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         ];
       }
 
+      $this->saveLoanProposal($result, $company_detail);
       return [
         'status' => 'success',
         'message' => $this->t('Loan proposal drafted.'),
@@ -299,5 +306,46 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         'message' => $this->t('Failed to get the prompt.'),
       ];
     }
+  }
+
+  /**
+   * Save summary details in a entity.
+   *
+   * @param $result
+   * @param $company_detail
+   * @return void
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  private function saveLoanProposal($result, $company_detail) {
+    $session = $this->request->getSession();
+    $api_response = $session->get(self::SESSION_KEY);
+    $node = $this->entityTypeManager->getStorage('node')->create([
+      'type' => 'loan_proposal',
+      'title' => 'Loan Proposal: ' . $this->currentUser()->getEmail() . '-' .time() ,
+      'field_company_name' => $api_response['company'],
+      'body' => [
+        'value' => $company_detail,
+        'format' => 'full_html',
+      ],
+      'field_pdf_summary' => [
+        'value' => $api_response['pdf_summary'],
+        'format' => 'full_html',
+      ],
+      'field_pdf_prompt' => [
+        'value' => $api_response['pdf_summary_used_prompt'],
+        'format' => 'full_html',
+      ],
+      'field_loan_document' => [
+        'value' => $api_response['loan_document_used_prompt'],
+        'format' => 'full_html',
+      ],
+      'field_loan_summary' => [
+        'value' => $result['loan_summary'],
+        'format' => 'full_html',
+      ],
+    ]);
+    $node->save();
   }
 }

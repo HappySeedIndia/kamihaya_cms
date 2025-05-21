@@ -1,0 +1,46 @@
+uuid: 0c9bf38c-6632-4e23-9a7b-e7224449d843
+langcode: ja
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.loan_proposal.body
+    - field.field.node.loan_proposal.field_company_name
+    - field.field.node.loan_proposal.field_loan_document
+    - field.field.node.loan_proposal.field_loan_summary
+    - field.field.node.loan_proposal.field_pdf_prompt
+    - field.field.node.loan_proposal.field_pdf_summary
+    - node.type.loan_proposal
+  module:
+    - text
+    - user
+id: node.loan_proposal.teaser
+targetEntityType: node
+bundle: loan_proposal
+mode: teaser
+content:
+  anchor_links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_company_name: true
+  field_loan_document: true
+  field_loan_summary: true
+  field_pdf_prompt: true
+  field_pdf_summary: true
+  langcode: true
