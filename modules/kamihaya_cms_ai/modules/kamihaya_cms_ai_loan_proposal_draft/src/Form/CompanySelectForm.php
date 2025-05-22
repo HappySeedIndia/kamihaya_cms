@@ -14,9 +14,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class CompanySelectForm extends FormBase {
 
+  /**
+   * The constructor of CompanySelectForm.
+   *
+   * @param AccountProxyInterface $currentUser
+   *   The current user.
+   * @param ExabaseClient $exabaseClient
+   *  The Exabase client.
+   */
   public function __construct(
     protected AccountProxyInterface $currentUser,
-    protected ExabaseClient $exabaseClient) {
+    protected ExabaseClient $exabaseClient,
+    ) {
   }
 
   /**
@@ -25,7 +34,7 @@ class CompanySelectForm extends FormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('current_user'),
-      $container->get('kamihaya_cms_loan_proposal_api.client'),
+      $container->get('kamihaya_cms_loan_proposal_api.client')
     );
   }
 

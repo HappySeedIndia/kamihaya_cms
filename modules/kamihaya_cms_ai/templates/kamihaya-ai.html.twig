@@ -70,20 +70,6 @@
         {% endif %}
       </div>
     </div>
-    <div class="process-result-switcher hidden">
-      <div class="process-result-switcher-item">
-        <a class="process-result-switcher-item-link disabled" href="#results-block">
-          <img src="/profiles/contrib/kamihaya_cms/modules/kamihaya_cms_ai/assets/images/result-icon-max.png" class="maximized-image" alt="{{ 'Result(maximized)'|t }}">
-          <img src="/profiles/contrib/kamihaya_cms/modules/kamihaya_cms_ai/assets/images/result-icon-min.png" class="minimized-image hidden" alt="{{ 'Result(mainimized)'|t }}">
-        </a>
-      </div>
-      <div class="process-result-switcher-item">
-        <a class="process-result-switcher-item-link" href="#process-block">
-          <img src="/profiles/contrib/kamihaya_cms/modules/kamihaya_cms_ai/assets/images/process-icon-max.png" class="maximized-image hidden" alt="{{ 'Process(maximized)'|t }}">
-          <img src="/profiles/contrib/kamihaya_cms/modules/kamihaya_cms_ai/assets/images/process-icon-min.png" class="minimized-image" alt="{{ 'Process(miinimized)'|t }}">
-        </a>
-      </div>
-    </div>
   {% endif %}
 
     {% if steps %}
@@ -101,6 +87,23 @@
             {% endif %}
           {% endfor %}
         </ul>
+        <ul class="results-block-header-history hidden"></ul>
+        {% if process %}
+          <div class="process-result-switcher hidden">
+            <div class="process-result-switcher-item">
+              <a class="process-result-switcher-item-link disabled" href="#results-block">
+                <img src="/profiles/contrib/kamihaya_cms/modules/kamihaya_cms_ai/assets/images/result-icon-max.png" class="maximized-image" alt="{{ 'Result(maximized)'|t }}">
+                <img src="/profiles/contrib/kamihaya_cms/modules/kamihaya_cms_ai/assets/images/result-icon-min.png" class="minimized-image hidden" alt="{{ 'Result(mainimized)'|t }}">
+              </a>
+            </div>
+            <div class="process-result-switcher-item">
+              <a class="process-result-switcher-item-link" href="#process-block">
+                <img src="/profiles/contrib/kamihaya_cms/modules/kamihaya_cms_ai/assets/images/process-icon-max.png" class="maximized-image hidden" alt="{{ 'Process(maximized)'|t }}">
+                <img src="/profiles/contrib/kamihaya_cms/modules/kamihaya_cms_ai/assets/images/process-icon-min.png" class="minimized-image" alt="{{ 'Process(miinimized)'|t }}">
+              </a>
+            </div>
+          </div>
+        {% endif %}
       </div>
       <div id="results-block" class="results-block{% if hide_result %} results-block--hidden{% endif %}">
         <div id="results-block-body" class="results-block-body">
@@ -127,6 +130,16 @@
       </div>
     {% endif %}
   </div>
+  <div class="history-block hidden">
+    <div class="history-block-header">
+      <div class="history-block-header-close">
+        <a href="#" class="history-close" aria-label="{{ 'Close'|t }}">
+          <span class="visually-hidden">{{ 'Close'|t }}</span>
+        </a>
+      </div>
+    </div>
+    <div class="history-block-body"></div>
+  </div>
   {% if edit_prompt %}
     <div class="edit-prompt hidden">
       <div class="edit-prompt-header">
@@ -138,6 +151,9 @@
             <span class="visually-hidden">{{ 'Close'|t }}</span>
           </a>
         </div>
+      </div>
+      <div class="edit-prompt-buttons">
+        <ul class="edit-prompt-buttons-list hidden"></ul>
       </div>
       <div class="edit-prompt-body">
         <div class="edit-prompt-body-content">
