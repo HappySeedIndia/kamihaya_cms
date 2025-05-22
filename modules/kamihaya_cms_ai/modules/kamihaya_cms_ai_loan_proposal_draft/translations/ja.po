@@ -204,4 +204,4 @@ msgstr "プロンプト再入力"
 
 #: assets/js/kamihaya-ai-loan-proposal-draft.js:306
 msgid "Company detail"
-msgstr "プロンプト再入力"
+msgstr "会社情報"
