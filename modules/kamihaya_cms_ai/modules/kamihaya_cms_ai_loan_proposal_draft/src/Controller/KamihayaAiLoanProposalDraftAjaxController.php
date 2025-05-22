@@ -18,8 +18,6 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
 
   const SESSION_KEY = 'kamihaya_ai_loan_proposal_draft';
 
-  protected $entityTypeManager;
-
   /**
    * Constructs a new KamihayaAiLoanProposalDraftAjaxController object.
    *
@@ -34,11 +32,10 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
     protected FileSystemInterface $fileSystem,
     protected ExabaseClient $exabaseClient,
     protected Request $request,
-    protected EntityTypeManager $entityManager,
   ) {
     parent::__construct();
     $this->logger = $this->getLogger('kamihaya_ai_loan_proposal_draft');
-    $this->entityTypeManager = $this->entityManager;
+    $this->entityTypeManager();
   }
 
   /**
@@ -49,7 +46,6 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
     $container->get('file_system'),
     $container->get('kamihaya_cms_loan_proposal_api.client'),
     $container->get('request_stack')->getCurrentRequest(),
-    $container->get('entity_type.manager'),
     );
   }
 
@@ -77,7 +73,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
     }
 
     if ($step === 'prompt') {
-      $result = $this->getPrompt();
+      $result = $this->getPrompt($data);
     }
 
     if (empty($result)) {
@@ -101,11 +97,11 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
    */
   private function summarizeDodument(array $data) {
     $session = $this->request->getSession();
-    if (!empty($session->get(self::SESSION_KEY))) {
-      $session->remove(self::SESSION_KEY);
-    }
 
     if (empty($data['company']) || empty($data['fid'])) {
+      if (!empty($session->get(self::SESSION_KEY))) {
+        $session->remove(self::SESSION_KEY);
+      }
       return [
         'status' => 'error',
         'message' => $this->t('The request is invalid.'),
@@ -114,31 +110,60 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
 
     $fid = $data['fid'];
     $company = $data['company'];
-    if (!$fid || !$company) {
+    $pdf_text = '';
+    $file_name = '';
+    $file = NULL;
+
+    // Get the file.
+    $file = File::load($fid);
+
+    // Get the pdf text and the file name from the session if it is already in the session when the file is removed.
+    // This meeasn this process is 're-draft'.
+    $api_response = $session->get(self::SESSION_KEY);
+    if (empty($file) && !empty($api_response)) {
+      $file_name = !empty($api_response['file_name']) ? $api_response['file_name'] : '';
+      $pdf_text = !empty($api_response['pdf_text']) ? $api_response['pdf_text'] : '';
+    }
+
+    // Remove the session key if it is already set.
+    $session->remove(self::SESSION_KEY);
+
+    if (empty($company)) {
       return [
         'status' => 'error',
         'message' => $this->t('The request is invalid.'),
       ];
     }
-    $file = File::load($fid);
-    if (!$file) {
+
+    if (empty($file) && empty($pdf_text)) {
       return [
         'status' => 'error',
         'message' => $this->t('File not found.'),
       ];
     }
-    $uri = $file->getFileUri();
-    $file_path = $this->fileSystem->realpath($uri);
+
     try {
-      // Call the extract endpoint.
-      $result = $this->exabaseClient->extractPdf($file_path);
-      if (empty($result || empty($result['pdf_text']))) {
+      if (!empty($file)) {
+        $uri = $file->getFileUri();
+        $file_path = $this->fileSystem->realpath($uri);
+        $file_name = substr($file->getFilename(), 0, strrpos($file->getFilename(), '.'));
+        // Call the extract endpoint.
+        $result = $this->exabaseClient->extractPdf($file_path);
+        if (empty($result || empty($result['pdf_text']))) {
+          return [
+            'status' => 'error',
+            'message' => $this->t('Failed to extract the text from the PDF.'),
+          ];
+        }
+        $pdf_text = $result['pdf_text'];
+      }
+
+      if (empty($pdf_text)) {
         return [
           'status' => 'error',
           'message' => $this->t('Failed to extract the text from the PDF.'),
         ];
       }
-      $pdf_text = $result['pdf_text'];
 
       // Get the prompt to summarize the document.
       $result = $this->exabaseClient->getPrompt();
@@ -167,7 +192,6 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         ];
       }
 
-      $file_name = substr($file->getFilename(), 0, strrpos($file->getFilename(), '.'));
       // Save the result to the session.
       $api_response = [
         'company' => $company,
@@ -178,8 +202,10 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         'pdf_summary' => $result,
         'loan_document_prompt' => $loan_prompt,
         'loan_document_used_prompt' => empty($data['loan_prompt']) ? $loan_prompt : $data['loan_prompt'],
+        'used_company_detail' => empty($data['company_detail']) ? null : $data['company_detail'],
       ];
       $session->set(self::SESSION_KEY, $api_response);
+
       return [
         'status' => 'success',
         'message' => $this->t('Text of the PDF summarized.'),
@@ -196,8 +222,10 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
       ];
     }
     finally {
-      // Delete the file.
-      $file->delete();
+      if (!empty($file)) {
+        // Delete the file.
+        $file->delete();
+      }
     }
   }
 
@@ -223,6 +251,15 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         ];
       }
       $company_detail = $result['content'];
+      $api_response['company_detail'] = $company_detail;
+      $session->set(self::SESSION_KEY, $api_response);
+
+      if (empty($api_response['used_company_detail'])) {
+        $detail = $company_detail;
+      }
+      else {
+        $detail = $api_response['used_company_detail'];
+      }
 
       if (empty($api_response['loan_document_prompt'])) {
         $result = $this->exabaseClient->getPrompt();
@@ -246,7 +283,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
       }
 
       // Call the draft loan proposal endpoint.
-      $result = $this->exabaseClient->makeLoanProposal($prompt, $api_response['pdf_summary'], $company_detail);
+      $result = $this->exabaseClient->makeLoanProposal($prompt, $api_response['pdf_summary'], $detail);
       if (empty($result) || empty($result['loan_summary'])) {
         $session->remove(self::SESSION_KEY);
         return [
@@ -255,13 +292,14 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         ];
       }
 
-      $this->saveLoanProposal($result, $company_detail);
+      $this->saveLoanProposal($result, $detail);
       return [
         'status' => 'success',
         'message' => $this->t('Loan proposal drafted.'),
         'loan_document_prompt' => $this->formatResult($loan_prompt),
         'loan_document_used_prompt' => $this->formatResult($prompt),
         'company_detail' => $this->formatResult($company_detail),
+        'used_company_detail' => $this->formatResult($detail),
         'loan_summary' => $this->formatResult($result['loan_summary']),
       ];
     }
@@ -276,13 +314,24 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
   }
 
   /**
-   * Get the prompt to summarize the document.
+   * Get the prompt and the company detail to summarize the document.
+   *
+   * @param array $data
+   *   The request data.
    *
    * @return array
-   *   The prompt to summarize the document.
+   *   The prompt and the company detail to summarize the document.
    */
-  private function getPrompt() {
+  private function getPrompt(array $data) {
+    if (empty($data) || empty($data['company'])) {
+      return [
+        'status' => 'error',
+        'message' => $this->t('The request is invalid.'),
+      ];
+    }
+
     try {
+      $response = [];
       // Get the prompt.
       $result = $this->exabaseClient->getPrompt();
       if (empty($result) || empty($result['pdf_summary']) || empty($result['loan_document'])) {
@@ -291,13 +340,23 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
           'message' => $this->t('Failed to get the prompt.'),
         ];
       }
+      $response['pdf_summary_prompt'] = $result['pdf_summary'];
+      $response['loan_document_prompt'] = $result['loan_document'];
 
-      return [
-        'status' => 'success',
-        'message' => $this->t('Prompt retrieved.'),
-        'pdf_summary_prompt' => $result['pdf_summary'],
-        'loan_document_prompt' => $result['loan_document'],
-      ];
+      // Get cpompany detail.
+      $result = $this->exabaseClient->getCompanyDetail($data['company']);
+      if (empty($result) || empty($result['content'])) {
+        return [
+          'status' => 'error',
+          'message' => $this->t('Failed to get company detail.'),
+        ];
+      }
+
+      $response['status'] = 'success';
+      $response['message'] = $this->t('Prompt and company detail retrieved.');
+      $response['company_detail'] = $result['content'];
+
+      return $response;
     }
     catch (\Exception $e) {
       $this->logger->error('Exception occurred while getting the prompt: ' . $e->getMessage());

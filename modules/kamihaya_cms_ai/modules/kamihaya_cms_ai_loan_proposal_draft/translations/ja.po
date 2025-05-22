@@ -177,3 +177,31 @@ msgstr "プロンプトを上書きせずに稟議書を作成する"
 #: assets/js/kamihaya-ai-loan-proposal-draft.js:189
 msgid "Starting summarization of the document with edited prompts."
 msgstr "編集されたプロンプトで文書の要約を開始する"
+
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:120
+msgid "Do you want to revise the prompts and re-draft the loan proposal?"
+msgstr プロンプトを再入力して別の案を作成しますか？"
+
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:137
+msgid "Revise prompt"
+msgstr プロンプトを再入力する"
+
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:143
+msgid "Not revise prompt"
+msgstr "再入力しない"
+
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:244
+msgid "Revise prompt & Redraft"
+msgstr "プロンプトを上書きして再作成する"
+
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:245
+msgid "Not revise"
+msgstr "再作成しない"
+
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:250
+msgid "Revise prompt"
+msgstr "プロンプト再入力"
+
+#: assets/js/kamihaya-ai-loan-proposal-draft.js:306
+msgid "Company detail"
+msgstr "会社情報"

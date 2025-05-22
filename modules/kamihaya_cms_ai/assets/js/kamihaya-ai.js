@@ -60,6 +60,36 @@
         }
       }
     }
+
+    // Add event listeners to the prompt close button.
+    let promptClose = document.getElementsByClassName('prompt-close')[0];
+    if (promptClose) {
+      promptClose.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Close the prompt block.
+        let promptBlock = document.getElementsByClassName('edit-prompt')[0];
+        if (promptBlock) {
+          promptBlock.classList.add('hidden');
+        }
+      });
+    }
+
+    // Add event listeners to the history close button.
+    let historyClose = document.getElementsByClassName('history-close')[0];
+    if (historyClose) {
+      historyClose.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Close the history block.
+        let historyBlock = document.getElementsByClassName('history-block')[0];
+        if (historyBlock) {
+          historyBlock.classList.add('hidden');
+        }
+      });
+    }
   }
 
   // Ajax request function.
@@ -96,8 +126,7 @@
   }
 
   // Execute step function.
-  executeStep = function (step, data, responseKey, chatMessage, nextCallback = null, promptKey = null) {
-
+  executeStep = function (step, data, responseKey, chatMessage, nextCallback = null, prompts = null, rerunnable = false) {
     // Hide the main block.
     let mainBlock = document.getElementsByClassName('chat-block-body-content-main')[0];
     if (mainBlock && !mainBlock.classList.contains('hidden')) {
@@ -151,7 +180,20 @@
       let links = switcher.getElementsByTagName('a');
       if (links && links.length > 0) {
         for (let i = 0; i < links.length; i++) {
-          links[i].addEventListener('click', switchBlocks);
+          links[i].addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            let target = event.target;
+            if (target.tagName !== 'A') {
+              target = target.closest('a');
+            }
+            let href = target.getAttribute('href');
+            // Remove the hash from the href.
+            href = href.replace('#', '');
+            if (href === '') return;
+            // Switch the blocks.
+            switchBlocks(href);
+          });
         }
       }
     }
@@ -187,6 +229,24 @@
       resultBodyItem.classList.add('active');
     }
 
+    // Remove the inner HTML of the result block.
+    let result = document.querySelector('#step-body-' + step.replace('_', '-') + ' .result');
+    if (result) {
+      result.remove();
+    }
+
+    // Remove the prompt block.
+    let promptBlock = document.querySelector('#step-body-' + step.replace('_', '-') + ' .prompt-container');
+    if (promptBlock) {
+      promptBlock.remove();
+    }
+
+    let animationTag = document.querySelector('#step-body-' + step.replace('_', '-') + ' .results-block-body-item-movie');
+    if (animationTag && animationTag.classList.contains('hidden')) {
+      // Show the animation tag.
+      animationTag.classList.remove('hidden');
+    }
+
     // Play the loading animation.
     let loadingAnimation = document.querySelector('#step-body-' + step.replace('_', '-') + ' video');
     if (loadingAnimation) {
@@ -198,9 +258,9 @@
 
     // Send the ajax request.
     sendAjaxRequest(Drupal.url(drupalSettings.ajax_url), data, function (response) {
-      ajaxSuccess(response, step, responseKey, loadingAnimation, headerTab, promptKey);
+      let returnValue = ajaxSuccess(response, step, responseKey, loadingAnimation, headerTab, prompts, rerunnable);
       if (nextCallback) {
-        nextCallback();
+        nextCallback(returnValue);
       }
       else {
         // Switch the process block.
@@ -212,7 +272,7 @@
   };
 
   // Ajax success handling function.
-  ajaxSuccess = function (response, step, responseKey, loadingAnimation, headerTab, promptKey = null) {
+  ajaxSuccess = function (response, step, responseKey, loadingAnimation, headerTab, prompts = null, rerunnable = false) {
     // Stop the loading animation.
     if (loadingAnimation) {
       loadingAnimation.pause();
@@ -224,10 +284,16 @@
       headerTab.classList.add('finished');
     }
 
-    // Remove the animation tag.
     let animationTag = document.querySelector('#step-body-' + step.replace('_', '-') + ' .results-block-body-item-movie');
     if (animationTag) {
-      animationTag.remove();
+      if (rerunnable) {
+        // If need to re-run, Hide the animation tag.
+        animationTag.classList.add('hidden');
+      } else {
+       // Remove the animation tag.
+        animationTag.remove();
+        animationTag = null;
+      }
     }
 
     if (response.message) {
@@ -237,22 +303,37 @@
     // Display the result.
     if (response[responseKey] !== undefined) {
       let result = response[responseKey];
-      let resultBlock = document.getElementById('step-body-' + step.replace('_', '-'));
+      let displayPrommts = {};
 
-      let promptHTML = '';
+     // let resultBlock = document.getElementById('step-body-' + step.replace('_', '-'));
+      // Return value of the function.
+      let returnValue = { result: result, prompt: null };
+
+      //let promptHTML = ''
       // Display the prompt.
-      if (response[promptKey] !== undefined) {
-        let prompt = response[promptKey];
-        promptHTML = '<div class="prompt-container"><div class="prompt-title">' + Drupal.t('Prompt') + '</div>';
-        promptHTML += '<div class="prompt ' + responseKey.replace('_', '-') + '">' + prompt + '</div></div>';
+      if (prompts && Object.keys(prompts).length > 0) {
+        let keys = Object.keys(prompts);
+        //promptHTML += '<div class="prompt-container">';
+        returnValue.prompt = {};
+        for (let i = 0; i < keys.length; i++) {
+          let promptKey = keys[i];
+          let promptLabel = prompts[promptKey] ? prompts[promptKey] : 'Prompt';
+          let prompt = response[promptKey];
+          displayPrommts[promptLabel] = prompt;
+          if (prompt && prompt.length > 0) {
+            returnValue.prompt[promptKey] = prompt;
+          }
+        }
       }
-      resultBlock.innerHTML = '<div class="result ' + responseKey.replace('_', '-') + '">' + result + '</div>' + promptHTML;
+
+      createResultsBlock(step, result, displayPrommts, rerunnable);
+      return returnValue;
     }
 
   };
 
   // Error handling function.
-  ajaxError = function(error, step, loadingAnimation, headerTab) {
+  ajaxError = function (error, step, loadingAnimation, headerTab, rerunnable = false) {
     // Stop the loading animation.
     if (loadingAnimation) {
       loadingAnimation.pause();
@@ -264,10 +345,16 @@
       headerTab.classList.add('failed');
     }
 
-    // Remove the animation tag.
-    let animationTag = document.querySelector('#step-body-' + step + ' .results-block-body-item-movie');
+    let animationTag = document.querySelector('#step-body-' + step.replace('_', '-') + ' .results-block-body-item-movie');
     if (animationTag) {
-      animationTag.remove();
+      if (rerunnable) {
+        // If need to re-run, Hide the animation tag.
+        animationTag.classList.add('hidden');
+      } else {
+        // Remove the animation tag.
+        animationTag.remove();
+        animationTag = null;
+      }
     }
 
     if (error) {
@@ -536,22 +623,57 @@
     });
   }
 
-  // Switch blocks function.
-  switchBlocks = function(event) {
-    event.preventDefault();
-    event.stopPropagation();
+  // Create a result block function.
+  createResultsBlock = function (step, result, prompts = null, keepAnimation = false) {
+    let resultBlock = document.getElementById('step-body-' + step.replace('_', '-'));
+    let promptHTML = ''
 
-    let target = event.target;
-
-    if (target.tagName !== 'A') {
-      target = target.closest('a');
+    // Display the prompt.
+    if (prompts && Object.keys(prompts).length > 0) {
+      let labels = Object.keys(prompts);
+      promptHTML += '<div class="prompt-container">';
+      for (let i = 0; i < labels.length; i++) {
+        let label = labels[i];
+        let promptLabel = typeof label === 'number' ? 'Prompt' : label;
+        let prompt = prompts[label];
+        if (prompt && prompt.length > 0) {
+          // Add prompt to the prompt list.
+          promptHTML += '<div class="prompt-item"><div class="prompt-title">' + Drupal.t(promptLabel) + '</div>';
+          promptHTML += '<div class="prompt ' + step.replace('_', '-') + '">' + prompt + '</div></div>';
+        }
+      }
+      promptHTML += '</div>';
     }
-    let href = target.getAttribute('href');
-    // Remove the hash from the href.
-    href = href.replace('#', '');
-    // Check if the href is empty.
-    if (href === '') return;
+    let animationTag = undefined;
+    if (keepAnimation) {
+      animationTag = document.querySelector('#step-body-' + step.replace('_', '-') + ' .results-block-body-item-movie');
+    }
+    // Add the result to the result block.
+    resultBlock.innerHTML = '<div class="result ' + step.replace('_', '-') + '">' + result + '</div>' + promptHTML;
+    if (keepAnimation && animationTag) {
+      // Add the animation tag.
+      resultBlock.appendChild(animationTag);
+    }
+  }
 
+  // Initialize the header tabs.
+  initHeaderTabs = function() {
+    let headerTabs = document.querySelectorAll('.results-block-header-item');
+    if (headerTabs) {
+      for (let i = 0; i < headerTabs.length; i++) {
+        // Remobe all classes from the header tab.
+        headerTabs[i].classList.remove('active', 'running', 'finished', 'failed', 'suspended');
+        // Add the disabled class to the header link.
+        let link = headerTabs[i].querySelector('a');
+        if (link && !link.classList.contains('disabled')) {
+          link.classList.add('disabled');
+        }
+      }
+    }
+  }
+
+  // Switch blocks function.
+  switchBlocks = function(target) {
     // Get the container.
     let container = document.getElementsByClassName('kamihaya-ai-container-main')[0];
     if (!container) return;
@@ -565,7 +687,7 @@
 
     let anotherLink = document.querySelector('.process-result-switcher a[href="#' + maximizedBlock.id + '"]');
 
-    if (minimizedBlock.id === href) {
+    if (minimizedBlock.id === target) {
       // Remove the minimized class from target block.
       minimizedBlock.classList.remove('minimized');
       // Add the maximized class to target block.
@@ -575,28 +697,37 @@
       // Add the minimized class to another block.
       maximizedBlock.classList.add('minimized');
 
-      // Disable the link.
-      target.classList.add('disabled');
-      // Switch the images.
-      let minimizedImage = target.getElementsByClassName('minimized-image')[0];
-      if (minimizedImage) {
-        minimizedImage.classList.add('hidden');
-      }
-      let maximizedImage = target.getElementsByClassName('maximized-image')[0];
-      if (maximizedImage) {
-        maximizedImage.classList.remove('hidden');
-      }
-      if (anotherLink && anotherLink.classList.contains('disabled')) {
-        // Enable the link.
-        anotherLink.classList.remove('disabled');
-        // Switch the images.
-        let anotherMinimizedImage = anotherLink.getElementsByClassName('minimized-image')[0];
-        if (anotherMinimizedImage) {
-          anotherMinimizedImage.classList.remove('hidden');
-        }
-        let anotherMaximizedImage = anotherLink.getElementsByClassName('maximized-image')[0];
-        if (anotherMaximizedImage) {
-          anotherMaximizedImage.classList.add('hidden');
+      let switcherLinks = document.getElementsByClassName('process-result-switcher-item-link');
+      if (switcherLinks && switcherLinks.length > 0) {
+        for (let i = 0; i < switcherLinks.length; i++) {
+          let switcherLink = switcherLinks[i];
+          let href = switcherLink.getAttribute('href');
+          if (href == '#' + target) {
+            // Disable the link.
+            switcherLink.classList.add('disabled');
+            // Switch the images.
+            let minimizedImage = switcherLink.getElementsByClassName('minimized-image')[0];
+            if (minimizedImage) {
+              minimizedImage.classList.add('hidden');
+            }
+            let maximizedImage = switcherLink.getElementsByClassName('maximized-image')[0];
+            if (maximizedImage) {
+              maximizedImage.classList.remove('hidden');
+            }
+          }
+          else {
+            // Enable the link.
+            switcherLink.classList.remove('disabled');
+            // Switch the images.
+            let minimizedImage = switcherLink.getElementsByClassName('minimized-image')[0];
+            if (minimizedImage) {
+              minimizedImage.classList.remove('hidden');
+            }
+            let maximizedImage = switcherLink.getElementsByClassName('maximized-image')[0];
+            if (maximizedImage) {
+              maximizedImage.classList.add('hidden');
+            }
+          }
         }
       }
     }
@@ -716,6 +847,316 @@
     if (resultBodyItem) {
       resultBodyItem.classList.add('active');
     }
+  }
+
+  // Add prompt tp the prompt list.
+  addPrompt = function(name, label, prompt, active) {
+    let promptBlock = document.getElementsByClassName('edit-prompt')[0];
+    if (promptBlock) {
+      name = name.replace('_', '-');
+      let promptHeaderList = promptBlock.getElementsByClassName('edit-prompt-buttons-list')[0];
+      let promptContent = promptBlock.getElementsByClassName('edit-prompt-body-content')[0];
+      if (promptContent && promptHeaderList) {
+        promptHeaderList.classList.remove('hidden');
+        let promptItem = document.getElementById('edit-' + name + '-prompt');
+        let = headerButton = undefined;
+        let container = undefined;
+        if (!promptItem) {
+          // Create a header button list item.
+          let headerButtonListItem = document.createElement('li');
+          headerButtonListItem.classList.add('edit-prompt-buttons-item', 'prompt-' + name);
+          promptHeaderList.appendChild(headerButtonListItem);
+
+          // Create a header button.
+          headerButton = document.createElement('a');
+          headerButton.classList.add('edit-prompt-buttons-item-link');
+          if (active) {
+            headerButton.classList.add('active');
+          }
+          headerButton.setAttribute('href', '#' + name + '-prompt');
+          headerButton.innerHTML = Drupal.t(label);
+          headerButton.addEventListener('click', switchPrompt);
+          headerButtonListItem.appendChild(headerButton);
+
+          // Create a prompt container.
+          container = document.createElement('div');
+          container.classList.add('prompt-container');
+          if (active) {
+            container.classList.add('active');
+          }
+          container.id = name + '-prompt';
+          promptContent.appendChild(container);
+
+          // Create a new textarea for the PDF summary prompt.
+          promptItem = document.createElement('textarea');
+          promptItem.id = 'edit-' + name + '-prompt';
+          container.appendChild(promptItem);
+          promptItem.value = prompt;
+        }
+        else {
+          // Get the header button and container.
+          headerButton = promptHeaderList.querySelector('.prompt-' + name + ' a');
+          container = document.getElementById(name + '-prompt');
+        }
+        if (active) {
+          // Add the active class to the header button and container.
+          if (!headerButton.classList.contains('active')) {
+            headerButton.classList.add('active');
+          }
+          if (!container.classList.contains('active')) {
+            container.classList.add('active');
+          }
+        }
+        else {
+          // Remove the active class from the header button and container.
+          if (headerButton.classList.contains('active')) {
+            headerButton.classList.remove('active');
+          }
+          if (container.classList.contains('active')) {
+            container.classList.remove('active');
+          }
+        }
+      }
+    }
+  }
+
+  // Function to switch the prompt.
+  switchPrompt = function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let target = event.target;
+    if (target.tagName !== 'A') {
+      target = target.closest('a');
+    }
+    let href = target.getAttribute('href');
+    // Remove the hash from the href.
+    href = href.replace('#', '');
+    // Check if the href is empty.
+    if (href === '') return;
+
+    // Hide the current prompt.
+    let currentPrompt = document.querySelector('.prompt-container.active');
+    if (currentPrompt) {
+      currentPrompt.classList.remove('active');
+    }
+
+    // Show the selected prompt.
+    let newPrompt = document.getElementById(href);
+    if (newPrompt) {
+      newPrompt.classList.add('active');
+    }
+    // Deactivate the previous header button.
+    let previiousHeaderButton = document.querySelector('.edit-prompt-buttons-item-link.active');
+    if (previiousHeaderButton) {
+      previiousHeaderButton.classList.remove('active');
+    }
+    // Activate the selected header button.
+    target.classList.add('active');
+  }
+
+  // History handling function.
+  let history = [];
+  let currentProcess = { data: {}, timestamp: 0 };
+
+  // Function to add a new history.
+  addHistory = function(result) {
+    // Add the result to the history.
+    history.push(result);
+
+    if (history.length > 1) {
+      // Display and refresh the history links.
+      displayHistoryLinks(history.length);
+    }
+  }
+
+  // Function to get the history count.
+  getHistoryCount = function() {
+    let historyCount = 0;
+    if (history && history.length > 0) {
+      historyCount = history.length;
+    }
+    return historyCount;
+  }
+
+  // Disable the history links.
+  disableHistoryLinks = function() {
+    let historyLinks = document.getElementsByClassName('results-block-header-history')[0];
+    if (historyLinks) {
+      let historyLinkItems = historyLinks.getElementsByTagName('li');
+      if (historyLinkItems && historyLinkItems.length > 0) {
+        for (let i = 0; i < historyLinkItems.length; i++) {
+          let historyLink = historyLinkItems[i].getElementsByTagName('a')[0];
+          if (historyLink && !historyLink.classList.contains('disabled')) {
+            historyLink.classList.add('disabled');
+          }
+        }
+      }
+    }
+  }
+
+  // Function to display the history links.
+  displayHistoryLinks = function (totalItems) {
+    let historyLinks = document.getElementsByClassName('results-block-header-history')[0];
+    if (historyLinks) {
+      if (historyLinks.classList.contains('hidden')) {
+        historyLinks.classList.remove('hidden');
+      }
+      // Clear the history links.
+      let historyLinkItems = historyLinks.getElementsByTagName('li');
+      if (historyLinkItems && historyLinkItems.length > 0) {
+        for (let i = 0; i < historyLinkItems.length; i++) {
+          historyLinkItems[i].remove();
+          i--;
+        }
+      }
+      // Add the history links.
+      const maxDisplay = 3;
+      const displayCount = Math.min(maxDisplay, totalItems);
+      const start = totalItems - displayCount;
+
+      // Display links.
+      for (let i = totalItems - 1, label = 1; i >= start; i--, label++) {
+        let historyItem = document.createElement('li');
+        historyItem.classList.add('results-block-header-history-item');
+        let historyLink = document.createElement('a');
+        historyLink.classList.add('results-block-header-history-link');
+        if (label === 1) {
+          // Add the active class to the first history link.
+          historyLink.classList.add('active');
+        }
+        historyLink.setAttribute('href', '#' + i);
+        historyLink.textContent = label;
+        historyLink.addEventListener('click', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          let index = this.getAttribute('href');
+          if (index) {
+            index = index.replace('#', '');
+          }
+          // Remove the active class from the previous history link.
+          let previousHistoryLink = document.querySelector('.results-block-header-history-link.active');
+          if (previousHistoryLink) {
+            previousHistoryLink.classList.remove('active');
+          }
+          // Add the active class to the selected history link.
+          this.classList.add('active');
+          // Switch the result block.
+          displayResultHistory(index);
+        });
+        historyItem.appendChild(historyLink);
+        historyLinks.appendChild(historyItem);
+      }
+
+      // Add a link to view all items.
+      if (totalItems > maxDisplay) {
+        let historyItem = document.createElement('li');
+        historyItem.classList.add('results-block-header-history-item', 'all');
+        let historyLink = document.createElement('a');
+        historyLink.classList.add('results-block-header-history-link');
+        historyLink.setAttribute('href', '#all');
+        historyLink.textContent = Drupal.t('All');
+        historyLink.addEventListener('click', displayHisrotyBlock);
+        historyItem.appendChild(historyLink);
+        historyLinks.appendChild(historyItem);
+      }
+    }
+  }
+
+  // Function to display the selected result history.
+  displayResultHistory = function (index) {
+    // Hide the history block.
+    let historyBlock = document.getElementsByClassName('history-block')[0];
+    if (historyBlock && !historyBlock.classList.contains('hidden')) {
+      historyBlock.classList.add('hidden');
+    }
+
+    let result = history[index];
+    let steps = Object.keys(result.data);
+    for (let i = 0; i < steps.length; i++) {
+      let step = steps[i];
+      let process = result.data[step];
+      createResultsBlock(step, process.result, process.prompts, true);
+      let resultBlock = document.getElementById('step-body-' + step.replace('_', '-'));
+      let headerTab = document.querySelector('.results-block-header-item.step-' + step.replace('_', '-'));
+      if (!resultBlock || !headerTab) {
+        continue;
+      }
+      if (i === 0 && !headerTab.classList.contains('active')) {
+        // Add the active class to the header tab.
+        headerTab.classList.add('active');
+        // Add the active class to the result block.
+        resultBlock.classList.add('active');
+      }
+      if (i > 0 && headerTab.classList.contains('active')) {
+        // Remove the active class from the header tab.
+        headerTab.classList.remove('active');
+        // Remove the active class from the result block.
+        resultBlock.classList.remove('active');
+      }
+    }
+
+    // Maximize the results block if it is minimized.
+    let resultsBlock = document.getElementsByClassName('results-block')[0];
+    if (resultsBlock && resultsBlock.classList.contains('minimized')) {
+      switchBlocks('results-block');
+    }
+  }
+
+  // Function to display the history block.
+  displayHisrotyBlock = function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Add hitory to the history block.
+    let historyBlock = document.getElementsByClassName('history-block')[0];
+    if (historyBlock) {
+      let historyBlockBody = historyBlock.getElementsByClassName('history-block-body')[0];
+      if (historyBlockBody) {
+        // Clear the history block.
+        let historyBlockItems = historyBlockBody.getElementsByTagName('div');
+        if (historyBlockItems && historyBlockItems.length > 0) {
+          for (let i = 0; i < historyBlockItems.length; i++) {
+            historyBlockItems[i].remove();
+            i--;
+          }
+        }
+        for (let i = history.length - 1; i > -1; i--) {
+          let result = history[i];
+          let time = new Date(result.timestamp);
+          let timeString = time.toLocaleString(drupalSettings.date_format, {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          });
+          let historyItem = document.createElement('div');
+          historyItem.classList.add('history-block-body-item');
+          let historyLink = document.createElement('a');
+          historyLink.classList.add('history-block-body-item-link');
+          historyLink.setAttribute('href', '#' + i);
+          historyLink.textContent = timeString;
+          historyLink.addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            let index = this.getAttribute('href');
+            if (index) {
+              index = index.replace('#', '');
+            }
+            // Switch the result block.
+            displayResultHistory(index);
+          });
+          historyItem.appendChild(historyLink);
+          historyBlockBody.appendChild(historyItem);
+        }
+
+        // Remove the hidden class from the history block.
+        historyBlock.classList.remove('hidden');
+      }
+    }
+
   }
 
 })(Drupal, drupalSettings);
