@@ -1,0 +1,4 @@
+services:
+  kamihaya_cms_ai_loan_proposal_draft.fallback_client:
+    class: Drupal\kamihaya_cms_ai_loan_proposal_draft\FallbackResponseProvider
+    arguments: ['@http_client', '@kamihaya_cms_exabase_api.logger_channel', '@config.factory']

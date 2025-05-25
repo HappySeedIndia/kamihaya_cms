@@ -160,6 +160,12 @@
 
   // Finish all process of loan proposal.
   function finishDraftLoanProposal() {
+    // Hide the prompt block.
+    let promptBlock = document.getElementsByClassName('edit-prompt')[0];
+    if (promptBlock && !promptBlock.classList.contains('hidden')) {
+      promptBlock.classList.add('hidden');
+    }
+
     // Remove the prompt revise buttons.
     let buttons = document.getElementsByClassName('btn-group--re-draft-loan-proposal')[0];
     if (buttons) {
@@ -301,8 +307,8 @@
       // Display the result.
       if (response.pdf_summary_prompt !== undefined && response.loan_document_prompt !== undefined && response.company_detail !== undefined) {
         // Add prompts to the prompt block.
-        addPrompt('pdf-summary', 'Prompt for PDF summarization', response.pdf_summary_prompt, true);
-        addPrompt('loan-document', 'Prompt for loan proposal', response.loan_document_prompt);
+        addPrompt('pdf-summary', 'PDF summarization', response.pdf_summary_prompt, true);
+        addPrompt('loan-document', 'Loan proposal', response.loan_document_prompt);
         addPrompt('company-detail', 'Company detail', response.company_detail);
         if (promptBlock) {
           // Change the button text and add event listeners.

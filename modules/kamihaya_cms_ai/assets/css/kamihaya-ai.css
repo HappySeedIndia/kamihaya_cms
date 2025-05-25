@@ -559,6 +559,10 @@
   color: #7AB987;
 }
 
+.api-error-mode .results-block-header.step-design-slider .results-block-header-item.finished span:before {
+  color: #5B9BD5;
+}
+
 .results-block-header.step-design-slider .results-block-header-item.failed span:before {
   content: "\f06a";
   font-weight: 900;
