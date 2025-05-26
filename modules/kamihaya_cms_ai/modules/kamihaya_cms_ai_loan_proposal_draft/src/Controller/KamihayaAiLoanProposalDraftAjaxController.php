@@ -2,11 +2,11 @@
 
 namespace Drupal\kamihaya_cms_ai_loan_proposal_draft\Controller;
 
-use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\file\Entity\File;
 use Drupal\kamihaya_cms_ai\Controller\KamihayaAiAjaxController;
 use Drupal\kamihaya_cms_loan_proposal_api\ExabaseClient;
+use Drupal\kamihaya_cms_ai_loan_proposal_draft\FallbackResponseProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,23 +19,40 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
   const SESSION_KEY = 'kamihaya_ai_loan_proposal_draft';
 
   /**
+   * The configuration object.
+   *
+   * @var \Drupal\Core\Config\Config
+   */
+  protected $config;
+
+  /**
    * Constructs a new KamihayaAiLoanProposalDraftAjaxController object.
    *
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The file system.
    * @param \Drupal\kamihaya_cms_exabase_api\ExabaseClient $exabaseClient
    *   The Exabase client.
+   * @param \Drupal\kamihaya_cms_ai_loan_proposal_draft\FallbackResponseProvider $fallbackClient
+   *   The fallback response provider.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request object.
    */
   public function __construct(
     protected FileSystemInterface $fileSystem,
     protected ExabaseClient $exabaseClient,
+    protected FallbackResponseProvider $fallbackClient,
     protected Request $request,
   ) {
     parent::__construct();
     $this->logger = $this->getLogger('kamihaya_ai_loan_proposal_draft');
     $this->entityTypeManager();
+    // Call config function to initialize ConfigFactory.
+    $this->config('kamihaya_cms_ai_loan_proposal_draft.settings');
+    $this->config = $this->configFactory->getEditable('kamihaya_cms_ai_loan_proposal_draft.settings');
+
+    if ($this->config->get('api_error_mode')) {
+      $this->exabaseClient = $this->fallbackClient;
+    }
   }
 
   /**
@@ -43,9 +60,10 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
    */
   public static function create(ContainerInterface $container) {
     return new static(
-    $container->get('file_system'),
-    $container->get('kamihaya_cms_loan_proposal_api.client'),
-    $container->get('request_stack')->getCurrentRequest(),
+      $container->get('file_system'),
+      $container->get('kamihaya_cms_loan_proposal_api.client'),
+      $container->get('kamihaya_cms_ai_loan_proposal_draft.fallback_client'),
+      $container->get('request_stack')->getCurrentRequest()
     );
   }
 
@@ -212,14 +230,20 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         'pdf_summary' => $this->formatResult($result),
         'pdf_summary_prompt' => $this->formatResult($summary_prompt),
         'pdf_summary_used_prompt' => $this->formatResult($prompt),
+        'api_error_mode' => $this->config->get('api_error_mode'),
       ];
     }
     catch (\Exception $e) {
       $this->logger->error('Exception occurred while summarizing the text from PDF: ' . $e->getMessage());
-      return [
-        'status' => 'error',
-        'message' => $this->t('Failed to summarize the text from the PDF.'),
-      ];
+      if ($this->config->get('api_error_mode')) {
+        return [
+          'status' => 'error',
+          'message' => $this->t('Failed to summarize the text from the PDF.'),
+        ];
+      }
+      $this->exabaseClient = $this->fallbackClient;
+      $this->config->set('api_error_mode', TRUE)->save();
+      return $this->summarizeDodument($data);
     }
     finally {
       if (!empty($file)) {
@@ -301,15 +325,21 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         'company_detail' => $this->formatResult($company_detail),
         'used_company_detail' => $this->formatResult($detail),
         'loan_summary' => $this->formatResult($result['loan_summary']),
+        'api_error_mode' => $this->config->get('api_error_mode'),
       ];
     }
     catch (\Exception $e) {
-      $session->remove(self::SESSION_KEY);
       $this->logger->error('Exception occurred while drafting the loan proposal: ' . $e->getMessage());
-      return [
-        'status' => 'error',
-        'message' => $this->t('Failed to draft the loan proposal.'),
-      ];
+      if ($this->config->get('api_error_mode')) {
+        $session->remove(self::SESSION_KEY);
+        return [
+          'status' => 'error',
+          'message' => $this->t('Failed to draft the loan proposal.'),
+        ];
+      }
+      $this->exabaseClient = $this->fallbackClient;
+      $this->config->set('api_error_mode', TRUE)->save();
+      return $this->draftLoanProposal();
     }
   }
 
@@ -355,15 +385,21 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
       $response['status'] = 'success';
       $response['message'] = $this->t('Prompt and company detail retrieved.');
       $response['company_detail'] = $result['content'];
+      $response['api_error_mode'] = $this->config->get('api_error_mode');
 
       return $response;
     }
     catch (\Exception $e) {
       $this->logger->error('Exception occurred while getting the prompt: ' . $e->getMessage());
-      return [
-        'status' => 'error',
-        'message' => $this->t('Failed to get the prompt.'),
-      ];
+      if ($this->config->get('api_error_mode')) {
+        return [
+          'status' => 'error',
+          'message' => $this->t('Failed to get the prompt.'),
+        ];
+      }
+      $this->exabaseClient = $this->fallbackClient;
+      $this->config->set('api_error_mode', TRUE)->save();
+      return $this->getPrompt($data);
     }
   }
 

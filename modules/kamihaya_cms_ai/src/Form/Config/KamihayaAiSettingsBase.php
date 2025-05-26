@@ -138,6 +138,25 @@ abstract class KamihayaAiSettingsBase extends ConfigFormBase {
       ];
     }
 
+    // Add API error mode settings.
+    $form['api_error_mode_settings'] = [
+      '#type' => 'details',
+      '#title' => $this->t('API Error Mode Settings'),
+      '#description' => $this->t('Select the mode to use when an API error occurs.'),
+      '#open' => TRUE,
+    ];
+    $form['api_error_mode_settings']['api_error_mode'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable API Error Mode'),
+      '#default_value' => $config->get('api_error_mode'),
+    ];
+    $form['api_error_mode_settings']['api_error_mode_wait_time'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Wait time of returning respomse in the API error mode.'),
+      '#default_value' => $config->get('api_error_mode_wait_time'),
+      '#field_suffix' => $this->t('Second'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 

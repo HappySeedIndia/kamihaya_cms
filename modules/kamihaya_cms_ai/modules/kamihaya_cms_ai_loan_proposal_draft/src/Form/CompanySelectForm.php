@@ -2,6 +2,7 @@
 
 namespace Drupal\kamihaya_cms_ai_loan_proposal_draft\Form;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -15,6 +16,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CompanySelectForm extends FormBase {
 
   /**
+   * The configuration object.
+   *
+   * @var \Drupal\Core\Config\Config
+   */
+  protected $config;
+
+  /**
    * The constructor of CompanySelectForm.
    *
    * @param AccountProxyInterface $currentUser
@@ -24,8 +32,11 @@ class CompanySelectForm extends FormBase {
    */
   public function __construct(
     protected AccountProxyInterface $currentUser,
+    protected ConfigFactoryInterface $config_factory,
     protected ExabaseClient $exabaseClient,
+    protected ExabaseClient $fallbackClient,
     ) {
+    $this->config = $this->config_factory->getEditable('kamihaya_cms_ai_loan_proposal_draft.settings');
   }
 
   /**
@@ -34,7 +45,9 @@ class CompanySelectForm extends FormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('current_user'),
-      $container->get('kamihaya_cms_loan_proposal_api.client')
+      $container->get('config.factory'),
+      $container->get('kamihaya_cms_loan_proposal_api.client'),
+      $container->get('kamihaya_cms_ai_loan_proposal_draft.fallback_client')
     );
   }
 
@@ -63,7 +76,12 @@ class CompanySelectForm extends FormBase {
     ];
 
     try {
-      $company_list = $this->exabaseClient->getCompanyList();
+      if ($this->config->get('api_error_mode')) {
+        $company_list = $this->fallbackClient->getCompanyList();
+      }
+      else {
+        $company_list = $this->exabaseClient->getCompanyList();
+      }
       if (empty($company_list)) {
         $form['message'] = [
           '#type' => 'markup',
@@ -74,11 +92,15 @@ class CompanySelectForm extends FormBase {
     }
     catch (\Exception $e) {
       $this->logger('kamihaya_cms_ai_loan_proposal_draft')->error($this->t('Error fetching company list: @message', ['@message' => $e->getMessage()]));
-      $form['message'] = [
-        '#type' => 'markup',
-        '#markup' => '<p>' . $this->t("There was an error fetching the company list.") . '</p>',
-      ];
-      return $form;
+      $company_list = $this->fallbackClient->getCompanyList();
+      if (empty($company_list)) {
+        $form['message'] = [
+          '#type' => 'markup',
+          '#markup' => '<p>' . $this->t("There are no companies to select") . '</p>',
+        ];
+        return $form;
+      }
+      $this->config->set('api_error_mode', TRUE)->save();
     }
 
     $form['company'] = [
@@ -97,7 +119,6 @@ class CompanySelectForm extends FormBase {
         ],
       ],
     ];
-
 
     $form['container']['file_upload'] = [
       '#type' => 'managed_file',

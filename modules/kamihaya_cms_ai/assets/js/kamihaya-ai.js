@@ -114,6 +114,20 @@
         if (result.status !== 'success') {
           throw new Error(result.message);
         }
+
+        let mainContainer = document.getElementsByClassName('kamihaya-ai-container-main')[0];
+        if (mainContainer) {
+          if (result.api_error_mode == true) {
+            // Add the error mode class to the main container.
+            if (!mainContainer.classList.contains('api-error-mode')) {
+              mainContainer.classList.add('api-error-mode');
+            }
+          }
+          else {
+            // Remove the error mode class to the main container.
+            mainContainer.classList.remove('api-error-mode');
+          }
+        }
         if (callback) callback(result);
       })
       .catch(error => {
@@ -685,8 +699,6 @@
     let minimizedBlock = container.getElementsByClassName('minimized')[0];
     if (!minimizedBlock) return;
 
-    let anotherLink = document.querySelector('.process-result-switcher a[href="#' + maximizedBlock.id + '"]');
-
     if (minimizedBlock.id === target) {
       // Remove the minimized class from target block.
       minimizedBlock.classList.remove('minimized');
@@ -754,7 +766,6 @@
     // Calculate the percentage of the clicked position.
     let xPercent = Math.round((x / width) * 1000) / 10;
     let yPercent = Math.round((y / height) * 1000) / 10;
-    console.log('Clicked position: ' + xPercent + '% ' + yPercent + '%');
 
     let position = drupalSettings.process_image_position;
     if (position) {
@@ -874,7 +885,7 @@
             headerButton.classList.add('active');
           }
           headerButton.setAttribute('href', '#' + name + '-prompt');
-          headerButton.innerHTML = Drupal.t(label);
+          headerButton.innerHTML = label;
           headerButton.addEventListener('click', switchPrompt);
           headerButtonListItem.appendChild(headerButton);
 

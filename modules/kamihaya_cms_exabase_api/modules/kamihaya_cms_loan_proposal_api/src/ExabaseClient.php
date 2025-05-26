@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Exabase API Client.
  */
-final class ExabaseClient extends ExabaseClientBase {
+class ExabaseClient extends ExabaseClientBase {
 
   /**
    * Constructs an ExabaseClient object.
@@ -23,6 +23,19 @@ final class ExabaseClient extends ExabaseClientBase {
     protected ConfigFactoryInterface $configFactory,
   ) {
     $this->baseUrl = $this->configFactory->get('kamihaya_cms_loan_proposal_api.settings')->get('endpoint');
+  }
+
+    /**
+   * Generic request method.
+   */
+  public function request(string $method, string $endpoint, array $options = []) {
+    $options += ['timeout' => 60];
+      $response = $this->httpClient->request(
+        $method,
+        $this->baseUrl . $endpoint,
+        $options,
+      );
+    return $this->parseResponse($response);
   }
 
   /**
