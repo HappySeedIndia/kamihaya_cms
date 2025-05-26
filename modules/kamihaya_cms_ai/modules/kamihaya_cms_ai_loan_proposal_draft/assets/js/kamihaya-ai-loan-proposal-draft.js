@@ -243,12 +243,12 @@
       checkButton.setAttribute('disabled', 'disabled');
     }
 
-    let editBtnLabel = 'Execute with the edited prompt';
-    let cancelBtnLabel = 'Execute without the edited prompt';
+    let editBtnLabel = Drupal.t('Execute with the edited prompt');
+    let cancelBtnLabel = Drupal.t('Execute without the edited prompt');
     if (getHistoryCount() > 0) {
       // Change the button text.
-      editBtnLabel = 'Revise prompt & Redraft';
-      cancelBtnLabel = 'Not revise';
+      editBtnLabel = Drupal.t('Revise prompt & Redraft');
+      cancelBtnLabel = Drupal.t('Not revise');
 
       // Change the title of the prompt block.
       let promptBlockTitle = document.getElementsByClassName('edit-prompt-header-title')[0];
@@ -272,7 +272,7 @@
           // Change the button text.
           let editBtn = document.getElementsByClassName('btn-edit-prompt')[0];
           if (editBtn) {
-            editBtn.innerHTML = Drupal.t(editBtnLabel);
+            editBtn.innerHTML = editBtnLabel;
           }
           // Change the cancel button text.
           let cancelBtn = document.getElementsByClassName('btn-edit-prompt-cancel')[0];
@@ -284,7 +284,7 @@
             // Create a new button.
             cancelBtn = document.createElement('button');
             cancelBtn.classList = classList;
-            cancelBtn.innerHTML = Drupal.t(cancelBtnLabel);
+            cancelBtn.innerHTML = cancelBtnLabel;
             cancelBtn.removeEventListener('click', finishDraftLoanProposal);
           }
         }
@@ -307,9 +307,9 @@
       // Display the result.
       if (response.pdf_summary_prompt !== undefined && response.loan_document_prompt !== undefined && response.company_detail !== undefined) {
         // Add prompts to the prompt block.
-        addPrompt('pdf-summary', 'PDF summarization', response.pdf_summary_prompt, true);
-        addPrompt('loan-document', 'Loan proposal', response.loan_document_prompt);
-        addPrompt('company-detail', 'Company detail', response.company_detail);
+        addPrompt('pdf-summary', Drupal.t('PDF summarization'), response.pdf_summary_prompt, true);
+        addPrompt('loan-document', Drupal.t('Loan proposal'), response.loan_document_prompt);
+        addPrompt('company-detail', Drupal.t('Company detail'), response.company_detail);
         if (promptBlock) {
           // Change the button text and add event listeners.
           let editBtn = document.getElementsByClassName('btn-edit-prompt')[0];

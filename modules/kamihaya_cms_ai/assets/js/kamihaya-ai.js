@@ -885,7 +885,7 @@
             headerButton.classList.add('active');
           }
           headerButton.setAttribute('href', '#' + name + '-prompt');
-          headerButton.innerHTML = Drupal.t(label);
+          headerButton.innerHTML = label;
           headerButton.addEventListener('click', switchPrompt);
           headerButtonListItem.appendChild(headerButton);
 
