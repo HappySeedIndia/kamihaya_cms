@@ -1066,7 +1066,7 @@
         let historyLink = document.createElement('a');
         historyLink.classList.add('results-block-header-history-link');
         historyLink.setAttribute('href', '#all');
-        historyLink.textContent = Drupal.t('All');
+        historyLink.textContent = 'All';
         historyLink.addEventListener('click', displayHisrotyBlock);
         historyItem.appendChild(historyLink);
         historyLinks.appendChild(historyItem);
