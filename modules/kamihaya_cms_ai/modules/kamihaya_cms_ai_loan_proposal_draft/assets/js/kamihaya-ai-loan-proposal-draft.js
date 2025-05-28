@@ -285,7 +285,7 @@
             cancelBtn = document.createElement('button');
             cancelBtn.classList = classList;
             cancelBtn.innerHTML = cancelBtnLabel;
-            cancelBtn.removeEventListener('click', finishDraftLoanProposal);
+            cancelBtn.addEventListener('click', finishDraftLoanProposal);
             let buttons = document.getElementsByClassName('edit-prompt-body-buttons')[0];
             if (buttons) {
               buttons.appendChild(cancelBtn);
