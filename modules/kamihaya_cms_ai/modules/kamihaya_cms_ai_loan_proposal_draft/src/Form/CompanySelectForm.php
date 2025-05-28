@@ -100,7 +100,6 @@ class CompanySelectForm extends FormBase {
         ];
         return $form;
       }
-      $this->config->set('api_error_mode', TRUE)->save();
     }
 
     $form['company'] = [
