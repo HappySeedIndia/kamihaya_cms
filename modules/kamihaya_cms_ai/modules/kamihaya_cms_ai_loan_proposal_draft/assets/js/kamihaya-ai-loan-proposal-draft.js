@@ -264,7 +264,7 @@
     if (promptBlock) {
       summaryPrompt = document.getElementById('edit-pdf-summary-prompt');
       loanPrompt = document.getElementById('edit-loan-document-prompt');
-      companyDetail = document.getElementById('edit-comcompany-detail-prompt');
+      companyDetail = document.getElementById('edit-company-detail-prompt');
 
       // Check if the prompt block is already existing.
       if (summaryPrompt && loanPrompt && companyDetail) {

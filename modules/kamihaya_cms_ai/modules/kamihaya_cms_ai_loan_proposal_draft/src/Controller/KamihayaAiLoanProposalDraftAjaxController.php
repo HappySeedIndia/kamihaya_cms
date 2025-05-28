@@ -109,11 +109,13 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
    *
    * @param array $data
    *   The request data.
+   * @param bool $error_mode
+   *   Whether to use the error mode or not.
    *
    * @return array
    *   The result of the summarization.
    */
-  private function summarizeDodument(array $data) {
+  private function summarizeDodument(array $data, $error_mode = FALSE) {
     $session = $this->request->getSession();
 
     if (empty($data['company']) || empty($data['fid'])) {
@@ -143,8 +145,10 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
       $pdf_text = !empty($api_response['pdf_text']) ? $api_response['pdf_text'] : '';
     }
 
-    // Remove the session key if it is already set.
-    $session->remove(self::SESSION_KEY);
+    if (!$error_mode) {
+      // Remove the session key if it is already set.
+      $session->remove(self::SESSION_KEY);
+    }
 
     if (empty($company)) {
       return [
@@ -153,7 +157,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
       ];
     }
 
-    if (empty($file) && empty($pdf_text)) {
+    if (empty($file) && empty($pdf_text) && !$error_mode) {
       return [
         'status' => 'error',
         'message' => $this->t('File not found.'),
@@ -165,8 +169,23 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         $uri = $file->getFileUri();
         $file_path = $this->fileSystem->realpath($uri);
         $file_name = substr($file->getFilename(), 0, strrpos($file->getFilename(), '.'));
+        $api_response['file_name'] = $file_name;
+        $session->set(self::SESSION_KEY, $api_response);
         // Call the extract endpoint.
         $result = $this->exabaseClient->extractPdf($file_path);
+        if (empty($result || empty($result['pdf_text']))) {
+          return [
+            'status' => 'error',
+            'message' => $this->t('Failed to extract the text from the PDF.'),
+          ];
+        }
+        $pdf_text = $result['pdf_text'];
+        $api_response['pdf_text'] = $pdf_text;
+        $session->set(self::SESSION_KEY, $api_response);
+      }
+      if ($error_mode && empty($pdf_text)) {
+        // Call the extract endpoint.
+        $result = $this->exabaseClient->extractPdf('');
         if (empty($result || empty($result['pdf_text']))) {
           return [
             'status' => 'error',
@@ -230,7 +249,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         'pdf_summary' => $this->formatResult($result),
         'pdf_summary_prompt' => $this->formatResult($summary_prompt),
         'pdf_summary_used_prompt' => $this->formatResult($prompt),
-        'api_error_mode' => $this->config->get('api_error_mode'),
+        'api_error_mode' => $error_mode || $this->config->get('api_error_mode'),
       ];
     }
     catch (\Exception $e) {
@@ -242,8 +261,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         ];
       }
       $this->exabaseClient = $this->fallbackClient;
-      $this->config->set('api_error_mode', TRUE)->save();
-      return $this->summarizeDodument($data);
+      return $this->summarizeDodument($data, TRUE);
     }
     finally {
       if (!empty($file)) {
@@ -255,8 +273,11 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
 
   /**
    * Draft the loan proposal.
+   *
+   * @param bool $error_mode
+   *   Whether to use the error mode or not.
    */
-  private function draftLoanProposal() {
+  private function draftLoanProposal($error_mode = FALSE) {
     $session = $this->request->getSession();
     $api_response = $session->get(self::SESSION_KEY);
     if (empty($api_response) || empty($api_response['company']) || empty($api_response['pdf_summary'])) {
@@ -325,7 +346,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         'company_detail' => $this->formatResult($company_detail),
         'used_company_detail' => $this->formatResult($detail),
         'loan_summary' => $this->formatResult($result['loan_summary']),
-        'api_error_mode' => $this->config->get('api_error_mode'),
+        'api_error_mode' => $error_mode || $this->config->get('api_error_mode'),
       ];
     }
     catch (\Exception $e) {
@@ -338,8 +359,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         ];
       }
       $this->exabaseClient = $this->fallbackClient;
-      $this->config->set('api_error_mode', TRUE)->save();
-      return $this->draftLoanProposal();
+      return $this->draftLoanProposal(TRUE);
     }
   }
 
@@ -348,11 +368,13 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
    *
    * @param array $data
    *   The request data.
+   * @param bool $error_mode
+   *   Whether to use the error mode or not.
    *
    * @return array
    *   The prompt and the company detail to summarize the document.
    */
-  private function getPrompt(array $data) {
+  private function getPrompt(array $data, $error_mode = FALSE) {
     if (empty($data) || empty($data['company'])) {
       return [
         'status' => 'error',
@@ -385,7 +407,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
       $response['status'] = 'success';
       $response['message'] = $this->t('Prompt and company detail retrieved.');
       $response['company_detail'] = $result['content'];
-      $response['api_error_mode'] = $this->config->get('api_error_mode');
+      $response['api_error_mode'] = $error_mode || $this->config->get('api_error_mode');
 
       return $response;
     }
@@ -398,8 +420,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         ];
       }
       $this->exabaseClient = $this->fallbackClient;
-      $this->config->set('api_error_mode', TRUE)->save();
-      return $this->getPrompt($data);
+      return $this->getPrompt($data, TRUE);
     }
   }
 
