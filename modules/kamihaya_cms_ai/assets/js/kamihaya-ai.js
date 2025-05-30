@@ -1022,6 +1022,11 @@
 
   // Function to display the history links.
   displayHistoryLinks = function (totalItems) {
+    // Remove the active class from the previous history block link.
+    let previousHistoryBlockLink = document.querySelector('.history-block-body-item-link.active');
+    if (previousHistoryBlockLink) {
+      previousHistoryBlockLink.classList.remove('active');
+    }
     let historyLinks = document.getElementsByClassName('results-block-header-history')[0];
     if (historyLinks) {
       if (historyLinks.classList.contains('hidden')) {
@@ -1064,6 +1069,7 @@
           if (previousHistoryLink) {
             previousHistoryLink.classList.remove('active');
           }
+
           // Add the active class to the selected history link.
           this.classList.add('active');
           // Switch the result block.
@@ -1228,6 +1234,10 @@
           });
           if (activeLink !== undefined && historyLink.getAttribute('href') === activeLink) {
             // Add the active class to the history link.
+            historyLink.classList.add('active');
+          }
+          if (activeLink === undefined && i === history.length - 1) {
+            // Add the active class to the last history link.
             historyLink.classList.add('active');
           }
           historyItem.appendChild(historyLink);
