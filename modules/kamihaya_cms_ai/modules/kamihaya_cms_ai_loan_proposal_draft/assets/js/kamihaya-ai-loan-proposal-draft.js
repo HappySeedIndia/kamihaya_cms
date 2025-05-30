@@ -108,6 +108,9 @@
 
   // Function of finish loan proposal.
   function completeLoanProposal(responseData) {
+    // Switch the process block.
+    switchProcess('complete');
+
     // Add the result to the current process object.
     currentProcess.data['draft'] = { 'prompts': { 'Prompt for loan proposal': responseData.prompt.loan_document_used_prompt, 'Company detail': responseData.prompt.used_company_detail }, 'result': responseData.result };
     currentProcess.timestamp = Date.now();

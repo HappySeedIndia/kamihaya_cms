@@ -422,6 +422,20 @@
     let resultBlock = document.getElementById('step-body-' + step.replace('_', '-'));
     resultBlock.innerHTML = '<div class="result suspended">' + Drupal.t("The result isn't created because the process has been suspended."); + '</div>';
 
+    // Enamble the history links.
+    let historyLinks = document.getElementsByClassName('results-block-header-history')[0];
+    if (historyLinks) {
+      let historyLinkItems = historyLinks.getElementsByTagName('li');
+      if (historyLinkItems && historyLinkItems.length > 0) {
+        for (let i = 0; i < historyLinkItems.length; i++) {
+          let historyLink = historyLinkItems[i].getElementsByTagName('a')[0];
+          if (historyLink && historyLink.classList.contains('disabled')) {
+            historyLink.classList.remove('disabled');
+          }
+        }
+      }
+    }
+
     // Set the suspend flag.
     suspend = true;
   }
@@ -1104,6 +1118,20 @@
         headerTab.classList.remove('active');
         // Remove the active class from the result block.
         resultBlock.classList.remove('active');
+      }
+      if (headerTab.classList.contains('failed')) {
+        // If the header tab is failed, change it to finished.
+        headerTab.classList.remove('failed');
+        headerTab.classList.add('finished');
+      }
+      if (headerTab.classList.contains('suspended')) {
+        // If the header tab is suspended, change it to finished.
+        headerTab.classList.remove('suspended');
+        headerTab.classList.add('finished');
+      }
+      if (!headerTab.classList.contains('finished')) {
+        // IF the header tab is not finished, change it to finished.
+        headerTab.classList.add('finished');
       }
     }
 
