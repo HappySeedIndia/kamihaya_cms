@@ -295,6 +295,25 @@
             }
           }
         }
+
+        // Activate the summary prompt.
+        let headerButton = document.querySelector('.edit-prompt-buttons-item.prompt-pdf-summary a');
+        if (headerButton && !headerButton.classList.contains('active')) {
+          let previousActive = document.querySelector('.edit-prompt-buttons-item a.active');
+          if (previousActive) {
+            previousActive.classList.remove('active');
+          }
+          headerButton.classList.add('active');
+        }
+        let container = document.getElementById('pdf-summary-prompt');
+        if (container && !container.classList.contains('active')) {
+          let previousActive = document.querySelector('.prompt-container.active');
+          if (previousActive) {
+            previousActive.classList.remove('active');
+          }
+          container.classList.add('active');
+        }
+
         promptBlock.classList.remove('hidden');
         return;
       }
