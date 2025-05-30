@@ -992,6 +992,10 @@
   color: rgb(var(--bg-color));
 }
 
+.history-block-body .history-block-body-item a.active {
+  font-weight: bold;
+}
+
 .history-block .history-block-header-close {
   position: absolute;
   top: 0.5rem;

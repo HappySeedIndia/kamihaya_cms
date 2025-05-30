@@ -1140,6 +1140,40 @@
     if (resultsBlock && resultsBlock.classList.contains('minimized')) {
       switchBlocks('results-block');
     }
+
+    // Change the history links and block.
+    let previousHistoryBlockLink = document.querySelector('.history-block-body-item-link.active');
+    if (previousHistoryBlockLink) {
+      previousHistoryBlockLink.classList.remove('active');
+    }
+    let historyLinks = document.getElementsByClassName('results-block-header-history')[0];
+    if (historyLinks) {
+      // Remove the active class from the previous history link.
+      let previousHistoryLink = document.querySelector('.results-block-header-history-link.active');
+      if (previousHistoryLink) {
+        previousHistoryLink.classList.remove('active');
+      }
+
+      if ((history.length > 3 && index > history.length - 4) || history.length <= 3) {
+        // Activate the selected history link.
+        let historyLink = document.querySelector('.results-block-header-history-link[href="#' + index + '"]');
+        if (historyLink) {
+          historyLink.classList.add('active');
+        }
+      }
+    }
+    if (history.length > 3) {
+      // Acrivate the history all link.
+      let historyAllLink = document.querySelector('.results-block-header-history-link[href="#all"]');
+      if (historyAllLink && index <= history.length - 4) {
+        historyAllLink.classList.add('active');
+      }
+      // Activate the selected history block link.
+      let historyBlockLink = document.querySelector('.history-block-body-item-link[href="#' + index + '"]');
+      if (historyBlockLink) {
+        historyBlockLink.classList.add('active');
+      }
+    }
   }
 
   // Function to display the history block.
@@ -1152,10 +1186,15 @@
     if (historyBlock) {
       let historyBlockBody = historyBlock.getElementsByClassName('history-block-body')[0];
       if (historyBlockBody) {
+        let activeLink = undefined;
         // Clear the history block.
         let historyBlockItems = historyBlockBody.getElementsByTagName('div');
         if (historyBlockItems && historyBlockItems.length > 0) {
           for (let i = 0; i < historyBlockItems.length; i++) {
+            let historyLink = historyBlockItems[i].getElementsByTagName('a')[0];
+            if (historyLink && historyLink.classList.contains('active')) {
+              activeLink = historyLink.getAttribute('href');
+            }
             historyBlockItems[i].remove();
             i--;
           }
@@ -1176,7 +1215,7 @@
           let historyLink = document.createElement('a');
           historyLink.classList.add('history-block-body-item-link');
           historyLink.setAttribute('href', '#' + i);
-          historyLink.textContent = timeString;
+          historyLink.textContent = (history.length - i) + '. ' + timeString;
           historyLink.addEventListener('click', function (event) {
             event.preventDefault();
             event.stopPropagation();
@@ -1187,6 +1226,10 @@
             // Switch the result block.
             displayResultHistory(index);
           });
+          if (activeLink !== undefined && historyLink.getAttribute('href') === activeLink) {
+            // Add the active class to the history link.
+            historyLink.classList.add('active');
+          }
           historyItem.appendChild(historyLink);
           historyBlockBody.appendChild(historyItem);
         }
