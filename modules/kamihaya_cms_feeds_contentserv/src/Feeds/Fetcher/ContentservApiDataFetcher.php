@@ -80,6 +80,7 @@ class ContentservApiDataFetcher extends ContentservApiFetcher {
         '@type' => $data_type,
         '@id' => $source,
       ];
+      $this->logger->error('Failed to fetch data from Contentserv API: @name - @type ID: @id, error: %error', $args);
       throw new FetchException(strtr('@name: The error occurs while fetching data because of error "%error". [@type ID: @id]', $args));
     }
 

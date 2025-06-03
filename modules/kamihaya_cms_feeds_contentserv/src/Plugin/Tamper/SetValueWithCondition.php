@@ -183,7 +183,7 @@ class SetValueWithCondition extends TamperBase {
         break;
 
       case 'not_empty':
-        if ((is_array($value) && !empty($value)) || U(!is_array($value) && strlen($value) != 0)) {
+        if ((is_array($value) && !empty($value)) || (!is_array($value) && strlen($value) != 0)) {
           return $data_value;
         }
         break;

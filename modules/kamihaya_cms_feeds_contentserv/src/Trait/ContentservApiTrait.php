@@ -21,7 +21,7 @@ trait ContentservApiTrait {
    * @return string
    *   The access token.
    */
-  public function getAccessToken(FeedInterface $feed, $url, $retry = FALSE) {
+  public function getAccessToken(FeedInterface $feed, $url, $retry = FALSE, $retry_count = 0) {
     // Get the fetcher configuration.
     $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
     // Set the options.
@@ -35,7 +35,7 @@ trait ContentservApiTrait {
     ];
     $auth_url = "$url/auth/v1/token";
     // Get the access token.
-    $response = $this->httpClient->get($auth_url, $options);
+    $response = $this->contentservClient->request($feed, $auth_url, $options);
     $status_code = $response->getStatusCode();
     if ($status_code == 429 && !$retry) {
       // Retry if the status code is 429.
@@ -48,12 +48,14 @@ trait ContentservApiTrait {
       return $this->getAccessToken($feed, $url);
     }
     if ($status_code != 200) {
+      $this->logger->error('Failed to get the access token. Status code: @status_code', ['@status_code' => $status_code]);
       // Throw the exception if the status code is not 200.
       throw new FetchException($this->t('Faild to get the access token'));
     }
     $result = json_decode($response->getBody()->getContents(), TRUE);
     $token = !empty($result['access_token']) ? $result['access_token'] : '';
     if (empty($token)) {
+      $this->logger->error('Failed to get the access token. Response: @response', ['@response' => $response->getBody()->getContents()]);
       // Throw the exception if the access token is empty.
       throw new FetchException($this->t('Faild to get the access token'));
     }
@@ -88,8 +90,8 @@ trait ContentservApiTrait {
       ],
       RequestOptions::HTTP_ERRORS => FALSE,
     ];
-    // Get the access token.
-    $response = $this->httpClient->get("{$bace_url}{$additional_url}", $options);
+    // Get the data from the Contentserv API.
+    $response = $this->contentservClient->request($feed, "{$bace_url}{$additional_url}", $options);
     $status_code = $response->getStatusCode();
     if ($status_code == 401 || $status_code == 403) {
       // Get the new access token if the status code is 401 or 403.
@@ -103,7 +105,7 @@ trait ContentservApiTrait {
       // Set the new access token to the headers.
       $options[RequestOptions::HEADERS]['Authorization'] = "Bearer $token";
       // Get the data with the new access token.
-      $response = $this->httpClient->get("{$bace_url}{$additional_url}", $options);
+      $response = $this->contentservClient->request($feed, "{$bace_url}{$additional_url}", $options);
       $status_code = $response->getStatusCode();
     }
     if ($status_code == 429 && !$retry) {
@@ -117,6 +119,7 @@ trait ContentservApiTrait {
       return $this->getData($feed, $bace_url, $additional_url, $token, $options, TRUE);
     }
     if ($status_code != 200) {
+      $this->logger->error('Failed to get the data. Status code: @status_code', ['@status_code' => $status_code]);
       // Throw the exception if the status code is not 200.
       throw new FetchException($this->t('Faild to get the data'));
     }

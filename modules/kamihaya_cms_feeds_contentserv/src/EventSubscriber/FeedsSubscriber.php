@@ -31,7 +31,7 @@ class FeedsSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     $events = [];
-    $events[FeedsEvents::PARSE][] = ['afterParse', FeedsEvents::AFTER];
+    $events[FeedsEvents::PARSE][] = ['afterParse', FeedsEvents::AFTER - 100];
     $events[FeedsEvents::PROCESS_ENTITY_PRESAVE][] = 'preSave';
     $events[FeedsEvents::PROCESS_ENTITY_POSTSAVE][] = 'postSave';
     return $events;

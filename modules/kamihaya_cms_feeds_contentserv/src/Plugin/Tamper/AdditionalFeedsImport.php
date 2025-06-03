@@ -123,6 +123,10 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
     if (is_null($data) || (is_array($data) && empty($data)) || (!is_array($data) && strlen($data) === 0)) {
       return;
     }
+    if (!empty($item->getSource()['skipped'])) {
+      // Skip the item if it has been marked as skipped.
+      return;
+    }
     if ($this->getSetting(self::SETTING_SKIP_TRANSLATED_ITEM) && !empty($item->getSource()['translation'])) {
       return;
     }

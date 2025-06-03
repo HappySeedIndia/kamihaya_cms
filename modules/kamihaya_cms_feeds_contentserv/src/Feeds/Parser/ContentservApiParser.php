@@ -18,8 +18,8 @@ use Drupal\feeds\StateType;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
+use Drupal\kamihaya_cms_feeds_contentserv\Service\ContentservClient;
 use Drupal\kamihaya_cms_feeds_contentserv\Trait\ContentservApiTrait;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
@@ -47,8 +47,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    *   The plugin id.
    * @param array $plugin_definition
    *   The plugin definition.
-   * @param \GuzzleHttp\ClientInterface $httpClient
-   *   The Guzzle client.
+   * @param \Drupal\kamihaya_cms_feeds_contentserv\Service\ContentservClient $contentservClient
+   *   The Contentserv client service.
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The file system.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
@@ -60,7 +60,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     (array $configuration,
     $plugin_id,
     array $plugin_definition,
-    protected ClientInterface $httpClient,
+    protected ContentservClient $contentservClient,
     protected FileSystemInterface $fileSystem,
     protected EntityTypeManagerInterface $entityTypeManager,
     protected LoggerInterface $logger) {
@@ -75,7 +75,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('http_client'),
+      $container->get('kamihaya_cms_feeds_contentserv.contentserv_client'),
       $container->get('file_system'),
       $container->get('entity_type.manager'),
       $container->get('logger.factory')->get('kamihaya_cms_feeds_contentserv'),
@@ -133,6 +133,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         }
         $response = $this->getData($feed, $url, "$data_url{$data_id}", $fetcher_result->getAccessToken(), $options);
         $data = json_decode($response, TRUE);
+
         if (empty($data[$data_type])) {
           continue;
         }
@@ -273,6 +274,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
             }
           }
         }
+
         $item->set('access_token', $fetcher_result->getAccessToken());
         $result->addItem($item);
         $state->pointer++;
@@ -287,6 +289,10 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         $state->report(StateType::FAIL, strtr('@name - The error occurs while getting data because of error "%error" [@type ID: @id].', $args), [
           'feed' => $feed,
           'item' => $item,
+        ]);
+        $this->logger->error('Failed to get data for feed @name: @error', [
+          '@name' => $feed->label(),
+          '@error' => $e->getMessage(),
         ]);
       }
     }
@@ -467,7 +473,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     }
 
     // Get the file.
-    $response = $this->httpClient->get($download_url, $options);
+    $response = $this->contentservClient->request($feed, $download_url, $options);
     $status_code = $response->getStatusCode();
     if ($status_code == 401 || $status_code == 403) {
       // Get the access token if the status code is 401 or 403.
@@ -480,7 +486,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
       // Set the new access token to the header.
       $options[RequestOptions::HEADERS]['Authorization'] = "Bearer $token";
       // Get the data with the new access token.
-      $response = $this->httpClient->get($download_url, $options);
+      $response = $this->contentservClient->request($feed, $download_url, $options);
       $status_code = $response->getStatusCode();
     }
     if ($status_code == 429 && !$retry) {

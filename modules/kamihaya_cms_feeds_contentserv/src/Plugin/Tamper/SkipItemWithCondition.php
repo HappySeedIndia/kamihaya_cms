@@ -122,9 +122,6 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
    */
   public function tamper($data, ?TamperableItemInterface $item = NULL) {
     $skip_condition = $this->getSetting(self::SETTING_SKIP_CONDITION);
-    if ($skip_condition) {
-      return $data;
-    }
     $condition_value = $this->getSetting(self::SETTING_CONDITION_VALUE);
     $matching_condition = $this->getSetting(self::SETTING_MATCHING_CONDITION);
     $skip_empty = $this->getSetting(self::SETTING_SKIP_EMPTY);
@@ -134,37 +131,55 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
     }
 
     if ($skip_empty && ((is_array($data) && empty($data)) || (!is_array($data) && strlen($data))) === 0) {
-      throw new SkipTamperItemException("Skip item with empty value.");
+      $item->setSourceProperty('skipped', TRUE);
+      if (!$skip_condition) {
+        throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
+      }
     }
 
     switch ($matching_condition) {
       case 'includes':
         if ((is_array($data) && in_array($condition_value, $data)) || (!is_array($data) && strpos($data, $condition_value) !== FALSE)) {
-          throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
+          $item->setSourceProperty('skipped', TRUE);
+          if (!$skip_condition) {
+            throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
+          }
         }
         break;
 
       case 'not_includes':
         if ((is_array($data) && !in_array($condition_value, $data)) || (!is_array($data) && strpos($data, $condition_value) === FALSE)) {
-          throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
+          $item->setSourceProperty('skipped', TRUE);
+          if (!$skip_condition) {
+            throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
+          }
         }
         break;
 
       case 'empty':
         if ((is_array($data) && empty($data)) || (!is_array($data) && strlen($data) == 0)) {
-          throw new SkipTamperItemException("Skip item with condition: $matching_condition.");
+          $item->setSourceProperty('skipped', TRUE);
+          if (!$skip_condition) {
+            throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
+          }
         }
         break;
 
       case 'not_empty':
         if ((is_array($data) && !empty($data)) || (!is_array($data) && strlen($data) != 0)) {
-          throw new SkipTamperItemException("Skip item with condition: $matching_condition.");
+          $item->setSourceProperty('skipped', TRUE);
+          if (!$skip_condition) {
+            throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
+          }
         }
         break;
 
       default:
         if (eval("return '$data' $matching_condition '$condition_value';")) {
-          throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
+          $item->setSourceProperty('skipped', TRUE);
+          if (!$skip_condition) {
+            throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
+          }
         }
         break;
     }
