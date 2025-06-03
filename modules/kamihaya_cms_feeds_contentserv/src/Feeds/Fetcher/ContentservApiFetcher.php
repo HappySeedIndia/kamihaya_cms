@@ -10,8 +10,8 @@ use Drupal\feeds\Plugin\Type\Fetcher\FetcherInterface;
 use Drupal\feeds\Plugin\Type\PluginBase;
 use Drupal\feeds\StateInterface;
 use Drupal\kamihaya_cms_feeds_contentserv\Result\ContentservApiFetcherResult;
+use Drupal\kamihaya_cms_feeds_contentserv\Service\ContentservClient;
 use Drupal\kamihaya_cms_feeds_contentserv\Trait\ContentservApiTrait;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
@@ -43,12 +43,12 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
    *   The plugin id.
    * @param array $plugin_definition
    *   The plugin definition.
-   * @param \GuzzleHttp\ClientInterface $httpClient
-   *   The Guzzle client.
+   * @param Drupal\kamihaya_cms_feeds_contentserv\Service\ContentservClient $contentservClient
+   *   The Contentserv client service.
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, protected ClientInterface $httpClient, protected LoggerInterface $logger) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, protected ContentservClient $contentservClient, protected LoggerInterface $logger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -60,7 +60,7 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('http_client'),
+      $container->get('kamihaya_cms_feeds_contentserv.contentserv_client'),
       $container->get('logger.factory')->get('kamihaya_cms_feeds_contentserv')
     );
   }
@@ -130,9 +130,13 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
         '@name' => $feed->label(),
         '%error' => $e->getMessage(),
       ];
+      $this->logger->error('Error fetching data from Contentserv API: @name - %error', $args);
       throw new FetchException(strtr('@name:  The error occurs while fetched data because of error "%error".', $args));
     }
-
+    $this->logger->info('Fetched @count items from Contentserv API for feed: @name', [
+      '@count' => count($results),
+      '@name' => $feed->label(),
+    ]);
     return new ContentservApiFetcherResult($results, $token);
   }
 
@@ -155,6 +159,8 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
       'data_type' => 'Product',
       'limit' => '1000',
       'request_timeout' => 30,
+      'retry_count' => 5,
+      'retry_delay' => 10,
       'scheduled_execution' => FALSE,
       'scheduled_minute' => 0,
     ];

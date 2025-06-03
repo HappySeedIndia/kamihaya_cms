@@ -73,6 +73,24 @@ class ContentservApiFetcherForm extends ExternalPluginFormBase {
       '#min' => 0,
     ];
 
+    $form['retry_count'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Retry count'),
+      '#description' => $this->t('The number of times to retry the request if it fails.'),
+      '#default_value' => $this->plugin->getConfiguration('retry_count'),
+      '#min' => 0,
+      '#max' => 10,
+    ];
+
+    $form['retry_delay'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Retry delay'),
+      '#description' => $this->t('The number of seconds to wait before retrying the request.'),
+      '#default_value' => $this->plugin->getConfiguration('retry_delay'),
+      '#min' => 0,
+      '#max' => 60,
+    ];
+
     $form['scheduled_execution'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Scheduled execution'),

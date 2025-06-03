@@ -207,6 +207,7 @@ class ContentservApiDataParser extends ContentservApiParser {
       $args = [
         '@name' => $feed->label(),
         '%error' => $e->getMessage()];
+      $this->logger->error('Failed to get detailed data from Contentserv API: @name - The error occurs while getting detailed data because of error "%error".', $args);
       throw new FetchException(strtr('@name - The error occurs while getting detailed data because of error "%error".', $args));
     }
 

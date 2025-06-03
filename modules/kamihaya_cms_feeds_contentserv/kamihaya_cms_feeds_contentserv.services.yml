@@ -4,3 +4,12 @@ services:
     arguments: ['@feeds_tamper.feed_type_tamper_manager']
     tags:
       - {name: event_subscriber}
+
+  kamihaya_cms_feeds_contentserv.logger_channel:
+    class: Drupal\Core\Logger\LoggerChannel
+    factory: logger.factory:get
+    arguments: ['kamihaya_cms_feeds_contentserv']
+
+  kamihaya_cms_feeds_contentserv.contentserv_client:
+    class: Drupal\kamihaya_cms_feeds_contentserv\Service\ContentservClient
+    arguments: ['@http_client', '@kamihaya_cms_feeds_contentserv.logger_channel']
