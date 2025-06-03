@@ -3,7 +3,6 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser_small_list
-    - field.field.node.kamihaya_article.feeds_item
     - field.field.node.kamihaya_article.field_body
     - field.field.node.kamihaya_article.field_category
     - field.field.node.kamihaya_article.field_description
