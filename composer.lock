@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7b08779339dc3b20a8635c56512a3d3",
+    "content-hash": "f4b71ddd5c7d9ec89e43fabf09302f7b",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5835,6 +5835,57 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/menu_link_attributes",
                 "issues": "http://drupal.org/project/issues/menu_link_attributes"
+            }
+        },
+        {
+            "name": "drupal/menu_migration",
+            "version": "4.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/menu_migration.git",
+                "reference": "4.0.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/menu_migration-4.0.2.zip",
+                "reference": "4.0.2",
+                "shasum": "b129727c33d43b0788cc35a6eb197193c394fe90"
+            },
+            "require": {
+                "drupal/core": "^10.2 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "4.0.2",
+                    "datestamp": "1748647164",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9 || ^10 || ^11"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Cristina Bujiță",
+                    "homepage": "https://www.drupal.org/u/bbu23"
+                }
+            ],
+            "description": "Provides a powerful menu import/export functionality.",
+            "homepage": "https://www.drupal.org/project/menu_migration",
+            "support": {
+                "source": "https://git.drupalcode.org/project/menu_migration",
+                "issues": "https://www.drupal.org/project/issues/menu_migration",
+                "slack": "https://drupal.slack.com/archives/C079PP3DMJP"
             }
         },
         {
