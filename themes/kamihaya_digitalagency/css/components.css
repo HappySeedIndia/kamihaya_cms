@@ -1449,3 +1449,60 @@ iframe[title="YouTube video player"] {
   width: 100%;
   height: auto;
 }
+
+
+/* Hide anchor link underline */
+.no-underline a {
+  text-decoration: none;
+}
+
+.table-header label.table-label {
+  width: 100%;
+}
+/* Reference link */
+.reference-links {
+  max-width: 850px;
+}
+.reference-links a {
+  display: block;
+  text-decoration: none;
+  color: #000;
+  margin-bottom: 10px;
+}
+.reference-links a::before {
+  font-family: 'Font Awesome 6 Pro';
+  font-weight: 900;
+  padding-right: 20px;
+  content: '\f054';
+  display: inline-block;
+}
+
+/* Title styles */
+.title-style-one {
+  padding-bottom: 10px;
+  position: relative;
+  text-align: center;
+}
+.title-style-one::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  margin-left: -50px;
+  bottom: 0;
+  width: 100px;
+  border-bottom: 4px solid #000;
+}
+
+/* Full width image out of container */
+.full-width-image {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+.full-width-image img {
+  width: 100%;
+  height: auto;
+}
