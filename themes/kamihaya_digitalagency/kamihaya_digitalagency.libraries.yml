@@ -19,7 +19,6 @@ components:
   css:
     theme:
       css/style.css: {}
-      css/components/spacing.css: {}
       css/components.css: {}
       css/components/paragraph.css: {}
 
