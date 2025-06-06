@@ -1,0 +1,7 @@
+kamihaya_cms_google_map.settings:
+  path: '/admin/structure/kamihaya_cms_google_map/settings'
+  defaults:
+    _form: '\Drupal\kamihaya_cms_google_map\Form\Config\GoogleMapApiSettingsForm'
+    _title: 'Google Map Settings'
+  requirements:
+    _permission: 'administer site configuration'

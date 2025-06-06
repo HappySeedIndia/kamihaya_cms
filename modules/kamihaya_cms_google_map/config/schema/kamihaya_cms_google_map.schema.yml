@@ -1,0 +1,20 @@
+# Schema for the configuration files of the Kamihaya CMS Google Map module.
+kamihaya_cms_google_map.settings:
+  type: config_object
+  mapping:
+    google_map_api_key:
+      type: string
+      label: 'Google Map API Key'
+      description: 'Enter your Google Map API key.'
+    google_map_center_latitude:
+      type: float
+      label: 'Google Map Center Latitude'
+      description: 'Enter the latitude for the center of the Google Map.'
+    google_map_center_longitude:
+      type: float
+      label: 'Google Map Center Longitude'
+      description: 'Enter the longitude for the center of the Google Map.'
+    google_map_zoom_level:
+      type: integer
+      label: 'Google Map Zoom Level'
+      description: 'Enter the zoom level for the Google Map.'
