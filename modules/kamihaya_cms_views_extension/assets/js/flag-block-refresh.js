@@ -43,9 +43,11 @@
             const targetBlock = $(this);
             const default_lang = drupalSettings.default_language || 'en';
             const lang = $('html').attr('lang');
+            const pathParts = window.location.pathname.split('/').filter(Boolean); // Removes empty elements
+            const basePath = pathParts.length > 0 ? pathParts[0] : '';
             const url = default_lang === lang
               ? '/ajax/flag-block-refresh'
-              : '/' + lang + '/ajax/flag-block-refresh';
+              : '/' + basePath + '/' + lang + '/ajax/flag-block-refresh';
             $.ajax({
               url: url,
               type: 'GET',
