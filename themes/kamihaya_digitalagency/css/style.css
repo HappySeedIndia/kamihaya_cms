@@ -13078,6 +13078,9 @@ code {
 .mb-50 {
   margin-bottom: 50px;
 }
+.mb-60 {
+  margin-bottom: 60px;
+}
 .mb-80 {
   margin-bottom: 80px;
 }
@@ -13137,6 +13140,9 @@ code {
   }
   .sp-mb-50 {
     margin-bottom: 50px;
+  }
+  .sp-mb-60 {
+    margin-bottom: 60px;
   }
 
   /* Margin Top Bottom */
