@@ -386,7 +386,8 @@ function kamihaya_digitalagency_preprocess_block(array &$variables) {
     }
     /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
     $display_repository = \Drupal::service('entity_display.repository');
-    if (!empty($field = $display_repository->getViewDisplay($entity->getEntityTypeId(), $entity->bundle())->getThirdPartySetting('ds', 'fields')) && !empty($field['node_title'])) {
+    $fields = $display_repository->getViewDisplay($entity->getEntityTypeId(), $entity->bundle())->getThirdPartySetting('ds', 'fields');
+    if (!empty($fields) && !empty($title = $fields['node_title']) && !empty($title['settings']['class']) && strpos($title['settings']['class'], 'sp-hidden') !== FALSE) {
       // Hide title if title fiels is displayed in the layout.
       if (empty($variables['attributes']['class'])) {
         $variables['attributes']['class'] = [];
@@ -395,7 +396,7 @@ function kamihaya_digitalagency_preprocess_block(array &$variables) {
       return;
     }
 
-    if (!$entity->hasField('field_not_display_title') || empty($entity->get('field_not_display_title')->value)) {
+    if (empty($fields['node_title']) && (!$entity->hasField('field_not_display_title') || empty($entity->get('field_not_display_title')->value))) {
       return;
     }
     $variables['content']['#access'] = FALSE;
