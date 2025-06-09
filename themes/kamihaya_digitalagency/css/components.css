@@ -1360,13 +1360,23 @@ h2.accordion-header::after {
   --marker-color: #FFFFFF;
   --marker-bg: #ea5e5e;
   --marker-border-color: #ea5e5e;
+  --marker-font-size: 1.3rem;
   color: var(--marker-color);
   background-color: var(--marker-bg);
   border: 1px solid var(--marker-border-color);
   display: inline-block;
-  font-size: 1.3rem;
+  font-size: var(--marker-font-size);
   line-height: 1;
   padding: 0.2rem 0.5rem;
+}
+
+.kamihaya-content-marker {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.kamihaya-marker.marker-content-right {
+  margin-left: auto;
 }
 
 .page-title.marker-title {
