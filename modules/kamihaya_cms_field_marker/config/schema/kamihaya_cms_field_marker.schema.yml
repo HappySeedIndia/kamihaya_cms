@@ -42,6 +42,11 @@ field.field.*.*.*.third_party.kamihaya_cms_field_marker:
         marker_border_color:
           type: string
           label: 'Marker border color'
+    font_size:
+      type: integer
+      label: 'Font size'
+      description: 'Font size in pixels.'
+      default_value: 16
     marker_position:
       type: string
       label: 'Marker position'
