@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\node\Entity\NodeType;
@@ -17,16 +18,11 @@ use Drupal\views_flipped_table\Plugin\views\style\FlippedTable;
  * Implements hook_preprocess_layout().
  */
 function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
-  $links = [];
-  $anchor_links = [];
-  $full_width = FALSE;
-
   // Get the current node.
   $node = \Drupal::routeMatch()->getParameter('node');
   if (empty($node)) {
     return;
   }
-
   /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
   $display_repository = \Drupal::service('entity_display.repository');
 
@@ -36,6 +32,24 @@ function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
   if (empty($view_display)) {
     return;
   }
+
+  // Create anchor links for headings.
+  kamihaya_cms_content_type_create_headins_anchor_link($node, $variables);
+
+
+  // Create anchor links for field groups.
+  kamihaya_cms_content_type_create_anchor_link($view_display, $variables);
+}
+
+/**
+ * Create anchor links for field groups.
+ *
+ * @param \Drupal\node\NodeInterface $node
+ *   The node to check.
+ * @param array $variables
+ *   The variables to add the anchor links to.
+ */
+function kamihaya_cms_content_type_create_anchor_link(EntityViewDisplayInterface $view_display, array &$variables) {
   // Get the field group settings.
   $field_group_settings = $view_display->getThirdPartySettings('field_group');
   if (empty($field_group_settings)) {
@@ -96,6 +110,84 @@ function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
 }
 
 /**
+ * Create anchor links for headings Paragraphs.
+ *
+ * @param \Drupal\node\NodeInterface $node
+ *   The node to check.
+ * @param array $variables
+ *   The variables to add the anchor links to.
+ */
+function kamihaya_cms_content_type_create_headins_anchor_link(NodeInterface $node, array &$variables) {
+  $links = [];
+  $anchor_links = [];
+
+  $headings_paragraphs_fields = [];
+  foreach ($node->getFields() as $field_name => $field) {
+    // Check if the field is a Paragraph field.
+    $field_def = $field->getFieldDefinition();
+    $field_type = $field_def->getType();
+
+    // Check if the field is an entity reference to Paragraphs.
+    if ($field_type !== 'entity_reference_revisions' || $field_def->getSetting('target_type') !== 'paragraph') {
+      continue;
+    }
+    /** @var \Drupal\Core\Field\EntityReferenceRevisionsFieldItemList $field */
+    $paragraphs = $field->referencedEntities();
+    if (empty($paragraphs)) {
+      continue;
+    }
+    // Check if any of the referenced Paragraphs is of type 'headings' and has an anchor link ID.
+    foreach ($paragraphs as $paragraph) {
+      if ($paragraph->bundle() !== 'headings' || empty($paragraph->get('field_anchor_link_id')->value)) {
+        continue;
+      }
+      if (empty($headings_paragraphs_fields[$field_name])) {
+        $headings_paragraphs_fields[$field_name] = [];
+      }
+      $anchor_link_id = $paragraph->get('field_anchor_link_id')->value;
+      $headings_paragraphs_fields[$field_name][$anchor_link_id] = $paragraph->get('field_title_text')->value;
+    }
+  }
+
+  if (empty($headings_paragraphs_fields)) {
+    return;
+  }
+
+  foreach($variables['content'] as $name => &$element) {
+    if (is_array($element) && array_key_exists('headings_anchor_links', $element)) {
+      $anchor_links = &$element['headings_anchor_links'];
+    }
+    if (empty($headings_paragraphs_fields[$name]) || !is_array($element) || (isset($element['#access']) && empty($element['#access']))) {
+      continue;
+    }
+
+    foreach ($headings_paragraphs_fields[$name] as $anchor_id => $title) {
+      if (empty($anchor_id) || empty($title)) {
+        continue;
+      }
+
+      $links[$anchor_id] = [
+        'title' => $title,
+        'url' => Url::fromUserInput("#{$anchor_id}"),
+        'attributes' => [
+          'class' => ['anchor-link'],
+        ],
+      ];
+    }
+
+  }
+
+  if (empty($anchor_links) && !empty($variables['content']['headings_anchor_links'])) {
+    $anchor_links = &$variables['content']['headings_anchor_links'];
+  }
+  if (empty($links) || empty($anchor_links)) {
+    return;
+  }
+  $anchor_links['#links'] = $links;
+  $anchor_links['#attributes']['class'] = ['headings-anchor-links'];
+}
+
+/**
  * Implements hook_node_load().
  */
 function kamihaya_cms_content_type_node_view(array &$build, NodeInterface $node, EntityViewDisplayInterface $display, $view_mode) {
@@ -132,12 +224,51 @@ function kamihaya_cms_content_type_node_view(array &$build, NodeInterface $node,
     $node->set($name, $value);
     $build[$name] = $node->$name->view($view_mode);
   }
+
+  if (kamihaya_cms_content_type_need_check_headings_paragraph($node)) {
+    $build['headings_anchor_links'] = [
+      '#theme' => 'links',
+    ];
+  }
   if (!in_array('anchor_links', array_keys($contents))) {
     return;
   }
   $build['anchor_links'] = [
     '#theme' => 'links',
   ];
+}
+
+/**
+ * Check if the node has Paragraphs of type 'headings'.
+ *
+ * @param NodeInterface $node
+ *   The node to check
+ * @return bool
+ *   TRUE if the node has Paragraphs of type 'headings', FALSE otherwise.
+ */
+function kamihaya_cms_content_type_need_check_headings_paragraph(NodeInterface $node) {
+  foreach ($node->getFields() as $field_name => $field) {
+    // Check if the field is a Paragraph field.
+    $field_def = $field->getFieldDefinition();
+    $field_type = $field_def->getType();
+
+    // Check if the field is an entity reference to Paragraphs.
+    if ($field_type !== 'entity_reference_revisions' || $field_def->getSetting('target_type') !== 'paragraph') {
+      continue;
+    }
+    /** @var \Drupal\Core\Field\EntityReferenceRevisionsFieldItemList $field */
+    $paragraphs = $field->referencedEntities();
+    if (empty($paragraphs)) {
+      continue;
+    }
+    // Check if any of the referenced Paragraphs is of type 'headings' and has an anchor link ID.
+    foreach ($paragraphs as $paragraph) {
+      if ($paragraph->bundle() === 'headings' && !empty($paragraph->get('field_anchor_link_id')->value)) {
+        return TRUE;
+      }
+    }
+  }
+  return FALSE;
 }
 
 /**
@@ -153,10 +284,55 @@ function kamihaya_cms_content_type_entity_extra_field_info() {
       'weight' => 100,
       'visible' => TRUE,
     ];
+
+    if (!kamihaya_cms_content_type_node_with_headings_paragraph($bundle->id())) {
+      continue;
+    }
+    $extra['node'][$bundle->id()]['display']['headings_anchor_links'] = [
+      'label' => t('Anchor links(Headings)'),
+      'description' => $description,
+      'weight' => 100,
+      'visible' => TRUE,
+    ];
   }
 
   return $extra;
 }
+
+/**
+ * Checks if a given content type has any field referencing a specific Paragraph type.
+ *
+ * @param string $node_bundle
+ *   The machine name of the content type.
+ *
+ * @return bool
+ *   TRUE if the content type has a field referencing the specified Paragraph type, FALSE otherwise.
+ */
+function kamihaya_cms_content_type_node_with_headings_paragraph(string $node_bundle) {
+  // Get the entity field manager service.
+  $field_manager = \Drupal::service('entity_field.manager');
+
+  // Get all field definitions for the given content type.
+  $field_definitions = $field_manager->getFieldDefinitions('node', $node_bundle);
+
+  foreach ($field_definitions as $field_name => $field_definition) {
+    // Check if the field is an entity_reference_revisions field and not a Paragraph field.
+    if ($field_definition->getType() !== 'entity_reference_revisions' || $field_definition->getSetting('target_type') !== 'paragraph') {
+      continue;
+    }
+    // Get the allowed target Paragraph bundles for this field.
+    $target_bundles = $field_definition->getSetting('handler_settings')['target_bundles'] ?? [];
+
+    // If the target Paragraph type is included, return TRUE.
+    if (in_array('headings', $target_bundles, true)) {
+      return TRUE;
+    }
+  }
+
+  // No matching Paragraph type reference found.
+  return FALSE;
+}
+
 
 /**
  * Implements hook_field_group_pre_render().
