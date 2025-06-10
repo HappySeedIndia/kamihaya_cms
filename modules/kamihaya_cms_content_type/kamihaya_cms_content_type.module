@@ -145,7 +145,14 @@ function kamihaya_cms_content_type_create_headins_anchor_link(NodeInterface $nod
         $headings_paragraphs_fields[$field_name] = [];
       }
       $anchor_link_id = $paragraph->get('field_anchor_link_id')->value;
-      $headings_paragraphs_fields[$field_name][$anchor_link_id] = $paragraph->get('field_title_text')->value;
+      $tag = $paragraph->get('field_title_tag')->value;
+      $headings_paragraphs_fields[$field_name][$anchor_link_id] = [
+        'title' => $paragraph->get('field_title_text')->value,
+        'url' => Url::fromUserInput("#{$anchor_link_id}"),
+        'attributes' => [
+          'class' => ['anchor-link', "{$tag}_link"],
+        ],
+      ];
     }
   }
 
@@ -161,18 +168,12 @@ function kamihaya_cms_content_type_create_headins_anchor_link(NodeInterface $nod
       continue;
     }
 
-    foreach ($headings_paragraphs_fields[$name] as $anchor_id => $title) {
-      if (empty($anchor_id) || empty($title)) {
+    foreach ($headings_paragraphs_fields[$name] as $anchor_id => $link) {
+      if (empty($anchor_id) || empty($link)) {
         continue;
       }
 
-      $links[$anchor_id] = [
-        'title' => $title,
-        'url' => Url::fromUserInput("#{$anchor_id}"),
-        'attributes' => [
-          'class' => ['anchor-link'],
-        ],
-      ];
+      $links[$anchor_id] = $link;
     }
 
   }
