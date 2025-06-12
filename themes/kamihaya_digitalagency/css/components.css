@@ -1518,6 +1518,7 @@ iframe[title="YouTube video player"] {
 .table-header label.table-label {
   width: 100%;
 }
+
 /* Reference link */
 .reference-links {
   max-width: 850px;
@@ -1527,13 +1528,20 @@ iframe[title="YouTube video player"] {
   text-decoration: none;
   color: #000;
   margin-bottom: 10px;
+  word-break: break-all;
+  position: relative;
+  padding-left: 20px;
 }
 .reference-links a::before {
   font-family: 'Font Awesome 6 Pro';
   font-weight: 900;
-  padding-right: 20px;
   content: '\f054';
   display: inline-block;
+  position: absolute;
+  left: 0;
+}
+.reference-links a:hover {
+  text-decoration: underline;
 }
 
 /* Title styles */
@@ -1551,6 +1559,13 @@ iframe[title="YouTube video player"] {
   width: 100px;
   border-bottom: 4px solid #000;
 }
+.title-style-one.text-white::after {
+  border-bottom-color: #fff;
+}
+
+.full-width-title::after {
+  width: 100%;
+}
 
 /* Full width image out of container */
 .full-width-image {
@@ -1564,4 +1579,39 @@ iframe[title="YouTube video player"] {
 .full-width-image img {
   width: 100%;
   height: auto;
+}
+
+/* Full width background out of container */
+.full-width-bg {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+.bg-light-grey {
+  background-color: #f2f2f2;
+}
+.bg-dark-grey {
+  background-color: #484848;
+}
+
+/* Location with Map icon */
+.location-icon:before {
+  font-family: 'Font Awesome 6 Pro';
+  font-weight: 900;
+  padding-right: 5px;
+  content: '\f3c5';
+  display: inline-block;
+}
+
+.fixed-bottom-border::after {
+  content: '';
+  max-width: 400px;
+  height: 1px;
+  background: #484848;
+  display: block;
+  margin-bottom: 5px;
+  margin-top: 1px;
 }
