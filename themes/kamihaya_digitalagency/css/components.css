@@ -1556,3 +1556,44 @@ iframe[title="YouTube video player"] {
   margin-bottom: 5px;
   margin-top: 1px;
 }
+
+/* FAQ Title */
+.faq-title {
+  position: relative;
+}
+.faq-title::before {
+  text-align: center;
+  content: 'Q';
+  background-color: #484848;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+  font-size: 24px;
+}
+
+/* FAQ Answer */
+.faq-answer h2 {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.faq-answer h2::before {
+  text-align: center;
+  content: 'A';
+  background-color: #484848;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+  font-size: 24px;
+}
+.faq-answer h2::after {
+  display: none;
+}
