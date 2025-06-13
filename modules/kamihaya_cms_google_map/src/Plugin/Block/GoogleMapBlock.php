@@ -19,8 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 )]
 class GoogleMapBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
-  const GOOGLE_MAP_API_URL = 'https://maps.googleapis.com/maps/api/js';
-
   /**
    * The configuration object for the Google Map settings.
    *
@@ -63,10 +61,6 @@ class GoogleMapBlock extends BlockBase implements ContainerFactoryPluginInterfac
    */
   public function build() {
     $build = [];
-    // Set the cache context to prevent caching of this block.
-    $build['#cache'] = [
-      'max-age' => 0,
-    ];
     // Check if the Google Map API key is configured.
     // If not, display a warning message.
     if (!$this->config->get('google_map_api_key')) {
