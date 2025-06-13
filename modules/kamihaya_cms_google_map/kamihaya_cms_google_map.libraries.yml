@@ -1,0 +1,6 @@
+map:
+  js:
+    js/map.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
