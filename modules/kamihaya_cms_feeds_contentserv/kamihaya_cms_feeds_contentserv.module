@@ -10,6 +10,7 @@ use Drupal\kamihaya_cms_feeds_contentserv\Feeds\Fetcher\ContentservApiDataFetche
  */
 function kamihaya_cms_feeds_contentserv_feeds_feed_presave(FeedInterface $feed) {
   $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
+
   if (empty($fetcher_config['scheduled_execution'])) {
     return;
   }
