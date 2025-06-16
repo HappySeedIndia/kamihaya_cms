@@ -1597,3 +1597,42 @@ iframe[title="YouTube video player"] {
 .faq-answer h2::after {
   display: none;
 }
+
+/* Related Carousel */
+.related-carousel .view-content .owl-carousel .owl-nav button.owl-prev span,
+.related-carousel .view-content .owl-carousel .owl-nav button.owl-next span {
+  display: none;
+}
+.related-carousel .view-content .owl-carousel .owl-nav button.owl-prev {
+  left: 0;
+  background: transparent;
+}
+.related-carousel .view-content .owl-carousel .owl-nav button.owl-prev::before {
+  font-family: 'Font Awesome 6 Pro';
+  font-weight: 900;
+  padding-right: 5px;
+  content: '\f137';
+  display: inline-block;
+  color: #fff;
+  font-size: 32px;
+}
+
+.related-carousel .view-content .owl-carousel .owl-nav button.owl-next {
+  right: 0;
+  background: transparent;
+}
+
+.related-carousel .view-content .owl-carousel .owl-nav button.owl-next::before {
+  font-family: 'Font Awesome 6 Pro';
+  font-weight: 900;
+  padding-right: 5px;
+  content: '\f138';
+  display: inline-block;
+  color: #fff;
+  font-size: 32px;
+}
+
+.related-carousel .view-content .owl-carousel .owl-nav button.disabled,
+.related-carousel .view-content .owl-carousel .owl-nav button.disabled:hover {
+  opacity: 0.5;
+}

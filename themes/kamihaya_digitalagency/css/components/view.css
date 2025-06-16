@@ -1340,3 +1340,19 @@
 .view.header-mb-minus-s.view-grid .no-data-message {
   margin-top: 2.5rem;
 }
+
+/* Grid list */
+.view .item-list ul li a.grid-list {
+  position: relative;
+  display: block;
+  padding-left: 20px;
+  word-break: break-all;
+}
+.view .item-list ul li a.grid-list::before {
+  font-family: 'Font Awesome 6 Pro';
+  font-weight: 900;
+  content: '\f054';
+  display: inline-block;
+  position: absolute;
+  left: 0;
+}
