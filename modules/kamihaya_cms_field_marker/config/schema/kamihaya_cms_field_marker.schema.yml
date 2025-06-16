@@ -7,7 +7,7 @@ field.field.*.*.*.third_party.kamihaya_cms_field_marker:
       label: 'Display marker'
     condtion:
       type: text
-      label: 'Reverse condition'
+      label: 'Condition'
     operator:
       type: string
       label: 'Operator'
