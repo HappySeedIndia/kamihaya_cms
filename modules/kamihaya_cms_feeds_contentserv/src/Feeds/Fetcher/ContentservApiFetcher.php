@@ -72,6 +72,7 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
     $url = $this->configuration['json_api_url'];
     $data_type = $this->configuration['data_type'];
     $list_url = "/core/v1/" . strtolower($data_type) . '/changes/';
+    $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
     $results = [];
 
     try {
@@ -80,7 +81,10 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
 
       // Get the last imported time to fetch only the changed data.
       $last_imported_time = 0;
-      if (!empty($feed->getImportedTime())) {
+      if (!empty($feed_config['last_import_start_time'])) {
+        $last_imported_time = $feed_config['last_import_start_time'];
+      }
+      if (empty($last_imported_time) && !empty($feed->getImportedTime())) {
         $last_imported_time = $feed->getImportedTime();
       }
       $options = [
@@ -90,6 +94,10 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
           'limit' => $this->configuration['limit'],
         ],
       ];
+
+      // Set the import start time in the feed configuration.
+      $feed_config['last_import_start_time'] = time();
+      $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
 
       // Get the list of results.
       $response = $this->getData($feed, $url, "$list_url{$this->configuration['folder_id']}", $token, $options);
@@ -144,7 +152,10 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
    * {@inheritdoc}
    */
   public function defaultFeedConfiguration() {
-    return ['access_token' => ''];
+    return [
+      'access_token' => '',
+      'last_import_start_time' => 0,
+    ];
   }
 
   /**

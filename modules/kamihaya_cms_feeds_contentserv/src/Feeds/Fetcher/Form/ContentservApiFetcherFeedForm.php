@@ -16,10 +16,12 @@ class ContentservApiFetcherFeedForm extends ExternalPluginFormBase {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state, FeedInterface $feed = NULL) {
-    $form['imported'] = [
+    $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
+    $last_import_start_time = !empty($feed_config['last_import_start_time']) ? $feed_config['last_import_start_time'] : time();
+    $form['last_import_start_time'] = [
       '#title' => $this->t('Last imported time'),
       '#type' => 'datetime',
-      '#default_value' => new DrupalDateTime(date('Y-m-d H:i:s', $feed->getImportedTime())),
+      '#default_value' => new DrupalDateTime(date('Y-m-d H:i:s', $last_import_start_time)),
     ];
     return $form;
   }
@@ -28,7 +30,9 @@ class ContentservApiFetcherFeedForm extends ExternalPluginFormBase {
    * {@inheritdoc}
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state, FeedInterface $feed = NULL) {
-    $feed->set('imported', strtotime($form_state->getValue('imported')->format('Y-m-d H:i:s')));
+    $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
+    $feed_config['last_import_start_time'] = strtotime($form_state->getValue('last_import_start_time')->format('Y-m-d H:i:s'));
+    $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
   }
 
 }
