@@ -13133,6 +13133,9 @@ code {
     margin-top: 50px;
   }
   /* Margin bottom */
+  .sp-mb-15 {
+    margin-bottom: 15px;
+  }
   .sp-mb-20 {
     margin-bottom: 20px;
   }
