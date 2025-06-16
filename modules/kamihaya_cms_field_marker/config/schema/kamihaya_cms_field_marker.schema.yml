@@ -6,8 +6,8 @@ field.field.*.*.*.third_party.kamihaya_cms_field_marker:
       type: boolean
       label: 'Display marker'
     condtion:
-      type: boolean
-      label: 'Reverse condition'
+      type: text
+      label: 'Condition'
     operator:
       type: string
       label: 'Operator'
