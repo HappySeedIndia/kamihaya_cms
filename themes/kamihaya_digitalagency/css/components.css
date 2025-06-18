@@ -1607,6 +1607,12 @@ iframe[title="YouTube video player"] {
   left: 0;
   background: transparent;
 }
+.related-carousel .view-content .owl-carousel .owl-nav button {
+  width: auto;
+  height: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
 .related-carousel .view-content .owl-carousel .owl-nav button:before {
   font-family: 'Font Awesome 6 Pro';
   font-weight: 900;
