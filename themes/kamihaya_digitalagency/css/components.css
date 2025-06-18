@@ -1666,14 +1666,23 @@ iframe[title="YouTube video player"] {
   left: 0;
   background: transparent;
 }
-.related-carousel .view-content .owl-carousel .owl-nav button.owl-prev::before {
+.related-carousel .view-content .owl-carousel .owl-nav button:before {
   font-family: 'Font Awesome 6 Pro';
   font-weight: 900;
-  padding-right: 5px;
-  content: '\f137';
-  display: inline-block;
+  padding-right: 0;
+  display: block;
   color: #fff;
-  font-size: 32px;
+  background-color: #484848;
+  font-size: 28px;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  text-align: center;
+  position: relative;
+  line-height: 40px;
+}
+.related-carousel .view-content .owl-carousel .owl-nav button.owl-prev::before {
+  content: '\f053';
 }
 
 .related-carousel .view-content .owl-carousel .owl-nav button.owl-next {
@@ -1682,16 +1691,64 @@ iframe[title="YouTube video player"] {
 }
 
 .related-carousel .view-content .owl-carousel .owl-nav button.owl-next::before {
-  font-family: 'Font Awesome 6 Pro';
-  font-weight: 900;
-  padding-right: 5px;
-  content: '\f138';
-  display: inline-block;
-  color: #fff;
-  font-size: 32px;
+  content: '\f054';
 }
 
 .related-carousel .view-content .owl-carousel .owl-nav button.disabled,
 .related-carousel .view-content .owl-carousel .owl-nav button.disabled:hover {
   opacity: 0.5;
+}
+
+/* Thumbnail Image Slider */
+.thumbnail-image-slider .slick-wrapper {
+  margin-bottom: 0;
+}
+.thumbnail-image-slider .slide__content img {
+  width: 100%;
+  height: auto;
+}
+
+.thumbnail-image-slider .slick--thumbnail.slick--skin--asnavfor .slick-track {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.thumbnail-image-slider .slick-list.draggable {
+  padding: 0 !important;
+}
+
+.thumbnail-image-slider .slick-arrow::before {
+  font-family: 'Font Awesome 6 Pro';
+  font-weight: 900;
+  padding-right: 0;
+  display: block;
+  color: #fff;
+  background-color: #484848;
+  font-size: 28px;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  text-align: center;
+  position: relative;
+  line-height: 40px;
+}
+
+.thumbnail-image-slider .slick-next:before {
+  content: '\f054';
+}
+
+.thumbnail-image-slider .slick-prev:before {
+  content: '\f053';
+}
+
+@media (max-width: 767px) {
+  .thumbnail-image-slider .slick--thumbnail.slick--skin--asnavfor {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: block;
+    width: 100%;
+  }
+  .thumbnail-image-slider .slick--thumbnail.slick--skin--asnavfor .slick-track {
+    display: none;
+  }
 }
