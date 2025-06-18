@@ -1607,14 +1607,23 @@ iframe[title="YouTube video player"] {
   left: 0;
   background: transparent;
 }
-.related-carousel .view-content .owl-carousel .owl-nav button.owl-prev::before {
+.related-carousel .view-content .owl-carousel .owl-nav button:before {
   font-family: 'Font Awesome 6 Pro';
   font-weight: 900;
-  padding-right: 5px;
-  content: '\f137';
-  display: inline-block;
+  padding-right: 0;
+  display: block;
   color: #fff;
-  font-size: 32px;
+  background-color: #484848;
+  font-size: 28px;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  text-align: center;
+  position: relative;
+  line-height: 40px;
+}
+.related-carousel .view-content .owl-carousel .owl-nav button.owl-prev::before {
+  content: '\f053';
 }
 
 .related-carousel .view-content .owl-carousel .owl-nav button.owl-next {
@@ -1623,13 +1632,7 @@ iframe[title="YouTube video player"] {
 }
 
 .related-carousel .view-content .owl-carousel .owl-nav button.owl-next::before {
-  font-family: 'Font Awesome 6 Pro';
-  font-weight: 900;
-  padding-right: 5px;
-  content: '\f138';
-  display: inline-block;
-  color: #fff;
-  font-size: 32px;
+  content: '\f054';
 }
 
 .related-carousel .view-content .owl-carousel .owl-nav button.disabled,
@@ -1657,10 +1660,17 @@ iframe[title="YouTube video player"] {
 .thumbnail-image-slider .slick-arrow::before {
   font-family: 'Font Awesome 6 Pro';
   font-weight: 900;
-  padding-right: 5px;
-  display: inline-block;
-  color: #484848;
-  font-size: 32px;
+  padding-right: 0;
+  display: block;
+  color: #fff;
+  background-color: #484848;
+  font-size: 28px;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  text-align: center;
+  position: relative;
+  line-height: 40px;
 }
 
 .thumbnail-image-slider .slick-next:before {
