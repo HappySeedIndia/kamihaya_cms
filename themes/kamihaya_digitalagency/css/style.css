@@ -13214,6 +13214,10 @@ code {
 }
 
 /* Padding top bottom */
+.py-10 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 .py-15 {
   padding-top: 15px;
   padding-bottom: 15px;
