@@ -6,7 +6,6 @@ use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\kamihaya_digitalagency\KamihayaSettingsManager;
 use Drupal\menu_link_content\MenuLinkContentInterface;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 
 /**
@@ -368,6 +367,25 @@ function kamihaya_digitalagency_preprocess_field(&$variables, $hook) {
     $entity = $variables['element']['#object'];
     $variables['element'][0]['#attributes']->setAttribute('title', $entity->label());
   }
+
+  if (!empty($variables['field_type'])
+    && $variables['field_type'] === 'link'
+    && !empty($variables['items'])) {
+    foreach ($variables['items'] as &$item) {
+      if (!empty($item['content']['#url']) && $item['content']['#url'] instanceof Url) {
+        $url = $item['content']['#url'];
+        // Add target and rel attributes to external links.
+        if ($url->isExternal() && $url->getOption('attributes') === NULL) {
+          $url->setOptions([
+            'attributes' => [
+              'target' => '_blank',
+              'rel' => 'noopener noreferrer',
+            ],
+          ]);
+        }
+      }
+    }
+  }
 }
 
 
@@ -407,7 +425,7 @@ function kamihaya_digitalagency_preprocess_block(array &$variables) {
 }
 
  /**
- * Implements hook_preprocess_block().
+ * Implements hook_preprocess_file_link().
  */
 function kamihaya_digitalagency_preprocess_file_link(array &$variables) {
   if (!empty($variables['file_size']) && !empty($variables['link']['#title'])) {
@@ -415,6 +433,20 @@ function kamihaya_digitalagency_preprocess_file_link(array &$variables) {
     $link_title = $variables['link']['#title'];
     $variables['link']['#title'] = Markup::create("{$link_title} [{$file_size}]");
     $variables['file_size'] = '';
+  }
+  $url = $variables['link']['#url'];
+  $ext = pathinfo($variables['file']->getFilename(), PATHINFO_EXTENSION);
+  $ext = strtolower($ext);
+
+  if ($url instanceof Url && $ext === 'pdf') {
+    // Add target and rel attributes to the URL if the file is a PDF.
+    $url->setOptions([
+      'attributes' => [
+        'target' => '_blank',
+        'rel' => 'noopener',
+      ],
+    ]);
+    $variables['link']['#url'] = $url;
   }
 }
 
