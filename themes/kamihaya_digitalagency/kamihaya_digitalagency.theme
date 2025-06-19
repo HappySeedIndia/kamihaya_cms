@@ -1,13 +1,11 @@
 <?php
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\kamihaya_digitalagency\KamihayaSettingsManager;
 use Drupal\menu_link_content\MenuLinkContentInterface;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 
 /**
