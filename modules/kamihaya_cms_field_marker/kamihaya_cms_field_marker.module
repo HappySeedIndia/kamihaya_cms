@@ -161,6 +161,7 @@ function kamihaya_cms_field_marker_form_field_config_edit_form_alter(&$form, For
       '#title' => t('Marker position'),
       '#default_value' => $field->getThirdPartySetting('kamihaya_cms_field_marker', 'marker_position', ''),
       '#options' => [
+        '' => t('- Select position -'),
         'title_left' => t('Title left'),
         'title_right' => t('Title right'),
         'content_left' => t('Content top left'),
@@ -172,9 +173,6 @@ function kamihaya_cms_field_marker_form_field_config_edit_form_alter(&$form, For
         ['visible' => [
           'input[name="third_party_settings[kamihaya_cms_field_marker][display_marker]"]' => ['checked' => TRUE],
         ],
-        'required' => [
-          'input[name="third_party_settings[kamihaya_cms_field_marker][display_marker]"]' => ['checked' => TRUE],
-        ],
       ]
     ];
 
@@ -183,6 +181,7 @@ function kamihaya_cms_field_marker_form_field_config_edit_form_alter(&$form, For
       '#title' => t('Marker view position'),
       '#default_value' => $field->getThirdPartySetting('kamihaya_cms_field_marker', 'marker_view_position', ''),
       '#options' => [
+        '' => t('- Select position -'),
         'title_left' => t('Title left'),
         'title_right' => t('Title right'),
         'img_top_left' => t('Image top left'),
@@ -192,9 +191,6 @@ function kamihaya_cms_field_marker_form_field_config_edit_form_alter(&$form, For
       ],
       '#states' =>
         ['visible' => [
-          'input[name="third_party_settings[kamihaya_cms_field_marker][display_marker]"]' => ['checked' => TRUE],
-        ],
-        'required' => [
           'input[name="third_party_settings[kamihaya_cms_field_marker][display_marker]"]' => ['checked' => TRUE],
         ],
       ]
@@ -211,6 +207,10 @@ function kamihaya_cms_field_marker_preprocess_layout(array &$variables) {
   if (empty($variables['content']['#node'])) {
     return;
   }
+
+  /** @var \Drupal\kamihaya_cms_field_marker\Marker\MarkerService $marker_service */
+  $marker_service = \Drupal::service('kamihaya_cms_field_marker.service');
+
   $node = $variables['content']['#node'];
   $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $node->bundle());
   foreach($bundle_fields as $name => $field_config) {
@@ -230,7 +230,8 @@ function kamihaya_cms_field_marker_preprocess_layout(array &$variables) {
     if (!empty($view_id) && empty($marker_setting['marker_view_position'])) {
       continue;
     }
-    $marker = _kamihaya_cms_field_marker_create_marker($marker_setting, $name, $field_config->getType(), $node->get($name)->value, !empty($param_node));
+
+    $marker = $marker_service->createMarker($field_config, $node->get($name)->value, !empty($param_node));
     if (empty($marker)) {
       continue;
     }
@@ -267,9 +268,18 @@ function _kamihaya_cms_field_marker_add_marker(array &$variables, array $bundle_
     if (empty($variables['content'][$region])) {
       return;
     }
-    $marker = "<div class='kamihaya-content-marker'>$marker</div>";
     $region_content = &$variables['content'][$region];
-    $region_content = array_merge(['content_marker' => ['#markup' => $marker]], $region_content);
+    if (!empty($region_content['content_marker'])) {
+      $region_content['content_marker']['#markup'] .= $marker;
+      return;
+    }
+    $region_content = array_merge([
+      'content_marker' => [
+        '#prefix' => "<div class='kamihaya-content-marker'>",
+        '#suffix' => '</div>',
+        '#markup' => $marker,
+      ]
+    ], $region_content);
     return;
   }
   foreach ($regions as $region) {
@@ -324,6 +334,8 @@ function kamihaya_cms_field_marker_preprocess_page(array &$variables) {
   if (empty($node)) {
     return;
   }
+  /** @var \Drupal\kamihaya_cms_field_marker\Marker\MarkerService $marker_service */
+  $marker_service = \Drupal::service('kamihaya_cms_field_marker.service');
   $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $node->bundle());
   foreach($bundle_fields as $name => $field_config) {
     if ($field_config->getType() !== 'datetime' && $field_config->getType() !== 'boolean') {
@@ -344,7 +356,7 @@ function kamihaya_cms_field_marker_preprocess_page(array &$variables) {
       $variables['marker']["marker_$position"] = [];
     }
     $variables['marker']["marker_$position"][$name] = [
-      '#markup' => _kamihaya_cms_field_marker_create_marker($marker_setting, $name, $field_config->getType(), $node->get($name)->value)
+      '#markup' => $marker_service->createMarker($field_config, $node->get($name)->value),
     ];
   }
   if (empty($variables['marker'])) {
@@ -362,6 +374,8 @@ function kamihaya_cms_field_marker_preprocess_page_title(array &$variables) {
   if (empty($node)) {
     return;
   }
+  /** @var \Drupal\kamihaya_cms_field_marker\Marker\MarkerService $marker_service */
+  $marker_service = \Drupal::service('kamihaya_cms_field_marker.service');
   $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $node->bundle());
   foreach($bundle_fields as $name => $field_config) {
     if ($field_config->getType() !== 'datetime' && $field_config->getType() !== 'boolean') {
@@ -382,7 +396,7 @@ function kamihaya_cms_field_marker_preprocess_page_title(array &$variables) {
       $variables['marker']["marker_$position"] = [];
     }
     $variables['marker']["marker_$position"][$name] = [
-      '#markup' => _kamihaya_cms_field_marker_create_marker($marker_setting, $name, $field_config->getType(), $node->get($name)->value)
+      '#markup' => $marker_service->createMarker($field_config, $node->get($name)->value),
     ];
   }
   if (empty($variables['marker'])) {
