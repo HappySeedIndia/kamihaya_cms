@@ -92,9 +92,6 @@ class MarkerFormatter extends FormatterBase {
       // Generate the marker HTML tag using the MarkerService.
       $marker_html = $this->markeService->createMarker($field_config, $value);
       if (empty($marker_html)) {
-        $elements[$delta] = [
-          '#markup' => $value,
-        ];
         continue;
       }
       // Add the marker HTML to the elements array.
