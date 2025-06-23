@@ -1699,3 +1699,13 @@ iframe[title="YouTube video player"] {
     display: none;
   }
 }
+
+/* Top news */
+.views-element-container .top-news-list .view-content .kamihaya-marker {
+  font-size: 20px;
+}
+
+/* Top Product List */
+.top-products-list a:before {
+  display: none;
+}
