@@ -81,7 +81,9 @@ trait KamihayaTaxonomyViewsFilterTrait {
       return;
     }
 
+    // If the vocabulary has no terms, hide the exposed filter by setting access to FALSE.
     if (empty($tree)) {
+      $form['value']['#access'] = FALSE;
       return;
     }
     $options = [];
