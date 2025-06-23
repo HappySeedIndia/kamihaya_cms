@@ -1701,11 +1701,11 @@ iframe[title="YouTube video player"] {
 }
 
 /* Top news */
-.views-element-container .top-news-list .view-content .kamihaya-marker {
+.views-element-container .top-list-with-icon .view-content .kamihaya-marker {
   font-size: 20px;
 }
 
 /* Top Product List */
-.top-products-list a:before {
+.top-basic-grid a:before {
   display: none;
 }
