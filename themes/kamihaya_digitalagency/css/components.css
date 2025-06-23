@@ -1760,3 +1760,13 @@ iframe[title="YouTube video player"] {
     display: none;
   }
 }
+
+/* Top news */
+.views-element-container .top-list-with-icon .view-content .kamihaya-marker {
+  font-size: 20px;
+}
+
+/* Top Product List */
+.top-basic-grid a:before {
+  display: none;
+}
