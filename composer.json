@@ -121,6 +121,7 @@
         "drupal/better_exposed_filters": "^7.0",
         "drupal/blazy": "^3.0",
         "drupal/block_field": "^1.0@RC",
+        "drupal/block_visibility_groups": "^2.0",
         "drupal/bootstrap5": "^3.0",
         "drupal/ckeditor5_plugin_pack": "^1.2",
         "drupal/ckeditor_bs_grid": "^2.0",
