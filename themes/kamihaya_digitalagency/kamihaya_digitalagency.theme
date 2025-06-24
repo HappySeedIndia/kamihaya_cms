@@ -785,3 +785,27 @@ function kamihaya_digitalagency_preprocess_blazy(&$variables) {
     unset($variables['icon']['lightbox']);
   }
 }
+
+/**
+ * Implements hook_preprocess_views_view_grid().
+ */
+function kamihaya_digitalagency_preprocess_views_view_grid(&$variables) {
+  $title = !empty($variables['title']) ? $variables['title'] : '';
+  if (empty($title)) {
+    return;
+  }
+
+  $dom = new DOMDocument();
+  libxml_use_internal_errors(true);
+  $dom->loadHTML($title);
+  libxml_clear_errors();
+  $header_tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+  foreach ($header_tags as $tag) {
+    $tags = $dom->getElementsByTagName($tag);
+    if ($tags->length > 0) {
+      $variables['title_includes_header'] = TRUE;
+      // If any header tag is found, set the flag and return.
+      return;
+    }
+  }
+}
