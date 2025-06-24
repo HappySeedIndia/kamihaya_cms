@@ -224,18 +224,19 @@ function kamihaya_cms_field_marker_preprocess_layout(array &$variables) {
     if (empty($marker_setting['display_marker']) || empty($node->get($name)->value)) {
       continue;
     }
-    if (!empty($param_node) && (empty($marker_setting['marker_position']) || (strpos($marker_setting['marker_position'], 'title_') !== 0 && strpos($marker_setting['marker_position'], 'content_') !== 0))) {
+    if (!empty($param_node) && $param_node->id() === $node->id()
+      && (empty($marker_setting['marker_position']) || (strpos($marker_setting['marker_position'], 'title_') !== 0 && strpos($marker_setting['marker_position'], 'content_') !== 0))) {
       continue;
     }
-    if (!empty($view_id) && empty($marker_setting['marker_view_position'])) {
+    if ((!empty($view_id) || (!empty($param_node) && $param_node->id() === $node->id())) && empty($marker_setting['marker_view_position'])) {
       continue;
     }
 
-    $marker = $marker_service->createMarker($field_config, $node->get($name)->value, !empty($param_node));
+    $marker = $marker_service->createMarker($field_config, $node->get($name)->value, !empty($param_node) && $param_node->id() === $node->id());
     if (empty($marker)) {
       continue;
     }
-    $position = !empty($param_node) ? $marker_setting['marker_position'] : $marker_setting['marker_view_position'];
+    $position = !empty($param_node) && $param_node->id() === $node->id() ? $marker_setting['marker_position'] : $marker_setting['marker_view_position'];
     _kamihaya_cms_field_marker_add_marker($variables, $bundle_fields, $position, $marker);
   }
   if (empty($variables['marker'])) {
@@ -331,12 +332,14 @@ function _kamihaya_cms_field_marker_add_marker(array &$variables, array $bundle_
  */
 function kamihaya_cms_field_marker_preprocess_page(array &$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
-  if (empty($node)) {
+  $term = \Drupal::routeMatch()->getParameter('taxonomy_term');
+  if (empty($node) && empty($term)) {
     return;
   }
+  $entity = !empty($node) ? $node : $term;
   /** @var \Drupal\kamihaya_cms_field_marker\Marker\MarkerService $marker_service */
   $marker_service = \Drupal::service('kamihaya_cms_field_marker.service');
-  $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $node->bundle());
+  $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions($entity->getEntityTypeId(), $entity->bundle());
   foreach($bundle_fields as $name => $field_config) {
     if ($field_config->getType() !== 'datetime' && $field_config->getType() !== 'boolean') {
       continue;
@@ -345,7 +348,7 @@ function kamihaya_cms_field_marker_preprocess_page(array &$variables) {
       continue;
     }
     $marker_setting = $field_config->getThirdPartySettings('kamihaya_cms_field_marker');
-    if (empty($marker_setting['display_marker']) || empty($node->get($name)->value)) {
+    if (empty($marker_setting['display_marker']) || empty($entity->get($name)->value)) {
       continue;
     }
     if (empty($marker_setting['marker_position']) || !in_array($marker_setting['marker_position'], ['left', 'right'])) {
@@ -356,7 +359,7 @@ function kamihaya_cms_field_marker_preprocess_page(array &$variables) {
       $variables['marker']["marker_$position"] = [];
     }
     $variables['marker']["marker_$position"][$name] = [
-      '#markup' => $marker_service->createMarker($field_config, $node->get($name)->value),
+      '#markup' => $marker_service->createMarker($field_config, $entity->get($name)->value),
     ];
   }
   if (empty($variables['marker'])) {
@@ -371,12 +374,14 @@ function kamihaya_cms_field_marker_preprocess_page(array &$variables) {
  */
 function kamihaya_cms_field_marker_preprocess_page_title(array &$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
-  if (empty($node)) {
+  $term = \Drupal::routeMatch()->getParameter('taxonomy_term');
+  if (empty($node) && empty($term)) {
     return;
   }
+  $entity = !empty($node) ? $node : $term;
   /** @var \Drupal\kamihaya_cms_field_marker\Marker\MarkerService $marker_service */
   $marker_service = \Drupal::service('kamihaya_cms_field_marker.service');
-  $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $node->bundle());
+  $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions($entity->getEntityTypeId(), $entity->bundle());
   foreach($bundle_fields as $name => $field_config) {
     if ($field_config->getType() !== 'datetime' && $field_config->getType() !== 'boolean') {
       continue;
@@ -385,7 +390,7 @@ function kamihaya_cms_field_marker_preprocess_page_title(array &$variables) {
       continue;
     }
     $marker_setting = $field_config->getThirdPartySettings('kamihaya_cms_field_marker');
-    if (empty($marker_setting['display_marker']) || empty($node->get($name)->value)) {
+    if (empty($marker_setting['display_marker']) || empty($entity->get($name)->value)) {
       continue;
     }
     if (empty($marker_setting['marker_position']) || !in_array($marker_setting['marker_position'], ['title_left', 'title_right'])) {
@@ -396,7 +401,7 @@ function kamihaya_cms_field_marker_preprocess_page_title(array &$variables) {
       $variables['marker']["marker_$position"] = [];
     }
     $variables['marker']["marker_$position"][$name] = [
-      '#markup' => $marker_service->createMarker($field_config, $node->get($name)->value),
+      '#markup' => $marker_service->createMarker($field_config, $entity->get($name)->value),
     ];
   }
   if (empty($variables['marker'])) {
@@ -453,11 +458,36 @@ function kamihaya_cms_field_marker_page_attachments_alter(array &$page) {
     $view = Views::getView($view_id);
     $view->setDisplay($display_id);
     $view->initHandlers();
-    $entity_type = $view->getBaseEntityType();
     $filter = $view->filter;
-    if (!empty($entity_type) && $entity_type->id() === 'node' && !empty($filter['type']) && !empty($filter['type']->value)) {
-      foreach($filter['type']->value as $type) {
-        $bundle_fields = array_merge($bundle_fields, \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $type));
+    $tables = $view->getBaseTables();
+    $apply_entity_types = [
+      'node_field_data' => 'node',
+      'media_field_data' => 'media',
+      'taxonomy_term_field_data' => 'taxonomy_term',
+    ];
+
+    foreach ($apply_entity_types as $table => $entity_type) {
+      if (!empty($tables[$table])) {
+        continue;
+      }
+      unset($apply_entity_types[$table]);
+    }
+    $entity_types = array_values($apply_entity_types);
+    if (empty($entity_types)) {
+      return;
+    }
+    if (!empty($filter['type']) && !empty($filter['type']->value)) {
+      /* @value Drupal\views\Plugin\views\filter\Bundle $bundle */
+      $bundle = $filter['type'];
+      foreach($bundle->value as $type) {
+        $bundle_fields = array_merge($bundle_fields, \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions($bundle->getEntityType(), $type));
+      }
+    }
+    if (!empty($filter['bundle']) && !empty($filter['bundle']->value)) {
+      /* @value Drupal\views\Plugin\views\filter\Bundle $bundle */
+      $bundle = $filter['bundle'];
+      foreach($bundle->value as $type) {
+        $bundle_fields = array_merge($bundle_fields, \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions($bundle->getEntityType(), $type));
       }
     }
     $id = $view_id . '_' . $display_id;
@@ -465,6 +495,10 @@ function kamihaya_cms_field_marker_page_attachments_alter(array &$page) {
   if (!empty($node = \Drupal::routeMatch()->getParameter('node'))) {
     $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $node->bundle());
     $id = 'node_' . $node->id();
+  }
+  if (!empty($term = \Drupal::routeMatch()->getParameter('taxonomy_term'))) {
+    $bundle_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('taxonomy_term', $term->bundle());
+    $id = 'taxonomy_term_' . $term->id();
   }
   $css_vars = kamihaya_cms_field_marker_marker_css($bundle_fields);
   if (empty($css_vars)) {
@@ -487,17 +521,53 @@ function kamihaya_cms_field_marker_page_attachments_alter(array &$page) {
  * Implements hook_preprocess_views_view().
  */
 function kamihaya_cms_field_marker_preprocess_views_view(array &$variables) {
+  /* @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
   $bundle_fields = [];
-  if (!empty($view)) {
-    $entity_type = $view->getBaseEntityType();
+  if (!empty($view) && !empty($view->result)) {
     $filter = $view->filter;
-    if (!empty($entity_type) && $entity_type->id() === 'node' && !empty($filter['type']) && !empty($filter['type']->value)) {
-      foreach($filter['type']->value as $type) {
-        $bundle_fields = array_merge($bundle_fields, \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $type));
+    $tables = $view->getBaseTables();
+    $apply_entity_types = [
+      'node_field_data' => 'node',
+      'media_field_data' => 'media',
+      'taxonomy_term_field_data' => 'taxonomy_term',
+    ];
+    foreach (array_keys($apply_entity_types) as $table) {
+      if (!empty($tables[$table])) {
+        continue;
+      }
+      unset($apply_entity_types[$table]);
+    }
+    $entity_types = array_values($apply_entity_types);
+    if (empty($entity_types)) {
+      return;
+    }
+    if (!empty($filter['type']) && !empty($filter['type']->value) && !empty($filter['vid']->value)) {
+      /* @value Drupal\views\Plugin\views\filter\Bundle $bundle */
+      $bundle = $filter['type'];
+      foreach($bundle->value as $type) {
+        $bundle_fields = array_merge($bundle_fields, \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions($bundle->getEntityType(), $type));
+      }
+    }
+    if (!empty($filter['bundle']) && !empty($filter['bundle']->value)) {
+      /* @value Drupal\views\Plugin\views\filter\Bundle $bundle */
+      $bundle = $filter['bundle'];
+      foreach($bundle->value as $type) {
+        $bundle_fields = array_merge($bundle_fields, \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions($bundle->getEntityType(), $type));
+      }
+    }
+    if (!empty($filter['vid']) && !empty($filter['vid']->value)) {
+      /* @value Drupal\views\Plugin\views\filter\Bundle $bundle */
+      $bundle = $filter['vid'];
+      foreach($bundle->value as $type) {
+        $bundle_fields = array_merge($bundle_fields, \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions($bundle->getEntityType(), $type));
       }
     }
   }
+  if (empty($bundle_fields)) {
+    return;
+  }
+
   $css_vars = kamihaya_cms_field_marker_marker_css($bundle_fields);
   if (empty($css_vars)) {
     return;
@@ -534,7 +604,7 @@ function kamihaya_cms_field_marker_marker_css(array $bundle_fields) {
       continue;
     }
     $marker_setting = $field_config->getThirdPartySettings('kamihaya_cms_field_marker');
-    if (empty($marker_setting['display_marker']) || (!empty($node) && empty($node->get($name)->value))) {
+    if (empty($marker_setting['display_marker'])) {
       continue;
     }
     $style = [];
