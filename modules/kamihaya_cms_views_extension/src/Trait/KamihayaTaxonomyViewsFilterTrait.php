@@ -52,6 +52,18 @@ trait KamihayaTaxonomyViewsFilterTrait {
         ],
       ],
     ];
+    // Add an option to hide the filter if it has no selectable options.
+    $form['hide_if_empty_options'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Hide if options are empty'),
+      '#default_value' => $this->options['hide_if_empty_options'] ?? FALSE,
+      '#description' => $this->t('Hide this exposed filter if no selectable options are available.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="options[type]"]' => ['value' => 'select'],
+        ],
+      ],
+    ];
   }
 
   /**
@@ -63,7 +75,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
     parent::valueForm($form, $form_state);
 
     // Hide the filter if it has no available options.
-    if (empty($form['value']['#options'])) {
+    if (!empty($this->options['hide_if_empty_options']) && empty($form['value']['#options'])) {
       $form['value']['#access'] = FALSE;
       return;
     }
