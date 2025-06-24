@@ -61,6 +61,13 @@ trait KamihayaTaxonomyViewsFilterTrait {
     $vocabulary = $this->vocabularyStorage->load($this->options['vid']);
     // Let the parent class generate the base form.
     parent::valueForm($form, $form_state);
+
+    // Hide the filter if it has no available options.
+    if (empty($form['value']['#options'])) {
+      $form['value']['#access'] = FALSE;
+      return;
+    }
+
     if (($this->options['type'] !== 'select')
       || !$form_state->get('exposed')
       || empty($form['value']['#options'])
@@ -83,7 +90,6 @@ trait KamihayaTaxonomyViewsFilterTrait {
 
     // If the vocabulary has no terms, hide the exposed filter by setting access to FALSE.
     if (empty($tree)) {
-      $form['value']['#access'] = FALSE;
       return;
     }
     $options = [];
