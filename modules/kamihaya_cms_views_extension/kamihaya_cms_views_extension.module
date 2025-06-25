@@ -6,6 +6,7 @@ use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Database\DatabaseExceptionWrapper;
 use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\Core\Database\Query\ConditionInterface;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
@@ -332,6 +333,57 @@ function kamihaya_cms_views_extension_query_multiple_media_field_union_alter(Alt
 
   // Add the union query to the base query.
   $query->union($union_query);
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function kamihaya_cms_views_extension_query_allow_media_empty_alter(AlterableInterface $query) {
+  $conditions = $query->conditions();
+  $tables = $query->getTables();
+  $media_alias = [];
+  // Find media_field_data table.
+  foreach($tables as $alias => $table) {
+    if (strpos($table['table'], 'media_') !== 0) {
+      continue;
+    }
+    $media_alias[] = $alias;
+  }
+
+  if (empty($conditions)) {
+    return;
+  }
+  foreach ($conditions as &$condition) {
+    // Check if the condition is related to media_field_data.
+    if (!is_array($condition) || empty($condition['field']) || !($condition['field'] instanceof ConditionInterface)) {
+      continue;
+    }
+    $cons = &$condition['field']->conditions();
+    foreach ($cons as $idx => &$con) {
+      if (!is_array($con) || empty($con['field']) || !($con['field'] instanceof ConditionInterface)) {
+        continue;
+      }
+      $cons2 = &$con['field']->conditions();
+      foreach ($cons2 as $idx2 => &$con2) {
+        if (!is_array($con2) || empty($con2['field']) || !is_string($con2['field'])) {
+          continue;
+        }
+        // Check if the condition is related to media tables.
+        foreach ($media_alias as $alias) {
+          if (strpos($con2['field'], "$alias.") === FALSE) {
+            continue;
+          }
+          // If the condition is related to media tables, allow empty media.
+          $field = $con2['field'];
+          $or = $query->orConditionGroup();
+          $or->isNull($field);
+          $or->condition($field, $con2['value'], $con2['operator']);
+          $con['field']->condition($or);
+          unset($cons2[$idx2]);
+        }
+      }
+    }
+  }
 }
 
 /**
