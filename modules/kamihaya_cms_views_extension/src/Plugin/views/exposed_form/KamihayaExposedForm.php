@@ -92,6 +92,7 @@ class KamihayaExposedForm extends BetterExposedFilters {
     $options['bef']['general']['hide_secondary'] = ['default' => FALSE];
     $options['bef']['general']['filter_grouping'] = ['default' => FALSE];
     $options['bef']['general']['filter_grouping_class'] = ['default' => ''];
+    $options['bef']['general']['hide_filter_group'] = ['default' => FALSE];
     $options['bef']['sort']['optimize_sort_order'] = ['default' => FALSE];
     $options['bef']['sort']['hide'] = ['default' => FALSE];
     $options['bef']['sort']['label_inline'] = ['default' => FALSE];
@@ -144,6 +145,18 @@ class KamihayaExposedForm extends BetterExposedFilters {
       '#title' => $this->t('Filter grouping css class'),
       '#description' => $this->t('This class will be added to the filter grouping container.'),
       '#default_value' => $this->options['bef']['general']['filter_grouping_class'],
+      '#states' => [
+        'visible' => [
+          'input[name="exposed_form_options[bef][general][filter_grouping]"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
+    $form['bef']['general']['hide_filter_group'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Hide filter group'),
+      '#description' => $this->t('If enabled, the filter group will be hidden on not view pages.'),
+      '#default_value' => $this->options['bef']['general']['hide_filter_group'],
       '#states' => [
         'visible' => [
           'input[name="exposed_form_options[bef][general][filter_grouping]"]' => ['checked' => TRUE],
@@ -356,6 +369,9 @@ class KamihayaExposedForm extends BetterExposedFilters {
     }
     if ($path === "view.{$view->id()}.{$view->current_display}" || $path === 'views.ajax') {
       return;
+    }
+    if (!empty($form['filter_grouping']) && !empty($this->options['bef']['general']['hide_filter_group'])) {
+      $form['filter_grouping']['#access'] = FALSE;
     }
     if (!empty($form['sort_by']) && !empty($this->options['bef']['sort']['hide'])) {
       $form['sort_by']['#access'] = FALSE;
