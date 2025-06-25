@@ -89,6 +89,9 @@ class KamihayaExposedForm extends BetterExposedFilters {
   protected function defineOptions(): array {
     $options = parent::defineOptions();
     $options['bef']['general']['submit_icon'] = ['default' => FALSE];
+    $options['bef']['general']['hide_secondary'] = ['default' => FALSE];
+    $options['bef']['general']['filter_grouping'] = ['default' => FALSE];
+    $options['bef']['general']['filter_grouping_class'] = ['default' => ''];
     $options['bef']['sort']['optimize_sort_order'] = ['default' => FALSE];
     $options['bef']['sort']['hide'] = ['default' => FALSE];
     $options['bef']['sort']['label_inline'] = ['default' => FALSE];
@@ -129,6 +132,25 @@ class KamihayaExposedForm extends BetterExposedFilters {
       '#default_value' => $this->options['bef']['general']['hide_secondary'],
     ];
 
+    $form['bef']['general']['filter_grouping'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Filter grouping'),
+      '#description' => $this->t('If enabled, the seleeted filters will be grouped.'),
+      '#default_value' => $this->options['bef']['general']['filter_grouping'],
+    ];
+
+    $form['bef']['general']['filter_grouping_class'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Filter grouping css class'),
+      '#description' => $this->t('This class will be added to the filter grouping container.'),
+      '#default_value' => $this->options['bef']['general']['filter_grouping_class'],
+      '#states' => [
+        'visible' => [
+          'input[name="exposed_form_options[bef][general][filter_grouping]"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
     if (!empty($form['bef']['sort']['configuration'])) {
       $advanced = [];
       if (!empty($form['bef']['sort']['configuration']['advanced'])) {
@@ -167,6 +189,18 @@ class KamihayaExposedForm extends BetterExposedFilters {
         '#title' => $this->t('Hide filter'),
         '#description' => $this->t('If enabled, the filter will be hidden on not view pages.'),
         '#default_value' => $this->options['bef']['filter'][$key]['advanced']['hide'] ?? FALSE,
+      ];
+
+      $filter['configuration']['advanced']['include_group'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Include group'),
+        '#description' => $this->t('If enabled, the filter will be included in the group.'),
+        '#default_value' => $this->options['bef']['filter'][$key]['advanced']['include_group'] ?? FALSE,
+        '#states' => [
+          'visible' => [
+            'input[name="exposed_form_options[bef][general][filter_grouping]"]' => ['checked' => TRUE],
+          ],
+        ],
       ];
 
       $index = 0;
@@ -295,6 +329,25 @@ class KamihayaExposedForm extends BetterExposedFilters {
     }
     if (!empty($this->options['bef']['sort']['label_inline'])) {
       $form['sort_by']['#attributes']['class'][] = 'label-inline';
+    }
+    if (!empty($this->options['bef']['general']['filter_grouping'])) {
+      $form['#attributes']['class'][] = 'kamihaya-filter-grouping';
+      $form['filter_grouping'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['kamihaya-filter-grouping-container'],
+        ],
+      ];
+      if (!empty($this->options['bef']['general']['filter_grouping_class'])) {
+        $form['filter_grouping']['#attributes']['class'][] = $this->options['bef']['general']['filter_grouping_class'];
+      }
+      foreach ($form as $key => &$field) {
+        if (!is_array($field) || empty($this->options['bef']['filter'][$key]) || empty($this->options['bef']['filter'][$key]['advanced']['include_group'])) {
+          continue;
+        }
+        $form['filter_grouping'][$key] = $field;
+        unset($form[$key]);
+      }
     }
     $view = $form_state->get('view');
     $path = $this->routeMatch->getRouteName();
