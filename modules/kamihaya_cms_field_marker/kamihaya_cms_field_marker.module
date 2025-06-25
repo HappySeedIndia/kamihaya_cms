@@ -542,7 +542,7 @@ function kamihaya_cms_field_marker_preprocess_views_view(array &$variables) {
     if (empty($entity_types)) {
       return;
     }
-    if (!empty($filter['type']) && !empty($filter['type']->value) && !empty($filter['vid']->value)) {
+    if (!empty($filter['type']) && !empty($filter['type']->value)) {
       /* @value Drupal\views\Plugin\views\filter\Bundle $bundle */
       $bundle = $filter['type'];
       foreach($bundle->value as $type) {
