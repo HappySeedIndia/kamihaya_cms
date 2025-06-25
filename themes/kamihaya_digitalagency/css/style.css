@@ -7871,6 +7871,10 @@ footer .navbar-nav a.is-active {
   width: 100% !important;
 }
 
+.w-fit-content {
+  width: fit-content !important;
+}
+
 @media (min-width: 768px) {
   .w-25-sp-100 {
     width: 25% !important;
