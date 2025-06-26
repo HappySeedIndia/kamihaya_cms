@@ -1837,7 +1837,4 @@ iframe[title="YouTube video player"] {
     flex-basis: 100%;
     display: flex;
   }
-  .dropdown-filter-group .form-control.form-select {
-    min-width: 20%;
-  }
 }
