@@ -439,6 +439,11 @@
   }
 }
 
+.views-view-grid .views-col:has(.no-result) {
+  max-width: 100%;
+  width: 100% !important;
+}
+
 .view .view-content .table-responsive {
   padding: 2rem 0;
 }
