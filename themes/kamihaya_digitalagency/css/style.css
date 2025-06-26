@@ -3635,7 +3635,9 @@ textarea.form-control-lg {
 }
 
 .dropdown-item {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
   width: 100%;
   padding: var(--bs-dropdown-item-padding-y) var(--bs-dropdown-item-padding-x);
   clear: both;
@@ -3880,7 +3882,9 @@ textarea.form-control-lg {
 .nav-link,
 .media-library-view--widget .view-header a,
 .tbm-link.level-1 {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
   padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
   font-size: var(--bs-nav-link-font-size);
   font-weight: var(--bs-nav-link-font-weight);

@@ -5,6 +5,9 @@
  * Contains hook implementations for Kamihaya CMS Menu Icon.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\Entity\File;
+
 /**
  * Implements hook_modules_installed().
  */
@@ -31,6 +34,27 @@ function kamihaya_cms_menu_icon_modules_installed($modules, $is_syncing) {
 		    	  '_self' => 'Same window (_self)',
 		 			],
         ],
+				'container_hide_label' => [
+					'label' => 'Hide label',
+					'description' => 'Hide the menu item label when Font Awesome class is set.',
+					'type' => 'checkbox',
+				],
+				'container_menu_icon_image' => [
+					'label' => 'Menu icon image',
+					'description' => 'Upload an image to be used as a menu icon.',
+					'type' => 'managed_file',
+					'upload_location' => 'public://menu-icons/',
+				],
+				'container_menu_icon_image_alt' => [
+					'label' => 'Menu icon image alt text',
+					'description' => 'Alternative text for the menu icon image.',
+					'type' => 'textfield',
+				],
+				'container_menu_icon_image_height' => [
+					'label' => 'Menu icon image height',
+					'description' => 'height of the menu icon image in pixels.',
+					'type' => 'number',
+				],
       ]);
       $config->save();
     }
@@ -66,4 +90,49 @@ function kamihaya_cms_menu_icon_modules_installed($modules, $is_syncing) {
       $config->save();
     }
   }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function kamihaya_cms_menu_icon_form_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+	if (!empty($form['options']['attributes']['container_menu_icon_image'])) {
+		$form['options']['attributes']['container_menu_icon_image']['#upload_validators'] = [
+			'file_validate_extensions' => ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'],
+			'file_validate_size' => [100 * 1024], // 100 KB
+		];
+		$form['options']['attributes']['container_menu_icon_image']['#description'] .= '<br/>Allowed types: png, jpg, jpeg, gif, svg, webp. <br/>Maximum file size: 100 KB.';
+	}
+
+	if (!empty($form['options']['attributes']['container_menu_icon_image_height'])) {
+		$form['options']['attributes']['container_menu_icon_image_height']['#min'] = 1;
+		$form['options']['attributes']['container_menu_icon_image_height']['#max'] = 100;
+	}
+
+	if (empty($form['actions']['submit']['#submit'])) {
+	  return;
+	}
+	$form['actions']['submit']['#submit'][] = 'kamihaya_cms_menu_icon_menu_link_content_form_submit';
+}
+
+/**
+ * Submit handler for menu link content form.
+ *
+ * @param $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function kamihaya_cms_menu_icon_menu_link_content_form_submit(array &$form, FormStateInterface $form_state) {
+	$values = $form_state->getValues();
+	if (empty($values['attributes']['container_menu_icon_image'])) {
+		return;
+	}
+	// Load the file and set it as permanent.
+	$fid = $values['attributes']['container_menu_icon_image'][0];
+	$file = File::load($fid);
+	if ($file) {
+		$file->setPermanent();
+		$file->save();
+	}
 }

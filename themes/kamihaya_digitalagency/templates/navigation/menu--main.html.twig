@@ -76,11 +76,19 @@ We call a macro which calls itself to render the full tree.
   %}
   <li{{ item.attributes.addClass(list_item_classes) }}>
     {% set link_text %}
-      {% if item.font_awesome_class %}
-        <span class="menu-icon">
-          <i class="{{ item.font_awesome_class }}"></i>
-        </span>
-        {% if item.hide_label is defined %}
+      {% if item.font_awesome_class or item.menu_icon_image %}
+        {% if item.font_awesome_class %}
+          <span class="menu-icon">
+            <i class="{{ item.font_awesome_class }}"></i>
+          </span>
+        {% elseif item.menu_icon_image %}
+          {% set image_alt = item.menu_icon_image_alt is defined ? item.menu_icon_image_alt : 'icon' %}
+          {% set height = item.menu_icon_image_height is defined ? 'height: ' ~  item.menu_icon_image_height ~  'px;' : '' %}
+          <span class="menu-icon-image">
+            <img src="{{ item.menu_icon_image }}" alt="{{ image_alt }}"{% if height is not empty %} style="{{ height }}"{% endif %}/>
+          </span>
+        {% endif %}
+        {% if item.hide_label is not defined %}
           {{ item.title }}
         {% endif %}
       {% else %}

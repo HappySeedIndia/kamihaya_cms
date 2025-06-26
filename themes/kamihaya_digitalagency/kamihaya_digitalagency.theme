@@ -4,6 +4,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\file\Entity\File;
 use Drupal\kamihaya_digitalagency\KamihayaSettingsManager;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\user\Entity\User;
@@ -244,8 +245,21 @@ function kamihaya_digitalagency_preprocess_tb_megamenu_item(array &$variables) {
     return;
   }
 
+  $custom_attributes = [
+    'font_awesome_class',
+    'hide_label',
+    'menu_icon_image',
+    'menu_icon_image_alt',
+    'menu_icon_image_height',
+  ];
   foreach($variables['item']->link->getOptions()['container_attributes'] as $key => $value) {
-    if ($key === 'font_awesome_class' || $key === 'hide_label') {
+    if (in_array($key, $custom_attributes)) {
+      if ($key === 'menu_icon_image' && is_array($value)) {
+        $fid = reset($value);
+        $file = File::load($fid);
+        $file_url = $file->createFileUrl();
+        $value = $file_url;
+      }
       $variables[$key] = $value;
       continue;
     }
@@ -288,14 +302,35 @@ function _kamihaya_digitalagency_preprocess_menu_items(array &$items) {
       $options = ($menu_link instanceof MenuLinkContentInterface)
         ? $menu_link->link->first()->options
         : $menu_link->getOptions();
-      if (!empty($item['attributes']) && $item['attributes']->hasAttribute('font_awesome_class')) {
-        $item['font_awesome_class'] = $item['attributes']->offsetGet('font_awesome_class');
+      if (empty($item['attributes'])) {
+        continue;
+      }
+      if ($item['attributes']->hasAttribute('font_awesome_class') || $item['attributes']->hasAttribute('menu_icon_image')) {
         if (!empty($item['attributes']->offsetGet('hide_label')) && !empty($item['attributes']->offsetGet('hide_label')->value())) {
           $item['hide_label'] = $item['attributes']->offsetGet('hide_label')->value();
         }
-        $item['attributes']->removeAttribute('font_awesome_class');
-        $item['attributes']->removeAttribute('hide_label');
+        if ($item['attributes']->offsetGet('font_awesome_class')) {
+          $item['font_awesome_class'] = $item['attributes']->offsetGet('font_awesome_class');
+        }
+        if (!empty($item['attributes']->offsetGet('menu_icon_image')) && $item['attributes']->offsetGet('menu_icon_image')->value()) {
+          $fid = $item['attributes']->offsetGet('menu_icon_image')->value();
+          $fid = is_array($fid) ? reset($fid) : $fid;
+          $file = File::load($fid);
+          $file_url = $file->createFileUrl();
+          $item['menu_icon_image'] = $file_url;
+          if ($item['attributes']->hasAttribute('menu_icon_image_alt') && !empty($item['attributes']->offsetGet('menu_icon_image_alt'))) {
+            $item['menu_icon_image_alt'] = $item['attributes']->offsetGet('menu_icon_image_alt');
+          }
+          if ($item['attributes']->hasAttribute('menu_icon_image_height') && !empty($item['attributes']->offsetGet('menu_icon_image_height')->value())) {
+            $item['menu_icon_image_height'] = $item['attributes']->offsetGet('menu_icon_image_height')->value();
+          }
+        }
       }
+      $item['attributes']->removeAttribute('font_awesome_class');
+      $item['attributes']->removeAttribute('hide_label');
+      $item['attributes']->removeAttribute('menu_icon_image');
+      $item['attributes']->removeAttribute('menu_icon_image_alt');
+      $item['attributes']->removeAttribute('menu_icon_image_height');
     }
     if (!empty($item['below'])) {
       _kamihaya_digitalagency_preprocess_menu_items($item['below']);
