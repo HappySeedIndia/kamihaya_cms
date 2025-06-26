@@ -1924,3 +1924,10 @@ iframe[title="YouTube video player"] {
   height: 24px;
   object-fit: contain;
 }
+
+.main-content .faq-top.views-exposed-form .form--inline div.text-button,
+.main-content .faq-top.views-exposed-form .form--inline div.form-item,
+.main-content .faq-search.views-exposed-form .form--inline div.text-button,
+.main-content .faq-search.views-exposed-form .form--inline div.form-item {
+  max-width: 650px;
+}
