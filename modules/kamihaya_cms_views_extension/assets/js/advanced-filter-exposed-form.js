@@ -42,6 +42,19 @@
           $submit.parent().toggleClass('disabled', !allValid);
         };
   
+        for (const field of filterNames) {
+          const elements = once(
+            `customFilterField--${field}`,
+            $form.find(`[name^="${field}"]`).toArray()
+          );
+          
+          elements.forEach(function (el) {
+            $(el).on('change keyup', function () {
+              Drupal.behaviors.customFilterButtonControl.checkFilters($form);
+            });
+          });
+        }
+  
         // Initial check
         Drupal.behaviors.customFilterButtonControl.checkFilters($form);
       });
