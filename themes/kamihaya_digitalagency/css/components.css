@@ -1706,6 +1706,17 @@ iframe[title="YouTube video player"] {
 .related-carousel .view-content .owl-carousel .owl-nav button.disabled:hover {
   opacity: 0.5;
 }
+.related-carousel .owl-theme .owl-dots {
+  margin-top: 40px;
+}
+@media (min-width: 768px) {
+  .related-carousel .view-content .owl-carousel .owl-nav button.owl-next {
+    right: 100px;
+  }
+  .related-carousel .view-content .owl-carousel .owl-nav button.owl-prev {
+    left: 100px;
+  }
+}
 
 /* Thumbnail Image Slider */
 .thumbnail-image-slider .slick-wrapper {
@@ -1812,6 +1823,7 @@ iframe[title="YouTube video player"] {
   .card-img-h-170 {
     height: 170px;
   }
+  .card-img-h-170 article,
   .card-img-h-170 .media--image {
     height: 100%;
   }
