@@ -41,7 +41,7 @@
           $submit.prop('disabled', !allValid);
           $submit.parent().toggleClass('disabled', !allValid);
         };
-  
+        // Bind change/keyup events
         for (const field of filterNames) {
           const elements = once(
             `customFilterField--${field}`,
