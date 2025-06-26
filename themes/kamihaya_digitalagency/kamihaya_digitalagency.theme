@@ -322,12 +322,12 @@ function _kamihaya_digitalagency_preprocess_menu_items(array &$items) {
           if (!empty($file)) {
             $file_url = $file->createFileUrl();
             $item['menu_icon_image'] = $file_url;
-          }
-          if ($item['attributes']->hasAttribute('menu_icon_image_alt') && !empty($item['attributes']->offsetGet('menu_icon_image_alt'))) {
-            $item['menu_icon_image_alt'] = $item['attributes']->offsetGet('menu_icon_image_alt');
-          }
-          if ($item['attributes']->hasAttribute('menu_icon_image_height') && !empty($item['attributes']->offsetGet('menu_icon_image_height')->value())) {
-            $item['menu_icon_image_height'] = $item['attributes']->offsetGet('menu_icon_image_height')->value();
+            if ($item['attributes']->hasAttribute('menu_icon_image_alt') && !empty($item['attributes']->offsetGet('menu_icon_image_alt'))) {
+              $item['menu_icon_image_alt'] = $item['attributes']->offsetGet('menu_icon_image_alt');
+            }
+            if ($item['attributes']->hasAttribute('menu_icon_image_height') && !empty($item['attributes']->offsetGet('menu_icon_image_height')->value())) {
+              $item['menu_icon_image_height'] = $item['attributes']->offsetGet('menu_icon_image_height')->value();
+            }
           }
         }
       }
