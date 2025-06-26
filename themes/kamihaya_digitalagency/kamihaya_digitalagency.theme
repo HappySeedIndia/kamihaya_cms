@@ -257,6 +257,9 @@ function kamihaya_digitalagency_preprocess_tb_megamenu_item(array &$variables) {
       if ($key === 'menu_icon_image' && is_array($value)) {
         $fid = reset($value);
         $file = File::load($fid);
+        if (empty($file)) {
+          continue;
+        }
         $file_url = $file->createFileUrl();
         $value = $file_url;
       }
@@ -316,8 +319,10 @@ function _kamihaya_digitalagency_preprocess_menu_items(array &$items) {
           $fid = $item['attributes']->offsetGet('menu_icon_image')->value();
           $fid = is_array($fid) ? reset($fid) : $fid;
           $file = File::load($fid);
-          $file_url = $file->createFileUrl();
-          $item['menu_icon_image'] = $file_url;
+          if (!empty($file)) {
+            $file_url = $file->createFileUrl();
+            $item['menu_icon_image'] = $file_url;
+          }
           if ($item['attributes']->hasAttribute('menu_icon_image_alt') && !empty($item['attributes']->offsetGet('menu_icon_image_alt'))) {
             $item['menu_icon_image_alt'] = $item['attributes']->offsetGet('menu_icon_image_alt');
           }
