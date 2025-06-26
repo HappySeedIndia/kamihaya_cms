@@ -13173,6 +13173,9 @@ code {
 
 
 /* Padding top */
+.pt-15 {
+  padding-top: 15px;
+}
 .pt-20 {
   padding-top: 20px;
 }
@@ -13263,6 +13266,9 @@ code {
     padding-top: 50px;
   }
   /* padding bottom */
+  .sp-pb-15 {
+    padding-bottom: 15px;
+  }
   .sp-pb-20 {
     padding-bottom: 20px;
   }
@@ -13277,6 +13283,10 @@ code {
   }
 
   /* padding Top Bottom */
+  .sp-py-15 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
   .sp-py-20 {
     padding-top: 20px;
     padding-bottom: 20px;

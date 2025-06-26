@@ -1720,9 +1720,17 @@ iframe[title="YouTube video player"] {
 .view.top-basic-grid .view-content .views-field a:hover {
   text-decoration: none;
 }
+.top-basic-grid .views-view-grid .views-col {
+  border: none;
+}
+@media (max-width: 767px) {
+  .top-basic-grid .views-view-grid.cols-3 .views-col {
+    width: 100% !important;
+    padding: 0;
+  }
+}
 
 /* Custom height for image */
-
 .h-198,
 .h-412,
 .h-215 {
@@ -1809,8 +1817,27 @@ iframe[title="YouTube video player"] {
 .grid-card-list .views-view-grid .views-col {
   border: none;
 }
-
+@media (max-width: 767px) {
+  .grid-card-list .views-view-grid.cols-2 .views-col {
+    width: 100% !important;
+    padding: 0;
+  }
+}
 .view .view-content .views-field a:hover .list-title {
   text-decoration: underline;
 }
+.views-element-container .qa-view-list .view-content .kamihaya-marker {
+  font-size: 24px;
+  padding: 0;
+}
 
+/* Dropdown filter group */
+@media (min-width: 767px) {
+  .dropdown-filter-group {
+    flex-basis: 100%;
+    display: flex;
+  }
+  .dropdown-filter-group .form-control.form-select {
+    min-width: 20%;
+  }
+}
