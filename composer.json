@@ -120,6 +120,7 @@
         "drupal/back_to_top": "^3.0",
         "drupal/better_exposed_filters": "^7.0",
         "drupal/blazy": "^3.0",
+        "drupal/block_class": "^4.0",
         "drupal/block_field": "^1.0@RC",
         "drupal/block_visibility_groups": "^2.0",
         "drupal/bootstrap5": "^3.0",
