@@ -1911,3 +1911,16 @@ iframe[title="YouTube video player"] {
     display: flex;
   }
 }
+
+/* Menu icon image */
+.menu-icon-image {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0 !important;
+}
+
+.menu-icon-image img {
+  width: auto;
+  height: 24px;
+  object-fit: contain;
+}

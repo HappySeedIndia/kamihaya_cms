@@ -11,15 +11,64 @@
 function kamihaya_cms_menu_icon_update_10001() {
 	$module_handler = \Drupal::service('module_handler');
 	// Update menu_link_attributes settings.
-	if ($module_handler->moduleExists('menu_link_attributes')) {
-		$config = \Drupal::service('config.factory')->getEditable('menu_link_attributes.config');
-		$attributes = $config->get('attributes');
+	if (!$module_handler->moduleExists('menu_link_attributes')) {
+		return;
+	}
+	$config = \Drupal::service('config.factory')->getEditable('menu_link_attributes.config');
+	$attributes = $config->get('attributes');
+	if (!empty($attributes['container_hide_label'])) {
+		return;
+	}
+	$attributes['container_hide_label'] = [
+		'label' => 'Hide label',
+		'description' => 'Hide the menu item label when Font Awesome class is set.',
+		'type' => 'checkbox',
+	];
+	$config->set('attributes', $attributes);
+	$config->save();
+}
+
+/**
+ * Add the option to hide label.
+ */
+function kamihaya_cms_menu_icon_update_10002() {
+	module_set_weight('kamihaya_cms_menu_icon', 10);
+	$module_handler = \Drupal::service('module_handler');
+	// Update menu_link_attributes settings.
+	if (!$module_handler->moduleExists('menu_link_attributes')) {
+		return;
+	}
+	$config = \Drupal::service('config.factory')->getEditable('menu_link_attributes.config');
+	$attributes = $config->get('attributes');
+	if (empty($attributes['container_hide_label'])) {
 		$attributes['container_hide_label'] = [
 			'label' => 'Hide label',
 			'description' => 'Hide the menu item label when Font Awesome class is set.',
 			'type' => 'checkbox',
 		];
-		$config->set('attributes', $attributes);
-		$config->save();
 	}
+	if (empty($attributes['container_menu_icon_image'])) {
+		$attributes['container_menu_icon_image'] = [
+			'label' => 'Menu icon image',
+			'description' => 'Upload an image to be used as a menu icon.',
+			'type' => 'managed_file',
+			'upload_location' => 'public://menu-icons/',
+		];
+	}
+	if (empty($attributes['container_menu_icon_image_alt'])) {
+		$attributes['container_menu_icon_image_alt'] = [
+			'label' => 'Menu icon image alt text',
+			'description' => 'Alternative text for the menu icon image.',
+			'type' => 'textfield',
+		];
+	}
+	if (empty($attributes['container_menu_icon_image_height'])) {
+		$attributes['container_menu_icon_image_height'] = [
+			'label' => 'Menu icon image height',
+			'description' => 'height of the menu icon image in pixels.',
+			'type' => 'number',
+		];
+	}
+	$config->set('attributes', $attributes);
+	$config->save();
 }

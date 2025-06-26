@@ -24,11 +24,19 @@
       <span class="{{ item_config['xicon'] }}"></span>
     {% endif %}
     {% set link_text %}
-      {% if font_awesome_class %}
-        <span class="menu-icon">
-          <i class="{{ font_awesome_class }}"></i>
-        </span>
-        {% if item.hide_label is not defined %}
+      {% if font_awesome_class or menu_icon_image %}
+        {% if font_awesome_class %}
+          <span class="menu-icon">
+            <i class="{{ font_awesome_class }}"></i>
+          </span>
+        {% elseif menu_icon_image %}
+          {% set image_alt = menu_icon_image_alt is defined ? menu_icon_image_alt : 'icon' %}
+          {% set height = menu_icon_image_height is defined ? 'height: ' ~  menu_icon_image_height ~  'px;' : '' %}
+          <span class="menu-icon-image">
+            <img src="{{ menu_icon_image }}" alt="{{ image_alt }}"{% if height is not empty %} style="{{ height }}"{% endif %}/>
+          </span>
+        {% endif %}
+        {% if hide_label is not defined or hide_label == 0 %}
          {{ link.title_translate }}
         {% endif %}
       {% else %}

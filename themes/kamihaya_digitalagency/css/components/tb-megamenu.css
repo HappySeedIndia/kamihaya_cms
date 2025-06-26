@@ -98,6 +98,9 @@
 }
 
 .tbm-item.level-1 .tbm-column .tbm-subnav .tbm-item a {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
   color: var(--bs-btn-color);
   background-color: var(--bs-btn-bg);
   padding-top: 0.5rem;
