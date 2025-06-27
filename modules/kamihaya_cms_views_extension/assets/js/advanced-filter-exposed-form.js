@@ -1,7 +1,7 @@
 
 (function ($, Drupal, drupalSettings, once) {
   'use strict';
-  Drupal.behaviors.customFilterButtonControl = {
+  Drupal.behaviors.advanceFilterButtonControl = {
     attach: function (context, settings) {
       const exposedSettings = drupalSettings.exposed_form || {};
       const filterNames = exposedSettings.filter_name || [];
@@ -12,7 +12,7 @@
         const $submit = $form.find('input[type="submit"]');
   
         // Make check function available
-        Drupal.behaviors.customFilterButtonControl.checkFilters = function ($formRef = $form) {
+        Drupal.behaviors.advanceFilterButtonControl.checkFilters = function ($formRef = $form) {
           let allValid = true;
   
           for (const field of filterNames) {
@@ -50,15 +50,15 @@
           
           elements.forEach(function (el) {
             $(el).on('change keyup', function () {
-              Drupal.behaviors.customFilterButtonControl.checkFilters($form);
+              Drupal.behaviors.advanceFilterButtonControl.checkFilters($form);
             });
           });
         }
   
         // Initial check
-        Drupal.behaviors.customFilterButtonControl.checkFilters($form);
+        Drupal.behaviors.advanceFilterButtonControl.checkFilters($form);
       });
     }
-  };  
+  };
 
 })(jQuery, Drupal, drupalSettings, once);
