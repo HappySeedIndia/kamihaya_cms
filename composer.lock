@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "589fd450c9975fe2c90b1b6c26a07ad9",
+    "content-hash": "038c7fd864e0ed0d9da8800aba9a5b47",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -6117,6 +6117,59 @@
                 "source": "https://git.drupalcode.org/project/metatag",
                 "issues": "https://www.drupal.org/project/issues/metatag",
                 "docs": "https://www.drupal.org/docs/8/modules/metatag"
+            }
+        },
+        {
+            "name": "drupal/metatag_webform",
+            "version": "1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/metatag_webform.git",
+                "reference": "1.0.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/metatag_webform-1.0.5.zip",
+                "reference": "1.0.5",
+                "shasum": "80ee7f85c83a8e075d8c981cdb3dd36111f91b43"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10 || ^11",
+                "drupal/metatag": "*",
+                "drupal/webform": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "1.0.5",
+                    "datestamp": "1711305844",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Kovrigin (a.kovrigin)",
+                    "homepage": "https://www.drupal.org/u/akovrigin",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Provides the ability to add metatags for webforms.",
+            "homepage": "https://www.drupal.org/project/metatag_webform",
+            "keywords": [
+                "Drupal",
+                "Metatag",
+                "Webform"
+            ],
+            "support": {
+                "source": "https://cgit.drupalcode.org/metatag_webform",
+                "issues": "https://drupal.org/project/issues/metatag_webform"
             }
         },
         {
