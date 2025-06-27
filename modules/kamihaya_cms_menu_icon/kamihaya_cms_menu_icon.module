@@ -98,7 +98,7 @@ function kamihaya_cms_menu_icon_modules_installed($modules, $is_syncing) {
 function kamihaya_cms_menu_icon_form_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
 	if (!empty($form['options']['attributes']['container_menu_icon_image'])) {
 		$form['options']['attributes']['container_menu_icon_image']['#upload_validators'] = [
-			'file_validate_extensions' => ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'],
+			'file_validate_extensions' => ['png jpg jpeg gif svg webp'],
 			'file_validate_size' => [100 * 1024], // 100 KB
 		];
 		$form['options']['attributes']['container_menu_icon_image']['#description'] .= '<br/>Allowed types: png, jpg, jpeg, gif, svg, webp. <br/>Maximum file size: 100 KB.';
