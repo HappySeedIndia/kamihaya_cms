@@ -1931,3 +1931,14 @@ iframe[title="YouTube video player"] {
 .main-content .faq-search.views-exposed-form .form--inline div.form-item {
   max-width: 650px;
 }
+
+.form-container {
+  max-width: var(--bs-site-max-width);
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-right: auto;
+  margin-left: auto;
+}
