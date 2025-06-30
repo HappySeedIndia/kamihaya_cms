@@ -33,3 +33,12 @@ estimate:
     js/estimate.js : {}
   dependencies:
     - core/jquery
+
+advanced-filter-exposed-form:
+  js:
+    assets/js/advanced-filter-exposed-form.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/once
