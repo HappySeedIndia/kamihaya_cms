@@ -1621,6 +1621,7 @@ iframe[title="YouTube video player"] {
 /* QA Title */
 .qa-title {
   position: relative;
+  padding-left: 40px;
 }
 .qa-title::before {
   text-align: center;
@@ -1633,6 +1634,8 @@ iframe[title="YouTube video player"] {
   margin-right: 10px;
   vertical-align: middle;
   font-size: 24px;
+  position: absolute;
+  left: 0;
 }
 
 /* QA */
@@ -1643,11 +1646,18 @@ iframe[title="YouTube video player"] {
   align-items: center;
 }
 
-.answer h2::before {
+.qa-answer {
+  word-break: break-all;
+  position: relative;
+  padding-left: 40px;
+}
+.answer h2::before,
+.qa-answer::before {
   text-align: center;
   content: 'A';
-  background-color: #484848;
-  color: #fff;
+  background-color: transparent;
+  border: 1px solid #484848;
+  color: #484848;
   width: 30px;
   height: 30px;
   display: inline-block;
@@ -1657,6 +1667,11 @@ iframe[title="YouTube video player"] {
 }
 .answer h2::after {
   display: none;
+}
+.qa-answer::before {
+  line-height: 1.2;
+  position: absolute;
+  left: 0;
 }
 
 /* Related Carousel */
@@ -1905,9 +1920,8 @@ iframe[title="YouTube video player"] {
 }
 
 /* Dropdown filter group */
-@media (min-width: 767px) {
+@media (min-width: 768px) {
   .dropdown-filter-group {
-    flex-basis: 100%;
     display: flex;
   }
 }
