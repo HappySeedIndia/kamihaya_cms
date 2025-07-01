@@ -2,32 +2,27 @@
 
 namespace Drupal\kamihaya_cms_paragraph_type\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'htmlembed_formatter' formatter.
  *
- * @FieldFormatter(
- *   id = "htmlembed_formatter",
- *   label = @Translation("Html embed formatter"),
- *   field_types = {
- *     "string_long"
- *   }
- * )
  */
+#[FieldFormatter(
+  id: 'htmlembed_formatter',
+  label: new TranslatableMarkup('Html embed formatter'),
+  field_types: [
+    'string_long',
+  ],
+)]
 class HTMLEmbedFormatter extends FormatterBase {
-
-  /**
-   * The currently active route match object.
-   *
-   * @var \Drupal\Core\Routing\RouteMatchInterface
-   */
-  protected $routeMatch;
 
   /**
    * Constructs a FormatterBase object.
@@ -57,9 +52,8 @@ class HTMLEmbedFormatter extends FormatterBase {
     $label,
     $view_mode,
     array $third_party_settings,
-    RouteMatchInterface $route_match) {
+    protected RouteMatchInterface $routeMatch) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
-    $this->routeMatch = $route_match;
   }
 
   /**

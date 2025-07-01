@@ -2,8 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.two_col_table_row.field_row_class
     - field.field.paragraph.two_col_table_row.field_row_data
+    - field.field.paragraph.two_col_table_row.field_row_data_class
     - field.field.paragraph.two_col_table_row.field_row_label
+    - field.field.paragraph.two_col_table_row.field_row_label_class
     - paragraphs.paragraphs_type.two_col_table_row
   module:
     - layout_paragraphs
@@ -12,6 +15,14 @@ targetEntityType: paragraph
 bundle: two_col_table_row
 mode: default
 content:
+  field_row_class:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
   field_row_data:
     type: layout_paragraphs
     label: hidden
@@ -21,11 +32,27 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
+  field_row_data_class:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
   field_row_label:
     type: basic_string
     label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_row_label_class:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
     region: content
 hidden: {  }

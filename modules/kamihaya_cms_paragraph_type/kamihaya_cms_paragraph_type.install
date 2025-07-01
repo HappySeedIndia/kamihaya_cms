@@ -514,3 +514,20 @@ function kamihaya_cms_paragraph_type_update_10014() {
   ], 'optional');
 
 }
+
+/**
+ * Add fields to two col table paragraph and its row paragraph.
+ */
+function kamihaya_cms_paragraph_type_update_10015() {
+  // Add fields to Two col table Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'two_col_table', [
+    'field_table_class',
+  ], 'optional');
+
+  // Add fields to Two col table row Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'two_col_table_row', [
+    'field_row_class',
+    'field_row_label_class',
+    'field_row_data_class',
+  ], 'optional');
+}

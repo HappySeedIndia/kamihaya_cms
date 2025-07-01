@@ -2,8 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.two_col_table_row.field_row_class
     - field.field.paragraph.two_col_table_row.field_row_data
+    - field.field.paragraph.two_col_table_row.field_row_data_class
     - field.field.paragraph.two_col_table_row.field_row_label
+    - field.field.paragraph.two_col_table_row.field_row_label_class
     - paragraphs.paragraphs_type.two_col_table_row
   module:
     - layout_paragraphs
@@ -12,15 +15,33 @@ targetEntityType: paragraph
 bundle: two_col_table_row
 mode: default
 content:
+  field_row_class:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_row_data:
     type: layout_paragraphs
     weight: 1
     region: content
     settings:
+      view_mode: default
       preview_view_mode: default
+      form_display_mode: default
       nesting_depth: 0
       require_layouts: 0
       empty_message: ''
+    third_party_settings: {  }
+  field_row_data_class:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   field_row_label:
     type: string_textarea
@@ -29,6 +50,19 @@ content:
     settings:
       rows: 5
       placeholder: ''
+    third_party_settings: {  }
+  field_row_label_class:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  translation:
+    weight: 5
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden:
   created: true
