@@ -75,8 +75,13 @@ trait KamihayaTaxonomyViewsFilterTrait {
     parent::valueForm($form, $form_state);
 
     // Hide the filter if it has no available options.
+    $form['value']['#hide_if_empty_options'] = !empty($this->options['hide_if_empty_options']) ? $this->options['hide_if_empty_options'] : FALSE;
     if (!empty($this->options['hide_if_empty_options']) && empty($form['value']['#options'])) {
-      $form['value']['#access'] = FALSE;
+      if (empty($this->options['reduce_by_relation'])) {
+        $form['value']['#access'] = FALSE;
+        return;
+      }
+      $form['value']['#wrapper_attributes']['class'][] = 'hidden';
       return;
     }
 
@@ -214,6 +219,12 @@ trait KamihayaTaxonomyViewsFilterTrait {
     // If no parent filter is selected display no child filters.
     if (empty($filters)) {
       $form['value']['#options'] = [];
+      if (!empty($this->options['hide_if_empty_options'])) {
+        if (empty($this->options['reduce_by_relation'])) {
+          $form['value']['#access'] = FALSE;
+        }
+        $form['value']['#wrapper_attributes']['class'][] = 'hidden';
+      }
       return;
     }
     foreach ($options as $key => $option) {
@@ -237,6 +248,12 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
     // Return the filtered options.
     $form['value']['#options'] = $options;
+    if (empty($options)) {
+      if (empty($this->options['reduce_by_relation'])) {
+        $form['value']['#access'] = FALSE;
+      }
+      $form['value']['#wrapper_attributes']['class'][] = 'hidden';
+    }
   }
 
 }
