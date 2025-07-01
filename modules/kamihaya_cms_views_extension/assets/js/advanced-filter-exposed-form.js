@@ -6,38 +6,35 @@
       const exposedSettings = drupalSettings.exposed_form || {};
       const filterNames = exposedSettings.filter_name || [];
       const minlength = exposedSettings.minlength || {};
-  
+
       $('.views-exposed-form', context).each(function () {
         const $form = $(this);
         const $submit = $form.find('input[type="submit"]');
-  
+
         // Make check function available
         Drupal.behaviors.advanceFilterButtonControl.checkFilters = function ($formRef = $form) {
-          let allValid = true;
-  
+          let allValid = false;
+
           for (const field of filterNames) {
             const $elements = $formRef.find(`[name^="${field}"]`);
             if (!$elements.length) {
-              allValid = false;
-              break;
+              continnue;
             }
-            let isValid = false;
             if ($elements.is('select')) {
               const val = $elements.val();
-              isValid = val !== '' && val !== '_none' && val !== 'All';
+              allValid = val !== '' && val !== '_none' && val !== 'All';
             } else if ($elements.is(':checkbox, :radio')) {
-              isValid = $elements.filter(':checked').length > 0;
+              allValid = $elements.filter(':checked').length > 0;
             } else if ($elements.is('input[type="text"]')) {
               const val = $elements.val();
               const fieldMinLength = parseInt(minlength[field]) || 0;
-              isValid = val.trim().length >= fieldMinLength;
+              allValid = val.trim().length >= fieldMinLength;
             }
-            if (!isValid) {
-              allValid = false;
+            if (allValid) {
               break;
             }
           }
-  
+
           $submit.prop('disabled', !allValid);
           $submit.parent().toggleClass('disabled', !allValid);
         };
@@ -47,14 +44,14 @@
             `customFilterField--${field}`,
             $form.find(`[name^="${field}"]`).toArray()
           );
-          
+
           elements.forEach(function (el) {
             $(el).on('change keyup', function () {
               Drupal.behaviors.advanceFilterButtonControl.checkFilters($form);
             });
           });
         }
-  
+
         // Initial check
         Drupal.behaviors.advanceFilterButtonControl.checkFilters($form);
       });
