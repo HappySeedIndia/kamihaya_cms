@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_table_class
+    - paragraphs.paragraphs_type.two_col_table
+id: paragraph.two_col_table.field_table_class
+field_name: field_table_class
+entity_type: paragraph
+bundle: two_col_table
+label: 'Table class'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

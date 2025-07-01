@@ -38,20 +38,25 @@
  * @ingroup themeable
  */
 #}
+{% set row_class = content.field_row_class|render|striptags|trim|lower %}
+{% set row_label_class = content.field_row_label_class|render|striptags|trim|lower %}
+{% set row_data_class = content.field_row_data_class|render|striptags|trim|lower %}
+
 {%
   set classes = [
     'paragraph',
     'paragraph--type--' ~ paragraph.bundle|clean_class,
     view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
-    not paragraph.isPublished() ? 'paragraph--unpublished'
+    not paragraph.isPublished() ? 'paragraph--unpublished',
+    row_class ? row_class,
   ]
 %}
 {% block paragraph %}
   {% block content %}
     {% if content.field_row_label|render and content.field_row_data|render %}
-      <tr>
-        <th>{{ content.field_row_label.0 }}</th>
-        <td>{{ content.field_row_data.0 }}</td>
+      <tr{{attributes.addClass(classes)}}>
+        <th{% if row_label_class %} class="{{row_label_class}}"{% endif %}>{{ content.field_row_label.0 }}</th>
+        <td{% if row_data_class %} class="{{row_data_class}}"{% endif %}>{{ content.field_row_data.0 }}</td>
       </tr>
     {% endif %}
   {% endblock %}

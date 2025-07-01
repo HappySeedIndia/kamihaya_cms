@@ -42,6 +42,7 @@
 {% block paragraph %}
   {% block content %}
     {% set align = content.field_align|render|striptags|trim|lower %}
+    {% set table_class = content.field_table_class|render|striptags|trim|lower %}
     {%
       set classes = [
         'paragraph',
@@ -52,7 +53,7 @@
       ]
     %}
     <div{{attributes.addClass(classes)}}>
-      <table class="table table-bordered">
+      <table class="table table-bordered{%if table_class %} {{ table_class }}{% endif %}">
         <tbody>
           {{ content.field_table_rows }}
         </tbody>

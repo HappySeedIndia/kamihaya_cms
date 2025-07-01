@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.two_col_table.field_align
+    - field.field.paragraph.two_col_table.field_table_class
     - field.field.paragraph.two_col_table.field_table_rows
     - paragraphs.paragraphs_type.two_col_table
   module:
@@ -18,7 +19,15 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 16
+    weight: 1
+    region: content
+  field_table_class:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
     region: content
   field_table_rows:
     type: entity_reference_revisions_entity_view
