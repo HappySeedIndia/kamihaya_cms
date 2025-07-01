@@ -228,7 +228,7 @@ function kamihaya_cms_field_marker_preprocess_layout(array &$variables) {
       && (empty($marker_setting['marker_position']) || (strpos($marker_setting['marker_position'], 'title_') !== 0 && strpos($marker_setting['marker_position'], 'content_') !== 0))) {
       continue;
     }
-    if ((!empty($view_id) || (!empty($param_node) && $param_node->id() === $node->id())) && empty($marker_setting['marker_view_position'])) {
+    if (!empty($view_id) && empty($marker_setting['marker_view_position'])) {
       continue;
     }
 

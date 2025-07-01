@@ -2,7 +2,9 @@
 
 namespace Drupal\kamihaya_cms_field_marker\Service;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\field\Entity\FieldConfig;
 
 /**
@@ -19,8 +21,10 @@ class MarkerService {
    *
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $fieldManager
    *   The entity field manager.
+   * @param rupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The configuration factory.
    */
-  public function __construct(protected EntityFieldManagerInterface $fieldManager) {
+  public function __construct(protected EntityFieldManagerInterface $fieldManager, protected ConfigFactoryInterface $configFactory) {
     // Constructor injection for the field manager service.
   }
 
@@ -48,8 +52,8 @@ class MarkerService {
     $display = FALSE;
     if ($field_type === 'datetime') {
       $operator = $marker_setting['operator'];
-      $condition_time = (new \DateTime($condition))->getTimestamp();
-      $field_time = (new \DateTime($value))->getTimestamp();
+      $condition_time = $this->getSystemTime($condition);
+      $field_time = $this->getSystemTime($value);
       $display = eval("return $condition_time $operator $field_time;");
     }
     if ($field_type === 'boolean') {
@@ -61,6 +65,23 @@ class MarkerService {
       $name = str_replace('_', '-', $field_name);
       return "<div class='kamihaya-marker marker-{$position} marker-{$name}'>{$marker_label}</div>";
     }
+  }
+
+  /**
+   * Converts a date string to a system timestamp.
+   *
+   * @param string $date
+   *   The date string to convert.
+   *
+   * @return int
+   *   The system timestamp.
+   */
+  private function getSystemTime($date) {
+    $site_timezone = $this->configFactory->get('system.date')->get('timezone.default');
+    $default_timezone = new \DateTimeZone(DateTimeItemInterface::STORAGE_TIMEZONE);
+    $date_time = new \DateTime($date, $default_timezone);
+    $date_time->setTimezone(new \DateTimeZone($site_timezone));
+    return mktime(0, 0, 0, date('n', $date_time->getTimestamp()), date('j', $date_time->getTimestamp()), date('Y', $date_time->getTimestamp()));
   }
 }
 
