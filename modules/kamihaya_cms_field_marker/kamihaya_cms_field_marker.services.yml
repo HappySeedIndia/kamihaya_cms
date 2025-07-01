@@ -1,4 +1,4 @@
 services:
   kamihaya_cms_field_marker.service:
     class: Drupal\kamihaya_cms_field_marker\Service\MarkerService
-    arguments: ['@entity_field.manager']
+    arguments: ['@entity_field.manager', '@config.factory']
