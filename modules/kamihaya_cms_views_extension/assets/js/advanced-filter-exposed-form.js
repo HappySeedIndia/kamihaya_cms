@@ -1,6 +1,6 @@
-
 (function ($, Drupal, drupalSettings, once) {
   'use strict';
+
   Drupal.behaviors.advanceFilterButtonControl = {
     attach: function (context, settings) {
       const exposedSettings = drupalSettings.exposed_form || {};
@@ -11,34 +11,48 @@
         const $form = $(this);
         const $submit = $form.find('input[type="submit"]');
 
-        // Make check function available
+        /**
+         * Check if all filters in filterNames have valid values.
+         */
         Drupal.behaviors.advanceFilterButtonControl.checkFilters = function ($formRef = $form) {
           let allValid = false;
 
           for (const field of filterNames) {
             const $elements = $formRef.find(`[name^="${field}"]`);
             if (!$elements.length) {
-              continnue;
+              allValid = true;
+              break;
             }
+
+            const type = $elements.attr('type') || $elements.prop('tagName').toLowerCase();
+
             if ($elements.is('select')) {
               const val = $elements.val();
-              allValid = val !== '' && val !== '_none' && val !== 'All';
+              if (val === '' || val === '_none' || val === 'All') {
+                allValid = true;
+                break;
+              }
             } else if ($elements.is(':checkbox, :radio')) {
-              allValid = $elements.filter(':checked').length > 0;
+              if ($elements.filter(':checked').length === 0) {
+                allValid = true;
+                break;
+              }
             } else if ($elements.is('input[type="text"]')) {
               const val = $elements.val();
               const fieldMinLength = parseInt(minlength[field]) || 0;
-              allValid = val.trim().length >= fieldMinLength;
-            }
-            if (allValid) {
-              break;
+              if (val.trim().length < fieldMinLength) {
+                allValid = true;
+                break;
+              }
             }
           }
 
-          $submit.prop('disabled', !allValid);
-          $submit.parent().toggleClass('disabled', !allValid);
+          // Enable or disable the submit button based on validation result
+          $submit.prop('disabled', allValid);
+          $submit.parent().toggleClass('disabled', allValid);
         };
-        // Bind change/keyup events
+
+        // Attach events for each field only once
         for (const field of filterNames) {
           const elements = once(
             `customFilterField--${field}`,
@@ -52,7 +66,7 @@
           });
         }
 
-        // Initial check
+        // Initial check on page load
         Drupal.behaviors.advanceFilterButtonControl.checkFilters($form);
       });
     }
