@@ -1,6 +1,6 @@
-
 (function ($, Drupal, drupalSettings, once) {
   'use strict';
+
   Drupal.behaviors.advanceFilterButtonControl = {
     attach: function (context, settings) {
       const exposedSettings = drupalSettings.exposed_form || {};
@@ -11,51 +11,63 @@
         const $form = $(this);
         const $submit = $form.find('input[type="submit"]');
 
-        // Make check function available
-        Drupal.behaviors.advanceFilterButtonControl.checkFilters = function ($formRef = $form) {
-          let allValid = false;
+        /**
+         * Enable the search button if ANY of the filter fields is valid.
+         */
+        function checkFilters($formRef = $form) {
+          let anyValid = false;
 
           for (const field of filterNames) {
             const $elements = $formRef.find(`[name^="${field}"]`);
             if (!$elements.length) {
-              continnue;
+              continue;
             }
-            if ($elements.is('select')) {
+
+            const tagName = $elements.prop('tagName')?.toLowerCase();
+            const inputType = $elements.attr('type');
+            let isValid = false;
+
+            if (tagName === 'select') {
               const val = $elements.val();
-              allValid = val !== '' && val !== '_none' && val !== 'All';
-            } else if ($elements.is(':checkbox, :radio')) {
-              allValid = $elements.filter(':checked').length > 0;
-            } else if ($elements.is('input[type="text"]')) {
+              isValid = val !== '' && val !== '_none' && val !== 'All';
+            } else if (inputType === 'checkbox' || inputType === 'radio') {
+              isValid = $formRef.find(`[name^="${field}"]:checked`).length > 0;
+            } else if (inputType === 'text' || tagName === 'textarea' || $elements.hasClass('form-autocomplete')) {
               const val = $elements.val();
               const fieldMinLength = parseInt(minlength[field]) || 0;
-              allValid = val.trim().length >= fieldMinLength;
+              isValid = val && val.trim().length >= fieldMinLength;
+            } else if (inputType === 'date' || inputType === 'datetime-local') {
+              const val = $elements.val();
+              isValid = val !== '';
+            } else {
+              const val = $elements.val();
+              isValid = val !== '';
             }
-            if (allValid) {
+
+            // If any one field is valid, break early
+            if (isValid) {
+              anyValid = true;
               break;
             }
           }
 
-          $submit.prop('disabled', !allValid);
-          $submit.parent().toggleClass('disabled', !allValid);
-        };
-        // Bind change/keyup events
-        for (const field of filterNames) {
-          const elements = once(
-            `customFilterField--${field}`,
-            $form.find(`[name^="${field}"]`).toArray()
-          );
+          $submit.prop('disabled', !anyValid);
+          $submit.parent().toggleClass('disabled', !anyValid);
+        }
 
+        // Bind event listeners once per field
+        for (const field of filterNames) {
+          const elements = once(`customFilterField--${field}`, $form.find(`[name^="${field}"]`).toArray());
           elements.forEach(function (el) {
-            $(el).on('change keyup', function () {
-              Drupal.behaviors.advanceFilterButtonControl.checkFilters($form);
+            $(el).on('change keyup blur', function () {
+              checkFilters($form);
             });
           });
         }
 
-        // Initial check
-        Drupal.behaviors.advanceFilterButtonControl.checkFilters($form);
+        // Run on initial page load
+        checkFilters($form);
       });
     }
   };
-
 })(jQuery, Drupal, drupalSettings, once);
