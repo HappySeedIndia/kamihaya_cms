@@ -1956,3 +1956,13 @@ iframe[title="YouTube video player"] {
   margin-right: auto;
   margin-left: auto;
 }
+
+/* border-box-list */
+.border-box-list .link-button a {
+  min-width: 182px;
+}
+@media (max-width: 767px) {
+  .border-box-list .link-button a {
+    min-width: 165px;
+  }
+}
