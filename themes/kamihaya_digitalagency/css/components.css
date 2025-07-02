@@ -1806,6 +1806,7 @@ iframe[title="YouTube video player"] {
 }
 .view.top-basic-grid .view-content .views-field a:hover {
   text-decoration: none;
+  opacity: 0.8;
 }
 .top-basic-grid .views-view-grid .views-col {
   border: none;
