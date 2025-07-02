@@ -13263,6 +13263,12 @@ code {
   padding-bottom: 100px;
 }
 
+@media (min-width: 768px) {
+  .ps-md-40 {
+    padding-left: 40px !important;
+  }
+}
+
 @media (max-width: 767px) {
   /* padding top */
   .sp-pt-20 {
