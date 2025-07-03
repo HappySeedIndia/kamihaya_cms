@@ -461,6 +461,10 @@ function kamihaya_digitalagency_preprocess_block(array &$variables) {
   }
   if (!empty($variables['plugin_id']) && $variables['plugin_id'] === 'system_branding_block' && !empty(theme_get_setting('logo_url'))) {
     $variables['logo_url'] = theme_get_setting('logo_url');
+    $url = Url::fromUri(theme_get_setting('logo_url'));
+    if ($url->isExternal()) {
+      $variables['logo_url_external'] = TRUE;
+    }
   }
 }
 
