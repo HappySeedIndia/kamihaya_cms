@@ -1921,6 +1921,11 @@ iframe[title="YouTube video player"] {
 .view .view-content .views-field a:hover .list-title {
   text-decoration: underline;
 }
+
+.view .view-content .views-field a:hover .btn .list-title {
+  text-decoration: none;
+}
+
 .views-element-container .qa-view-list .view-content .kamihaya-marker {
   font-size: 24px;
   padding: 0;
@@ -1999,4 +2004,14 @@ iframe[title="YouTube video player"] {
 }
 .email-icon::before {
   content: '\f0e0';
+}
+
+/* Button link */
+.btn a:hover,
+a:has(.btn):hover {
+  text-decoration: none !important;
+}
+
+a:hover .btn.border-hover-dark-grey {
+  border-color: #484848 !important;
 }

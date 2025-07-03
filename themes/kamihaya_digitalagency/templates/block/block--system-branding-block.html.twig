@@ -19,15 +19,15 @@
   {% set logo_url = logo_url ? logo_url : path('<front>')  %}
 
   {% if site_logo %}
-  <a href="{{ logo_url }}" title="{{ 'Home'|t }}" rel="home" class="site-logo d-block">
-    <img src="{{ site_logo }}" alt="{{ 'Home'|t }}" class="img-fluid" />
+  <a href="{{ logo_url }}" title="{{ 'Home'|t }}" rel="home" class="site-logo d-block"{% if logo_url_external %} target="_blank"{% endif %}>
+    <img src="{{ site_logo }}" alt="{{ 'Home'|t }}" class="img-fluid"/>
   </a>
   {% endif %}
 
   {% if site_name or site_slogan %}
   <div>
     {% if site_name %}
-    <a href="{{ logo_url }}" title="{{ 'Home'|t }}" rel="home" class="site-title">
+    <a href="{{ logo_url }}" title="{{ 'Home'|t }}" rel="home" class="site-title"{% if logo_url_external %} target="_blank"{% endif %}>
       {{ site_name }}
     </a>
     {% endif %}
