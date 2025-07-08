@@ -1,0 +1,24 @@
+{#
+/**
+ * @file
+ * Template for Google Map with View.
+ *
+ * Available variables:
+ * - google_map: The Google Map render array.
+ * - view_content: The View render array.
+ * - pc_position: Position of map on PC (top/bottom/left/right).
+ * - sp_position: Position of map on SP (top/bottom).
+ */
+#}
+<div class="google-map-with-view-container" data-pc-position="{{ pc_position }}" data-sp-position="{{ sp_position }}">
+
+	<div class="responsive-layout pc-{{ pc_position }} sp-{{ sp_position }}">
+		<div class="google-map-wrapper">
+			{{ google_map }}
+		</div>
+		<div class="view-content-wrapper">
+			{{ view_content }}
+		</div>
+	</div>
+
+</div>

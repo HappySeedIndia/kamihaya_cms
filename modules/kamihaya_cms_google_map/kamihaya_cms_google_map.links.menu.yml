@@ -1,6 +1,6 @@
 kamihaya_cms_google_map.settings:
-  title: 'Google map Settings'
-  description: 'Configure Google map API services.'
+  title: 'Google Map Settings'
+  description: 'Configure Google Map API services.'
   route_name: kamihaya_cms_google_map.settings
   parent: system.admin_config_system
   weight: 50

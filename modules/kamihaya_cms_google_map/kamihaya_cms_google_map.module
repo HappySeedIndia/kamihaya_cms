@@ -1,2 +1,17 @@
 <?php
 
+/**
+ * Implements hook_theme().
+ */
+function kamihaya_cms_google_map_theme() {
+  return [
+    'google_map_with_view' => [
+      'variables' => [
+        'google_map' => NULL,
+        'view_content' => NULL,
+        'pc_position' => 'top',
+        'sp_position' => 'top',
+      ],
+    ],
+  ];
+}
