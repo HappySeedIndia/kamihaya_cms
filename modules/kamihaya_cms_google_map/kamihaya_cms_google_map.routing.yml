@@ -5,3 +5,14 @@ kamihaya_cms_google_map.settings:
     _title: 'Google Map Settings'
   requirements:
     _permission: 'administer site configuration'
+
+kamihaya_cms_google_map.map_with_view_settings:
+  path: '/admin/config/services/google-map-with-view'
+  defaults:
+    _form: '\Drupal\kamihaya_cms_google_map\Form\Config\GoogleMapWithViewConfigForm'
+    _title: 'Google Map with View Settings'
+  requirements:
+    _permission: 'administer site configuration'
+
+route_callbacks:
+  - '\Drupal\kamihaya_cms_google_map\Routing\RouteProvider::routes'

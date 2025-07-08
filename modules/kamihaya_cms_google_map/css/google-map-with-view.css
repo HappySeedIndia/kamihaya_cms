@@ -1,0 +1,81 @@
+/* Google Map with View - Unified Layout */
+.google-map-with-view-container {
+  width: 100%;
+}
+
+.responsive-layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* PC styles (768px and above) */
+@media (min-width: 768px) {
+
+  /* PC: top - Map on top, content below */
+  .responsive-layout.pc-top {
+    flex-direction: column;
+  }
+
+  /* PC: bottom - Content on top, map below */
+  .responsive-layout.pc-bottom {
+    flex-direction: column-reverse;
+  }
+
+  /* PC: left - Map on left, content on right */
+  .responsive-layout.pc-left {
+    flex-direction: row;
+  }
+
+  /* PC: right - Content on left, map on right */
+  .responsive-layout.pc-right {
+    flex-direction: row-reverse;
+  }
+
+  /* Width adjustment for horizontal layouts */
+  .responsive-layout.pc-left .google-map-wrapper,
+  .responsive-layout.pc-left .view-content-wrapper,
+  .responsive-layout.pc-right .google-map-wrapper,
+  .responsive-layout.pc-right .view-content-wrapper {
+    flex: 1;
+  }
+}
+
+/* Mobile styles (767px and below) */
+@media (max-width: 767px) {
+
+  /* Mobile: top - Map on top, content below */
+  .responsive-layout.sp-top {
+    flex-direction: column;
+  }
+
+  /* Mobile: bottom - Content on top, map below */
+  .responsive-layout.sp-bottom {
+    flex-direction: column-reverse;
+  }
+}
+
+/* Common styles */
+.google-map-wrapper,
+.view-content-wrapper {
+  width: 100%;
+}
+
+.google-map-wrapper #map{
+  min-height: 300px;
+  /* Adjust as needed */
+}
+
+/* Spacing adjustment for horizontal layouts */
+@media (min-width: 768px) {
+
+  .responsive-layout.pc-left .google-map-wrapper,
+  .responsive-layout.pc-right .view-content-wrapper {
+    margin-right: 20px;
+  }
+
+  .responsive-layout.pc-right .google-map-wrapper,
+  .responsive-layout.pc-left .view-content-wrapper {
+    margin-left: 20px;
+  }
+}

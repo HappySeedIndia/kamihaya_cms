@@ -4,3 +4,9 @@ map:
   dependencies:
     - core/drupal
     - core/drupalSettings
+
+google_map_with_view:
+  version: 1.x
+  css:
+    theme:
+      css/google-map-with-view.css: {}

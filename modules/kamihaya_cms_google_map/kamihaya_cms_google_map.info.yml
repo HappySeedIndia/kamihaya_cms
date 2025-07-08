@@ -1,11 +1,11 @@
-name: Kamihaya CMS Google map
+name: Kamihaya CMS Google Map
 type: module
 core_version_requirement: ^10 || ^11
 package: Kamihaya
-description: 'Google map controller for Kamihaya CMS.'
+description: 'Google Map controller for Kamihaya CMS.'
 
 dependencies:
-  - paragraphs:paragraphs
+  - drupal:views
 
 project: 'kamihaya'
 configure: kamihaya_cms_google_map.settings

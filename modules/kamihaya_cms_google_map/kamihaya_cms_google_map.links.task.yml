@@ -1,0 +1,11 @@
+kamihaya_cms_google_map.settings:
+  route_name: kamihaya_cms_google_map.settings
+  base_route: kamihaya_cms_google_map.settings
+  title: 'Kamihaya CMS Google Map Settings'
+  weight: 0
+
+kamihaya_cms_google_map.map_with_view_settings:
+  route_name: kamihaya_cms_google_map.map_with_view_settings
+  base_route: kamihaya_cms_google_map.settings
+  title: 'Kamihaya CMS Google Map with View Settings'
+  weight: 10
