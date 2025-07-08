@@ -78,4 +78,20 @@
   .responsive-layout.pc-left .view-content-wrapper {
     margin-left: 20px;
   }
+  
+  .google-map-wrapper #map{
+    min-height: 460px !important;
+    /* Adjust as needed */
+  }
+  .google-map-with-view-container .view-content-wrapper .view-store-list .view-content {
+    max-height: 300px;
+    overflow-y: scroll;
+    padding-top: 10px;
+  }
+}
+
+@media (max-width: 767px) {
+  .google-map-with-view-container .view-content-wrapper {
+    padding-top: 30px;
+  }
 }
