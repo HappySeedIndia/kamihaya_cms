@@ -83,7 +83,7 @@
     min-height: 460px !important;
     /* Adjust as needed */
   }
-  .google-map-with-view-container .view-content-wrapper .view-store-list .view-content {
+  .google-map-with-view-container .view-content-wrapper .view-content {
     max-height: 300px;
     overflow-y: scroll;
     padding-top: 10px;
