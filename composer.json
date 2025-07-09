@@ -139,7 +139,7 @@
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/editoria11y": "^2.1",
         "drupal/entity_browser": "^2.9",
-        "drupal/eu_cookie_compliance": "^1.26",
+        "drupal/eu_cookie_compliance": "^1.27",
         "drupal/expand_collapse_formatter": "^2.0",
         "drupal/externalauth": "^2.0",
         "drupal/feeds": "^3.0",
