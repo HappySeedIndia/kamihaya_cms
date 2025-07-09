@@ -2024,22 +2024,18 @@ a:hover .btn.border-hover-dark-grey {
   width: 100%;
   height: 100%;
 }
-.view.top-5-col-grid .view-content .views-field a .bg-light-grey {
-  width: 100%;
-  height: 100%;
-}
 .view.top-5-col-grid .view-content .views-field a:hover {
   opacity: 1;
   text-decoration: underline;
 }
 @media (min-width: 768px) {
-  .view.top-5-col-grid .view-content .views-field a {
+  .view.top-5-col-grid .view-content .views-field a .bg-light-grey {
     width: 220px;
     height: 220px;
   }
 }
 @media (max-width: 767px) {
-  .view.top-5-col-grid .view-content .views-field a {
+  .view.top-5-col-grid .view-content .views-field a .bg-light-grey {
     width: 165px;
     height: 165px;
   }
