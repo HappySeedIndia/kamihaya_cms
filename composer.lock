@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e7f8e433643e2ce69f82970a00ce798",
+    "content-hash": "7756730ed710db9c2c3dd45a149cb6e0",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4239,6 +4239,76 @@
                 "source": "https://git.drupalcode.org/project/entity_browser",
                 "issues": "https://www.drupal.org/project/issues/entity_browser",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
+        },
+        {
+            "name": "drupal/entity_clone",
+            "version": "2.1.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/entity_clone.git",
+                "reference": "2.1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/entity_clone-2.1.0-beta1.zip",
+                "reference": "2.1.0-beta1",
+                "shasum": "3602955a33ac4fff0213fd302e78d0c7b5c628ca"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10 || ^11"
+            },
+            "require-dev": {
+                "drupal/entity_browser": "2.x-dev",
+                "drupal/entity_usage": "2.x-dev",
+                "drupal/paragraphs": "^1.0",
+                "drupal/search_api": "^1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.1.0-beta1",
+                    "datestamp": "1721571015",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "colan",
+                    "homepage": "https://www.drupal.org/user/58704"
+                },
+                {
+                    "name": "joevagyok",
+                    "homepage": "https://www.drupal.org/user/2876343"
+                },
+                {
+                    "name": "nickdickinsonwilde",
+                    "homepage": "https://www.drupal.org/user/3094661"
+                },
+                {
+                    "name": "rajeshreeputra",
+                    "homepage": "https://www.drupal.org/user/3418561"
+                },
+                {
+                    "name": "upchuk",
+                    "homepage": "https://www.drupal.org/user/1885838"
+                },
+                {
+                    "name": "vpeltot",
+                    "homepage": "https://www.drupal.org/user/1361586"
+                }
+            ],
+            "description": "Add a clone action for all entities.",
+            "homepage": "https://drupal.org/project/entity_clone",
+            "support": {
+                "source": "https://git.drupalcode.org/project/entity_clone"
             }
         },
         {
@@ -17199,6 +17269,7 @@
         "drupal/advanced_text_formatter": 5,
         "drupal/block_field": 5,
         "drupal/default_content": 15,
+        "drupal/entity_clone": 10,
         "drupal/gin": 5,
         "drupal/openai": 10,
         "drupal/shs": 5,
