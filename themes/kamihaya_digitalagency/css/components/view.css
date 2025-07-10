@@ -1392,6 +1392,8 @@
 @media (min-width: 768px) {
   .view-featured-grid {
     display: flex !important;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
   .view-featured-grid > .view-content,
   .view-featured-grid > .attachment {
