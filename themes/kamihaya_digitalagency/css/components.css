@@ -1788,14 +1788,19 @@ iframe[title="YouTube video player"] {
 }
 
 /* Top List with icon */
-.views-element-container .top-list-with-icon .view-content .kamihaya-marker,
-.views-element-container .top-basic-grid .view-content .kamihaya-marker {
+.views-element-container .top-list-with-icon .view-content .kamihaya-marker i,
+.views-element-container .top-basic-grid .view-content .kamihaya-marker i {
   font-size: 20px;
 }
 .top-list-with-icon .list-icon {
   width: 35px;
 }
-
+.top-list-with-icon .list-icon-top {
+  width: 82px;
+}
+.views-element-container .top-list-with-icon .view-content .kamihaya-marker.marker-field-important-news-flag {
+  padding-left: 0;
+}
 .top-basic-grid .kamihaya-content-marker {
   margin-bottom: 0;
   padding-left: 5px;
