@@ -1,0 +1,10 @@
+status: 1
+dependencies: {  }
+id: iphone16
+label: iPhone16
+weight: 0
+orientation: portrait
+dimensions:
+  width: 1179
+  height: 2556
+  dppx: 3.0
