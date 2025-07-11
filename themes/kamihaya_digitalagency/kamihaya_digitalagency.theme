@@ -194,6 +194,9 @@ function kamihaya_digitalagency_preprocess_user(array &$variables) {
  */
 function kamihaya_digitalagency_preprocess_views_view(array &$variables) {
   $variables['#attached']['library'][] = 'kamihaya_digitalagency/view';
+  if (\Drupal::moduleHandler()->moduleExists('kamihaya_cms_paragraph_type')) {
+    $variables['#attached']['library'][] = 'kamihaya_cms_paragraph_type/heading-css';
+  }
   $view = $variables['view'];
   if (!empty($view->getStyle()->getPluginId())) {
     $variables['format'] = str_replace('_', '-', $view->getStyle()->getPluginId());
