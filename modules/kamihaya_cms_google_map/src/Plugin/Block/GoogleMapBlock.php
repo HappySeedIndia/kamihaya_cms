@@ -5,7 +5,6 @@ namespace Drupal\kamihaya_cms_google_map\Plugin\Block;
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -60,45 +59,6 @@ class GoogleMapBlock extends BlockBase implements ContainerFactoryPluginInterfac
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
-    return [
-      'json_data_path' => '',
-      'detail_data_path' => '',
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function blockForm($form, FormStateInterface $form_state) {
-    $form['json_data_path'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('JSON Data Path'),
-      '#description' => $this->t('The path to get JSON data to display the markers on the map.'),
-      '#default_value' => $this->configuration['json_data_path'] ?? '',
-      '#maxlength' => 255,
-    ];
-    $form['detail_data_path'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Detail Data Path'),
-      '#description' => $this->t('The path to get detailed data for the markers.'),
-      '#default_value' => $this->configuration['detail_data_path'] ?? '',
-      '#maxlength' => 255,
-    ];
-    return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function blockSubmit($form, FormStateInterface $form_state) {
-    $this->configuration['selector_label'] = $form_state->getValue('selector_label');
-    $this->configuration['selector_icon'] = $form_state->getValue('selector_icon');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function build() {
     $build = [];
     // Check if the Google Map API key is configured.
@@ -119,8 +79,6 @@ class GoogleMapBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $build['#attached']['drupalSettings']['default_lat'] = $this->config->get('google_map_center_latitude');
     $build['#attached']['drupalSettings']['default_lon'] = $this->config->get('google_map_center_longitude');
     $build['#attached']['drupalSettings']['default_zoom'] = intval($this->config->get('google_map_zoom_level'));
-    $build['#attached']['drupalSettings']['json_data_path'] = $this->configuration['json_data_path'] ?? '';
-    $build['#attached']['drupalSettings']['detail_data_path'] = $this->configuration['detail_data_path'] ?? '';
 
     return $build;
   }

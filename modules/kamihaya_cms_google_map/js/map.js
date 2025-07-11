@@ -3,8 +3,12 @@
   'use strict';
 
   let map;
+  let markers = [];
   let mapElement;
   let mapInitialized = false;
+  let searchButton;
+  let searchButtonTimeout;
+  let mapOptions = {};
 
   // Define the global callback function before loading the API
   window.loadMap = function () {
@@ -15,27 +19,45 @@
     }
 
     // Initialize map on load
-    if (mapElement) {
-      mapElement.style.width = '100%';
-      adjustMapHeight();
-      // Get user's location.
-      navigator.geolocation.getCurrentPosition(success, fail);
-    }
+    mapElement.style.width = '100%';
+    adjustMapHeight();
+    // Get user's location.
+    navigator.geolocation.getCurrentPosition(success, fail);
+
     window.addEventListener('resize', adjustMapHeight);
     mapInitialized = true;
   };
 
   // Initialize the map
-  function initMap(element, latlng) {
+  async function initMap(element, latlng) {
+    const { Map } = await google.maps.importLibrary("maps");
     // Create a new map instance
-    map = new google.maps.Map(element, {
+    map = new Map(element, {
       zoom: drupalSettings.default_zoom,
       center: latlng,
       tilt: 0,
       disableDefaultUI: true,
       zoomControl: true,
+      mapId: 'Kamihaya_google_map',
     });
+
+    const jsonDataPath = drupalSettings.json_data_path;
+    if (!jsonDataPath) {
+      console.warn('JSON data path is not set in drupalSettings');
+      return;
+    }
+
+    // Add event listeners for map interactions.
+    map.addListener('dragstart', onMapDragStart);
+    map.addListener('dragend', onMapDragEnd);
+    map.addListener('zoom_changed', onMapZoomChanged);
+
     element.classList.add('ready');
+    google.maps.event.addListenerOnce(map, 'idle', () => {
+      displayLocationMarkers();
+      // Create　a search button.
+      createSearchButton();
+    });
   }
 
   // Success and failure handlers for geolocation
@@ -60,6 +82,231 @@
     const availableHeight = window.innerHeight - offsetTop;
     mapElement.style.height = `${availableHeight}px`;
     mapElement.dataset.heightAdjusted = 'true';
+  }
+
+  // Display markers on the map based on the current bounds.
+  async function displayLocationMarkers() {
+    if (!mapInitialized) {
+      return;
+    }
+
+    // Clear existing markers if any.
+    clearMarkers();
+
+    // Disable the search button while fetching data.
+    if (searchButton) {
+      searchButton.disabled = true;
+      searchButton.classList.add('loading');
+    }
+
+    const bounds = map.getBounds();
+    const ne = bounds.getNorthEast();
+    const sw = bounds.getSouthWest();
+    const jsonDataPath = drupalSettings.json_data_path;
+    if (!jsonDataPath) {
+      console.warn('JSON data path is not set in drupalSettings');
+      return;
+    }
+
+    const params = new URLSearchParams();
+
+    // Get the current map bounds and set to the params.
+    params.append('nelat', ne.lat());
+    params.append('nelng', ne.lng());
+    params.append('swlat', sw.lat());
+    params.append('swlng', sw.lng());
+    params.append('_format', 'json');
+
+    // Show loading indicator.
+    showLoading();
+    // Fetch the location data from the server.
+    fetch(`${jsonDataPath}?${params.toString()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        // Display markers on the map.
+        updateMarkers(data);
+        // Hide loading indicator.
+        hideLoading();
+      }
+    )
+    .catch((error) => {
+      console.error('Error fetching location data:', error);
+      hideLoading();
+    });
+  }
+
+  // Display info window with detailed content for the marker.
+  function diplayInfoWindow(marker, nid) {
+    const detailDataPath = drupalSettings.detail_data_path;
+    if (!detailDataPath) {
+      console.warn('Detail data path is not set in drupalSettings');
+      return;
+    }
+    // Fetch the detail data for the marker.
+    fetch(`${detailDataPath}/${nid}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.content) {
+          const infoWindow = new google.maps.InfoWindow({
+            content: data.content,
+          });
+          infoWindow.open(map, marker);
+        } else {
+          console.warn('No content found for the marker with nid:', nid);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching detail data:', error);
+      });
+  }
+
+  // Clear all markers from the map.
+  function clearMarkers() {
+    markers.forEach(function (marker) {
+      marker.setMap(null);
+    });
+    markers = [];
+  }
+
+  async function updateMarkers(data) {
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    data.forEach((location) => {
+      const marker = new AdvancedMarkerElement({
+        position: { lat: parseFloat(location.location_lat), lng: parseFloat(location.location_lng) },
+        map: map,
+        title: location.title,
+      });
+
+      // Open the info window on marker click.
+      marker.addListener('click', function () {
+        diplayInfoWindow(marker, location.nid);
+      });
+      markers.push(marker);
+    });
+  }
+
+  // Create the search button for searching within the current map area.
+  function createSearchButton() {
+    // Create the search button element
+    searchButton = document.createElement('button');
+    searchButton.className = 'map-search-button btn btn-primary';
+    searchButton.innerHTML = '<i class="fas fa-search"></i>' + Drupal.t('SEARCH IN THIS AREA');
+    searchButton.type = 'button';
+
+    // Add click event to search in the current area.
+    searchButton.addEventListener('click', function () {
+      displayLocationMarkers();
+      hideSearchButton();
+    });
+
+    if (mapElement) {
+      mapElement.classList.add('map-container-relative');
+      mapElement.appendChild(searchButton);
+    }
+
+    hideSearchButton();
+  }
+
+  function onMapDragStart() {
+    hideSearchButton();
+  }
+
+  function onMapDragEnd() {
+    showSearchButton();
+  }
+
+  function onMapZoomChanged() {
+    showSearchButton();
+  }
+
+  function showSearchButton() {
+    if (searchButton) {
+      // Show the search button after a short delay to avoid flickering.
+      clearTimeout(searchButtonTimeout);
+      searchButtonTimeout = setTimeout(() => {
+        if (searchButton.classList.contains('loading')) {
+          searchButton.classList.remove('loading');
+        }
+        searchButton.disabled = false;
+        searchButton.style.display = 'block';
+      }, 300);
+    }
+  }
+
+  function hideSearchButton() {
+    if (searchButton) {
+      clearTimeout(searchButtonTimeout);
+      searchButton.style.display = 'none';
+    }
+  }
+
+  // Show loading indicator while fetching data.
+  function showLoading() {
+    // Display loading overlay.
+    const overlay = document.createElement('div');
+    overlay.id = 'map-loading-overlay';
+    overlay.className = 'map-loading-overlay';
+
+    // overlay.appendChild(loadingContent);
+    document.body.appendChild(overlay);
+
+    // Disable map interaction while loading.
+    disableMapInteraction();
+
+    // Disable page scroll while loading.
+    document.body.classList.add('map-search-loading');
+  }
+
+  // Hide loading indicator and enable map interaction.
+  function hideLoading() {
+    // Remove loading overlay.
+    const overlay = document.getElementById('map-loading-overlay');
+    if (overlay) {
+      overlay.remove();
+    }
+
+    // Enable map interaction after loading.
+    enableMapInteraction();
+
+    // Enable page scroll after loading.
+    document.body.classList.remove('map-search-loading');
+  }
+
+  // Disable map interaction to prevent user actions during loading.
+  function disableMapInteraction() {
+    if (!map) return;
+
+    // Store the current map options to restore later.
+    mapOptions = {
+      draggable: map.get('draggable'),
+      zoomControl: map.get('zoomControl'),
+      scrollwheel: map.get('scrollwheel'),
+      disableDoubleClickZoom: map.get('disableDoubleClickZoom'),
+      gestureHandling: map.get('gestureHandling')
+    };
+
+    // Disable map interaction.
+    map.setOptions({
+      draggable: false,
+      zoomControl: false,
+      scrollwheel: false,
+      disableDoubleClickZoom: true,
+      gestureHandling: 'none'
+    });
+  }
+
+  // Enable map interaction after loading is complete.
+  function enableMapInteraction() {
+    if (!map) return;
+
+    // Restore the previous map options.
+    map.setOptions({
+      draggable: mapOptions.draggable !== false,
+      zoomControl: mapOptions.zoomControl !== false,
+      scrollwheel: mapOptions.scrollwheel !== false,
+      disableDoubleClickZoom: mapOptions.disableDoubleClickZoom === true,
+      gestureHandling: mapOptions.gestureHandling || 'auto'
+    });
   }
 
   Drupal.behaviors.googleMap = {

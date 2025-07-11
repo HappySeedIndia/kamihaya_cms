@@ -72,6 +72,10 @@ class GoogleMapWithViewController extends ControllerBase implements ContainerInj
         '#sp_position' => $settings['sp_position'] ?? 'top',
         '#attached' => [
           'library' => ['kamihaya_cms_google_map/google_map_with_view'],
+          'drupalSettings' => [
+            'json_data_path' => $settings['json_data_path'] ?? '',
+            'detail_data_path' => $settings['detail_data_path'] ?? '',
+          ],
         ],
       ];
     }

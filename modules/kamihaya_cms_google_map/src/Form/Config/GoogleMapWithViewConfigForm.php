@@ -116,6 +116,22 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
       '#required' => FALSE,
     ];
 
+    $form['pages']['new_page']['json_data_path'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('JSON Data Path'),
+      '#description' => $this->t('The path to get JSON data to display the markers on the map.'),
+      '#default_value' => '',
+      '#maxlength' => 255,
+    ];
+
+    $form['pages']['new_page']['detail_data_path'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Detail Data Path'),
+      '#description' => $this->t('The path to get detailed data for the markers.'),
+      '#default_value' => '',
+      '#maxlength' => 255,
+    ];
+
     $form['pages']['new_page']['view_block'] = [
       '#type' => 'select',
       '#title' => $this->t('View Block'),
@@ -249,6 +265,22 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
       '#default_value' => $page['url_path'] ?? '',
       '#description' => $this->t('Path for the page (e.g., google-map/locations)'),
       '#required' => TRUE,
+    ];
+
+    $form['json_data_path'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('JSON Data Path'),
+      '#description' => $this->t('The path to get JSON data to display the markers on the map.'),
+      '#default_value' => $page['json_data_path'] ?? '',
+      '#maxlength' => 255,
+    ];
+
+    $form['detail_data_path'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Detail Data Path'),
+      '#description' => $this->t('The path to get detailed data for the markers.'),
+      '#default_value' => $page['detail_data_path'] ?? '',
+      '#maxlength' => 255,
     ];
 
     $form['view_block'] = [
