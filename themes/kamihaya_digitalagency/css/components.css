@@ -2010,6 +2010,12 @@ iframe[title="YouTube video player"] {
 .email-icon::before {
   content: '\f0e0';
 }
+.building::before {
+  content: '\f1ad';
+}
+.location::before {
+  content: '\f3c5';
+}
 
 /* Button link */
 .btn a:hover,
