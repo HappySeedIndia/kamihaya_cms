@@ -102,11 +102,15 @@
     const bounds = map.getBounds();
     const ne = bounds.getNorthEast();
     const sw = bounds.getSouthWest();
-    const jsonDataPath = drupalSettings.json_data_path;
+    let jsonDataPath = drupalSettings.json_data_path;
     if (!jsonDataPath) {
       console.warn('JSON data path is not set in drupalSettings');
       return;
     }
+    // Add the path prefix if it exists.
+    const basePath = drupalSettings.path.basePath || '';
+    const pathPrefix = drupalSettings.path.pathPrefix || '';
+    jsonDataPath = `${basePath}${pathPrefix}${jsonDataPath}`;
 
     const params = new URLSearchParams();
 
@@ -137,18 +141,29 @@
 
   // Display info window with detailed content for the marker.
   function diplayInfoWindow(marker, nid) {
-    const detailDataPath = drupalSettings.detail_data_path;
+    let detailDataPath = drupalSettings.detail_data_path;
     if (!detailDataPath) {
       console.warn('Detail data path is not set in drupalSettings');
       return;
     }
+    // Add the path prefix if it exists.
+    const basePath = drupalSettings.path.basePath || '';
+    const pathPrefix = drupalSettings.path.pathPrefix || '';
+    detailDataPath = `${basePath}${pathPrefix}${detailDataPath}`;
+
+    const params = new URLSearchParams();
+
+    // Set the format as JSON.
+    params.append('_format', 'json');
+
     // Fetch the detail data for the marker.
-    fetch(`${detailDataPath}/${nid}`)
+    fetch(`${detailDataPath}/${nid}?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
-        if (data && data.content) {
+        console.log('Detail data:', data);
+        if (data[0] && data[0].entity) {
           const infoWindow = new google.maps.InfoWindow({
-            content: data.content,
+            content: data[0].entity,
           });
           infoWindow.open(map, marker);
         } else {
@@ -246,6 +261,14 @@
     const overlay = document.createElement('div');
     overlay.id = 'map-loading-overlay';
     overlay.className = 'map-loading-overlay';
+
+    // Loading content.
+    // const loadingContent = document.createElement('div');
+    // loadingContent.className = 'map-loading-content';
+    // loadingContent.innerHTML = `
+    //   <div class="loading-spinner"></div>
+    //   <div class="loading-text">Searching...</div>
+    // `;
 
     // overlay.appendChild(loadingContent);
     document.body.appendChild(overlay);
