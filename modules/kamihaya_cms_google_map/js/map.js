@@ -262,13 +262,6 @@
     overlay.id = 'map-loading-overlay';
     overlay.className = 'map-loading-overlay';
 
-    // Loading content.
-    // const loadingContent = document.createElement('div');
-    // loadingContent.className = 'map-loading-content';
-    // loadingContent.innerHTML = `
-    //   <div class="loading-spinner"></div>
-    //   <div class="loading-text">Searching...</div>
-    // `;
 
     // overlay.appendChild(loadingContent);
     document.body.appendChild(overlay);
