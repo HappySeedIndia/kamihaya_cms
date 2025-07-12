@@ -108,9 +108,9 @@
       return;
     }
     // Add the path prefix if it exists.
-    const basePath = drupalSettings.path.basePath || '';
+    const baseUrl = drupalSettings.path.baseUrl || '';
     const pathPrefix = drupalSettings.path.pathPrefix || '';
-    jsonDataPath = `${basePath}${pathPrefix}${jsonDataPath}`;
+    jsonDataPath = `${baseUrl}${pathPrefix}${jsonDataPath}`;
 
     const params = new URLSearchParams();
 
@@ -147,9 +147,9 @@
       return;
     }
     // Add the path prefix if it exists.
-    const basePath = drupalSettings.path.basePath || '';
+    const baseUrl = drupalSettings.path.baseUrl || '';
     const pathPrefix = drupalSettings.path.pathPrefix || '';
-    detailDataPath = `${basePath}${pathPrefix}${detailDataPath}`;
+    detailDataPath = `${baseUrl}${pathPrefix}${detailDataPath}`;
 
     const params = new URLSearchParams();
 
@@ -160,7 +160,6 @@
     fetch(`${detailDataPath}/${nid}?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log('Detail data:', data);
         if (data[0] && data[0].entity) {
           const infoWindow = new google.maps.InfoWindow({
             content: data[0].entity,
@@ -261,7 +260,6 @@
     const overlay = document.createElement('div');
     overlay.id = 'map-loading-overlay';
     overlay.className = 'map-loading-overlay';
-
 
     // overlay.appendChild(loadingContent);
     document.body.appendChild(overlay);
