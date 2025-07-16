@@ -2071,3 +2071,10 @@ a:hover .btn.border-hover-dark-grey {
 .top-carousel .flex-direction-nav a.flex-prev::before {
   content: '\f053';
 }
+
+.link-wrapper {
+  text-decoration: none;
+}
+.link-wrapper:hover {
+  text-decoration: underline;
+}
