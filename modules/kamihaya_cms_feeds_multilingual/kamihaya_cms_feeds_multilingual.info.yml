@@ -1,0 +1,10 @@
+name: Kanmihaya CMS Feeds Multilingual
+type: module
+description: 'Feeds extention to support multilingual content.'
+core_version_requirement: ^9 || ^10
+package: Kamihaya
+
+project: 'kamihaya'
+
+dependencies:
+  - feeds:feeds
