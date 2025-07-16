@@ -187,24 +187,35 @@ function kamihaya_cms_common_update_10006() {
       ->debug('No obsolete responsive-preview devices found — deletion skipped.');
   }
 
-  // ---------- 1.1 Delete obsolete devices yml files ----------------------------------.
+  // ---------- 1.1 Delete obsolete device YAML files if the module exists ----------
   // Load the module handler service.
   $moduleHandler = \Drupal::service('module_handler');
-  // Get the relative path to the 'responsive_preview' module.
-  $module_path = $moduleHandler->getModule('responsive_preview')->getPath();
-  // Build the absolute path to the module's config/install directory.
-  $install_path = DRUPAL_ROOT . '/' . $module_path . '/config/install';
-  // Loop through each old device ID and delete its corresponding config file.
-  foreach ($old_device_ids as $device_id) {
-    // Construct the full path to the config YAML file for this device.
-    $base_file = $install_path . '/responsive_preview.device.' . $device_id . '.yml';
-    // If the config file exists, delete it and log the deletion.
-    if (file_exists($base_file)) {
-      unlink($base_file);
-      \Drupal::logger('kamihaya_cms_common')->notice(
-        'Deleted config file: @file',
-        ['@file' => $base_file]
-      );
+  // Define the modules and their install paths to check for obsolete config files.
+  $modules_to_check = [
+    'responsive_preview',
+    'kamihaya_cms_common',
+  ];
+  // Loop through each module to check and delete obsolete device config files.
+  foreach ($modules_to_check as $module_name) {
+    // Ensure the module is enabled before proceeding.
+    if ($moduleHandler->moduleExists($module_name)) {
+      // Get the module's path.
+      $module_path = $moduleHandler->getModule($module_name)->getPath();
+      // Build the full path to the module's config/install directory.
+      $install_path = DRUPAL_ROOT . '/' . $module_path . '/config/install';
+      // Loop through each obsolete device ID and delete its corresponding config file.
+      foreach ($old_device_ids as $device_id) {
+        $config_file = $install_path . '/responsive_preview.device.' . $device_id . '.yml';
+        if (file_exists($config_file)) {
+          // Delete the YAML config file.
+          unlink($config_file);
+          // Log the action.
+          \Drupal::logger('kamihaya_cms_common')->notice(
+            'Deleted obsolete config file: @file from module: @module',
+            ['@file' => $config_file, '@module' => $module_name]
+          );
+        }
+      }
     }
   }
 
