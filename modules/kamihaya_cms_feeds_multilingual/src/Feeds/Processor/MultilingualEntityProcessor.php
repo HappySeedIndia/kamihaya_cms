@@ -410,14 +410,13 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
     $map_mappings = $feed->getType()->getMappings();
     if ($entity instanceof TranslatableInterface && !$entity->isDefaultTranslation()) {
       foreach ($map_mappings as $idx => $mapping) {
-        if (empty($mapping['target']) || empty($mapping['map']['value'])) {
+        if (empty($mapping['target']) || (empty($mapping['map']['value']) && empty($mapping['map']['target_id']))) {
           continue;
         }
 
         // If the mapping target is not translatable, remove it from the item.
         if ($mapping['target'] !== 'langcode' && $mapping['target'] !== 'translation_key' && !$entity->getFieldDefinitions()[$mapping['target']]->isTranslatable()) {
           unset($map_mappings[$idx]);
-          unset($item_data[$mapping['map']['value']]);
           $this->messenger()->addWarning(t('The mapping target @target is not translatable and will be removed from the item.', ['@target' => $mapping['target']]));
         }
       }
@@ -437,7 +436,7 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
 
     // Gather all of the values for this item.
     $source_values = [];
-    foreach ($mappings as $delta => $mapping) {
+    foreach ($map_mappings as $delta => $mapping) {
       $target = $this->feedType->getTargetPlugin($delta);
 
       foreach ($mapping['map'] as $column => $source) {
