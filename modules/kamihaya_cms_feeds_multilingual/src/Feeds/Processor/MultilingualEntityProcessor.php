@@ -19,8 +19,6 @@ use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\Feeds\Item\DynamicItem;
 use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Feeds\Processor\EntityProcessorBase;
-use Drupal\feeds\Plugin\Type\Target\TargetInterface;
-use Drupal\feeds\Plugin\Type\Target\TranslatableTargetInterface;
 use Drupal\feeds\StateInterface;
 use Drupal\feeds\StateType;
 use Psr\Log\LoggerInterface;
