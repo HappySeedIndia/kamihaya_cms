@@ -331,18 +331,24 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
    */
   protected function findExistingEntity($target_field, $target_value) {
     $storage = $this->entityTypeManager->getStorage($this->entityType());
+    $entity_type = $this->entityTypeManager->getDefinition($this->entityType());
 
     // Check if entity type supports translation key field
-    if (!$this->hasKeyField($this->entityType(), $target_field)) {
+    if (!$entity_type->hasKey($target_field)) {
+      return NULL;
+    }
+    $target_key = $entity_type->getKey($target_field);
+
+    // If the target value is empty, return NULL
+    if (empty($target_key)) {
       return NULL;
     }
 
     // Build query to find existing entity by translation key
     $query = $storage->getQuery();
-    $query->condition($target_field, $target_value);
+    $query->condition($target_key, $target_value);
     $query->accessCheck(TRUE);
 
-    $entity_type = $this->entityTypeManager->getDefinition($this->entityType());
     // Add bundle condition if entity type has bundles
     if ($entity_type->hasKey('bundle')) {
       $query->condition($entity_type->getKey('bundle'), $this->bundle());
@@ -382,22 +388,6 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
     $language_manager = \Drupal::languageManager();
     $languages = $language_manager->getLanguages();
     return isset($languages[$language_code]);
-  }
-
-  /**
-   * Check if entity type has a specific key field.
-   *
-   * @param string $entity_type
-   *   The entity type.
-   * @param string $field_name
-   *   The field name to check.
-   *
-   * @return bool
-   *   TRUE if the entity type has the specified key field, FALSE otherwise.
-   */
-  protected function hasKeyField($entity_type, $field_name) {
-    $field_definitions = $this->entityFieldManager->getFieldDefinitions($entity_type, $this->bundle());
-    return isset($field_definitions[$field_name]);
   }
 
   /**

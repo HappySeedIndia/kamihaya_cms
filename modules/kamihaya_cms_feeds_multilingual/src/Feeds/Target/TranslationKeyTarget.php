@@ -74,7 +74,7 @@ class TranslationKeyTarget extends Temporary implements ConfigurableTargetInterf
     return [
       'id' => $this->t('ID'),
       'uuid' => $this->t('UUID'),
-      'name' => $this->t('Name'),
+      'label' => $this->t('Label'),
     ];
   }
 
