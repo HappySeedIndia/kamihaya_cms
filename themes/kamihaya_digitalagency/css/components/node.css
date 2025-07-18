@@ -398,7 +398,7 @@
 }
 
 .node .headings-anchor-links a {
-  color: var(--bs-btn-color);
+  /* color: var(--bs-btn-color); */
   text-decoration: none;
 }
 
