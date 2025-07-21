@@ -5,6 +5,142 @@ use Drupal\Core\Config\InstallStorage;
 use Drupal\Core\Site\Settings;
 
 /**
+ * Implements hook_install().
+ */
+function kamihaya_cms_common_install() {
+  /** @var \Drupal\Core\Entity\EntityStorageInterface $entity_storage */
+  $entity_storage = \Drupal::entityTypeManager()->getStorage('responsive_preview_device');
+
+  // ---------- 1. Delete obsolete devices ----------------------------------.
+  $old_device_ids = [
+    'iphone_xs',
+    'iphone_xs_max',
+    'galaxy_s9',
+    'ipad_pro',
+    'galaxy_tab_s4',
+    'galaxy_s7',
+    'galaxy_tab_2_10',
+    'ipad_air_2',
+    'iphone_7',
+    'iphone_7plus',
+  ];
+
+  // Load only the devices that actually exist.
+  $devices_to_delete = $entity_storage->loadMultiple($old_device_ids);
+
+  if (!empty($devices_to_delete)) {
+    $entity_storage->delete($devices_to_delete);
+    \Drupal::logger('kamihaya_cms_common')->notice(
+      'Deleted obsolete responsive-preview devices: @ids',
+      ['@ids' => implode(', ', array_keys($devices_to_delete))]
+    );
+  }
+  else {
+    \Drupal::logger('kamihaya_cms_common')
+      ->debug('No obsolete responsive-preview devices found — deletion skipped.');
+  }
+
+  // ---------- 1.1 Delete obsolete device YAML files if the module exists ----------
+  // Load the module handler service.
+  $moduleHandler = \Drupal::service('module_handler');
+  // Define the modules and their install paths to check for obsolete config files.
+  $modules_to_check = [
+    'responsive_preview',
+    'kamihaya_cms_common',
+  ];
+  // Loop through each module to check and delete obsolete device config files.
+  foreach ($modules_to_check as $module_name) {
+    // Ensure the module is enabled before proceeding.
+    if ($moduleHandler->moduleExists($module_name)) {
+      // Get the module's path.
+      $module_path = $moduleHandler->getModule($module_name)->getPath();
+      // Build the full path to the module's config/install directory.
+      $install_path = $module_path . '/' . InstallStorage::CONFIG_INSTALL_DIRECTORY;
+      // Loop through each obsolete device ID and delete its corresponding config file.
+      foreach ($old_device_ids as $device_id) {
+        $config_file = $install_path . '/responsive_preview.device.' . $device_id . '.yml';
+        if (file_exists($config_file)) {
+          // Delete the YAML config file.
+          unlink($config_file);
+          // Log the action.
+          \Drupal::logger('kamihaya_cms_common')->notice(
+            'Deleted obsolete config file: @file from module: @module',
+            ['@file' => $config_file, '@module' => $module_name]
+          );
+        }
+      }
+    }
+  }
+
+  // ---------- 2. Import new device configs --------------------------------.
+  $module_handler = \Drupal::service('extension.list.module');
+  $module_path    = $module_handler->getPath('kamihaya_cms_common');
+  $config_path    = $module_path . '/' . InstallStorage::CONFIG_INSTALL_DIRECTORY;
+  $file_storage   = new FileStorage($config_path);
+
+  // Config names to import (the YAML file *name* inside the module’s
+  // config/install directory, *without* the ".yml" extension).
+  $config_ids = [
+    'responsive_preview.device.galaxy_24_ultra',
+    'responsive_preview.device.galaxy_24',
+    'responsive_preview.device.google_pixel_9_pro_xl',
+    'responsive_preview.device.google_pixel_9_pro',
+    'responsive_preview.device.google_pixel_9',
+    'responsive_preview.device.ipad_10',
+    'responsive_preview.device.iphone_16_plus',
+    'responsive_preview.device.iphone_16_pro_max',
+    'responsive_preview.device.iphone_16_pro',
+    'responsive_preview.device.iphone16',
+  ];
+
+  foreach ($config_ids as $config_id) {
+    // Read raw YAML as an array.
+    if (!$data = $file_storage->read($config_id)) {
+      \Drupal::logger('kamihaya_cms_common')->error(
+        'Config @cfg not found or unreadable – import skipped.',
+        ['@cfg' => $config_id]
+      );
+      continue;
+    }
+
+    // `$data['id']` holds the actual entity ID, e.g. "galaxy_24_ultra".
+    $device_id = $data['id'] ?? NULL;
+    if (!$device_id) {
+      \Drupal::logger('kamihaya_cms_common')->error(
+        'Config @cfg missing "id" key – import skipped.',
+        ['@cfg' => $config_id]
+      );
+      continue;
+    }
+
+    // Skip if the device already exists.
+    if ($entity_storage->load($device_id)) {
+      \Drupal::logger('kamihaya_cms_common')->debug(
+        'Device already exists – not re-importing: @id',
+        ['@id' => $device_id]
+      );
+      continue;
+    }
+
+    // Create and save the entity.
+    try {
+      $device = $entity_storage->create($data);
+      $device->save();
+      \Drupal::logger('kamihaya_cms_common')->notice(
+        'Imported responsive-preview device: @id',
+        ['@id' => $device_id]
+      );
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('kamihaya_cms_common')->error(
+        'Failed importing @id: @msg',
+        ['@id' => $device_id, '@msg' => $e->getMessage()]
+      );
+    }
+  }
+}
+
+/**
  * Update configs.
  */
 function kamihaya_cms_common_update_10001() {
