@@ -172,21 +172,6 @@ function kamihaya_cms_common_update_10006() {
     'iphone_7plus',
   ];
 
-  // Load only the devices that actually exist.
-  $devices_to_delete = $entity_storage->loadMultiple($old_device_ids);
-
-  if (!empty($devices_to_delete)) {
-    $entity_storage->delete($devices_to_delete);
-    \Drupal::logger('kamihaya_cms_common')->notice(
-      'Deleted obsolete responsive-preview devices: @ids',
-      ['@ids' => implode(', ', array_keys($devices_to_delete))]
-    );
-  }
-  else {
-    \Drupal::logger('kamihaya_cms_common')
-      ->debug('No obsolete responsive-preview devices found — deletion skipped.');
-  }
-
   // ---------- 1.1 Delete obsolete device YAML files if the module exists ----------
   // Load the module handler service.
   $moduleHandler = \Drupal::service('module_handler');
@@ -217,6 +202,21 @@ function kamihaya_cms_common_update_10006() {
         }
       }
     }
+  }
+
+  // Load only the devices that actually exist.
+  $devices_to_delete = $entity_storage->loadMultiple($old_device_ids);
+
+  if (!empty($devices_to_delete)) {
+    $entity_storage->delete($devices_to_delete);
+    \Drupal::logger('kamihaya_cms_common')->notice(
+      'Deleted obsolete responsive-preview devices: @ids',
+      ['@ids' => implode(', ', array_keys($devices_to_delete))]
+    );
+  }
+  else {
+    \Drupal::logger('kamihaya_cms_common')
+      ->debug('No obsolete responsive-preview devices found — deletion skipped.');
   }
 
   // ---------- 2. Import new device configs --------------------------------.
