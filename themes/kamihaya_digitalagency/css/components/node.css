@@ -398,10 +398,12 @@
 }
 
 .node .headings-anchor-links a {
-  color: var(--bs-btn-color);
+  color: var(--bs-link-color);
+  font-weight: bold;
   text-decoration: none;
 }
 
 .node .headings-anchor-links a:hover {
   text-decoration: underline;
+  color: var(--bs-link-color);
 }
