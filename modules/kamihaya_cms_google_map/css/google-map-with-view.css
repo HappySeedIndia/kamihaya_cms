@@ -315,3 +315,17 @@ body.map-search-loading {
     transform: translateX(-50%) translateY(0);
   }
 }
+
+/* Place Autocomplete Styles */
+gmp-place-autocomplete {
+  border-radius: var(--bs-border-radius);
+  margin-bottom: 0.5rem;
+}
+
+.view-empty .init-hidden {
+  display: none;
+}
+
+.initialized .view-empty .init-hidden {
+  display: block;
+}

@@ -5,8 +5,10 @@ namespace Drupal\kamihaya_cms_google_map\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Block\BlockManagerInterface;
+use Drupal\Core\Url;
 use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -20,7 +22,8 @@ class GoogleMapWithViewController extends ControllerBase implements ContainerInj
    * @param \Drupal\Core\Block\BlockManagerInterface $blockManager
    *   The block manager.
    */
-  public function __construct(protected BlockManagerInterface $blockManager) {
+  public function __construct(
+    protected BlockManagerInterface $blockManager) {
   }
 
   /**
@@ -47,7 +50,7 @@ class GoogleMapWithViewController extends ControllerBase implements ContainerInj
     $config = $this->config('kamihaya_cms_google_map.google_map_with_view.page.' . $config_name);
 
     if ($config->isNew()) {
-      throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+      throw new NotFoundHttpException();
     }
 
     $settings = $config->get();
@@ -64,17 +67,25 @@ class GoogleMapWithViewController extends ControllerBase implements ContainerInj
     $view_render = $this->getViewRender($settings['view_name'], $settings['view_display'] ?? 'default');
 
     if ($google_map_block && $view_render) {
+      $ajax_path = Url::fromRoute('kamihaya_cms_google_map.ajax_update')->toString();
       $build = [
         '#theme' => 'google_map_with_view',
         '#google_map' => $google_map_block,
         '#view_content' => $view_render,
         '#pc_position' => $settings['pc_position'] ?? 'top',
         '#sp_position' => $settings['sp_position'] ?? 'top',
+        '#show_autocomplete' => $settings['show_autocomplete'] ?? FALSE,
+        '#autocomplete_position' => $settings['autocomplete_position'] ?? 'top',
+        '#autocomplete_label' => $settings['autocomplete_label'] ?? $this->t('Address'),
+        '#autocomplete_placeholder' => $settings['autocomplete_placeholder'] ?? $this->t('Search location...'),
         '#attached' => [
           'library' => ['kamihaya_cms_google_map/google_map_with_view'],
           'drupalSettings' => [
+            'page_name' => $config_name,
             'json_data_path' => $settings['json_data_path'] ?? '',
             'detail_data_path' => $settings['detail_data_path'] ?? '',
+            'ajax_path' => $ajax_path ?? '',
+            'show_autocomplete' => $settings['show_autocomplete'] ?? FALSE,
           ],
         ],
       ];

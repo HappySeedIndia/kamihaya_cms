@@ -1,5 +1,10 @@
 <?php
 
+use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\Core\Database\Query\ConditionInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\views\ViewExecutable;
+
 /**
  * Implements hook_theme().
  */
@@ -11,7 +16,381 @@ function kamihaya_cms_google_map_theme() {
         'view_content' => NULL,
         'pc_position' => 'top',
         'sp_position' => 'top',
+        'show_autocomplete' => FALSE,
+        'autocomplete_position' => 'top',
+        'autocomplete_label' => t('Address'),
+        'autocomplete_placeholder' => t('Search location...'),
       ],
     ],
   ];
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function kamihaya_cms_google_map_query_location_filter_alter(AlterableInterface $query) {
+  // Get the view from query metadata
+  $view = $query->getMetaData('view');
+  if (!$view || !$view instanceof ViewExecutable) {
+    return;
+  }
+
+  // Get Ajax parameters for bounding box coordinates and center point
+  $request = \Drupal::request();
+  $nelat = $request->query->get('nelat') ?? 0; // Northeast latitude
+  $nelng = $request->query->get('nelng') ?? 0; // Northeast longitude
+  $swlat = $request->query->get('swlat') ?? 0; // Southwest latitude
+  $swlng = $request->query->get('swlng') ?? 0; // Southwest longitude
+  $center_lat = $request->query->get('center_lat'); // Center latitude for distance sorting
+  $center_lon = $request->query->get('center_lon'); // Center longitude for distance sorting
+
+  // Validate coordinates
+  if (!is_numeric($nelat) || !is_numeric($nelng) ||
+      !is_numeric($swlat) || !is_numeric($swlng)) {
+    return;
+  }
+
+  // Validate center coordinates (optional for sorting)
+  $has_center = false;
+  if ($center_lat && $center_lon && is_numeric($center_lat) && is_numeric($center_lon)) {
+    $has_center = true;
+  }
+
+  // Get content type from view base table
+  $base_table = $view->storage->get('base_table');
+  $content_type = _kamihaya_cms_google_map_get_content_type_from_view($view, $base_table);
+
+  if (!$content_type) {
+    return;
+  }
+
+  // Find geolocation fields in the content type
+  $geolocation_fields = _kamihaya_cms_google_map_get_geolocation_fields($content_type);
+
+  if (empty($geolocation_fields)) {
+    return;
+  }
+
+  // Add geolocation filtering to the query
+  _kamihaya_cms_google_map_add_geolocation_filter($query, $geolocation_fields, $nelat, $nelng, $swlat, $swlng);
+
+  // Add distance-based sorting if center coordinates are provided
+  if ($has_center) {
+    _kamihaya_cms_google_map_add_distance_sorting($query, $geolocation_fields, $center_lat, $center_lon);
+  }
+}
+
+/**
+ * Get content type from view configuration.
+ */
+function _kamihaya_cms_google_map_get_content_type_from_view($view, $base_table) {
+  // For node-based views
+  if ($base_table === 'node_field_data') {
+    // Try to get from filters first
+    $filters = $view->display_handler->getOption('filters');
+    if (isset($filters['type']) && isset($filters['type']['value'])) {
+      $types = array_keys($filters['type']['value']);
+      return !empty($types) ? $types[0] : null;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Get geolocation fields for a content type.
+ */
+function _kamihaya_cms_google_map_get_geolocation_fields($content_type = null) {
+  $geolocation_fields = [];
+
+  $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions('node', $content_type);
+
+  foreach ($field_definitions as $field_name => $definition) {
+    if (!($definition instanceof FieldConfig) || $definition->getType() !== 'geolocation') {
+      continue;
+    }
+    $field_name = $definition->getName();
+    $bundle = $definition->getTargetBundle();
+
+    $geolocation_fields[] = [
+      'field_name' => $field_name,
+      'bundle' => $bundle,
+      'table_name' => 'node__' . $field_name,
+      'lat_column' => $field_name . '_lat',
+      'lng_column' => $field_name . '_lng',
+    ];
+  }
+  return $geolocation_fields;
+}
+
+/**
+ * Add geolocation filter to the query.
+ */
+function _kamihaya_cms_google_map_add_geolocation_filter($query, $geolocation_fields, $nelat, $nelng, $swlat, $swlng) {
+  // Convert to float for safety
+  $nelat = (float) $nelat;
+  $nelng = (float) $nelng;
+  $swlat = (float) $swlat;
+  $swlng = (float) $swlng;
+
+  // Create OR condition group for multiple geolocation fields
+  $or_group = $query->orConditionGroup();
+
+  foreach ($geolocation_fields as $field_info) {
+    $table_alias = $query->leftJoin(
+      $field_info['table_name'],
+      $field_info['table_name'],
+      "node_field_data.nid = {$field_info['table_name']}.entity_id"
+    );
+
+    // Create bounding box condition for this field
+    $field_condition = $query->andConditionGroup();
+
+    // Latitude bounds
+    $field_condition->condition("{$table_alias}.{$field_info['lat_column']}", $swlat, '>=');
+    $field_condition->condition("{$table_alias}.{$field_info['lat_column']}", $nelat, '<=');
+
+    // Longitude bounds (handle crossing 180° meridian)
+    if ($swlng <= $nelng) {
+      // Normal case: doesn't cross 180° meridian
+      $field_condition->condition("{$table_alias}.{$field_info['lng_column']}", $swlng, '>=');
+      $field_condition->condition("{$table_alias}.{$field_info['lng_column']}", $nelng, '<=');
+    } else {
+      // Crosses 180° meridian: split into two ranges
+      $lng_condition = $query->orConditionGroup();
+      $lng_condition->condition("{$table_alias}.{$field_info['lng_column']}", $swlng, '>=');
+      $lng_condition->condition("{$table_alias}.{$field_info['lng_column']}", $nelng, '<=');
+      $field_condition->condition($lng_condition);
+    }
+
+    // Add field condition to OR group
+    $or_group->condition($field_condition);
+  }
+
+  // Add the OR group to main query
+  if (count($geolocation_fields) > 0) {
+    $query->condition($or_group);
+  }
+}
+
+/**
+ * Add distance-based sorting to the query.
+ * Uses Haversine formula to calculate distance from center point.
+ */
+function _kamihaya_cms_google_map_add_distance_sorting($query, $geolocation_fields, $center_lat, $center_lon) {
+  if (empty($geolocation_fields)) {
+    return;
+  }
+
+  $center_lat = (float) $center_lat;
+  $center_lon = (float) $center_lon;
+
+  // Use the first geolocation field for sorting
+  // If multiple fields exist, you might want to calculate minimum distance
+  $primary_field = reset($geolocation_fields);
+
+  // Get table alias (should already be joined from filtering)
+  $table_name = $primary_field['table_name'];
+  $lat_column = $primary_field['lat_column'];
+  $lng_column = $primary_field['lng_column'];
+
+  // Haversine formula for distance calculation in kilometers
+  // Formula: 2 * R * asin(sqrt(sin²(Δlat/2) + cos(lat1) * cos(lat2) * sin²(Δlon/2)))
+  // Where R = Earth's radius in km (6371)
+
+  $earth_radius = 6371; // Earth radius in kilometers
+
+  // Convert degrees to radians for the formula
+  $distance_formula = "
+    (
+      {$earth_radius} * 2 * ASIN(
+        SQRT(
+          POWER(SIN(RADIANS({$table_name}.{$lat_column} - {$center_lat}) / 2), 2) +
+          COS(RADIANS({$center_lat})) *
+          COS(RADIANS({$table_name}.{$lat_column})) *
+          POWER(SIN(RADIANS({$table_name}.{$lng_column} - {$center_lon}) / 2), 2)
+        )
+      )
+    )
+  ";
+
+  // Add the distance calculation as an expression
+  $query->addExpression($distance_formula, 'distance_from_center');
+
+  // Sort by distance (closest first)
+  $query->orderBy('distance_from_center', 'ASC');
+}
+
+/**
+ * Add distance-based sorting for multiple geolocation fields.
+ * Calculates minimum distance when multiple fields exist.
+ */
+function _kamihaya_cms_google_map_add_distance_sorting_multiple($query, $geolocation_fields, $center_lat, $center_lon) {
+  if (empty($geolocation_fields)) {
+    return;
+  }
+
+  $center_lat = (float) $center_lat;
+  $center_lon = (float) $center_lon;
+  $earth_radius = 6371; // Earth radius in kilometers
+
+  $distance_expressions = [];
+
+  foreach ($geolocation_fields as $field_info) {
+    $table_name = $field_info['table_name'];
+    $lat_column = $field_info['lat_column'];
+    $lng_column = $field_info['lng_column'];
+
+    // Haversine formula for each field
+    $distance_formula = "
+      (
+        {$earth_radius} * 2 * ASIN(
+          SQRT(
+            POWER(SIN(RADIANS({$table_name}.{$lat_column} - {$center_lat}) / 2), 2) +
+            COS(RADIANS({$center_lat})) *
+            COS(RADIANS({$table_name}.{$lat_column})) *
+            POWER(SIN(RADIANS({$table_name}.{$lng_column} - {$center_lon}) / 2), 2)
+          )
+        )
+      )
+    ";
+
+    $distance_expressions[] = $distance_formula;
+  }
+
+  // Use LEAST function to get minimum distance across all fields
+  if (count($distance_expressions) > 1) {
+    $min_distance = 'LEAST(' . implode(', ', $distance_expressions) . ')';
+  } else {
+    $min_distance = $distance_expressions[0];
+  }
+
+  // Add the minimum distance calculation as an expression
+  $query->addExpression($min_distance, 'min_distance_from_center');
+
+  // Sort by minimum distance (closest first)
+  $query->orderBy('min_distance_from_center', 'ASC');
+}
+
+/**
+ * Build Haversine formula for distance calculation.
+ */
+function _kamihaya_cms_google_map_build_distance_formula($user_lat, $user_lng, $db_lat_field, $db_lng_field) {
+  return "
+    (6371 * acos(
+      greatest(-1, least(1,
+        cos(radians({$user_lat})) *
+        cos(radians({$db_lat_field})) *
+        cos(radians({$db_lng_field}) - radians({$user_lng})) +
+        sin(radians({$user_lat})) *
+        sin(radians({$db_lat_field}))
+      ))
+    ))
+  ";
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function kamihaya_cms_google_map_query_longitude_filter_alter(AlterableInterface $query) {
+  // Get the view from query metadata
+  $view = $query->getMetaData('view');
+  if (!$view || !$view instanceof ViewExecutable) {
+    return;
+  }
+
+  // Get exposed filter values.
+  $params = Drupal::request()->query->all() + Drupal::request()->request->all();
+  $nelng = isset($params['nelng']) ? (float) $params['nelng'] : null;
+  $swlng = isset($params['swlng']) ? (float) $params['swlng'] : null;
+
+  if ($nelng === null || $swlng === null || !is_numeric($nelng) || !is_numeric($swlng)
+    || $nelng < -180 || $nelng > 180 || $swlng < -180 || $swlng > 180
+     || $swlng <= $nelng) {
+    return;
+  }
+
+  $filter = $view->filter;
+  $nelng_field = null;
+  $swlng_field = null;
+  foreach ($filter as $key => $value) {
+    if (empty($value->field) || strpos($value->field, '_lng') === false) {
+      continue;
+    }
+    if (empty($value->options['expose']['identifier'])) {
+      continue;
+    }
+    if ($value->options['expose']['identifier'] === 'nelng') {
+      $nelng_field = $value;
+      continue;
+    }
+    if ($value->options['expose']['identifier'] === 'swlng') {
+      $swlng_field = $value;
+      continue;
+    }
+  }
+
+  if (empty($nelng_field) || empty($swlng_field)) {
+    return;
+  }
+
+  $conditions = $query->conditions();
+  // Remove existing longitude conditions
+  foreach ($conditions as $key => &$condition) {
+    if (!is_array($condition) || empty($condition['field']) || is_string($condition['field'])) {
+      continue;
+    }
+    // If it's a nested condition, check its sub-conditions
+    _kamihaya_cms_google_map_remove_longitude_filter($condition['field']);
+  }
+  // Add new longitude conditions.
+  // Crosses 180° meridian: split into two ranges
+  $lng_condition = $query->orConditionGroup();
+  $lng_condition->condition("{$swlng_field->tableAlias}.{$swlng_field->field}", $swlng, '>=');
+  $lng_condition->condition("{$nelng_field->tableAlias}.{$nelng_field->field}", $nelng, '<=');
+  $query->condition($lng_condition);
+
+}
+
+/**
+ * Recursively remove longitude filter conditions from a condition.
+ *
+ * @param ConditionInterface $condition
+ *   The condition to modify.
+ */
+function _kamihaya_cms_google_map_remove_longitude_filter(ConditionInterface &$condition) {
+  // Remove longitude filter conditions
+  foreach ($condition->conditions() as $idx => &$sub_condition) {
+    if (!is_array($sub_condition) || empty($sub_condition['field'])) {
+      continue;
+    }
+    if (is_object($sub_condition['field']) && $sub_condition['field'] instanceof ConditionInterface) {
+      // If it's a nested condition, check its sub-conditions
+      _kamihaya_cms_google_map_remove_longitude_filter($sub_condition['field']);
+      continue;
+    }
+    if (is_string($sub_condition['field']) && strpos($sub_condition['field'], '_lng') !== false) {
+      unset($condition->conditions()[$idx]);
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * Add distance information to view results.
+ */
+function kamihaya_cms_google_map_views_pre_render(ViewExecutable $view) {
+  // Check if this view has location filter applied
+  if (isset($view->query->locationFilterCoords)) {
+    $coords = $view->query->locationFilterCoords;
+
+    foreach ($view->result as $row) {
+      if (isset($row->calculated_distance)) {
+        // Round distance to 2 decimal places
+        $row->distance_km = round($row->calculated_distance, 2);
+        $row->distance_formatted = $row->distance_km . ' km';
+      }
+    }
+  }
 }

@@ -11,14 +11,34 @@
  */
 #}
 <div class="google-map-with-view-container" data-pc-position="{{ pc_position }}" data-sp-position="{{ sp_position }}">
-
-	<div class="responsive-layout pc-{{ pc_position }} sp-{{ sp_position }}">
+	<div class="responsive-layout pc-{{ pc_position }} sp-{{ sp_position }}{% if show_autocomplete %}} has-autocomplete autocomplete-{{ autocomplete_position }}{% endif %}">
 		<div class="google-map-wrapper">
+		{% if show_autocomplete and autocomplete_position == 'map' %}
+			<div class="autocomplete-wrapper form-container form-item">
+				<label for="autocomplete">{{ autocomplete_label }}</label>
+				<gmp-place-autocomplete
+						id="autocomplete"
+						type="establishment,geocode">
+						<mp-place-autocomplete placeholder="{{ autocomplete_placeholder }}"></mp-place-autocomplete>
+				</gmp-place-autocomplete>
+			</div>
+		{% endif %}
 			{{ google_map }}
 		</div>
 		<div class="view-content-wrapper">
-			{{ view_content }}
+			{% if show_autocomplete and autocomplete_position == 'top' %}
+				<div class="autocomplete-wrapper form-container">
+				<label for="autocomplete">{{ autocomplete_label }}</label>
+					<gmp-place-autocomplete
+						id="autocomplete"
+						type="establishment,geocode">
+						<mp-place-autocomplete placeholder="{{ autocomplete_placeholder }}"></mp-place-autocomplete>
+				</gmp-place-autocomplete>
+				</div>
+			{% endif %}
+		  <div id="location-view" class="view-content">
+				{{ view_content }}
+			</div>
 		</div>
 	</div>
-
 </div>
