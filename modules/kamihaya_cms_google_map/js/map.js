@@ -9,6 +9,7 @@
   let searchButton;
   let searchButtonTimeout;
   let mapOptions = {};
+  let autocomplete;
 
   // Define the global callback function before loading the API
   window.loadMap = function () {
@@ -40,6 +41,10 @@
       zoomControl: true,
       mapId: 'Kamihaya_google_map',
     });
+
+    if (drupalSettings.show_autocomplete) {
+      initAutocomplete();
+    }
 
     const jsonDataPath = drupalSettings.json_data_path;
     if (!jsonDataPath) {
@@ -129,6 +134,8 @@
       .then((data) => {
         // Display markers on the map.
         updateMarkers(data);
+        // Update the location view based on the current map bounds.
+        updateLocationView();
         // Hide loading indicator.
         hideLoading();
       }
@@ -197,6 +204,57 @@
       });
       markers.push(marker);
     });
+  }
+
+  // Initialize the Google Places Autocomplete feature.
+  async function initAutocomplete () {
+    const { places } = await google.maps.importLibrary("places");
+    // Get PlaceAutocompleteElement.
+    autocomplete = document.getElementById('autocomplete');
+
+    if (!autocomplete) {
+      console.warn('Autocomplete element not found');
+      return;
+    }
+
+    // Add event listener for place selection.
+    autocomplete.addEventListener('gmp-select', onPlaceChanged);
+  }
+
+  // Handle place selection from the autocomplete input.
+  async function onPlaceChanged(event) {
+    const { Place } = await google.maps.importLibrary("places");
+    const placePrediction = event.placePrediction;
+
+    if (!placePrediction) {
+      console.warn('No place selected');
+      return;
+    }
+    const placeId = placePrediction.placeId;
+    if (!placeId) {
+      console.warn('No place ID found for the selected place');
+      return;
+    }
+
+    // Clear existing markers.
+    clearMarkers();
+
+    const place = new Place({
+      id: placeId
+    });
+
+    await place.fetchFields({ fields: ['location'] });
+
+    if (place.location) {
+      const location = place.location;
+      map.setCenter(location);
+    } else {
+      console.error('No geometry data found');
+      return;
+    }
+
+    // Create a marker for the selected place.
+    displayLocationMarkers();
   }
 
   // Create the search button for searching within the current map area.
@@ -269,6 +327,18 @@
 
     // Disable page scroll while loading.
     document.body.classList.add('map-search-loading');
+
+    const viewContent = document.getElementById('location-view');
+    if (viewContent) {
+      const viewResult = viewContent.querySelector('.view-content');
+      // Hide the view content while loading.
+      if (viewResult) {
+        // Clear existing content in the view.
+        viewResult.innerHTML = '';
+        // Show loading indicator in the view content.
+        viewResult.innerHTML = '<div class="loading-indicator"><i class="fas fa-spinner fa-spin"></i> ' + Drupal.t('Loading...') + '</div>';
+      }
+    }
   }
 
   // Hide loading indicator and enable map interaction.
@@ -323,6 +393,78 @@
     });
   }
 
+  // Update the location view based on the current map bounds.
+  function updateLocationView() {
+    if (!map || !mapElement) {
+      console.warn('Map or map element is not initialized');
+      return;
+    }
+
+    // Get the current map bounds.
+    if (!map.getBounds()) {
+      console.warn('Map bounds are not available');
+      return;
+    }
+
+    const viewElement = document.getElementById('location-view');
+    if (!viewElement) {
+      console.warn('View content element not found');
+      return;
+    }
+
+    const bounds = map.getBounds();
+    const ne = bounds.getNorthEast();
+    const sw = bounds.getSouthWest();
+    let ajaxPath = drupalSettings.ajax_path;
+    if (!ajaxPath) {
+      console.warn('AJAX path is not set in drupalSettings');
+      return;
+    }
+    // Add the path prefix if it exists.
+    const baseUrl = drupalSettings.path.baseUrl || '';
+    const pathPrefix = drupalSettings.path.pathPrefix || '';
+    ajaxPath = `${baseUrl}${pathPrefix}${ajaxPath}`;
+
+    const params = new URLSearchParams();
+
+    // Get the current map bounds and set to the params.
+    params.append('route_key', drupalSettings.page_name);
+    params.append('nelat', ne.lat());
+    params.append('nelng', ne.lng());
+    params.append('swlat', sw.lat());
+    params.append('swlng', sw.lng());
+    params.append('center_lat', map.getCenter().lat());
+    params.append('center_lng', map.getCenter().lng());
+
+    fetch(`${ajaxPath}?${params.toString()}`, {
+      method: 'GET',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+      .then(res => res.json())
+      .then(json => {
+        json.forEach(command => {
+          if (command.command === 'insert' && command.method === 'replaceWith') {
+            const target = document.querySelector(command.selector);
+            if (target) {
+              const viewDiv = document.createElement('div');
+              viewDiv.id = 'location-view';
+              viewDiv.innerHTML = command.data;
+              target.replaceWith(viewDiv);
+            }
+
+            const viewContentWrapper = document.getElementsByClassName('view-content-wrapper')[0];
+            if (viewContentWrapper && !viewContentWrapper.classList.contains('inilialized')) {
+              // Add class to the view element to indicate it has been initialized.
+              viewContentWrapper.classList.add('initialized');
+            }
+          }
+        });
+      });
+
+  }
+
   Drupal.behaviors.googleMap = {
     attach: function (context, settings) {
       // Prevent re-initializing the map
@@ -342,7 +484,8 @@
       // Avoid loading the script multiple times
       if (!document.querySelector('script[data-google-maps-api]')) {
         const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${drupalSettings.api_key}&callback=loadMap&loading=async`;
+        const libraries = drupalSettings.show_autocomplete ? '&libraries=places&v=beta' : '';
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${drupalSettings.api_key}&callback=loadMap&loading=async${libraries}`;
         script.async = true;
         script.defer = true;
         script.setAttribute('data-google-maps-api', 'true'); // Prevent duplication

@@ -14,5 +14,15 @@ kamihaya_cms_google_map.map_with_view_settings:
   requirements:
     _permission: 'administer site configuration'
 
+kamihaya_cms_google_map.ajax_update:
+  path: '/location-filter/ajax-update'
+  defaults:
+    _controller: '\Drupal\kamihaya_cms_google_map\Controller\LocationFilterController::updateLocationView'
+  requirements:
+    _permission: 'access content'
+  methods: [GET, POST]
+  options:
+    _admin_route: FALSE
+
 route_callbacks:
   - '\Drupal\kamihaya_cms_google_map\Routing\RouteProvider::routes'

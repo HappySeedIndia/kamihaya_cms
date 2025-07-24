@@ -163,7 +163,56 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
       '#default_value' => 'top',
     ];
 
-    $form['add_page'] = [
+    $form['pages']['new_page']['autocomplete_settings'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Autocomplete Settings'),
+      '#open' => TRUE,
+    ];
+
+    $form['pages']['new_page']['autocomplete_settings']['show_autocomplete'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show location autocomplete'),
+      '#default_value' => FALSE,
+    ];
+
+    $form['pages']['new_page']['autocomplete_settings']['autocomplete_position'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Autocomplete position'),
+      '#options' => [
+        'top' => $this->t('Above view'),
+        'map' => $this->t('On map'),
+      ],
+      '#default_value' => 'top',
+      '#states' => [
+        'visible' => [
+          ":input[name='pages[new_page][autocomplete_settings][show_autocomplete]']" => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
+    $form['pages']['new_page']['autocomplete_settings']['autocomplete_label'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Autocomplete label text'),
+      '#default_value' => $this->t('Address'),
+      '#states' => [
+        'visible' => [
+          ":input[name='pages[new_page][autocomplete_settings][show_autocomplete]']" => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
+    $form['pages']['new_page']['autocomplete_settings']['autocomplete_placeholder'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Autocomplete placeholder text'),
+      '#default_value' => $this->t('Search location...'),
+      '#states' => [
+        'visible' => [
+          ":input[name='pages[new_page][autocomplete_settings][show_autocomplete]']" => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
+    $form['pages']['new_page']['add_page'] = [
       '#type' => 'submit',
       '#value' => $this->t('Add Page'),
       '#submit' => ['::addPage'],
@@ -314,6 +363,55 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
       '#default_value' => $page['sp_position'] ?? 'top',
     ];
 
+    $form['autocomplete_settings'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Autocomplete Settings'),
+      '#open' => TRUE,
+    ];
+
+    $form['autocomplete_settings']['show_autocomplete'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show location autocomplete'),
+      '#default_value' => $page['show_autocomplete'] ?? FALSE,
+    ];
+
+    $form['autocomplete_settings']['autocomplete_position'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Autocomplete position'),
+      '#options' => [
+        'top' => $this->t('Above view'),
+        'map' => $this->t('On map'),
+      ],
+      '#default_value' => $page['autocomplete_position'] ?? 'top',
+      '#states' => [
+        'visible' => [
+          ":input[name='pages[existing_pages_info][{$key}][autocomplete_settings][show_autocomplete]']" => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
+    $form['autocomplete_settings']['autocomplete_label'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Autocomplete label text'),
+      '#default_value' => $page['autocomplete_label'] ?? $this->t('Address'),
+      '#states' => [
+        'visible' => [
+          ":input[name='pages[existing_pages_info][{$key}][autocomplete_settings][show_autocomplete]']" => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
+    $form['autocomplete_settings']['autocomplete_placeholder'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Autocomplete placeholder text'),
+      '#default_value' => $page['autocomplete_placeholder'] ?? $this->t('Search location...'),
+      '#states' => [
+        'visible' => [
+          ":input[name='pages[existing_pages_info][{$key}][autocomplete_settings][show_autocomplete]']" => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
     if ($key !== 'new') {
       $form['remove'] = [
         '#type' => 'submit',
@@ -432,6 +530,13 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
           $parts = explode('-', $page_data['view_block'], 2);
           $page_data['view_name'] = $parts[0];
           $page_data['view_display'] = isset($parts[1]) ? $parts[1] : 'default';
+        }
+
+        if (!empty($page_data['autocomplete_settings'])) {
+          $page_data['show_autocomplete'] = $page_data['autocomplete_settings']['show_autocomplete'] ?? FALSE;
+          $page_data['autocomplete_position'] = $page_data['autocomplete_settings']['autocomplete_position'] ?? 'top';
+          $page_data['autocomplete_label'] = $page_data['autocomplete_settings']['autocomplete_label'] ?? $this->t('Address');
+          $page_data['autocomplete_placeholder'] = $page_data['autocomplete_settings']['autocomplete_placeholder'] ?? $this->t('Search location...');
         }
 
         // Save the page configuration.
