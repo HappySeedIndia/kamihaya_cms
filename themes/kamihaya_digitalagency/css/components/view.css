@@ -1412,16 +1412,3 @@
     margin-top: 0;
   }
 }
-
-/* View store list */
-@media (min-width: 768px) {
-  #location-view .view-content {
-    height: 450px;
-    overflow-y: scroll;
-  }
-}
-@media (max-width: 767px) {
-  #location-view .view-filters {
-    padding-top: 15px;
-  }
-}
