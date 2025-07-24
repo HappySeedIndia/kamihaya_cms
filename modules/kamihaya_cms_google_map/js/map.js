@@ -15,7 +15,6 @@
   // Define the global callback function before loading the API
   window.loadMap = function () {
     mapElement = document.getElementById('map');
-    locationElement = document.getElementById('location-view');
 
     if (!mapElement) {
       console.warn('Map element not found');
@@ -94,8 +93,9 @@
 
   // Adjust the locationview height based on the viewport
   function adjustLocationHeight() {
+    locationElement = document.getElementById('location-view');
     const offsetTop = locationElement.getBoundingClientRect().top + window.scrollY;
-    const availableHeight = window.innerHeight - offsetTop;
+    const availableHeight = window.innerHeight - offsetTop; 
     locationElement.style.height = `${availableHeight}px`;
     locationElement.dataset.heightAdjusted = 'true';
   }
@@ -464,6 +464,7 @@
               viewDiv.id = 'location-view';
               viewDiv.innerHTML = command.data;
               target.replaceWith(viewDiv);
+              adjustLocationHeight();
             }
           }
           const viewContentWrapper = document.getElementsByClassName('view-content-wrapper')[0];
