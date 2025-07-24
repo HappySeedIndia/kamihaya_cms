@@ -142,6 +142,8 @@
     )
     .catch((error) => {
       console.error('Error fetching location data:', error);
+      // Update the location view based on the current map bounds.
+      updateLocationView();
       hideLoading();
     });
   }
@@ -216,7 +218,6 @@
       console.warn('Autocomplete element not found');
       return;
     }
-
     // Add event listener for place selection.
     autocomplete.addEventListener('gmp-select', onPlaceChanged);
   }
@@ -453,16 +454,24 @@
               viewDiv.innerHTML = command.data;
               target.replaceWith(viewDiv);
             }
-
-            const viewContentWrapper = document.getElementsByClassName('view-content-wrapper')[0];
-            if (viewContentWrapper && !viewContentWrapper.classList.contains('inilialized')) {
-              // Add class to the view element to indicate it has been initialized.
-              viewContentWrapper.classList.add('initialized');
-            }
           }
-        });
+          const viewContentWrapper = document.getElementsByClassName('view-content-wrapper')[0];
+          if (viewContentWrapper && !viewContentWrapper.classList.contains('inilialized')) {
+            // Add class to the view element to indicate it has been initialized.
+            viewContentWrapper.classList.add('initialized');
+          }
+        }
+        );
+      }
+      )
+      .catch((error) => {
+        console.error('Error updating location view:', error);
+        const viewContentWrapper = document.getElementsByClassName('view-content-wrapper')[0];
+        if (viewContentWrapper && !viewContentWrapper.classList.contains('inilialized')) {
+          // Add class to the view element to indicate it has been initialized.
+          viewContentWrapper.classList.add('initialized');
+        }
       });
-
   }
 
   Drupal.behaviors.googleMap = {
