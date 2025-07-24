@@ -11,6 +11,7 @@
   let mapOptions = {};
   let autocomplete;
   let locationElement;
+  let locationContent;
 
   // Define the global callback function before loading the API
   window.loadMap = function () {
@@ -94,10 +95,11 @@
   // Adjust the locationview height based on the viewport
   function adjustLocationHeight() {
     locationElement = document.getElementById('location-view');
-    const offsetTop = locationElement.getBoundingClientRect().top + window.scrollY;
+    locationContent = locationElement.getElementsByClassName('view-content');
+    const offsetTop = locationContent.getBoundingClientRect().top + window.scrollY;
     const availableHeight = window.innerHeight - offsetTop; 
-    locationElement.style.height = `${availableHeight}px`;
-    locationElement.dataset.heightAdjusted = 'true';
+    locationContent.style.height = `${availableHeight}px`;
+    locationContent.dataset.heightAdjusted = 'true';
   }
 
   // Display markers on the map based on the current bounds.
