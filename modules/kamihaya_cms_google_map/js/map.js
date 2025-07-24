@@ -10,10 +10,13 @@
   let searchButtonTimeout;
   let mapOptions = {};
   let autocomplete;
+  let locationElement;
 
   // Define the global callback function before loading the API
   window.loadMap = function () {
     mapElement = document.getElementById('map');
+    locationElement = document.getElementById('location-view');
+
     if (!mapElement) {
       console.warn('Map element not found');
       return;
@@ -87,6 +90,14 @@
     const availableHeight = window.innerHeight - offsetTop;
     mapElement.style.height = `${availableHeight}px`;
     mapElement.dataset.heightAdjusted = 'true';
+  }
+
+  // Adjust the locationview height based on the viewport
+  function adjustLocationHeight() {
+    const offsetTop = locationElement.getBoundingClientRect().top + window.scrollY;
+    const availableHeight = window.innerHeight - offsetTop;
+    locationElement.style.height = `${availableHeight}px`;
+    locationElement.dataset.heightAdjusted = 'true';
   }
 
   // Display markers on the map based on the current bounds.
