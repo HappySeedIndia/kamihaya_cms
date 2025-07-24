@@ -88,7 +88,7 @@
 /* Search Button */
 .map-search-button {
   position: relative;
-  bottom: 230px;
+  top: 80%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
@@ -225,7 +225,7 @@ body.map-search-loading {
   .map-search-button {
     font-size: 12px;
     padding: 10px 20px;
-    bottom: 250px;
+/*     bottom: 250px; */
     border-radius: 20px;
   }
 
