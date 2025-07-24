@@ -537,6 +537,7 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
           $page_data['autocomplete_position'] = $page_data['autocomplete_settings']['autocomplete_position'] ?? 'top';
           $page_data['autocomplete_label'] = $page_data['autocomplete_settings']['autocomplete_label'] ?? $this->t('Address');
           $page_data['autocomplete_placeholder'] = $page_data['autocomplete_settings']['autocomplete_placeholder'] ?? $this->t('Search location...');
+          unset($page_data['autocomplete_settings']);
         }
 
         // Save the page configuration.

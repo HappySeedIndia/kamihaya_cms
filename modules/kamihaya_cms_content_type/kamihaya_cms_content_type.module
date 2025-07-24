@@ -1,12 +1,10 @@
 <?php
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\node\Entity\NodeType;
 use Drupal\node\NodeInterface;
-use Drupal\views\Entity\View;
 use Drupal\views_flipped_table\Plugin\views\style\FlippedTable;
 
 /**
@@ -23,6 +21,13 @@ function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
   if (empty($node)) {
     return;
   }
+  if (is_numeric($node)) {
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
+  }
+  if (!$node instanceof NodeInterface) {
+    return;
+  }
+
   /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
   $display_repository = \Drupal::service('entity_display.repository');
 
