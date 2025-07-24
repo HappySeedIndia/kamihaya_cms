@@ -1415,13 +1415,13 @@
 
 /* View store list */
 @media (min-width: 768px) {
-  .view-store-list .view-content {
+  #location-view .view-content {
     height: 450px;
     overflow-y: scroll;
   }
 }
 @media (max-width: 767px) {
-  .view-store-list .view-filters {
+  #location-view .view-filters {
     padding-top: 15px;
   }
 }
