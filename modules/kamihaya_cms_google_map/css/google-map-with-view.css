@@ -328,3 +328,8 @@ gmp-place-autocomplete {
 .initialized .view-empty .init-hidden {
   display: block;
 }
+
+#location-view .view-content {
+  position: relative;
+  overflow-y: scroll;
+}
