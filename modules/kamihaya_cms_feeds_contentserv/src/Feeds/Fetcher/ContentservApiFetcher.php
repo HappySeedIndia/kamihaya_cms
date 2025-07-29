@@ -71,33 +71,23 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
   public function fetch(FeedInterface $feed, StateInterface $state) {
     $url = $this->configuration['json_api_url'];
     $data_type = $this->configuration['data_type'];
-    $list_url = "/core/v1/" . strtolower($data_type) . '/changes/';
+    $list_url = '/core/v1/' . strtolower($data_type) . '/changes/';
     $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
     $results = [];
 
     try {
       // Get the access token.
       $token = $this->getAccessToken($feed, $url);
+      // Get the filters for the request.
+      $filters = $this->createRequestFilters();
 
-      // Get the last imported time to fetch only the changed data.
-      $last_imported_time = 0;
-      if (!empty($feed_config['last_import_start_time'])) {
-        $last_imported_time = $feed_config['last_import_start_time'];
-      }
-      if (empty($last_imported_time) && !empty($feed->getImportedTime())) {
-        $last_imported_time = $feed->getImportedTime();
-      }
       $options = [
         RequestOptions::QUERY => [
-          'filter' => 'IsFolder=0',
-          'begin' => date('Y-m-d H:i:s', $last_imported_time),
+          'filter' => 'IsFolder=0' . (!empty($filters) ? '&' . $filters : ''),
+          'begin' => date('Y-m-d H:i:s', 0), // Last changed tiem to fetch set to 0 to get all data.
           'limit' => $this->configuration['limit'],
         ],
       ];
-
-      // Set the import start time in the feed configuration.
-      $feed_config['last_import_start_time'] = time();
-      $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
 
       // Get the list of results.
       $response = $this->getData($feed, $url, "$list_url{$this->configuration['folder_id']}", $token, $options);
@@ -110,7 +100,9 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
       $results = $result["{$data_type}s"] ? $result["{$data_type}s"] : [];
 
       array_walk($results, function (&$item) {
-        $item = array_intersect_key($item, ['ID' => '']);
+        // Keep only the ID and Changed fields for each item.
+        // This is to reduce the data size and focus on the necessary fields.
+        $item = array_intersect_key($item, ['ID' => '', 'Changed' => '']);
       });
 
       // Get the rest of the data if the total count is more than the limit.
@@ -149,6 +141,55 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
   }
 
   /**
+   * Creates the request filters based on the feed configuration.
+   *
+   * @return string
+   *   The filters string to be used in the API request.
+   */
+  protected function createRequestFilters() {
+    $filters = [];
+    // Add the state filters if enabled.
+    if (!empty($this->configuration['check_state']) && !empty($this->configuration['state_ids'])) {
+      $state_filters = [];
+      foreach ($this->configuration['state_ids'] as $state_id) {
+        $state_filters[] = "StateID=$state_id";
+      }
+      $filters[] = '(' . implode('|', $state_filters) . ')';
+    }
+    // Add tha class filters if enabled.
+    if (!empty($this->configuration['check_class']) && !empty($this->configuration['class_ids'])) {
+      // Check if negate condition is enabled.
+      // If so, use '<>' operator, otherwise use '='.
+      // Also, use 'AND' for multiple class IDs, otherwise use 'OR'.
+      $operator = $this->configuration['check_class_negate_condition'] ? '<>' : '=';
+      $and_or = $this->configuration['check_class_negate_condition'] ? '&' : '|';
+      $class_filters = [];
+      foreach ($this->configuration['class_ids'] as $class_id) {
+        $class_filters[] = "ClassMapping{$operator}{$class_id}";
+      }
+      $filters[] = '(' . implode($and_or, $class_filters) . ')';
+    }
+    // Add the tag filters if enabled.
+    if (!empty($this->configuration['check_tags'])) {
+      if (!empty($this->configuration['tag_ids'])) {
+        $tag_filters = [];
+        foreach ($this->configuration['tag_ids'] as $tag_id) {
+          $tag_filters[] = "Tags=$tag_id";
+        }
+        $filters[] = '(' . implode('|', $tag_filters) . ')';
+      }
+      else {
+        $filters[] = "Tags=''";
+      }
+    }
+    // Add any extra filters if provided.
+    if (!empty($this->configuration['extra_filters'])) {
+      $filters[] = $this->configuration['extra_filters'];
+    }
+    return implode('&', $filters);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function defaultFeedConfiguration() {
@@ -167,11 +208,20 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
       'api_key' => '',
       'secret' => '',
       'folder_id' => '',
+      'check_state' => TRUE,
+      'state_ids' => [],
+      'check_class' => FALSE,
+      'class_ids' => [],
+      'check_class_negate_condition' => FALSE,
+      'check_tags' => FALSE,
+      'tag_ids' => [],
+      'extra_filters' => [],
       'data_type' => 'Product',
       'limit' => '1000',
       'request_timeout' => 30,
       'retry_count' => 5,
       'retry_delay' => 10,
+      'unpublish_content' => FALSE,
       'scheduled_execution' => FALSE,
       'scheduled_minute' => 0,
     ];
