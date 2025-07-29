@@ -112,6 +112,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     $processor_config = $feed->getType()->getProcessor()->getConfiguration();
     // Get the feed fetcher configuration.
     $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
+
     // Get the additional language code.
     $langcode = !empty($processor_config['addtional_langcode']) ? $processor_config['addtional_langcode'] : '';
     $data_id = '';
@@ -151,7 +152,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     foreach ($results as $result_data) {
       try {
         // Skip the data if its last changed time is less than the last imported time.
-        if (!empty($result_data['Changed']) && strtotime($result_data['Changed']) < $last_imported_time) {
+        if (!$fetcher_config['filter_by_date'] && !empty($result_data['Changed']) && strtotime($result_data['Changed']) < $last_imported_time) {
           $state->report(StateType::SKIP, strtr('Skipped the data because it is not changed since last import. [@type ID: @id]', [
             '@type' => $data_type,
             '@id' => $result_data['ID'],
@@ -713,6 +714,10 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    *   The feed object.
    */
   protected function updateLastImportedTime(FeedInterface $feed) {
+    $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
+    if ($fetcher_config['filter_by_date']) {
+      return;
+    }
     // Update the last imported time in the feed configuration.
     $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
     $feed_config['last_import_start_time'] = time();
