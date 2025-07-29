@@ -95,7 +95,7 @@
   // Adjust the locationview height based on the viewport
   function adjustLocationHeight() {
     locationElement = document.getElementById('location-view');
-    locationContent = locationElement.getElementsByClassName('view-content');
+    locationContent = locationElement.querySelector('.view-content');
     const offsetTop = locationContent.getBoundingClientRect().top + window.scrollY;
     const availableHeight = window.innerHeight - offsetTop; 
     locationContent.style.height = `${availableHeight}px`;
