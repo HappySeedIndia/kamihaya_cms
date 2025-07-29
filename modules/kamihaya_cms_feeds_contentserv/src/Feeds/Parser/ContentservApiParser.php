@@ -2,7 +2,10 @@
 
 namespace Drupal\kamihaya_cms_feeds_contentserv\Feeds\Parser;
 
+use Drupal\content_moderation\ModerationInformation;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\File\FileSystemInterface;
 use GuzzleHttp\Psr7\Stream;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -55,6 +58,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    *   The entity type manager.
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger.
+   * @param \Drupal\content_moderation\ModerationInformation $moderationInformation
+   *   The content moderation information service.
    */
   public function __construct
     (array $configuration,
@@ -63,7 +68,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     protected ContentservClient $contentservClient,
     protected FileSystemInterface $fileSystem,
     protected EntityTypeManagerInterface $entityTypeManager,
-    protected LoggerInterface $logger) {
+    protected LoggerInterface $logger,
+    protected ModerationInformation $moderationInformation) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -79,6 +85,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
       $container->get('file_system'),
       $container->get('entity_type.manager'),
       $container->get('logger.factory')->get('kamihaya_cms_feeds_contentserv'),
+      $container->get('content_moderation.moderation_information')
     );
   }
 
@@ -103,12 +110,16 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
     // Get the processor configuration.
     $processor_config = $feed->getType()->getProcessor()->getConfiguration();
+    // Get the feed fetcher configuration.
+    $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
     // Get the additional language code.
     $langcode = !empty($processor_config['addtional_langcode']) ? $processor_config['addtional_langcode'] : '';
     $data_id = '';
 
     /** @var \Drupal\kamihaya_cms_feeds_contentserv\Result\ContentservApiFetcherResultInterface $fetcher_result */
     if (empty($fetcher_result->getResults())) {
+      // If there are no results, set the last imported time and throw an exception.
+      $this->updateLastImportedTime($feed);
       throw new EmptyFeedException(strtr('@name: There is no fetched data.', ['@name' => $feed->label()]));
     }
     $result = new ParserResult();
@@ -121,9 +132,36 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     if (empty($state->pointer)) {
       $state->pointer = 0;
     }
+
+    // Unpublish entities that are not in the fetched results.
+    $this->unPublishEntities($fetcher_result->getResults(), $feed);
+
+    // Get the last imported time to fetch only the changed data.
+    $last_imported_time = 0;
+    if (!empty($feed_config['last_import_start_time'])) {
+      $last_imported_time = $feed_config['last_import_start_time'];
+    }
+    if (empty($last_imported_time) && !empty($feed->getImportedTime())) {
+      $last_imported_time = $feed->getImportedTime();
+    }
+
     $results = array_slice($fetcher_result->getResults(), $state->pointer, $this->configuration['data_limit']);
+    $skipped_count = 0;
+
     foreach ($results as $result_data) {
       try {
+        // Skip the data if its last changed time is less than the last imported time.
+        if (!empty($result_data['Changed']) && strtotime($result_data['Changed']) < $last_imported_time) {
+          $state->report(StateType::SKIP, strtr('Skipped the data because it is not changed since last import. [@type ID: @id]', [
+            '@type' => $data_type,
+            '@id' => $result_data['ID'],
+          ]), [
+            'feed' => $feed,
+          ]);
+          $skipped_count++;
+          $state->pointer++;
+          continue;
+        }
         // Get the detail of product.
         $data_id = $result_data['ID'];
         $options = [];
@@ -135,6 +173,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         $data = json_decode($response, TRUE);
 
         if (empty($data[$data_type])) {
+          $skipped_count++;
+          $state->pointer++;
           continue;
         }
 
@@ -299,11 +339,18 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
 
     // Report progress.
     $state->total = count($fetcher_result->getResults());
+
     $state->progress($state->total, $state->pointer);
+    if ($state->pointer >= $state->total) {
+      // Update the last imported time.
+      $this->updateLastImportedTime($feed);
+    }
 
     // Set progress to complete if no more results are parsed.
-    if (!$result->count()) {
+    if (!$result->count() && !$skipped_count) {
       $state->setCompleted();
+      // If no results are parsed, update the last imported time.
+      $this->updateLastImportedTime($feed);
     }
 
     return $result;
@@ -536,6 +583,142 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     }
     $file->save();
     return $file->id();
+  }
+
+  /**
+   * Unpublish entities that are not in the fetched results.
+   *
+   * @param array $results
+   *   The fetched results.
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed object.
+   */
+  protected function unPublishEntities(array $results, FeedInterface $feed) {
+    $fetcher_config = $feed->getType()->getFetcher()->getConfiguration();
+    // If unpublish content is not enabled, return early.
+    if (empty($fetcher_config['unpublish_content'])) {
+      return;
+    }
+    // Re-create the results array to contain only the IDs.
+    $result_ids = array_map(function ($item) {
+      return $item['ID'];
+    }, $results);
+
+    // Get the unique key from the feed type mappings.
+    $unique_key = NULL;
+    foreach ($this->feedType->getMappings() as $mapping) {
+      if (!empty($mapping['unique'])) {
+        $unique_key = $mapping['target'];
+        break;
+      }
+    }
+    if (empty($unique_key)) {
+      return;
+    }
+    // Get the processor.
+    $processor = $feed->getType()->getProcessor();
+    // Get the entity type from the feed type.
+    $entity_type_id = $processor->entityType();
+    // The entity type.
+    $etntity_type = $this->entityTypeManager->getDefinition($entity_type_id);
+    // Get the bundle key for the entity type.
+    $bundle_key = $etntity_type->getKey('bundle');
+    // Get published key for the entity type.
+    $published_key = $etntity_type->getKey('published');
+    // Get the entity IDs having the unique key set.
+    $entity_ids = $this->entityTypeManager->getStorage($entity_type_id)->getQuery()
+      ->condition($bundle_key, $processor->bundle())
+      ->condition($unique_key, NULL, 'IS NOT NULL')
+      ->condition($published_key, 1)
+      ->accessCheck(FALSE)
+      ->execute();
+    if (empty($entity_ids)) {
+      return;
+    }
+
+    // Load the entities and check if they are in the results.
+    $entities = $this->entityTypeManager->getStorage($entity_type_id)->loadMultiple($entity_ids);
+    foreach ($entities as $entity) {
+      if (!($entity->get($unique_key)->value) || in_array($entity->get($unique_key)->value, $result_ids)) {
+        // If the entity is in the results, skip it.
+        continue;
+      }
+      $this->unPublishEntity($entity);
+      // If the entity is not translatable, skip it.
+      if ($entity instanceof TranslatableInterface) {
+        $translations = $entity->getTranslationLanguages();
+        // Unpublish translations if they exist.
+        if (empty($translations)) {
+          continue;
+        }
+        foreach ($translations as $langcode => $translation) {
+          // Load the translation entity.
+          $translation_entity = $entity->getTranslation($langcode);
+          // Unpublish the translation entity.
+          $this->unPublishEntity($translation_entity);
+        }
+      }
+      $this->logger->info('Unpublished entity @id of type @type for feed @feed', [
+        '@id' => $entity->id(),
+        '@type' => $entity_type_id,
+        '@feed' => $feed->label(),
+      ]);
+    }
+  }
+
+  /**
+   * Get the unpublished moderation status for the entity.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity to check.
+   *
+   * @return string|null
+   *   The unpublished moderation state ID or NULL if not found.
+   */
+  protected function getUnpublishedModerationState(ContentEntityInterface $entity) {
+    $workflow = $this->moderationInformation->getWorkflowForEntity($entity);
+    if (!$workflow) {
+      return NULL;
+    }
+    // Get the moderation states for the workflow.
+    $states = $workflow->getTypePlugin()->getStates();
+    foreach ($states as $state_id => $state) {
+      if (!$state->isPublishedState() && $state->isDefaultRevisionState()) {
+        // Return the moderation state if it is unpublished and is the default revision.
+        return $state_id;
+      }
+    }
+    // If no unpublished state is found, return NULL.
+    return NULL;
+  }
+
+  /**
+   * Unpublish the entity.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity to unpublish.
+   */
+  protected function unPublishEntity(ContentEntityInterface $entity) {
+    // If the entity's unique key is not in the results, unpublish it.
+    if ($state = $this->getUnpublishedModerationState($entity)) {
+      $entity->set('moderation_state', $state);
+    }
+    $entity->setUnpublished();
+    $entity->save();
+  }
+  /**
+   * Update the last imported time in the feed configuration.
+   *
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed object.
+   */
+  protected function updateLastImportedTime(FeedInterface $feed) {
+    // Update the last imported time in the feed configuration.
+    $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
+    $feed_config['last_import_start_time'] = time();
+    $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
+    // Save the feed.
+    $feed->save();
   }
 
   /**
