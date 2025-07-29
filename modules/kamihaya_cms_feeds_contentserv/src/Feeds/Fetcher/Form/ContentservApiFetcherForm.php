@@ -105,18 +105,25 @@ class ContentservApiFetcherForm extends ExternalPluginFormBase {
       '#default_value' => $this->plugin->getConfiguration('folder_id'),
     ];
 
+    $form['api_filter_settings']['filter_by_date'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Filter by Date'),
+      '#description' => $this->t('Enable to filter by date.'),
+      '#default_value' => $this->plugin->getConfiguration('filter_by_date', FALSE),
+    ];
+
     $form['api_filter_settings']['check_state'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Check State'),
       '#description' => $this->t('Enable to filter by state.'),
-      '#default_value' => $this->plugin->getConfiguration('check_state', TRUE),
+      '#default_value' => $this->plugin->getConfiguration('check_state', FALSE),
     ];
 
     $form['api_filter_settings']['state_ids'] = [
       '#type' => 'textfield',
       '#title' => $this->t('State IDs'),
       '#description' => $this->t('Comma-separated list of state IDs to filter by.'),
-      '#default_value' => implode(',', $this->plugin->getConfiguration('state_ids', [])),
+      '#default_value' => !empty($this->plugin->getConfiguration('state_ids', [])) ? implode(',', $this->plugin->getConfiguration('state_ids')): [],
       '#maxlength' => 255,
       '#states' => [
         'visible' => [
@@ -139,7 +146,7 @@ class ContentservApiFetcherForm extends ExternalPluginFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Class IDs'),
       '#description' => $this->t('Comma-separated list of class IDs to filter by.'),
-      '#default_value' => implode(',', $this->plugin->getConfiguration('class_ids', [])),
+      '#default_value' => !empty($this->plugin->getConfiguration('class_ids')) ? implode(',', $this->plugin->getConfiguration('class_ids')): [],
       '#maxlength' => 255,
       '#states' => [
         'visible' => [
@@ -174,7 +181,7 @@ class ContentservApiFetcherForm extends ExternalPluginFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Tag IDs'),
       '#description' => $this->t('Comma-separated list of tag IDs to filter by.'),
-      '#default_value' => implode(',', $this->plugin->getConfiguration('tag_ids', [])),
+      '#default_value' => !empty($this->plugin->getConfiguration('tag_ids')) ? implode(',', $this->plugin->getConfiguration('tag_ids')): [],
       '#maxlength' => 512,
       '#states' => [
         'visible' => [

@@ -81,10 +81,24 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
       // Get the filters for the request.
       $filters = $this->createRequestFilters();
 
+      $last_imported_time = 0;
+      if ($this->configuration['filter_by_date']) {
+        // Get the last imported time to fetch only the changed data.
+        if (!empty($feed_config['last_import_start_time'])) {
+          $last_imported_time = $feed_config['last_import_start_time'];
+        }
+        if (empty($last_imported_time) && !empty($feed->getImportedTime())) {
+          $last_imported_time = $feed->getImportedTime();
+        }
+        // Update the last import start time to the current time.
+        $feed_config['last_import_start_time'] = time();
+        $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
+      }
+
       $options = [
         RequestOptions::QUERY => [
           'filter' => 'IsFolder=0' . (!empty($filters) ? '&' . $filters : ''),
-          'begin' => date('Y-m-d H:i:s', 0), // Last changed tiem to fetch set to 0 to get all data.
+          'begin' => date('Y-m-d H:i:s', $last_imported_time),
           'limit' => $this->configuration['limit'],
         ],
       ];
@@ -137,6 +151,7 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
       '@count' => count($results),
       '@name' => $feed->label(),
     ]);
+
     return new ContentservApiFetcherResult($results, $token);
   }
 
@@ -207,8 +222,9 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
       'json_api_url' => '',
       'api_key' => '',
       'secret' => '',
+      'filter_by_date' => FALSE,
       'folder_id' => '',
-      'check_state' => TRUE,
+      'check_state' => FALSE,
       'state_ids' => [],
       'check_class' => FALSE,
       'class_ids' => [],
