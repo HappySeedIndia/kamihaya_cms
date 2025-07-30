@@ -45,7 +45,7 @@ class MultiLanguageDefaultEntityProcessorForm extends DefaultEntityProcessorForm
     $langcodes = $this->plugin->languageOptions();
     $addtional_langcode = $form_state->getValue('addtional_langcode');
     $langucode = explode('_', $addtional_langcode)[0];
-    if (!array_key_exists($langucode, $langcodes)) {
+    if (!empty($addtional_langcode) && !array_key_exists($langucode, $langcodes)) {
       $form_state->setError($form['addtional_langcode'], $this->t('The langcode %label is not correct.', [
         '%label' => $addtional_langcode,
       ]));
