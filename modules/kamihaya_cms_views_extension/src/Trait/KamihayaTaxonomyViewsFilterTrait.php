@@ -158,6 +158,8 @@ trait KamihayaTaxonomyViewsFilterTrait {
         continue;
       }
       $form['value']['#related_filter'][] = $name;
+      // Add the filter name to the form attributes for AJAX.
+      $form['value']['#attributes']['data-related-filter'][] = $name;
       if (empty($request_params[$name])) {
         continue;
       }

@@ -3,6 +3,7 @@
 namespace Drupal\kamihaya_cms_google_map\Controller;
 
 use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -49,6 +50,10 @@ class LocationFilterController extends ControllerBase implements ContainerInject
 
     // Render the view
     $rendered_view = $view->render();
+
+    if (!empty($rendered_view['#attached'])) {
+      $response->addAttachments($rendered_view['#attached']);
+    }
 
     // Add the replace command
     $response->addCommand(new ReplaceCommand("#{$wrapper_id}", $rendered_view));

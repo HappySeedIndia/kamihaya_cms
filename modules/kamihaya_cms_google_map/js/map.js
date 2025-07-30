@@ -12,6 +12,7 @@
   let autocomplete;
   let locationElement;
   let locationContent;
+  let viewFilters = {};
 
   // Define the global callback function before loading the API
   window.loadMap = function () {
@@ -97,7 +98,7 @@
     locationElement = document.getElementById('location-view');
     locationContent = locationElement.querySelector('.view-content');
     const offsetTop = locationContent.getBoundingClientRect().top + window.scrollY;
-    const availableHeight = window.innerHeight - offsetTop; 
+    const availableHeight = window.innerHeight - offsetTop;
     locationContent.style.height = `${availableHeight}px`;
     locationContent.dataset.heightAdjusted = 'true';
   }
@@ -137,6 +138,13 @@
     params.append('nelng', ne.lng());
     params.append('swlat', sw.lat());
     params.append('swlng', sw.lng());
+    if (viewFilters) {
+      // Add view filters to the params.
+      Object.keys(viewFilters).forEach((key) => {
+        params.append(key, viewFilters[key]);
+      });
+    }
+    // Set the format as JSON.
     params.append('_format', 'json');
 
     // Show loading indicator.
@@ -434,10 +442,6 @@
       console.warn('AJAX path is not set in drupalSettings');
       return;
     }
-    // Add the path prefix if it exists.
-    const baseUrl = drupalSettings.path.baseUrl || '';
-    const pathPrefix = drupalSettings.path.pathPrefix || '';
-    ajaxPath = `${baseUrl}${pathPrefix}${ajaxPath}`;
 
     const params = new URLSearchParams();
 
@@ -449,6 +453,13 @@
     params.append('swlng', sw.lng());
     params.append('center_lat', map.getCenter().lat());
     params.append('center_lng', map.getCenter().lng());
+
+    if (viewFilters) {
+      // Add view filters to the params.
+      Object.keys(viewFilters).forEach((key) => {
+        params.append(key, viewFilters[key]);
+      });
+    }
 
     fetch(`${ajaxPath}?${params.toString()}`, {
       method: 'GET',
@@ -466,6 +477,8 @@
               viewDiv.id = 'location-view';
               viewDiv.innerHTML = command.data;
               target.replaceWith(viewDiv);
+              // Attach Drupal behaviors to the new view element.
+              Drupal.attachBehaviors(viewDiv);
               adjustLocationHeight();
             }
           }
@@ -488,8 +501,73 @@
       });
   }
 
+  // Upate the filters from the exposed form in the location view.
+  function updateViewFilters() {
+    viewFilters = {};
+    const locationView = document.getElementById('location-view');
+    if (!locationView) {
+      console.warn('Location view not found');
+      return;
+    }
+    // Get the exposed form from the view.
+    const exposedForm = locationView.querySelector('.views-exposed-form');
+    if (!exposedForm) {
+      console.warn('Exposed form not found');
+      return;
+    }
+
+    const filters = exposedForm.querySelectorAll('input, select');
+    filters.forEach((filter) => {
+      if (filter.name && filter.value && filter.value.trim() !== '' && filter.value !== 'All') {
+        viewFilters[filter.name] = filter.value;
+      }
+    });
+  }
+
   Drupal.behaviors.googleMap = {
     attach: function (context, settings) {
+      const locationView = document.getElementById('location-view');
+      if (locationView) {
+        const exposedForm = locationView.querySelector('.views-exposed-form');
+        if (exposedForm) {
+          // Get the filters from the exposed form.
+          const filters = exposedForm.querySelectorAll('input, select');
+          let relatedFilters = [];
+          // Check if the filters have related filters.
+          filters.forEach((filter) => {
+            if (filter.getAttribute('data-related-filter')) {
+              const name = filter.getAttribute('name');
+              const relatedFilter = filter.getAttribute('data-related-filter');
+              if (!relatedFilters[relatedFilter]) {
+                relatedFilters[relatedFilter] = [];
+              }
+              relatedFilters[relatedFilter].push(name);
+            }
+          });
+
+          filters.forEach((filter) => {
+            // Add event listener to each filter.
+            filter.addEventListener('change', function () {
+              const name = filter.getAttribute('name');
+              if (relatedFilters[name]) {
+                // If the filter has related filters, update them.
+                relatedFilters[name].forEach((relatedFilterName) => {
+                  const relatedFilter = exposedForm.querySelector(`[name="${relatedFilterName}"]`);
+                  if (relatedFilter) {
+                    // Clear the related filter value.
+                    relatedFilter.value = '';
+                  }
+                });
+              }
+              // Update the view filters when any filter changes.
+              updateViewFilters();
+              // Update the map markers based on the filter changes.
+              displayLocationMarkers();
+            });
+          });
+        }
+      }
+
       // Prevent re-initializing the map
       if (mapInitialized) {
         return;
