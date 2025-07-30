@@ -120,7 +120,6 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public function postParseTamper(FeedInterface $feed, $data, TamperableItemInterface $item) {
-    return;
     if (is_null($data) || (is_array($data) && empty($data)) || (!is_array($data) && strlen($data) === 0)) {
       return;
     }

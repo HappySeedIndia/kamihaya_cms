@@ -60,7 +60,6 @@ class ContentservApiFetcherForm extends ExternalPluginFormBase {
     $form['api_settings']['limit'] = [
       '#type' => 'number',
       '#title' => $this->t('Limit count'),
-      '#required' => TRUE,
       '#description' => $this->t('The limit count for one request.'),
       '#default_value' => $this->plugin->getConfiguration('limit'),
     ];
