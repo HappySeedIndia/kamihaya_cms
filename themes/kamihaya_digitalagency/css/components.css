@@ -1619,6 +1619,9 @@ iframe[title="YouTube video player"] {
 }
 
 /* QA Title */
+.qa-list .btn:hover {
+  cursor: default;
+}
 .qa-title {
   position: relative;
   padding-left: 40px;
