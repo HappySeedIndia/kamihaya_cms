@@ -17,6 +17,17 @@ use Drupal\feeds\Feeds\Target\EntityReference;
 abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected function map(FeedInterface $feed, EntityInterface $entity, ItemInterface $item) {
+    // Update multi value fields before mapping.
+    $this->updateMultiValueFields($item);
+
+    parent::map($feed, $entity, $item);
+  }
+
+
+  /**
    * Process multi language entity.
    *
    * @param \Drupal\feeds\FeedInterface $feed
@@ -57,6 +68,9 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
    *   The item to process.
    */
   protected function mapTranslation(FeedInterface $feed, EntityInterface $source_entity, TranslatableInterface $entity, ItemInterface $item) {
+    // Update multi value fields before mapping.
+    $this->updateMultiValueFields($item);
+
     $mappings = $this->feedType->getMappings();
 
     // Mappers add to existing fields rather than replacing them. Hence we need
@@ -141,6 +155,79 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
    */
   public function loadEntity($entity_id) {
     return $this->storageController->load($entity_id);
+  }
+
+  /**
+   * Update multi value fields.
+   *
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed object.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to process.
+   * @param \Drupal\feeds\Feeds\Item\ItemInterface $item
+   *   The item to process.
+   */
+  protected function updateMultiValueFields(ItemInterface $item) {
+    $mappings = $this->feedType->getMappings();
+
+    $multivalue_fields = [];
+    foreach ($mappings as $delta => $mapping) {
+      if ($mapping['target'] === 'feeds_item' || $mapping['target'] === 'temporary_target') {
+        // Skip feeds item as this field gets default values before mapping.
+        continue;
+      }
+      $target = $mapping['target'];
+      if (empty($multivalue_fields[$target])) {
+        $multivalue_fields[$target] = [];
+      }
+      $multivalue_fields[$target][] = $mapping['map'];
+    }
+
+    foreach ($multivalue_fields as $target => $field_mappings) {
+      if (count($field_mappings) <= 1) {
+        // If there is only one mapping for this target, skip it.
+        continue;
+      }
+      $field_values = [];
+      foreach ($field_mappings as $mapping) {
+        foreach ($mapping as $column => $source) {
+          if ($source === '') {
+            // Skip empty sources.
+            continue;
+          }
+
+          $value = $item->get($source);
+
+          // Clear the source value in the item to avoid duplication.
+          $item->set($source, NULL);
+          if (is_null($value)) {
+            // Skip NULL values.
+            continue;
+          }
+          if (empty($field_values[$column])) {
+            $field_values[$column] = [];
+          }
+          if (!is_array($value)) {
+            $field_values[$column][] = $value;
+          }
+          else {
+            $field_values[$column] = array_merge($field_values[$column], $value);
+          }
+        }
+      }
+      if (empty($field_values)) {
+        continue;
+      }
+      $mapping = reset($field_mappings);
+      foreach ($mapping as $column => $source) {
+        if ($source === '') {
+          // Skip empty sources.
+          continue;
+        }
+        // Set the field value to the item.
+        $item->set($source, $field_values[$column]);
+      }
+    }
   }
 
   /**

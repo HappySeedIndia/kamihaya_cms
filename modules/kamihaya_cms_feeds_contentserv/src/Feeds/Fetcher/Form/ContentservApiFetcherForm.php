@@ -196,6 +196,13 @@ class ContentservApiFetcherForm extends ExternalPluginFormBase {
       '#default_value' => $this->plugin->getConfiguration('extra_filters', '') ?? '',
     ];
 
+    $form['create_content'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Create Content'),
+      '#description' => $this->t('Crerate content regardless of the changed date.'),
+      '#default_value' => $this->plugin->getConfiguration('unpublish_content', TRUE),
+    ];
+
     $form['unpublish_content'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Unpublish Content'),

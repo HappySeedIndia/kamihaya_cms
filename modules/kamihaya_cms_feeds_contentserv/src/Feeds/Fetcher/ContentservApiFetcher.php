@@ -237,6 +237,7 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
       'request_timeout' => 30,
       'retry_count' => 5,
       'retry_delay' => 10,
+      'create_content' => TRUE,
       'unpublish_content' => FALSE,
       'scheduled_execution' => FALSE,
       'scheduled_minute' => 0,

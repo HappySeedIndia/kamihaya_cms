@@ -151,8 +151,12 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
 
     foreach ($results as $result_data) {
       try {
+        // Get the data ID from the result data.
+        $data_id = $result_data['ID'];
+
         // Skip the data if its last changed time is less than the last imported time.
-        if (!$fetcher_config['filter_by_date'] && !empty($result_data['Changed']) && strtotime($result_data['Changed']) < $last_imported_time) {
+        if (!$fetcher_config['filter_by_date'] && !empty($result_data['Changed']) && strtotime($result_data['Changed']) < $last_imported_time
+          && ($this->checkExistsEntity($feed, $data_id) || !$fetcher_config['create_content'])) {
           $state->report(StateType::SKIP, strtr('Skipped the data because it is not changed since last import. [@type ID: @id]', [
             '@type' => $data_type,
             '@id' => $result_data['ID'],
@@ -163,8 +167,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
           $state->pointer++;
           continue;
         }
-        // Get the detail of product.
-        $data_id = $result_data['ID'];
+
+        // Get the detail of the data.
         $options = [];
         if ($this->hasTagsInSource($feed)) {
           // Set the expand query if the feed has 'Tags' in source.
@@ -584,6 +588,46 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     }
     $file->save();
     return $file->id();
+  }
+
+  /**
+   * Check if the entity exists.
+   *
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed object.
+   * @param string $data_id
+   *   The data ID to check.
+   *
+   * @return bool
+   *   TRUE if the entity exists, FALSE otherwise.
+   */
+  protected function checkExistsEntity(FeedInterface $feed, $data_id) {
+    // Get the unique key from the feed type mappings.
+    $unique_key = NULL;
+    foreach ($this->feedType->getMappings() as $mapping) {
+      if (!empty($mapping['unique'])) {
+        $unique_key = $mapping['target'];
+        break;
+      }
+    }
+    if (empty($unique_key)) {
+      return FALSE;
+    }
+    // Get the processor.
+    $processor = $feed->getType()->getProcessor();
+    // Get the entity type from the feed type.
+    $entity_type_id = $processor->entityType();
+    // The entity type.
+    $etntity_type = $this->entityTypeManager->getDefinition($entity_type_id);
+    // Get the bundle key for the entity type.
+    $bundle_key = $etntity_type->getKey('bundle');
+    // Get the entity IDs having the unique key set.
+    $entity_ids = $this->entityTypeManager->getStorage($entity_type_id)->getQuery()
+      ->condition($bundle_key, $processor->bundle())
+      ->condition($unique_key, $data_id)
+      ->accessCheck(FALSE)
+      ->execute();
+    return !empty($entity_ids);
   }
 
   /**
