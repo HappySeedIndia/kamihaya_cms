@@ -42,7 +42,7 @@ function kamihaya_cms_google_map_query_location_filter_alter(AlterableInterface 
   $swlat = $request->query->get('swlat') ?? 0; // Southwest latitude
   $swlng = $request->query->get('swlng') ?? 0; // Southwest longitude
   $center_lat = $request->query->get('center_lat'); // Center latitude for distance sorting
-  $center_lon = $request->query->get('center_lon'); // Center longitude for distance sorting
+  $center_lng = $request->query->get('center_lng'); // Center longitude for distance sorting
 
   // Validate coordinates
   if (!is_numeric($nelat) || !is_numeric($nelng) ||
@@ -52,7 +52,7 @@ function kamihaya_cms_google_map_query_location_filter_alter(AlterableInterface 
 
   // Validate center coordinates (optional for sorting)
   $has_center = false;
-  if ($center_lat && $center_lon && is_numeric($center_lat) && is_numeric($center_lon)) {
+  if ($center_lat && $center_lng && is_numeric($center_lat) && is_numeric($center_lng)) {
     $has_center = true;
   }
 
@@ -66,7 +66,6 @@ function kamihaya_cms_google_map_query_location_filter_alter(AlterableInterface 
 
   // Find geolocation fields in the content type
   $geolocation_fields = _kamihaya_cms_google_map_get_geolocation_fields($content_type);
-
   if (empty($geolocation_fields)) {
     return;
   }
@@ -76,7 +75,7 @@ function kamihaya_cms_google_map_query_location_filter_alter(AlterableInterface 
 
   // Add distance-based sorting if center coordinates are provided
   if ($has_center) {
-    _kamihaya_cms_google_map_add_distance_sorting($query, $geolocation_fields, $center_lat, $center_lon);
+    _kamihaya_cms_google_map_add_distance_sorting($query, $geolocation_fields, $center_lat, $center_lng);
   }
 }
 
@@ -177,13 +176,13 @@ function _kamihaya_cms_google_map_add_geolocation_filter($query, $geolocation_fi
  * Add distance-based sorting to the query.
  * Uses Haversine formula to calculate distance from center point.
  */
-function _kamihaya_cms_google_map_add_distance_sorting($query, $geolocation_fields, $center_lat, $center_lon) {
+function _kamihaya_cms_google_map_add_distance_sorting($query, $geolocation_fields, $center_lat, $center_lng) {
   if (empty($geolocation_fields)) {
     return;
   }
 
   $center_lat = (float) $center_lat;
-  $center_lon = (float) $center_lon;
+  $center_lng = (float) $center_lng;
 
   // Use the first geolocation field for sorting
   // If multiple fields exist, you might want to calculate minimum distance
@@ -208,7 +207,7 @@ function _kamihaya_cms_google_map_add_distance_sorting($query, $geolocation_fiel
           POWER(SIN(RADIANS({$table_name}.{$lat_column} - {$center_lat}) / 2), 2) +
           COS(RADIANS({$center_lat})) *
           COS(RADIANS({$table_name}.{$lat_column})) *
-          POWER(SIN(RADIANS({$table_name}.{$lng_column} - {$center_lon}) / 2), 2)
+          POWER(SIN(RADIANS({$table_name}.{$lng_column} - {$center_lng}) / 2), 2)
         )
       )
     )
@@ -217,21 +216,35 @@ function _kamihaya_cms_google_map_add_distance_sorting($query, $geolocation_fiel
   // Add the distance calculation as an expression
   $query->addExpression($distance_formula, 'distance_from_center');
 
+  $order_by = &$query->getOrderBy();
+  $old_order_by = $query->getOrderBy();
+  if (!empty($order_by)) {
+    // Remove any existing order.
+    foreach ($order_by as $key => $value) {
+      unset($order_by[$key]);
+    }
+  }
+
   // Sort by distance (closest first)
   $query->orderBy('distance_from_center', 'ASC');
+
+  foreach ($old_order_by as $key => $value) {
+    // Add existed order by.
+    $query->orderBy($key, $value);
+  }
 }
 
 /**
  * Add distance-based sorting for multiple geolocation fields.
  * Calculates minimum distance when multiple fields exist.
  */
-function _kamihaya_cms_google_map_add_distance_sorting_multiple($query, $geolocation_fields, $center_lat, $center_lon) {
+function _kamihaya_cms_google_map_add_distance_sorting_multiple($query, $geolocation_fields, $center_lat, $center_lng) {
   if (empty($geolocation_fields)) {
     return;
   }
 
   $center_lat = (float) $center_lat;
-  $center_lon = (float) $center_lon;
+  $center_lng = (float) $center_lng;
   $earth_radius = 6371; // Earth radius in kilometers
 
   $distance_expressions = [];
@@ -249,7 +262,7 @@ function _kamihaya_cms_google_map_add_distance_sorting_multiple($query, $geoloca
             POWER(SIN(RADIANS({$table_name}.{$lat_column} - {$center_lat}) / 2), 2) +
             COS(RADIANS({$center_lat})) *
             COS(RADIANS({$table_name}.{$lat_column})) *
-            POWER(SIN(RADIANS({$table_name}.{$lng_column} - {$center_lon}) / 2), 2)
+            POWER(SIN(RADIANS({$table_name}.{$lng_column} - {$center_lng}) / 2), 2)
           )
         )
       )
