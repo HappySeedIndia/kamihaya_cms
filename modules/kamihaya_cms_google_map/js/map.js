@@ -6,6 +6,7 @@
   let markers = [];
   let mapElement;
   let mapInitialized = false;
+  let infoWindow;
   let searchButton;
   let searchButtonTimeout;
   let mapOptions = {};
@@ -171,6 +172,12 @@
 
   // Display info window with detailed content for the marker.
   function diplayInfoWindow(marker, nid) {
+    // Close any existing info window before opening a new one.
+    if (infoWindow) {
+      infoWindow.close();
+      // Reset the infoWindow variable to allow new content to be loaded.
+      infoWindow = null;
+    }
     let detailDataPath = drupalSettings.detail_data_path;
     if (!detailDataPath) {
       console.warn('Detail data path is not set in drupalSettings');
@@ -191,7 +198,7 @@
       .then((res) => res.json())
       .then((data) => {
         if (data[0] && data[0].entity) {
-          const infoWindow = new google.maps.InfoWindow({
+          infoWindow = new google.maps.InfoWindow({
             content: data[0].entity,
           });
           infoWindow.open(map, marker);
