@@ -1,0 +1,10 @@
+status: 1
+dependencies: {  }
+id: galaxy_24_ultra
+label: 'Galaxy 24 Ultra'
+weight: 0
+orientation: portrait
+dimensions:
+  width: 1440
+  height: 3120
+  dppx: 3.0

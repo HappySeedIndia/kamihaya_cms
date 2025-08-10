@@ -1,0 +1,10 @@
+status: 1
+dependencies: {  }
+id: galaxy_24
+label: 'Galaxy 24'
+weight: 0
+orientation: portrait
+dimensions:
+  width: 1080
+  height: 2340
+  dppx: 3.0
