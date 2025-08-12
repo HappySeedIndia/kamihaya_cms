@@ -2,7 +2,9 @@
 
 namespace Drupal\kamihaya_cms_feeds_contentserv\Plugin\Tamper;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\feeds\FeedInterface;
 use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
 
@@ -16,7 +18,7 @@ use Drupal\tamper\TamperBase;
  *   category = "Text"
  * )
  */
-class SetValueWithCondition extends TamperBase {
+class SetValueWithCondition extends TamperBase implements KamihayaTamperInterface {
 
   const SETTING_CONDITION_SOURCE = 'condition_source';
   const SETTING_CONDITION_VALUE = 'condition_value';
@@ -196,6 +198,20 @@ class SetValueWithCondition extends TamperBase {
     }
 
     return $not_match_value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postParseTamper(FeedInterface $feed, $data, TamperableItemInterface $item) {
+    return $this->tamper($data, $item);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function preSaveTamper(FeedInterface $feed, EntityInterface $entity, ?TamperableItemInterface $item, $source) {
+    return;
   }
 
 }

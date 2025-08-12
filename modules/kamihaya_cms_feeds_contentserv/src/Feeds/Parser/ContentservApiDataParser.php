@@ -139,6 +139,8 @@ class ContentservApiDataParser extends ContentservApiParser {
         }
         $response = $this->getData($feed, $url, "$data_url{$data_id}", $fetcher_result->getAccessToken(), $add_options);
         $data = json_decode($response, TRUE);
+        // Check if the entity has translation.
+        $has_translation = $this->checkExistsEntity($feed, $data_id, $langcode);
         if (!empty($data[$data_type])) {
           $add_item = new DynamicItem();
           // Set the sources to the item.
@@ -158,7 +160,7 @@ class ContentservApiDataParser extends ContentservApiParser {
               $label = TRUE;
             }
             // Skip the value is not set or the value is same as the original language value and not alt or description.
-            if (strlen($value) === 0 || ($value === $item->get($key) && !$label)) {
+            if (strlen($value) === 0 || (!$has_translation && $value === $item->get($key) && !$label)) {
               continue;
             }
             // Check if the target is media.

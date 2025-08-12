@@ -253,6 +253,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
           // Get the additional data.
           $response = $this->getData($feed, $url, "$data_url{$result_data['ID']}", $fetcher_result->getAccessToken(), $add_options);
           $data = json_decode($response, TRUE);
+          // Check if the entity has translation.
+          $has_translation = $this->checkExistsEntity($feed, $data_id, $langcode);
           if (!empty($data[$data_type])) {
             $add_item = new DynamicItem();
             // Set the sources to the item.
@@ -272,7 +274,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
                 $alt = TRUE;
               }
               // Skip the value is not set or the value is same as the original language value and not alt or description.
-              if (strlen($value) === 0 || ($value === $item->get($key) && !$alt)) {
+              if (strlen($value) === 0 || (!$has_translation && $value === $item->get($key) && !$alt)) {
                 continue;
               }
               // Check if the target is media.
@@ -601,7 +603,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    * @return bool
    *   TRUE if the entity exists, FALSE otherwise.
    */
-  protected function checkExistsEntity(FeedInterface $feed, $data_id) {
+  protected function checkExistsEntity(FeedInterface $feed, $data_id, $langcode = NULL) {
+    $langcode = !empty($langcode) ? explode('_', $langcode)[0] : NULL;
     // Get the unique key from the feed type mappings.
     $unique_key = NULL;
     foreach ($this->feedType->getMappings() as $mapping) {
@@ -621,12 +624,16 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     $etntity_type = $this->entityTypeManager->getDefinition($entity_type_id);
     // Get the bundle key for the entity type.
     $bundle_key = $etntity_type->getKey('bundle');
-    // Get the entity IDs having the unique key set.
-    $entity_ids = $this->entityTypeManager->getStorage($entity_type_id)->getQuery()
+    $query = $this->entityTypeManager->getStorage($entity_type_id)->getQuery()
       ->condition($bundle_key, $processor->bundle())
       ->condition($unique_key, $data_id)
-      ->accessCheck(FALSE)
-      ->execute();
+      ->accessCheck(FALSE);
+    // If the entity is translatable, add the language condition.
+    if ($etntity_type->isTranslatable() && !empty($langcode)) {
+      $query->condition('langcode', $langcode);
+    }
+    // Get the entity IDs having the unique key set.
+    $entity_ids = $query->execute();
     return !empty($entity_ids);
   }
 
