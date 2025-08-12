@@ -95,7 +95,11 @@ class FeedsSubscriber implements EventSubscriberInterface {
     // Get the additional language code.
     $addtional_langcode = !empty($processor_config['addtional_langcode']) ? $processor_config['addtional_langcode'] : '';
     $langcode = explode('_', $addtional_langcode)[0];
+    $item_array = $item->toArray();
     foreach ($tampers_by_source as $source => $tampers) {
+      if (empty($item_array[$source])) {
+        continue;
+      }
       try {
         // Get the value for a source.
         $item_value = $item->get($source);
@@ -103,20 +107,31 @@ class FeedsSubscriber implements EventSubscriberInterface {
 
         /** @var \Drupal\tamper\TamperInterface $tamper */
         foreach ($tampers as $tamper) {
-          if (!($tamper instanceof KamihayaTamperInterface)) {
+          if (!($tamper instanceof KamihayaTamperInterface) && !$is_translation) {
             continue;
           }
+
           $definition = $tamper->getPluginDefinition();
           if ($multiple && !$definition['handle_multiples']) {
             $new_value = [];
             // @todo throw exception if $item_value is not an array.
             foreach ($item_value as $scalar_value) {
-              $new_value[] = $tamper->postParseTamper($feed, $scalar_value, $tamperable_item);
+              if ($tamper instanceof KamihayaTamperInterface) {
+                $new_value[] = $tamper->postParseTamper($feed, $scalar_value, $tamperable_item);
+              }
+              else {
+                $new_value[] = $tamper->tamper($scalar_value, $tamperable_item);
+              }
             }
             $item_value = $new_value;
           }
           else {
-            $item_value = $tamper->postParseTamper($feed, $item_value, $tamperable_item);
+            if ($tamper instanceof KamihayaTamperInterface) {
+              $item_value = $tamper->postParseTamper($feed, $item_value, $tamperable_item);
+            }
+            else {
+              $item_value = $tamper->tamper($item_value, $tamperable_item);
+            }
             $multiple = $tamper->multiple();
           }
         }
@@ -130,6 +145,9 @@ class FeedsSubscriber implements EventSubscriberInterface {
     }
     if ($is_translation) {
       return;
+    }
+    if (!empty($item->get($addtional_langcode))) {
+      $this->alterItem($feed, $item->get($addtional_langcode), $tampers_by_source, TRUE);
     }
     $existing_entity_id = $this->existingEntityId($feed, $item);
     if ($existing_entity_id && $feed->getType()->getProcessor() instanceof MultiLanguageEntityProcessorBase) {
@@ -145,9 +163,6 @@ class FeedsSubscriber implements EventSubscriberInterface {
         $item->set('translation', TRUE);
         $item->set($addtional_langcode, $translate_item);
       }
-    }
-    if (!empty($item->get('translation')) && !empty($item->get($addtional_langcode))) {
-      $this->alterItem($feed, $item->get($addtional_langcode), $tampers_by_source, TRUE);
     }
   }
 
