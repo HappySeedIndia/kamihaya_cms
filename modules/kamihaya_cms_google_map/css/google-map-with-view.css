@@ -3,6 +3,10 @@
   width: 100%;
 }
 
+.google-map-with-view-container .autocomplete-wrapper {
+  margin: 1rem 0;
+}
+
 .responsive-layout {
   display: flex;
   flex-direction: column;
