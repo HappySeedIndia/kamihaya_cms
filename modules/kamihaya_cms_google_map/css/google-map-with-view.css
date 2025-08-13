@@ -337,3 +337,9 @@ gmp-place-autocomplete {
   position: relative;
   overflow-y: scroll;
 }
+
+@media (max-width: 767px) {
+  #location-view .view-content {
+    max-height: 450px;
+  }
+}
