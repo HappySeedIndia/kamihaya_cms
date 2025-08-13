@@ -148,7 +148,6 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
         $plugin->setTarget($feed, $entity, $mapping['target'], $field_values[$delta]);
       }
     }
-    dpm($entity->toArray(), 'Mapped entity data');
     return $entity;
   }
 
