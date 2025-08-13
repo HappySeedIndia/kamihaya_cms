@@ -120,6 +120,7 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public function postParseTamper(FeedInterface $feed, $data, TamperableItemInterface $item) {
+    return $data;
     if (is_null($data) || (is_array($data) && empty($data)) || (!is_array($data) && strlen($data) === 0)) {
       return;
     }
@@ -143,6 +144,10 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
         'feeds_log' => FALSE,
       ];
       $feed = Feed::create($values);
+    }
+
+    if ($feed->bundle() !== 'pxc_dam_image_import') {
+      return;
     }
 
     if ($feed->hasField('field_json_data') && is_array($data)) {
