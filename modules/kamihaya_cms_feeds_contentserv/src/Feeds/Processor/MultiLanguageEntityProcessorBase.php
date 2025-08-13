@@ -24,6 +24,9 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
     $this->updateMultiValueFields($item);
 
     parent::map($feed, $entity, $item);
+
+    // Set default values to empty fields that have default values.
+    $this->setDefaultValueToEmptyFeild($entity, $item);
   }
 
 
@@ -40,8 +43,14 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
    *   The item to process.
    */
   public function processMultiLanguage(FeedInterface $feed, EntityInterface $source_entity, TranslatableInterface $entity, ItemInterface $item) {
+    // Update multi value fields before mapping.
+    $this->updateMultiValueFields($item);
+
     // Set field values.
     $this->mapTranslation($feed, $source_entity, $entity, $item);
+
+    // Set default values to empty fields that have default values.
+    $this->setDefaultValueToEmptyFeild($entity, $item);
 
     $skip_validation = !empty($this->configuration['skip_validation']) && empty($this->configuration['skip_validation_types']);
     if (!$skip_validation) {
@@ -68,9 +77,6 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
    *   The item to process.
    */
   protected function mapTranslation(FeedInterface $feed, EntityInterface $source_entity, TranslatableInterface $entity, ItemInterface $item) {
-    // Update multi value fields before mapping.
-    $this->updateMultiValueFields($item);
-
     $mappings = $this->feedType->getMappings();
 
     // Mappers add to existing fields rather than replacing them. Hence we need
@@ -226,6 +232,65 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
         }
         // Set the field value to the item.
         $item->set($source, $field_values[$column]);
+      }
+    }
+  }
+
+  /**
+   * Unset empty fields that have default values.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to process.
+   * @param \Drupal\feeds\Feeds\Item\ItemInterface $item
+   *   The item to process.
+   *
+   * @return \Drupal\feeds\Feeds\Item\ItemInterface
+   *   The item with unset empty fields.
+   */
+  protected function setDefaultValueToEmptyFeild(EntityInterface $entity, ItemInterface $item) {
+    // Get the mappings.
+    $mappings = $this->feedType->getMappings();
+    foreach ($mappings as $delta => $mapping) {
+      if ($mapping['target'] === 'feeds_item' || $mapping['target'] === 'temporary_target') {
+        // Skip feeds item as this field gets default values before mapping.
+        continue;
+      }
+      foreach ($mapping['map'] as $column => $source) {
+        if ($source === '') {
+          // Skip empty sources.
+          continue;
+        }
+        // Check if the entity already has a value.
+        $is_value_empty = FALSE;
+
+        if (empty($entity->get($mapping['target'])->getValue())) {
+          $is_value_empty = TRUE;
+        }
+        else {
+          // Check if the entity already has a value.
+          $entity_value = reset($entity->get($mapping['target'])->getValue());
+          if (isset($entity_value['value']) && $entity_value['value'] !== '') {
+            continue;
+          }
+          if (isset($entity_value['target_id'])) {
+            continue;
+          }
+          if (isset($entity_value['uri']) && !empty($entity_value['uri'])) {
+            continue;
+          }
+          $is_value_empty = TRUE;
+        }
+
+        if (!$is_value_empty) {
+          // Skip if the entity already has a value.
+          continue;
+        }
+        $field_definition = $entity->getFieldDefinition($mapping['target']);
+        $default_value = $field_definition ? $field_definition->getDefaultValue($entity) : NULL;
+        if (is_null($default_value) || (is_array($default_value) && empty($default_value)) || (is_string($default_value) && strlen($default_value) === 0)) {
+          continue;
+        }
+        $entity->set($mapping['target'], $default_value);
       }
     }
   }
