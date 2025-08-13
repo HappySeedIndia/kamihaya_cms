@@ -121,20 +121,20 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
    */
   public function postParseTamper(FeedInterface $feed, $data, TamperableItemInterface $item) {
     if (is_null($data) || (is_array($data) && empty($data)) || (!is_array($data) && strlen($data) === 0)) {
-      return;
+      return $data;
     }
     if (!empty($item->getSource()['skipped'])) {
       // Skip the item if it has been marked as skipped.
-      return;
-    }
-    if ($this->getSetting(self::SETTING_SKIP_TRANSLATED_ITEM) && !empty($item->getSource()['translation'])) {
-      return;
+      return $data;
     }
 
     $name = $feed->label() . ' - ' . $this->getSetting(self::SETTING_FEEDS);
     $feeds = $this->entityTypeManager->getStorage('feeds_feed')->loadByProperties(['title' => $name]);
+
+    /* @var Drupal\feeds\FeedInterface $additinal_feed */
+    $additinal_feed = NULL;
     if (!empty($feeds)) {
-      $feed = reset($feeds);
+      $additinal_feed = reset($feeds);
     }
     else {
       $values = [
@@ -142,27 +142,32 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
         'type' => $this->getSetting(self::SETTING_FEEDS),
         'feeds_log' => FALSE,
       ];
-      $feed = Feed::create($values);
+      $additinal_feed = Feed::create($values);
     }
 
-    if ($feed->hasField('field_json_data') && is_array($data)) {
+    if ($this->getSetting(self::SETTING_SKIP_TRANSLATED_ITEM) && !empty($item->getSource()['translation']) && !is_array($data) && $this->checkExistsData($additinal_feed, $data)) {
+      // Skip the item if it is a translated item and the data does not exist.
+      return $data;
+    }
+
+    if ($additinal_feed->hasField('field_json_data') && is_array($data)) {
       // Save the JSON data to the feed.
-      $feed->set('field_json_data', json_encode($data));
+      $additinal_feed->set('field_json_data', json_encode($data));
     }
     else {
       // Save the data as a source to the feed.
-      $feed->setSource($data);
+      $additinal_feed->setSource($data);
     }
     if (!empty($item->getSource()['access_token'])) {
       // Set the access token to the feed configuration.
-      $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
+      $feed_config = $additinal_feed->getConfigurationFor($additinal_feed->getType()->getFetcher());
       $feed_config['access_token'] = $item->getSource()['access_token'];
-      $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
+      $additinal_feed->setConfigurationFor($additinal_feed->getType()->getFetcher(), $feed_config);
     }
-    $feed->save();
+    $additinal_feed->save();
     try {
       // Execute the import.
-      $feed->import();
+      $additinal_feed->import();
     }
     catch (\Exception $e) {
       throw $e;
@@ -170,7 +175,7 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
     finally {
       // Unlock the feed if it was locked.
       if ($feed->isLocked()) {
-        $feed->unlock();
+        $additinal_feed->unlock();
       }
     }
 
@@ -182,6 +187,46 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
    */
   public function preSaveTamper(FeedInterface $feed, EntityInterface $entity, ?TamperableItemInterface $item, $source) {
     return;
+  }
+
+    /**
+   * Check if the entity exists.
+   *
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed object.
+   * @param string $data_id
+   *   The data ID to check.
+   *
+   * @return bool
+   *   TRUE if the entity exists, FALSE otherwise.
+   */
+  protected function checkExistsData(FeedInterface $feed, $data) {
+    // Get the unique key from the feed type mappings.
+    $unique_key = NULL;
+    $mappings = $feed->getType()->getMappings();
+    foreach ($mappings as $mapping) {
+      if (!empty($mapping['unique'])) {
+        $unique_key = $mapping['target'];
+        break;
+      }
+    }
+    if (empty($unique_key)) {
+      return FALSE;
+    }
+    // Get the processor.
+    $processor = $feed->getType()->getProcessor();
+    // Get the entity type from the feed type.
+    $entity_type_id = $processor->entityType();
+    // The entity type.
+    $etntity_type = $this->entityTypeManager->getDefinition($entity_type_id);
+    // Get the bundle key for the entity type.
+    $bundle_key = $etntity_type->getKey('bundle');
+    $entity_ids = $this->entityTypeManager->getStorage($entity_type_id)->getQuery()
+      ->condition($bundle_key, $processor->bundle())
+      ->condition($unique_key, $data)
+      ->accessCheck(FALSE)
+      ->execute();
+    return !empty($entity_ids);
   }
 
 }
