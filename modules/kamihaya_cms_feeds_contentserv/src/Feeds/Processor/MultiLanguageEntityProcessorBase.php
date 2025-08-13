@@ -26,7 +26,7 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
     parent::map($feed, $entity, $item);
 
     // Set default values to empty fields that have default values.
-    $this->setDefaultValueToEmptyFeild($entity, $item);
+    $this->setDefaultValueToEmptyFeild($entity);
   }
 
 
@@ -50,7 +50,7 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
     $this->mapTranslation($feed, $source_entity, $entity, $item);
 
     // Set default values to empty fields that have default values.
-    $this->setDefaultValueToEmptyFeild($entity, $item);
+    $this->setDefaultValueToEmptyFeild($entity);
 
     $skip_validation = !empty($this->configuration['skip_validation']) && empty($this->configuration['skip_validation_types']);
     if (!$skip_validation) {
@@ -112,14 +112,7 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
       if (empty($source_values[$delta])) {
         continue;
       }
-      if ($this->feedType->getTargetPlugin($delta) instanceof EntityReference) {
-        $value = $source_entity->get($mapping['target'])->getValue();
-        if (!empty($value)) {
-          $entity->set($mapping['target'], $value);
-          unset($source_values[$delta]);
-          continue;
-        }
-      }
+
       $this->feedType->getTargetPlugin($delta)->clearTarget($feed, $entity, $mapping['target']);
     }
 
@@ -241,13 +234,9 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to process.
-   * @param \Drupal\feeds\Feeds\Item\ItemInterface $item
-   *   The item to process.
    *
-   * @return \Drupal\feeds\Feeds\Item\ItemInterface
-   *   The item with unset empty fields.
    */
-  protected function setDefaultValueToEmptyFeild(EntityInterface $entity, ItemInterface $item) {
+  protected function setDefaultValueToEmptyFeild(EntityInterface $entity) {
     // Get the mappings.
     $mappings = $this->feedType->getMappings();
     foreach ($mappings as $delta => $mapping) {
@@ -263,12 +252,13 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
         // Check if the entity already has a value.
         $is_value_empty = FALSE;
 
-        if (empty($entity->get($mapping['target'])->getValue())) {
+        $entity_values = $entity->get($mapping['target'])->getValue();
+        if (empty($entity_values)) {
           $is_value_empty = TRUE;
         }
         else {
           // Check if the entity already has a value.
-          $entity_value = reset($entity->get($mapping['target'])->getValue());
+          $entity_value = reset($entity_values);
           if (isset($entity_value['value']) && $entity_value['value'] !== '') {
             continue;
           }

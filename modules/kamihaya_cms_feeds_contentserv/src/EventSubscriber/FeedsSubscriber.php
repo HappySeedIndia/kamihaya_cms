@@ -97,12 +97,12 @@ class FeedsSubscriber implements EventSubscriberInterface {
     $langcode = explode('_', $addtional_langcode)[0];
     $item_array = $item->toArray();
     foreach ($tampers_by_source as $source => $tampers) {
-      if (empty($item_array[$source])) {
-        continue;
-      }
       try {
         // Get the value for a source.
         $item_value = $item->get($source);
+        if (!isset($item_array[$source])) {
+          $item_value = '';
+        }
         $multiple = is_array($item_value) && !empty($item_value);
 
         /** @var \Drupal\tamper\TamperInterface $tamper */
@@ -146,6 +146,7 @@ class FeedsSubscriber implements EventSubscriberInterface {
     if ($is_translation) {
       return;
     }
+
     if (!empty($item->get($addtional_langcode))) {
       $this->alterItem($feed, $item->get($addtional_langcode), $tampers_by_source, TRUE);
     }
@@ -164,6 +165,7 @@ class FeedsSubscriber implements EventSubscriberInterface {
         $item->set($addtional_langcode, $translate_item);
       }
     }
+
   }
 
   /**
