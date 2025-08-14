@@ -30,7 +30,6 @@
     // Get user's location.
     navigator.geolocation.getCurrentPosition(success, fail);
 
-    window.addEventListener('resize', adjustMapHeight);
     mapInitialized = true;
   };
 
@@ -44,6 +43,7 @@
       tilt: 0,
       disableDefaultUI: true,
       zoomControl: true,
+      fullscreenControl: true,
       mapId: 'Kamihaya_google_map',
     });
 
@@ -89,8 +89,9 @@
   // Adjust the map height based on the viewport
   function adjustMapHeight() {
     const offsetTop = mapElement.getBoundingClientRect().top + window.scrollY;
-    const availableHeight = window.innerHeight - offsetTop;
-    mapElement.style.height = `${availableHeight}px`;
+    const availableHeight = window.innerHeight - offsetTop - 20; // 20px for padding
+    const map_pc_min_height = drupalSettings.map_min_height_pc;
+    mapElement.style.height = map_pc_min_height && availableHeight < map_pc_min_height ? `${map_pc_min_height}px` : `${availableHeight}px`;
     mapElement.dataset.heightAdjusted = 'true';
   }
 
@@ -99,9 +100,20 @@
     locationElement = document.getElementById('location-view');
     locationContent = locationElement.querySelector('.view-content');
     const offsetTop = locationContent.getBoundingClientRect().top + window.scrollY;
-    const availableHeight = window.innerHeight - offsetTop;
+    const mapOffsetTop = mapElement ? mapElement.getBoundingClientRect().top + window.scrollY : 0;
+    const mapHeight = mapElement ? parseInt(mapElement.getBoundingClientRect().height, 10) : 0;
+    // Adjust the height of the location content based on the map height and offset.
+    const availableHeight = mapHeight - (offsetTop - mapOffsetTop);
+
     locationContent.style.height = `${availableHeight}px`;
     locationContent.dataset.heightAdjusted = 'true';
+
+    const sp = window.matchMedia("(max-width: 768px)");
+    const viewHeightSp = drupalSettings.view_height_sp;
+    if (sp.matches && viewHeightSp) {
+      // If on SP, set the height to the configured view height.
+      locationContent.style.height = `${viewHeightSp}px`;
+    }
   }
 
   // Display markers on the map based on the current bounds.

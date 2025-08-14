@@ -86,6 +86,8 @@ class GoogleMapWithViewController extends ControllerBase implements ContainerInj
             'detail_data_path' => $settings['detail_data_path'] ?? '',
             'ajax_path' => $ajax_path ?? '',
             'show_autocomplete' => $settings['show_autocomplete'] ?? FALSE,
+            'map_min_height_pc' => $settings['map_min_height_pc'] ?? '',
+            'view_height_sp' => $settings['view_height_sp'] ?? '',
           ],
         ],
       ];

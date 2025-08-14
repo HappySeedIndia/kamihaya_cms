@@ -1105,6 +1105,10 @@
   flex: 1;
 }
 
+.views-exposed-form .kamihaya-filter-grouping-container .form-item:last-child {
+  margin-right: 0;
+}
+
 .views-element-container .view-content .media img {
   margin: 0 auto;
 }

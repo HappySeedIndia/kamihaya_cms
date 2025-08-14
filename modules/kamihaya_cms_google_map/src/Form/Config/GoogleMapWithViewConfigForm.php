@@ -163,6 +163,28 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
       '#default_value' => 'top',
     ];
 
+    $form['pages']['new_page']['layout_settings'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Layout Settings'),
+      '#open' => TRUE,
+    ];
+
+    $form['pages']['new_page']['layout_settings']['map_min_height_pc'] = [
+      '#type' => 'number',
+      '#title' => $this->t('PC Map Minimum Height'),
+      '#default_value' => $page['map_min_height_pc'] ?? 400,
+      '#description' => $this->t('Minimum height of the map on PC (in pixels).'),
+      '#min' => 100,
+    ];
+
+    $form['pages']['new_page']['layout_settings']['view_height_sp'] = [
+      '#type' => 'number',
+      '#title' => $this->t('SP View Height'),
+      '#default_value' => $page['view_height_sp'] ?? 450,
+      '#description' => $this->t('Height of the view on SP (in pixels).'),
+      '#min' => 100,
+    ];
+
     $form['pages']['new_page']['autocomplete_settings'] = [
       '#type' => 'details',
       '#title' => $this->t('Autocomplete Settings'),
@@ -363,6 +385,28 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
       '#default_value' => $page['sp_position'] ?? 'top',
     ];
 
+    $form['layout_settings'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Layout Settings'),
+      '#open' => TRUE,
+    ];
+
+    $form['layout_settings']['map_min_height_pc'] = [
+      '#type' => 'number',
+      '#title' => $this->t('PC Map Minimum Height'),
+      '#default_value' => $page['map_min_height_pc'] ?? 400,
+      '#description' => $this->t('Minimum height of the map on PC (in pixels).'),
+      '#min' => 100,
+    ];
+
+    $form['layout_settings']['view_height_sp'] = [
+      '#type' => 'number',
+      '#title' => $this->t('SP View Height'),
+      '#default_value' => $page['view_height_sp'] ?? 450,
+      '#description' => $this->t('Height of the view on SP (in pixels).'),
+      '#min' => 100,
+    ];
+
     $form['autocomplete_settings'] = [
       '#type' => 'details',
       '#title' => $this->t('Autocomplete Settings'),
@@ -530,6 +574,12 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
           $parts = explode('-', $page_data['view_block'], 2);
           $page_data['view_name'] = $parts[0];
           $page_data['view_display'] = isset($parts[1]) ? $parts[1] : 'default';
+        }
+
+        if (!empty($page_data['layout_settings'])) {
+          $page_data['map_min_height_pc'] = $page_data['layout_settings']['map_min_height_pc'] ?? 400;
+          $page_data['view_height_sp'] = $page_data['layout_settings']['view_height_sp'] ?? 450;
+          unset($page_data['layout_settings']);
         }
 
         if (!empty($page_data['autocomplete_settings'])) {

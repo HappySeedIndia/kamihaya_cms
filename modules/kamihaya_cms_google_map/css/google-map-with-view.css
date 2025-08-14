@@ -65,9 +65,16 @@
   width: 100%;
 }
 
-.google-map-wrapper #map{
-  min-height: 300px;
+.google-map-wrapper #map {
+  min-height: 500px;
   /* Adjust as needed */
+}
+
+@media (max-width: 767px) {
+  .google-map-wrapper #map {
+    height: 50vh !important;
+    min-height: 300px;
+  }
 }
 
 /* Spacing adjustment for horizontal layouts */
@@ -254,6 +261,12 @@ body.map-search-loading {
   }
 }
 
+@media (max-width: 600px) {
+  .gm-style-iw {
+    max-width: 85vw !important;
+  }
+}
+
 @media (max-width: 480px) {
   .map-search-button {
     font-size: 11px;
@@ -335,11 +348,5 @@ gmp-place-autocomplete {
 
 #location-view .view-content {
   position: relative;
-  overflow-y: scroll;
-}
-
-@media (max-width: 767px) {
-  #location-view .view-content {
-    max-height: 450px;
-  }
+  overflow-y: auto;
 }
