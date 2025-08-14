@@ -172,7 +172,7 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
     $form['pages']['new_page']['layout_settings']['map_min_height_pc'] = [
       '#type' => 'number',
       '#title' => $this->t('PC Map Minimum Height'),
-      '#default_value' => $page['map_min_height_pc'] ?? 400,
+      '#default_value' => $page['map_min_height_pc'] ?? 500,
       '#description' => $this->t('Minimum height of the map on PC (in pixels).'),
       '#min' => 100,
     ];
@@ -394,7 +394,7 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
     $form['layout_settings']['map_min_height_pc'] = [
       '#type' => 'number',
       '#title' => $this->t('PC Map Minimum Height'),
-      '#default_value' => $page['map_min_height_pc'] ?? 400,
+      '#default_value' => $page['map_min_height_pc'] ?? 500,
       '#description' => $this->t('Minimum height of the map on PC (in pixels).'),
       '#min' => 100,
     ];
