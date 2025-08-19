@@ -864,28 +864,22 @@ function kamihaya_digitalagency_preprocess_views_view_grid(&$variables) {
  * This function is intentionally left empty as it is not used in this theme.
  */
 function kamihaya_digitalagency_preprocess_addtoany_standard(&$variables) {
-  if (empty($variables['button_image'])) {
+  if (!\Drupal::moduleHandler()->moduleExists('addtoany') || empty($variables['button_image'])) {
     return;
   }
-  $button_image = $variables['button_image'];
-  $public_path = Settings::get('file_public_path', 'sites/default/files');
-
-  if (strrpos($public_path, '/') !== strlen($public_path) - 1) {
-    // If the public path does not end with a slash, add it.
-    $public_path .= '/';
-  }
-
-  if (strpos($button_image, $public_path) === FALSE) {
-    // If the button image is not in the public path, do not process it.
+  // Check if the custom universal button is set in the AddToAny settings.
+  $config = \Drupal::config('addtoany.settings');
+  if (empty($config) || empty($config->get('custom_universal_button'))) {
     return;
   }
-  $button_image = str_replace($public_path, '', $button_image);
-  if (strpos($button_image, '/') === 0) {
-    // If the button image starts with a slash, remove it.
-    $button_image = substr($button_image, 1);
+
+  // If the custom universal button is set, generate the absolute URL for it.
+  $button_path = $config->get('custom_universal_button');
+  if (strpos($button_path, '://') === FALSE) {
+    return;
   }
 
   $file_url_generator = \Drupal::service('file_url_generator');
-  $uri = "public://$button_image";
-  $variables['button_image'] = $file_url_generator->generateAbsoluteString($uri);
+  // Generate the absolute URL for the button image.
+  $variables['button_image'] = $file_url_generator->generateAbsoluteString($button_path);
 }
