@@ -875,10 +875,11 @@ function kamihaya_digitalagency_preprocess_addtoany_standard(&$variables) {
 
   // If the custom universal button is set, generate the absolute URL for it.
   $button_path = $config->get('custom_universal_button');
-  if (strpos($button_path, '://') === FALSE) {
+  if (strpos($button_path, 'public://') === FALSE && strpos($button_path, 'private://') === FALSE) {
     return;
   }
 
+  /* @var Drupal\Core\File\FileUrlGeneratorInterface $file_url_generator */
   $file_url_generator = \Drupal::service('file_url_generator');
   // Generate the absolute URL for the button image.
   $variables['button_image'] = $file_url_generator->generateAbsoluteString($button_path);
