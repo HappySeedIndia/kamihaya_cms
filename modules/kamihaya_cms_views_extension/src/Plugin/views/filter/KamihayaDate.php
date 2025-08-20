@@ -118,7 +118,7 @@ class KamihayaDate extends Date {
   /**
    * {@inheritdoc}
    */
-  public function validateExposed(&$form, FormStateInterface $form_state) {
+  public function validateExposed(&$form, FormStateInterface $form_state): void {
     if (empty($this->options['exposed'])) {
       return;
     }
