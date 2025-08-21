@@ -89,22 +89,24 @@ class FeedsSubscriber implements EventSubscriberInterface {
    *   Whether the item is a translation.
    */
   protected function alterItem(FeedInterface $feed, ItemInterface $item, array $tampers_by_source, $is_translation = FALSE) {
-    $tamperable_item = new TamperableFeedItemAdapter($item);
     // Get the processor configuration.
     $processor_config = $feed->getType()->getProcessor()->getConfiguration();
     // Get the additional language code.
     $addtional_langcode = !empty($processor_config['addtional_langcode']) ? $processor_config['addtional_langcode'] : '';
+
+    $tamperable_item = new TamperableFeedItemAdapter($item);
+
     $langcode = explode('_', $addtional_langcode)[0];
     $item_array = $item->toArray();
     foreach ($tampers_by_source as $source => $tampers) {
       try {
+        if (!array_key_exists($source, $item_array)) {
+          continue;
+        }
         // Get the value for a source.
         $item_value = $item->get($source);
-        if (!isset($item_array[$source])) {
-          $item_value = '';
-        }
-        $multiple = is_array($item_value) && !empty($item_value);
 
+        $multiple = is_array($item_value) && !empty($item_value);
         /** @var \Drupal\tamper\TamperInterface $tamper */
         foreach ($tampers as $tamper) {
           if (!($tamper instanceof KamihayaTamperInterface) && !$is_translation) {
