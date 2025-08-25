@@ -232,7 +232,7 @@ function kamihaya_digitalagency_preprocess_breadcrumb(&$variables){
     }
     $breadcrumb[] = $item['text'];
   }
-  if(($node = \Drupal::routeMatch()->getParameter('node')) && $variables['breadcrumb'] && !in_array($node->getTitle(), $breadcrumb)) {
+  if(($node = \Drupal::routeMatch()->getParameter('node')) && $variables['breadcrumb'] && !in_array(strtolower($node->getTitle()), array_map('strtolower', $breadcrumb))) {
     $variables['breadcrumb'][] = [
       'text' => $node->getTitle()
     ];
