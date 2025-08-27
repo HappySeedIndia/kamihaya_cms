@@ -651,6 +651,13 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     if (empty($fetcher_config['unpublish_content'])) {
       return;
     }
+
+    $source = $feed->getSource();
+    if (!empty($source)) {
+      // If source is set, unpublishing should be skipped.
+      return;
+    }
+
     // Re-create the results array to contain only the IDs.
     $result_ids = array_map(function ($item) {
       return $item['ID'];

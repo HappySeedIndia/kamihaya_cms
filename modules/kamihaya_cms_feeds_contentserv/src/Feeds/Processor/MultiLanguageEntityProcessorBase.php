@@ -46,6 +46,12 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
     // Update multi value fields before mapping.
     $this->updateMultiValueFields($item);
 
+    // Set new revision if needed.
+    if ($this->configuration['revision']) {
+      $entity->setNewRevision(TRUE);
+      $entity->setRevisionCreationTime($this->dateTime->getRequestTime());
+    }
+
     // Set field values.
     $this->mapTranslation($feed, $source_entity, $entity, $item);
 

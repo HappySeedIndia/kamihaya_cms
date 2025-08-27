@@ -23,6 +23,13 @@ class ContentservApiFetcherFeedForm extends ExternalPluginFormBase {
       '#type' => 'datetime',
       '#default_value' => new DrupalDateTime(date('Y-m-d H:i:s', $last_import_start_time)),
     ];
+    $form['source'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Data IDs'),
+      '#description' => $this->t('Comma-separated IDs of the data to fetch.<br/>If this is set, ignore the Last imported time.'),
+      '#default_value' => $feed->getSource(),
+      '#maxlength' => 768,
+    ];
     return $form;
   }
 
@@ -33,6 +40,9 @@ class ContentservApiFetcherFeedForm extends ExternalPluginFormBase {
     $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
     $feed_config['last_import_start_time'] = strtotime($form_state->getValue('last_import_start_time')->format('Y-m-d H:i:s'));
     $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
+
+    // Set the source to the feed.
+    $feed->setSource($form_state->getValue('source'));
   }
 
 }

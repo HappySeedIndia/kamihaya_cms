@@ -69,31 +69,48 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
    * {@inheritdoc}
    */
   public function fetch(FeedInterface $feed, StateInterface $state) {
+    // Get the feed configuration for the fetcher.
+    $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
+    // Get the ID of the data to work on.
+    $source = $feed->getSource();
+    // Get the last imported time from the feed configuration.
+    $last_imported_time = 0;
+    if ($this->configuration['filter_by_date'] || !empty($source)) {
+      // Get the last imported time to fetch only the changed data.
+      if (!empty($feed_config['last_import_start_time'])) {
+        $last_imported_time = $feed_config['last_import_start_time'];
+      }
+      if (empty($last_imported_time) && !empty($feed->getImportedTime())) {
+        $last_imported_time = $feed->getImportedTime();
+      }
+      if (empty($source)) {
+        // Update the last import start time to the current time.
+        $feed_config['last_import_start_time'] = time();
+        $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
+      }
+    }
+
+    $results = [];
+    if (!empty($source)) {
+      $ids = explode(',', $source);
+      $ids = array_map('trim', $ids);
+      foreach ($ids as $id) {
+        // Add the ID and last imported time to the results.
+        // Set last imported time as Changed for not skipping the data.
+        $results[] = ['ID' => $id, 'Changed' => date('Y-m-d H:i:s', $last_imported_time + 1)];
+      }
+      return new ContentservApiFetcherResult($results, '');
+    }
+
     $url = $this->configuration['json_api_url'];
     $data_type = $this->configuration['data_type'];
     $list_url = '/core/v1/' . strtolower($data_type) . '/changes/';
-    $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
-    $results = [];
 
     try {
       // Get the access token.
       $token = $this->getAccessToken($feed, $url);
       // Get the filters for the request.
       $filters = $this->createRequestFilters();
-
-      $last_imported_time = 0;
-      if ($this->configuration['filter_by_date']) {
-        // Get the last imported time to fetch only the changed data.
-        if (!empty($feed_config['last_import_start_time'])) {
-          $last_imported_time = $feed_config['last_import_start_time'];
-        }
-        if (empty($last_imported_time) && !empty($feed->getImportedTime())) {
-          $last_imported_time = $feed->getImportedTime();
-        }
-        // Update the last import start time to the current time.
-        $feed_config['last_import_start_time'] = time();
-        $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);
-      }
 
       $options = [
         RequestOptions::QUERY => [
