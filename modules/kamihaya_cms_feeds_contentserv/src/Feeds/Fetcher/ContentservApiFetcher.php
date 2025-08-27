@@ -133,7 +133,7 @@ class ContentservApiFetcher extends PluginBase implements FetcherInterface, Cont
             throw new EmptyFeedException(strtr('@name: No additional data found while fetching data.', ['@name' => $feed->label()]));
           }
           array_walk($result["{$data_type}s"], function (&$item) {
-            $item = array_intersect_key($item, ['ID' => '']);
+            $item = array_intersect_key($item, ['ID' => '', 'Changed' => '']);
           });
           $results = array_merge($results, $result["{$data_type}s"]);
         }
