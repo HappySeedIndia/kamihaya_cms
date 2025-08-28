@@ -283,11 +283,38 @@ function _kamihaya_cms_field_marker_add_marker(array &$variables, array $bundle_
     ], $region_content);
     return;
   }
+
+  // Get the group hierarchy for title field.
+  $title_groups = [];
+  if (strpos($position, 'title_') === 0 && !empty($variables['content']['#group_children']['node_title'])) {
+    $title_groups[] = $variables['content']['#group_children']['node_title'];
+    foreach($title_groups as $title_group) {
+      if (empty($variables['content']['#group_children'][$title_group])) {
+        break;
+      }
+      $title_groups[] = $variables['content']['#group_children'][$title_group];
+    }
+  }
+
+  // Reverse the title groups to match the order of the regions.
+  $title_groups = array_reverse($title_groups);
+
   foreach ($regions as $region) {
     $region_content = &$variables['content'][$region];
     if (empty($region_content)) {
       continue;
     }
+
+    // Get the group content including the title field.
+    if (strpos($position, 'title_') === 0 && !empty($title_groups)) {
+      foreach ($title_groups as $title_group) {
+        if (empty($region_content[$title_group])) {
+          break;
+        }
+        $region_content = &$region_content[$title_group];
+      }
+    }
+
     if (strpos($position, 'title_') === 0 && !array_key_exists('node_title', $region_content)) {
       continue;
     }
@@ -409,41 +436,6 @@ function kamihaya_cms_field_marker_preprocess_page_title(array &$variables) {
   }
   // Set the cache max-age to 1 day.
   $variables['#cache']['max-age'] = 60 * 60 * 24;
-}
-
-/**
- * Create the marker tag.
- *
- * @param array $marker_setting
- *  The marker setting.
- * @param string $field_name
- *  The field name.
- * @param string $field_type
- *  The field type.
- * @param string $field_value
- *  The field value.
- */
-function _kamihaya_cms_field_marker_create_marker(array $marker_setting, $field_name, $field_type, $field_value, $is_node_page = TRUE) {
-  if (empty($marker_setting['display_marker'])) {
-    return;
-  }
-  $condition = $marker_setting['condtion'];
-  $display = FALSE;
-  if ($field_type === 'datetime') {
-    $operator = $marker_setting['operator'];
-    $condition_time = (new \DateTime($condition))->getTimestamp();
-    $field_time = (new \DateTime($field_value))->getTimestamp();
-    $display = eval("return $condition_time $operator $field_time;");
-  }
-  if ($field_type === 'boolean') {
-    $display = $condition ? !$field_value : $field_value;
-  }
-  $marker_label = $marker_setting['marker_label'];
-  $position = str_replace('_', '-', ($is_node_page ? $marker_setting['marker_position'] : $marker_setting['marker_view_position']));
-  if ($display) {
-    $name = str_replace('_', '-', $field_name);
-    return "<div class='kamihaya-marker marker-{$position} marker-{$name}'>{$marker_label}</div>";
-  }
 }
 
 /**
