@@ -1934,7 +1934,7 @@ iframe[title="YouTube video player"] {
   text-decoration: none;
 }
 
-.views-element-container .qa-view-list .view-content .kamihaya-marker {
+.views-element-container .qa-view-list .view-content .kamihaya-marker:has(i) {
   font-size: 24px;
   padding: 0;
 }
