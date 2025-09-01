@@ -123,6 +123,8 @@
   --bs-form-invalid-color: #dc3545;
   --bs-form-invalid-border-color: #dc3545;
   --bs-site-max-width: 1320px;
+  --bs-breadcrumb-color: #484848;
+  --bs-breadcrumb-light-color: #f4f5f7;
 }
 
 [data-bs-theme=dark] {
