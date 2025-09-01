@@ -894,6 +894,21 @@ html[lang='ja'] .form-required:after {
   height: 1rem;
 }
 
+.breadcrumb li,
+.breadcrumb li a {
+  color: var(--bs-breadcrumb-color);
+  text-decoration: none;
+}
+
+.text-light .breadcrumb li,
+.text-light .breadcrumb li a {
+  color: var(--bs-breadcrumb-light-color);
+}
+
+.breadcrumb li a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 575px) {
   .pagination {
     gap: 24px;
