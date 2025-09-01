@@ -2050,8 +2050,13 @@ a:hover .btn.border-hover-dark-grey {
 }
 @media (max-width: 767px) {
   .view.top-5-col-grid .view-content .views-field a .bg-light-grey {
-    width: 165px;
-    height: 165px;
+    width: 100%;
+    height: auto;
+  }
+
+  .b-grid > .grid:has(.bg-light-grey) {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
   }
 }
 /* Top carousel icon changes */
