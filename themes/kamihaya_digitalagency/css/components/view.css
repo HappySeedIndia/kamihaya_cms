@@ -3,7 +3,8 @@
 .view .view-footer {
   width: 100%;
 }
-.view .view-content caption h2:after {
+.view .view-content caption h2:after,
+.view .view-header h2:after {
   display: none;
 }
 
