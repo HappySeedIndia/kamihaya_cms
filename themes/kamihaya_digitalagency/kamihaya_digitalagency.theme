@@ -230,7 +230,7 @@ function kamihaya_digitalagency_preprocess_breadcrumb(&$variables){
       unset($variables['breadcrumb'][$idx]);
       continue;
     }
-    $breadcrumb[] = $item['text'];
+    $breadcrumb[] = is_array($item['text']) && !empty($item['text']['#markup']) ? $item['text']['#markup'] : $item['text'];
   }
   if(($node = \Drupal::routeMatch()->getParameter('node')) && $variables['breadcrumb'] && !in_array(strtolower($node->getTitle()), array_map('strtolower', $breadcrumb))) {
     $variables['breadcrumb'][] = [
