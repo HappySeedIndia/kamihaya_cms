@@ -4,7 +4,7 @@
   width: 100%;
 }
 .view .view-content caption h2:after,
-.view .view-header h2:after {
+.view .view-header h2:not([class^="title-style"]):after {
   display: none;
 }
 
