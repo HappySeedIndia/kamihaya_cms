@@ -1974,11 +1974,15 @@ iframe[title="YouTube video player"] {
   object-fit: contain;
 }
 
-.main-content .faq-top.views-exposed-form .form--inline div.text-button,
-.main-content .faq-top.views-exposed-form .form--inline div.form-item,
-.main-content .faq-search.views-exposed-form .form--inline div.text-button,
-.main-content .faq-search.views-exposed-form .form--inline div.form-item {
+.main-content .filter-wide.views-exposed-form .form--inline div.text-button,
+.main-content .filter-wide.views-exposed-form .form--inline div.form-item {
   max-width: 650px;
+}
+
+@media (min-width: 768px) {
+  .main-content .views-exposed-form .form--inline .dropdown-filter-group div.form-item {
+    max-width: max-content;
+  }
 }
 
 .form-container {
