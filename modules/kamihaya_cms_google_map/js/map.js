@@ -99,6 +99,9 @@
   function adjustLocationHeight() {
     locationElement = document.getElementById('location-view');
     locationContent = locationElement.querySelector('.view-content');
+    if (!locationContent) {
+      return;
+    }
     const offsetTop = locationContent.getBoundingClientRect().top + window.scrollY;
     const mapOffsetTop = mapElement ? mapElement.getBoundingClientRect().top + window.scrollY : 0;
     const mapHeight = mapElement ? parseInt(mapElement.getBoundingClientRect().height, 10) : 0;
@@ -225,7 +228,7 @@
 
   // Clear all markers from the map.
   function clearMarkers() {
-    markers.forEach(function (marker) {
+    Object.values(markers).forEach(function (marker) {
       marker.setMap(null);
     });
     markers = [];
@@ -244,7 +247,7 @@
       marker.addListener('click', function () {
         diplayInfoWindow(marker, location.nid);
       });
-      markers.push(marker);
+      markers[location.nid] = marker;
     });
   }
 
@@ -499,6 +502,28 @@
               // Attach Drupal behaviors to the new view element.
               Drupal.attachBehaviors(viewDiv);
               adjustLocationHeight();
+              const nids = viewDiv.querySelectorAll("div[data-nid]");
+              if (nids.length > 0) {
+                // Clear existing markers before adding new ones.
+                nids.forEach(nidElement => {
+                  const nid = nidElement.getAttribute('data-nid');
+                  if (nid) {
+                    const marker = markers[nid];
+                    if (marker) {
+                      // Add hover event listener to the marker.
+                      nidElement.addEventListener('mouseenter', function () {
+                        diplayInfoWindow(marker, nid);
+                      });
+                      nidElement.addEventListener('mouseleave', function () {
+                        if (infoWindow) {
+                          infoWindow.close();
+                          infoWindow = null;
+                        }
+                      });
+                    }
+                  }
+                });
+              }
             }
           }
           const viewContentWrapper = document.getElementsByClassName('view-content-wrapper')[0];
