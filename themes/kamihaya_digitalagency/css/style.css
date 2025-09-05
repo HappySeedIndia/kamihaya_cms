@@ -8661,6 +8661,24 @@ footer .navbar-nav a.is-active {
   line-height: 2 !important;
 }
 
+@media (max-width: 767px) {
+  .sp-lh-1 {
+    line-height: 1 !important;
+  }
+
+  .sp-lh-sm {
+    line-height: 1.25 !important;
+  }
+
+  .sp-lh-base {
+    line-height: 1.5 !important;
+  }
+
+  .sp-lh-lg {
+    line-height: 2 !important;
+  }
+}
+
 .text-start {
   text-align: left !important;
 }
@@ -13399,4 +13417,30 @@ code {
 
 .ls-5 {
   letter-spacing: 5px !important;
+}
+
+@media (max-width: 767px) {
+  .sp-ls-0 {
+    letter-spacing: 0 !important;
+  }
+
+  .sp-ls-1 {
+    letter-spacing: 1px !important;
+  }
+
+  .sp-ls-2 {
+    letter-spacing: 2px !important;
+  }
+
+  .sp-ls-3 {
+    letter-spacing: 3px !important;
+  }
+
+  .sp-ls-4 {
+    letter-spacing: 4px !important;
+  }
+
+  .sp-ls-5 {
+    letter-spacing: 5px !important;
+  }
 }
