@@ -1,0 +1,10 @@
+status: 1
+dependencies: {  }
+id: google_pixel_9_pro_xl
+label: 'Google Pixel 9 Pro XL'
+weight: 0
+orientation: portrait
+dimensions:
+  width: 1344
+  height: 2992
+  dppx: 3.0

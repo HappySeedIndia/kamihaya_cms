@@ -1,0 +1,10 @@
+status: 1
+dependencies: {  }
+id: google_pixel_9
+label: 'Google Pixel 9'
+weight: 0
+orientation: portrait
+dimensions:
+  width: 1080
+  height: 2424
+  dppx: 3.0
