@@ -23,6 +23,7 @@ dependencies:
   - string_field_formatter:string_field_formatter
   - svg_image:svg_image
   - viewsreference:viewsreference
+  - webp:webp
   - kamihaya_cms_common:kamihaya_cms_common
   - kamihaya_cms_content_type:kamihaya_cms_content_type
 

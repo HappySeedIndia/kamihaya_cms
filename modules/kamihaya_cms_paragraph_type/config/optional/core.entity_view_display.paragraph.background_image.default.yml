@@ -14,6 +14,7 @@ dependencies:
     - field.field.paragraph.background_image.field_vertical_margin
     - field.field.paragraph.background_image.field_width
     - field.field.paragraph.background_image.field_width_unit
+    - image.style.convert_to_webp
     - paragraphs.paragraphs_type.background_image
   module:
     - blazy
@@ -57,7 +58,7 @@ content:
       responsive_image_style: ''
       use_theme_field: false
       box_style: ''
-      image_style: ''
+      image_style: convert_to_webp
       media_switch: ''
       ratio: ''
       thumbnail_style: ''
@@ -100,7 +101,7 @@ content:
       responsive_image_style: ''
       use_theme_field: false
       box_style: ''
-      image_style: ''
+      image_style: convert_to_webp
       media_switch: ''
       ratio: ''
       thumbnail_style: ''

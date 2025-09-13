@@ -56,7 +56,7 @@
       {% set imageLink = content.field_image_link.0['#url'] %}
 
       {# Image url #}
-      {% set imageUrl = file_url(content.field_image.0['#item'].entity.uri.value) %}
+      {% set imageUrl = content.field_image_url %}
       {% set width = paragraph.field_width.0.value %}
       {% set width_unit = paragraph.field_width_unit.0.value %}
       {% set mobile_height = paragraph.field_mobile_height.0.value %}
@@ -158,7 +158,7 @@
         {# Image #}
         {% if content.field_image|render %}
           {% if content.field_mobile_image|render %}
-            {% set mobileImageUrl = file_url(content.field_mobile_image.0['#item'].entity.uri.value) %}
+            {% set mobileImageUrl = content.field_mobile_image_url %}
               <picture>
                 <source srcset="{{ mobileImageUrl }}" media="(max-width:767px)">
           {% endif %}

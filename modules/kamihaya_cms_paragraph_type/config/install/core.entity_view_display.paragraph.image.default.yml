@@ -9,6 +9,7 @@ dependencies:
     - field.field.paragraph.image.field_mobile_image
     - field.field.paragraph.image.field_width
     - field.field.paragraph.image.field_width_unit
+    - image.style.convert_to_webp
     - paragraphs.paragraphs_type.image
   module:
     - options
@@ -46,7 +47,7 @@ content:
     label: hidden
     settings:
       image_link: ''
-      image_style: ''
+      image_style: convert_to_webp
       image_loading:
         attribute: lazy
       svg_attributes:
@@ -61,7 +62,7 @@ content:
     label: hidden
     settings:
       image_link: ''
-      image_style: ''
+      image_style: convert_to_webp
       image_loading:
         attribute: lazy
       svg_attributes:

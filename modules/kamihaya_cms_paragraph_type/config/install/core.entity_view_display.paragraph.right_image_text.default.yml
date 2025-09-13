@@ -4,9 +4,10 @@ dependencies:
   config:
     - field.field.paragraph.right_image_text.field_image
     - field.field.paragraph.right_image_text.field_text
+    - image.style.convert_to_webp
     - paragraphs.paragraphs_type.right_image_text
   module:
-    - image
+    - svg_image
 id: paragraph.right_image_text.default
 targetEntityType: paragraph
 bundle: right_image_text
@@ -17,9 +18,13 @@ content:
     label: hidden
     settings:
       image_link: ''
-      image_style: ''
+      image_style: convert_to_webp
       image_loading:
         attribute: lazy
+      svg_attributes:
+        width: null
+        height: null
+      svg_render_as_image: true
     third_party_settings: {  }
     weight: 0
     region: content

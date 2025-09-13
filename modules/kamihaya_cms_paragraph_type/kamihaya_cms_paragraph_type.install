@@ -4,7 +4,6 @@ use Drupal\Core\Serialization\Yaml;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
-use Drupal\paragraphs\Entity\ParagraphsType;
 
 /**
  * Update configs.
@@ -530,4 +529,60 @@ function kamihaya_cms_paragraph_type_update_10015() {
     'field_row_label_class',
     'field_row_data_class',
   ], 'optional');
+}
+
+/**
+ * Change the image style of image related paragraphs.
+ */
+function kamihaya_cms_paragraph_type_update_10016() {
+  $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load('convert_to_webp');
+  if (!$image_style) {
+    return;
+  }
+
+  $paragraph_types = [
+    'image' => [
+      'field_image',
+      'field_mobile_image',
+    ],
+    'image_link' => [
+      'field_image',
+      'field_mobile_image',
+    ],
+    'left_image_text' => [
+      'field_image',
+    ],
+    'right_image_text' => [
+      'field_image',
+    ],
+    'background_image' => [
+      'field_background_image',
+      'field_background_mobile_image',
+    ],
+  ];
+
+  foreach ($paragraph_types as $paragraph => $fields) {
+    foreach ($fields as $field_name) {
+      _kamihaya_cms_common_set_field_display(
+        'kamihaya_cms_paragraph_type',
+        'paragraph',
+        $paragraph,
+        $field_name,
+        $paragraph === 'background_image' ? 'optional' : 'install',
+        FALSE,
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_update_dependencies().
+ */
+function kamihaya_cms_paragraph_type_update_dependencies() {
+  $dependencies['kamihaya_cms_paragraph_type'] = [
+    10016 => [
+      'kamihaya_cms_media_type' => 10005,
+    ],
+  ];
+  return $dependencies;
 }
