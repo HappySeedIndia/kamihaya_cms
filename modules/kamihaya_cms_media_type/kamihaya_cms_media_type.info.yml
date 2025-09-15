@@ -11,6 +11,7 @@ dependencies:
   - drupal:views
   - imce:imce
   - scheduler:scheduler
+  - svg_image:svg_image
   - webp:webp
   - kamihaya_cms_common:kamihaya_cms_common
 
