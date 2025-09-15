@@ -73,6 +73,7 @@ install:
   - viewsreference
   - webform
   - webform_ui
+  - webp
   - gin_toolbar
   - kamihaya_cms_faq
   - kamihaya_cms_field_marker

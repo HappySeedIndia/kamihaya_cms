@@ -73,9 +73,9 @@
         %}
       {% endif %}
       {# Image url #}
-      {% set imageUrl = file_url(content.field_image.0['#item'].entity.uri.value) %}
+      {% set imageUrl = content.field_image_url %}
       {% if content.field_mobile_image|render %}
-        {% set mobileImageUrl = file_url(content.field_mobile_image.0['#item'].entity.uri.value) %}
+        {% set mobileImageUrl = content.field_mobile_image_url %}
         <picture>
           <source srcset="{{ mobileImageUrl }}" media="(max-width:767px)">
       {% endif %}

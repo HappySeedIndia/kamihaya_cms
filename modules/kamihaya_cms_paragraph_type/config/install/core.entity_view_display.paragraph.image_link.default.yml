@@ -1,4 +1,4 @@
-langcode: en
+langcode: ja
 status: true
 dependencies:
   config:
@@ -30,6 +30,7 @@ dependencies:
     - field.field.paragraph.image_link.field_text_bg_width_unit
     - field.field.paragraph.image_link.field_width
     - field.field.paragraph.image_link.field_width_unit
+    - image.style.convert_to_webp
     - paragraphs.paragraphs_type.image_link
   module:
     - color_field
@@ -64,7 +65,7 @@ content:
     label: hidden
     settings:
       image_link: ''
-      image_style: ''
+      image_style: convert_to_webp
       image_loading:
         attribute: lazy
       svg_attributes:
@@ -212,7 +213,7 @@ content:
     label: hidden
     settings:
       image_link: ''
-      image_style: ''
+      image_style: convert_to_webp
       image_loading:
         attribute: lazy
       svg_attributes:

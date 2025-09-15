@@ -94,3 +94,29 @@ function kamihaya_cms_media_type_update_10004() {
     }
   }
 }
+
+/**
+ * Add convert to webp image style.
+ */
+function kamihaya_cms_media_type_update_10005() {
+  $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load('convert_to_webp');
+  if ($image_style) {
+    return;
+  }
+
+  _kamihaya_cms_common_change_configs('kamihaya_cms_media_type' , [
+    'image.style.convert_to_webp.yml',
+  ], 'install');
+}
+
+/**
+ * Implements hook_update_dependencies().
+ */
+function kamihaya_cms_media_type_update_dependencies() {
+  $dependencies['kamihaya_cms_media_type'] = [
+    10005 => [
+      'kamihaya_cms' => 10009,
+    ],
+  ];
+  return $dependencies;
+}

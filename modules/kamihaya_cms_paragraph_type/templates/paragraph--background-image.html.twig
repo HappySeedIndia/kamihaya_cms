@@ -56,7 +56,7 @@
 {% block paragraph %}
   {% block content %}
     <div{{attributes.addClass(classes)}}>
-      {% set imageUrl = file_url(content.field_background_image.0['#item'].entity.uri.value) %}
+      {% set imageUrl = content.field_background_image_url %}
       {% set width = paragraph.field_width.0.value %}
       {% set width_unit = paragraph.field_width_unit.0.value %}
       {% set align = content.field_align|render|striptags|trim|lower %}
@@ -89,7 +89,7 @@
         %}
       {% endif %}
       {% if content.field_background_mobile_image|render %}
-        {% set mobileImageUrl = file_url(content.field_background_mobile_image.0['#item'].entity.uri.value) %}
+        {% set mobileImageUrl = content.field_background_mobile_image_url %}
         <style>
           @media (max-width: 767px) {
             .paragraph-id--{{ paragraph_id }} .bg-image {

@@ -1,6 +1,8 @@
 <?php
 
-use \Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\image\Entity\ImageStyle;
+use Drupal\media\MediaInterface;
 
 /**
  * Implements hook_theme().
@@ -97,6 +99,59 @@ function kamihaya_cms_paragraph_type_field_widget_single_element_layout_paragrap
  */
 function kamihaya_cms_paragraph_type_preprocess_paragraph(array &$variables) {
   $paragraph = $variables['paragraph'];
+  if (strpos($paragraph->getType(), 'image') !== FALSE) {
+    // Add image URL to the content.
+    // This is used to generate the image URL for the paragraph.
+    foreach ($variables['content'] as $key => $field) {
+      if (!is_array($field) || empty($field['#field_type']) || ($field['#field_type'] !== 'image' && $field['#field_type'] !== 'entity_reference')) {
+        continue;
+      }
+      if ($field['#field_type'] === 'image') {
+        $item = $field[0]['#item'] ?? null;
+        if (empty($item)) {
+          continue;
+        }
+        // Get the file ID from the item.
+        $fid = $item->get('target_id')->getValue();
+        // Get the image style from the field.
+        $image_style = $field[0]['#image_style'] ?? 'default';
+      }
+      if ($field['#field_type'] === 'entity_reference') {
+        $entity = $field[0]['#entity'] ?? null;
+        // Check if the entity is a media entity and has an image field.
+        if (empty($entity) || !($entity instanceof MediaInterface) || $entity->bundle() !== 'image') {
+          continue;
+        }
+        // Get the file ID from the media entity.
+        $fid = $entity->get('field_media_image')->target_id;
+        // Get the image style from the field.
+        $image_style = $field[0]['#image_style'] ?? 'default';
+      }
+      if (empty($fid)) {
+        continue;
+      }
+      /* @var \Drupal\file\FileInterface $file */
+      $file = \Drupal::entityTypeManager()->getStorage('file')->load($fid);
+      if (empty($file)) {
+        continue;
+      }
+
+      // Get the file URI and generate the image style URL.
+      $uri = $file->getFileUri();
+      $style = ImageStyle::load($image_style);
+
+      if (empty($style)) {
+        continue;
+      }
+      // Generate the URL for the image style.
+      $style->createDerivative($uri, $style->buildUri($uri));
+      $style_url = $style->buildUrl($uri);
+      $parsed_url = parse_url($style_url);
+      $relative_path = $parsed_url['path'];
+      $variables['content']["{$key}_url"] = $relative_path ?? $uri;
+    }
+  }
+
   if ($paragraph->bundle() === 'modal_dialog') {
     $variables['#attached']['drupalSettings']['modal_dialog']['default_open'] = $paragraph->get('field_default_open')->value;
     $variables['#attached']['drupalSettings']['modal_dialog']['cookie_name'] = $paragraph->get('field_cookie_name')->value;
