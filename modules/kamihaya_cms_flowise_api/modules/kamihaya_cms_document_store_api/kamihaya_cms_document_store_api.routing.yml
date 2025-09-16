@@ -1,0 +1,17 @@
+kamihaya_cms_document_store_api.settings:
+  path: '/admin/config/services/flowise/document_store_api'
+  defaults:
+    _form: '\Drupal\kamihaya_cms_document_store_api\Form\Config\SettingsForm'
+    _title: 'Document Store API Settings'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+kamihaya_cms_document_store_api.upsert:
+  path: '/admin/flowise/document_store_upsert'
+  defaults:
+    _title: 'Document Store Upsert'
+    _form: 'Drupal\kamihaya_cms_document_store_api\Form\DocumentStoreUpsertForm'
+  requirements:
+    _permission: 'administer site configuration'

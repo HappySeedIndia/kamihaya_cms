@@ -1,0 +1,10 @@
+name: 'Kamihaya CMS Document Store API'
+type: module
+description: 'Provide integration with Flowise API for document store.'
+package: Flowise
+core_version_requirement: ^10 || ^11
+
+dependencies:
+  - kamihaya_cms_flowise_api:kamihaya_cms_flowise_api
+
+configure: kamihaya_cms_document_store_api.settings

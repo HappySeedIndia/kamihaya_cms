@@ -1,0 +1,15 @@
+system.flowise:
+  route_name: system.flowise
+  parent: system.admin
+  description: 'Manage Flowise settings and operations.'
+  title: Flowise
+  weight: -20
+  options:
+   class: ['fa-regular', 'fa-diagram-project']
+
+kamihaya_cms_flowise_api.settings:
+  title: 'Flowise Settings'
+  description: 'Configure Flowise API settings.'
+  route_name: kamihaya_cms_flowise_api.settings
+  parent: system.admin_config_system
+  weight: 10
