@@ -141,6 +141,7 @@ function kamihaya_cms_paragraph_type_preprocess_paragraph(array &$variables) {
       $style = ImageStyle::load($image_style);
 
       if (empty($style)) {
+        $variables['content']["{$key}_url"] = $file->createFileUrl();
         continue;
       }
       // Generate the URL for the image style.
