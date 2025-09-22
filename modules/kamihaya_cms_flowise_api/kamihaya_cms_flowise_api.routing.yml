@@ -1,0 +1,17 @@
+system.flowise:
+  path: '/admin/flowise'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Flowise'
+  requirements:
+    _permission: 'access administration pages'
+
+kamihaya_cms_flowise_api.settings:
+  path: '/admin/config/services/flowise'
+  defaults:
+    _form: '\Drupal\kamihaya_cms_flowise_api\Form\Config\FlowiseApiSettingsForm'
+    _title: 'Flowise Settings'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

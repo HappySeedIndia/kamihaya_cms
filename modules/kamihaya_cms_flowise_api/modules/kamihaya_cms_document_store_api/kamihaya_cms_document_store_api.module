@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * Implements hook_cron().
+ */
+function kamihaya_cms_document_store_api_cron(): void {
+  $config = \Drupal::config('kamihaya_cms_document_store_api.settings');
+  $interval = $config->get('upsert_interval') ?? 3600;
+
+  if ($interval === 'none') {
+    Drupal::logger('kamihaya_cms_document_store_api')
+      ->info('Document Store API upsert by cron is disabled.');
+    return;
+  }
+
+  $state = \Drupal::state();
+  $last_run = $state->get('kamihaya_cms_document_store.last_upsert', 0);
+  $now = \Drupal::time()->getCurrentTime();
+
+  // Check if the last run was more than the interval ago.
+  if ($last_run === 0 || $now - $last_run >= $interval) {
+    kamihaya_cms_document_store_api_upsert_operation();
+  }
+  else {
+    Drupal::logger('kamihaya_cms_document_store_api')
+      ->info('Skipping upsert, last run was less than @interval seconds ago.', [
+        '@interval' => $interval,
+      ]);
+  }
+}
+
+/**
+ * Batch operation to upsert document stores.
+ */
+function kamihaya_cms_document_store_api_upsert_operation(): void {
+  $flowise_client = \Drupal::service('kamihaya_cms_document_store_api.client');
+  $document_store_id = \Drupal::config('kamihaya_cms_document_store_api.settings')
+    ->get('document_store_id');
+  if (empty($document_store_id)) {
+    Drupal::logger('kamihaya_cms_document_store_api')
+      ->error('Document Store ID is not set in the configuration.');
+    return;
+  }
+
+  $state = \Drupal::state();
+  $now = \Drupal::time()->getCurrentTime();
+  try {
+    $response = $flowise_client->upsertDocumenStore($document_store_id);
+    if (!empty($response)) {
+      // Update the last upsert time in the state.
+      $state->set('kamihaya_cms_document_store.last_upsert', $now);
+      Drupal::logger('kamihaya_cms_document_store_api')
+        ->info('Document Store %id has been successfully upserted.<ul>
+          <li>Total keys: @total</li>
+          <li>Added count: @added</li>
+          <li>Updated count: @updated</li>
+          <li>Deleted count: @deleted</li>
+          <li>Skipped count: @skipped</li></ul>', [
+            '%id' => $document_store_id,
+            '@total' => $response['totalKeys'] ?? 0,
+            '@added' => $response['numAdded'] ?? 0,
+            '@updated' => $response['numUpdated'] ?? 0,
+            '@deleted' => $response['numDeleted'] ?? 0,
+            '@skipped' => $response['numSkipped'] ?? 0,
+          ]);
+    } else {
+      Drupal::logger('kamihaya_cms_document_store_api')
+        ->error('Failed to upsert Document Store %id.', ['%id' => $document_store_id]);
+    }
+  } catch (\Exception $e) {
+    Drupal::logger('kamihaya_cms_document_store_api')
+      ->error('An error occurred while upserting the Document Store: @message', ['@message' => $e->getMessage()]);
+  }
+}

@@ -1,0 +1,7 @@
+name: 'Kamihaya CMS Flowise API'
+type: module
+description: 'Provide integration with Flowise API.'
+package: 'Kamihaya CMS'
+core_version_requirement: ^10 || ^11
+
+configure: kamihaya_cms_flowise_api.settings

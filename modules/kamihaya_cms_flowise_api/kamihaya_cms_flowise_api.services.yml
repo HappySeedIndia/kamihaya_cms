@@ -1,0 +1,5 @@
+services:
+  kamihaya_cms_flowise_api.logger_channel:
+    class: Drupal\Core\Logger\LoggerChannel
+    factory: logger.factory:get
+    arguments: ['kamihaya_cms_flowise_api']

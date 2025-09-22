@@ -1,0 +1,4 @@
+kamihaya_cms_document_store_api.settings_tab:
+  route_name: kamihaya_cms_document_store_api.settings
+  base_route: kamihaya_cms_flowise_api.settings
+  title: 'Document Store API Settings'

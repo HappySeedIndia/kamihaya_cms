@@ -1,0 +1,4 @@
+services:
+  kamihaya_cms_document_store_api.client:
+    class: Drupal\kamihaya_cms_document_store_api\FlowiseClient
+    arguments: ['@http_client', '@kamihaya_cms_flowise_api.logger_channel', '@config.factory']

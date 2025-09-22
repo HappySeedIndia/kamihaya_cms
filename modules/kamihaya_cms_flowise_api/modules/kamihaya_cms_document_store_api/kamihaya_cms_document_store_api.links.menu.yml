@@ -1,0 +1,5 @@
+kamihaya_cms_document_store_api.upsert:
+  title: 'Document Store Upsert'
+  parent: system.flowise
+  description: 'Upsert the Flowise Document Store.'
+  route_name: kamihaya_cms_document_store_api.upsert
