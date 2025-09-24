@@ -7,7 +7,6 @@ use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Feeds\Processor\EntityProcessorBase;
-use Drupal\feeds\Feeds\Target\EntityReference;
 
 /**
  * Defines a base multi language entity processor.
@@ -45,6 +44,8 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
   public function processMultiLanguage(FeedInterface $feed, EntityInterface $source_entity, TranslatableInterface $entity, ItemInterface $item) {
     // Update multi value fields before mapping.
     $this->updateMultiValueFields($item);
+
+    $this->autoCreateEntityReferenceTranslation($feed, $source_entity, $item);
 
     // Set new revision if needed.
     if ($this->configuration['revision']) {
@@ -289,6 +290,198 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
         $entity->set($mapping['target'], $default_value);
       }
     }
+  }
+
+  /**
+   * Auto create entity reference translation.
+   *
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed object.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to process.
+   * @param \Drupal\feeds\Feeds\Item\ItemInterface $item
+   *   The item to process.
+   */
+  protected function autoCreateEntityReferenceTranslation(FeedInterface $feed, EntityInterface $entity, ItemInterface $item) {
+    if (!($entity instanceof TranslatableInterface) || !$entity->isTranslatable()) {
+      return;
+    }
+    // Get the mappings.
+    $mappings = $this->feedType->getMappings();
+    // Get the processor configuration.
+    $processor_config = $feed->getType()->getProcessor()->getConfiguration();
+    $addtional_langcode = !empty($processor_config['addtional_langcode']) ? $processor_config['addtional_langcode'] : '';
+    if (empty($addtional_langcode)) {
+      return;
+    }
+    $langcode = explode('_', $addtional_langcode)[0];
+
+    foreach ($mappings as $delta => $mapping) {
+      // Skip mappings that are not auto create or do not have a target.
+      if (empty($mapping['settings']['autocreate']) || empty($mapping['map']['target_id'])) {
+        continue;
+      }
+
+      $value = $item->get($mapping['map']['target_id']);
+      if (is_null($value) || (is_array($value) && (empty($value) || !array_filter($value))) || $value === '') {
+        // Skip NULL values.
+        continue;
+      }
+      $values = !is_array($value) ? [$value] : $value;
+
+      $field_definition = $entity->getFieldDefinition($mapping['target']);
+      if (empty($field_definition)) {
+        continue;
+      }
+      $target_type = $field_definition->getSetting('target_type');
+      if (empty($target_type)) {
+        continue;
+      }
+      // Gnet the entity type from the field definition.
+      $entity_type = $this->entityTypeManager->getDefinition($target_type);
+      // Get the keys from the entity type.
+      $key = $mapping['settings']['reference_by'] ?? 'name';
+      $bundle_key = $entity_type->getKey('bundle') ?? 'bundle';
+
+      $default_values = $entity->get($mapping['target'])->getValue();
+      $target_ids = [];
+      if (!empty($default_values)) {
+        $target_ids = array_column($default_values, 'target_id');
+      }
+
+      if (count($values) > 1 || count($target_ids) > 1) {
+        foreach($values as $idx => $value) {
+          // Check if the translated entity already exists.
+          $translated_entity = $this->getAutoCreateEntityTranslation(
+            $target_type,
+            $mapping['settings']['autocreate_bundle'],
+            $key,
+            $value,
+            $langcode
+          );
+
+          if (!empty($translated_entity)) {
+            continue;
+          }
+
+          if (empty($target_ids[$idx])) {
+            $translated_entity = $this->entityTypeManager->getStorage($target_type)->create([
+              'langcode' => $langcode,
+              'status' => 1,
+              $bundle_key => $mapping['settings']['autocreate_bundle'],
+              $key => $value,
+            ]);
+
+            $translated_entity->setNewRevision(TRUE);
+            $translated_entity->save();
+            continue;
+          }
+          $default_entity = $this->entityTypeManager->getStorage($target_type)->load($target_ids[$idx]);
+          if (empty($default_entity)) {
+            continue;
+          }
+          $default_value = $default_entity->get($mapping['settings']['reference_by'])->getValue();
+          if (empty($default_value)) {
+            continue;
+          }
+          $values[$idx] = $default_value[0]['value'] ?? $default_value[0]['target_id'] ?? $default_value[0]['uri'] ?? '';
+        }
+
+        $item->set($mapping['map']['target_id'], $values);
+        return;
+      }
+
+      // If there is only one value, we can process it directly.
+      $value = reset($values);
+      $translated_entity = $this->getAutoCreateEntityTranslation(
+        $target_type,
+        $mapping['settings']['autocreate_bundle'],
+        $key,
+        $value,
+        $langcode
+      );
+
+      if (!empty($translated_entity)) {
+        // If the entity already exists, skip it.
+        continue;
+      }
+
+      $referenced_entity = NULL;
+      if (!empty($target_ids)) {
+        $default_entity = $this->entityTypeManager->getStorage($target_type)->load($target_ids[0]);
+        if (!empty($default_entity)) {
+          $referenced_entity = $default_entity->addTranslation($langcode);
+        }
+      }
+      if (empty($referenced_entity)) {
+        // Create the referenced entity with the additional language code.
+        $referenced_entity = $this->entityTypeManager->getStorage($target_type)->create([
+          'langcode' => $langcode,
+          'status' => 1,
+          $bundle_key => $mapping['settings']['autocreate_bundle'],
+        ]);
+      }
+      if (empty($referenced_entity)) {
+        // If the referenced entity is still empty, skip it.
+        continue;
+      }
+      // Set the value to the translated referenced entity.
+      $referenced_entity->set($key, $value);
+      $referenced_entity->setNewRevision(TRUE);
+      $referenced_entity->save();
+    }
+  }
+
+  /**
+   * Get entity translation.
+   *
+   * @param string $entity_type
+   *   The entity type.
+   * @param string $bundle
+   *   The bundle.
+   * @param string $key
+   *   The key to search for.
+   * @param string $value
+   *   The value to search for.
+   * @param string $langcode
+   *   The language code.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   *   The entity translation or NULL if not found.
+   */
+  protected function getAutoCreateEntityTranslation($entity_type, $bundle, $key, $value, $langcode) {
+    // Get the entity type definition.
+    $entity_type_definition = $this->entityTypeManager->getDefinition($entity_type);
+    // Get the bundle key for the entity type.
+    $bundle_key = $entity_type_definition->getKey('bundle');
+    // Load the entity by properties.
+    $ids = $this->entityTypeManager->getStorage($entity_type)->getQuery()
+      ->condition($key, $value, '=', $langcode)
+      ->condition($bundle_key, $bundle)
+      ->accessCheck(FALSE)
+      ->execute();
+
+    if (empty($ids)) {
+      return NULL;
+    }
+    $id = reset($ids);
+    $entity = $this->entityTypeManager->getStorage($entity_type)->load($id);
+    // Check if the entity has a translation for the given language code.
+    if (empty($entity)) {
+      return NULL;
+    }
+
+    // If the entity is already in the requested language, return it.
+    if ($entity->language()->getId() === $langcode) {
+      return $entity;
+    }
+    // If the entity does not have a translation for the given language code,
+    // return NULL.
+    if (!$entity->hasTranslation($langcode)) {
+      return NULL;
+    }
+    // Return the translation for the given language code.
+    return $entity->getTranslation($langcode);
   }
 
   /**
