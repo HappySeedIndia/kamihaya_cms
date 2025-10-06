@@ -83,3 +83,9 @@ paragraph-hero-banner:
   css:
     theme:
       css/components/paragraph-hero-banner.css: {}
+
+color_swatch:
+  js:
+    js/color_swatch.js: {}
+  dependencies:
+    - core/drupal

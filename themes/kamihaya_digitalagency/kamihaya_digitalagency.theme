@@ -410,6 +410,9 @@ function kamihaya_digitalagency_preprocess_field(&$variables, $hook) {
     && !empty($variables['element'][0]['#attributes'])) {
     $entity = $variables['element']['#object'];
     $variables['element'][0]['#attributes']->setAttribute('title', $entity->label());
+    $variables['element'][0]['#attributes']->setAttribute('data-bs-toggle', 'tooltip');
+    $variables['element'][0]['#attributes']->setAttribute('data-bs-placement', 'top');
+    $variables['#attached']['library'][] = 'kamihaya_digitalagency/color_swatch';
   }
 
   if (!empty($variables['field_type'])
