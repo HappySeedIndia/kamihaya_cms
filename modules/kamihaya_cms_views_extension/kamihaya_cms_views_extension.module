@@ -603,6 +603,35 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
   }
   // Add AJAX functionality to the exposed fields.
   kamihaya_cms_views_extension_add_ajax($form, $form_state);
+
+  /*`@var Drupal\views\ViewExecutable $view */
+  $view = $form_state->get('view');
+  $filters = $view->getHandlers('filter');
+  if (empty($filters)) {
+    return;
+  }
+
+  $request = \Drupal::request();
+  if (!empty($request->query->all())) {
+    // If the request contains any query parameters, do nothing.
+    return;
+  }
+
+  $user_input = $form_state->getUserInput();
+  foreach ($filters as $name => $filter) {
+    // Check if the filter is a boolean filter.
+    if (empty($filter['plugin_id']) || $filter['plugin_id'] !== 'boolean' || empty($filter['exposed'] )) {
+      continue;
+    }
+    if (empty($filter['default_check'])) {
+      continue;
+    }
+    // If the default check is set to TRUE, set the default value of the checkbox to TRUE.
+    $form[$name]['#default_value'] = TRUE;
+    $user_input[$name] = TRUE;
+    // Set the user input to the form state.
+    $form_state->setUserInput($user_input);
+  }
 }
 
 /**

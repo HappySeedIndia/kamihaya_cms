@@ -20,6 +20,7 @@ class KamihayaBoolean extends BooleanOperator {
   protected function defineOptions() {
     $options = parent::defineOptions();
     $options['type'] = ['default' => 'default'];
+    $options['default_check'] = ['default' => FALSE];
     return $options;
   }
 
@@ -33,6 +34,17 @@ class KamihayaBoolean extends BooleanOperator {
       '#options' => ['default' => $this->t('Default'), 'checkbox' => $this->t('Checkbox')],
       '#default_value' => $this->options['type'],
       '#description' => $this->t('Select the input type for the filter. If checkbox is selected, set this filter as Default on Better exposed filter.'),
+    ];
+    $form['default_check'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Default checked'),
+      '#description' => $this->t('If enabled, the checkbox will be checked by default.'),
+      '#default_value' => $this->options['default_check'] ?? FALSE,
+      '#states' => [
+        'visible' => [
+          ':input[name="options[type]"]' => ['value' => 'checkbox'],
+        ],
+      ],
     ];
   }
 
@@ -70,7 +82,6 @@ class KamihayaBoolean extends BooleanOperator {
       '#title' => $this->value_value,
       '#default_value' => $this->value,
     ];
-
   }
 
   /**
@@ -84,7 +95,6 @@ class KamihayaBoolean extends BooleanOperator {
     if (!$this->value) {
       return;
     }
-    $value = $this->value ? $this->options['value'] : !$this->options['value'];
     $this->query->addWhere($this->options['group'], $field, intval($this->options['value']), $query_operator);
   }
 
