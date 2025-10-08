@@ -203,9 +203,10 @@ function kamihaya_cms_content_type_node_view(array &$build, NodeInterface $node,
       continue;
     }
     $field_definition = $node->getFieldDefinition($name);
-    if ($field_definition->getType() !== 'viewsreference') {
+    if ($field_definition->getType() !== 'viewsreference' && $field_definition->getType() !== 'entity_reference') {
       continue;
     }
+
     $default_value = $field_definition->getDefaultValueLiteral();
     $value = $node->get($name)->getValue();
     if (count($default_value) === count($value)) {
@@ -215,16 +216,22 @@ function kamihaya_cms_content_type_node_view(array &$build, NodeInterface $node,
       $default_value = array_slice($default_value, count($value));
     }
     $entity_repository = \Drupal::service('entity.repository');
+    $target_id = NULL;
     foreach($default_value as $item) {
-      if (empty($item) || empty($item['target_uuid']) || empty($item['display_id'])) {
+      if (empty($item) || empty($item['target_uuid']) || ($field_definition->getType() === 'viewsreference' && empty($item['display_id']))) {
         continue;
       }
-      /** @var \Drupal\views\ViewEntityInterface $view */
-      $view = $entity_repository->loadEntityByUuid('view', $item['target_uuid']);
-      if (empty($view) || empty($view->getDisplay($item['display_id']))) {
+
+      $entity_type = $field_definition->getSetting('target_type');
+      if ($entity_type !== 'view' && $entity_type !== 'media') {
         continue;
       }
-      $item['target_id'] = $view->id();
+
+      $entity = $entity_repository->loadEntityByUuid($entity_type, $item['target_uuid']);
+      if (empty($entity) || $entity_type === 'view' && empty($entity->getDisplay($item['display_id']))) {
+        continue;
+      }
+      $item['target_id'] = $entity->id();
       $value[] = $item;
     }
     $node->set($name, $value);
