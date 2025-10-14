@@ -130,6 +130,11 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
               $language_manager = \Drupal::languageManager();
               $langcode = $language_manager->getCurrentLanguage()->getId();
               $default_langcode = $language_manager->getDefaultLanguage()->getId();
+              // Load the language negotiation configuration and get the URL prefix
+              // for the current language. This prefix is defined under
+              // "Detection and selection → Language from the URL (Path prefix or domain)".
+              $config = \Drupal::config('language.negotiation');
+              $langcode_prefix = $config->get('url.prefixes.' . $langcode);
 
               // Get base path from the view.
               $base_path = $target_view->display_handler->getPath();
@@ -137,7 +142,7 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
 
               // Add langcode to the path if it's not default.
               if ($langcode !== $default_langcode) {
-                $clean_path = $langcode . '/' . $clean_path;
+                $clean_path = $langcode_prefix . '/' . $clean_path;
               }
 
               // Generate absolute URL.
