@@ -24,6 +24,7 @@ dependencies:
   - svg_image:svg_image
   - viewsreference:viewsreference
   - webp:webp
+  - youtube:youtube
   - kamihaya_cms_common:kamihaya_cms_common
   - kamihaya_cms_content_type:kamihaya_cms_content_type
 

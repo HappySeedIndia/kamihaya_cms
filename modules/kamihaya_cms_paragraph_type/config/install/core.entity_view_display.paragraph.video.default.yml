@@ -7,10 +7,12 @@ dependencies:
     - field.field.paragraph.video.field_video_tag
     - field.field.paragraph.video.field_width
     - field.field.paragraph.video.field_width_unit
+    - field.field.paragraph.video.field_youtube
     - paragraphs.paragraphs_type.video
   module:
     - kamihaya_cms_paragraph_type
     - options
+    - youtube
 id: paragraph.video.default
 targetEntityType: paragraph
 bundle: video
@@ -36,7 +38,7 @@ content:
     type: htmlembed_formatter
     label: hidden
     settings:
-      allowed_tags: 'script iframe video'
+      allowed_tags: 'script iframe video link'
       edit_preview: '1'
     third_party_settings: {  }
     weight: 0
@@ -56,5 +58,21 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 13
+    region: content
+  field_youtube:
+    type: youtube_video
+    label: hidden
+    settings:
+      youtube_size: responsive
+      youtube_width: ''
+      youtube_height: ''
+      youtube_autoplay: false
+      youtube_mute: true
+      youtube_loop: false
+      youtube_controls: false
+      youtube_autohide: false
+      youtube_iv_load_policy: false
+    third_party_settings: {  }
+    weight: 14
     region: content
 hidden: {  }

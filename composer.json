@@ -201,6 +201,7 @@
         "drupal/webform_mautic": "^2.0",
         "drupal/webp": "^1.0@RC",
         "drupal/xmlsitemap": "^1.5",
+        "drupal/youtube": "^2.0",
         "npm-asset/chart.js": "^4.4",
         "npm-asset/chartjs-adapter-date-fns": "^3.0",
         "npm-asset/chartjs-plugin-datalabels": "^2.0",

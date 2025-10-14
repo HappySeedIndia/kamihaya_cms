@@ -81,6 +81,13 @@
           {{ content.field_video_tag }}
         </div>
       {% endif %}
+
+      {# YouTube #}
+      {% if content.field_youtube|render %}
+        <div class="video-youtube"{% if style %} style="{{ style|join(' ') }}" {% endif %}/>
+          {{ content.field_youtube }}
+        </div>
+      {% endif %}
      </div>
   {% endblock %}
 {% endblock paragraph %}
