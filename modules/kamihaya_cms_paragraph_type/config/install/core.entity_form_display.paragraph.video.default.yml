@@ -7,9 +7,11 @@ dependencies:
     - field.field.paragraph.video.field_video_tag
     - field.field.paragraph.video.field_width
     - field.field.paragraph.video.field_width_unit
+    - field.field.paragraph.video.field_youtube
     - paragraphs.paragraphs_type.video
   module:
     - media_library
+    - youtube
 id: paragraph.video.default
 targetEntityType: paragraph
 bundle: video
@@ -17,7 +19,7 @@ mode: default
 content:
   field_align:
     type: options_select
-    weight: 2
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -38,14 +40,26 @@ content:
     third_party_settings: {  }
   field_width:
     type: number
-    weight: 13
+    weight: 5
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_width_unit:
     type: options_select
-    weight: 14
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_youtube:
+    type: youtube
+    weight: 2
+    region: content
+    settings:
+      placeholder_url: ''
+    third_party_settings: {  }
+  translation:
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }

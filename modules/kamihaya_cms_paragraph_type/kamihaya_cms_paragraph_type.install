@@ -576,6 +576,17 @@ function kamihaya_cms_paragraph_type_update_10016() {
 }
 
 /**
+ * Add YouTube fields to Video Paragraph.
+ */
+function kamihaya_cms_paragraph_type_update_10017() {
+  // Add YouTube fields to Video Paragraph.
+  _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'video', [
+    'field_youtube',
+  ]);
+
+}
+
+/**
  * Implements hook_update_dependencies().
  */
 function kamihaya_cms_paragraph_type_update_dependencies() {
