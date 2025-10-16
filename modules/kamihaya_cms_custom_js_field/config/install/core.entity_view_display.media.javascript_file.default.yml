@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.javascript_file.field_media_js_file
+    - media.type.javascript_file
+  module:
+    - kamihaya_cms_custom_js_field
+id: media.javascript_file.default
+targetEntityType: media
+bundle: javascript_file
+mode: default
+content:
+  field_media_js_file:
+    type: js_file_script_tag
+    label: hidden
+    settings:
+      inline: false
+      async: false
+      defer: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  thumbnail: true
+  uid: true

@@ -1,0 +1,14 @@
+name: Kamihaya CMS Custom JS Field
+type: module
+description: 'Manages custom JavaScript fields in Kamihaya CMS.'
+core_version_requirement: ^10 || ^11
+package: Kamihaya
+
+project: 'kamihaya'
+
+dependencies:
+  - drupal:field
+  - drupal:file
+  - drupal:media
+  - drupal:media_library
+  - imce:imce
