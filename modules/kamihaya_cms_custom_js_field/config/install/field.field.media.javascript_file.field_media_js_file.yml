@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_js_file
+    - media.type.javascript_file
+  module:
+    - kamihaya_cms_custom_js_field
+id: media.javascript_file.field_media_js_file
+field_name: field_media_js_file
+entity_type: media
+bundle: javascript_file
+label: 'JavaScript file'
+description: 'Upload JavaScript files. TXT files will be automatically converted to JS.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_extensions: 'js txt'
+  file_directory: 'js-files/[date:custom:Y]-[date:custom:m]'
+  convert_txt_to_js: true
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: js_file

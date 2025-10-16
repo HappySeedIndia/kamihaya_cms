@@ -1,0 +1,63 @@
+<?php
+
+use Drupal\Core\File\FileSystemInterface;
+use \Drupal\file\FileInterface;
+use Drupal\media\MediaInterface;
+
+/**
+ * Implements hook_imce_supported_widgets_alter().
+ *
+ * Adds a custom widget for JavaScript file uploads.
+ */
+function kamihaya_cms_custom_js_field_imce_supported_widgets_alter(array &$widgets) {
+  // Add the custom JS file widget to the list of supported widgets.
+  $widgets[] ='js_file_widget';
+}
+
+/**
+ * Implements hook_media_presave().
+ */
+function kamihaya_cms_custom_js_field_media_presave(MediaInterface $media) {
+  if ($media->bundle() !== 'javascript_file') {
+    return;
+  }
+  // Check if the media entity has a JS file field.
+  foreach ($media->getFieldDefinitions() as $field_name => $definition) {
+    if ($definition->getType() !== 'js_file') {
+      continue;
+    }
+    $items = $media->get($field_name);
+    foreach ($items as $item) {
+      /** @var \Drupal\file\FileInterface $file */
+      $file = $item->entity;
+      if ($file instanceof FileInterface && $file->getMimeType() === 'text/plain') {
+        // Convert TXT to JS by renaming the file.
+        $original_name = $file->getFilename();
+        if (preg_match('/^(.*?\.js)(_)?(?:_(\d+))?\.txt$/', $original_name, $matches)) {
+          $basename = $matches[1];
+          $number_suffix = isset($matches[3]) ? '_' . $matches[3] : '';
+
+          $new_name = $basename;
+          if ($number_suffix) {
+            // If a number suffix exists, append it to the new name.
+            $new_name = preg_replace('/\.js$/', $number_suffix . '.js', $basename);
+          }
+
+          // Ensure the file has a .js extension.
+          if (!str_ends_with($new_name, '.js')) {
+            continue;
+          }
+          $old_uri = $file->getFileUri();
+          $new_uri = str_replace(basename($old_uri), $new_name, $old_uri);
+
+          // Move the file to the new URI.
+          \Drupal::service('file_system')->move($old_uri, $new_uri, FileSystemInterface::EXISTS_REPLACE);
+          $file->setFilename($new_name);
+          $file->setFileUri($new_uri);
+          // Save the file entity.
+          $file->save();
+        }
+      }
+    }
+  }
+}

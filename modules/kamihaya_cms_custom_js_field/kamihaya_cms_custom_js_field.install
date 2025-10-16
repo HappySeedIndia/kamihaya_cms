@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the js_file_field module.
+ */
+
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\media\Entity\MediaType;
+
+/**
+ * Implements hook_install().
+ */
+function kamihaya_cms_custom_js_field_install() {
+  // Create default JS file icon if it doesn't exist
+  _kamihaya_cms_custom_js_field_create_default_icon();
+}
+
+/**
+ * Creates a default icon for JS files.
+ */
+function _kamihaya_cms_custom_js_field_create_default_icon() {
+  $icon_dir = \Drupal::config('media.settings')->get('icon_base_uri');
+
+  if (!$icon_dir) {
+    $icon_dir = 'public://media-icons/generic';
+  }
+
+  // Create directory if it doesn't exist
+  \Drupal::service('file_system')->prepareDirectory($icon_dir, FileSystemInterface::CREATE_DIRECTORY);
+
+  $icon_path = $icon_dir . '/js.png';
+
+  // Check if icon already exists
+  if (!file_exists($icon_path)) {
+    // Copy a generic file icon or create a simple placeholder
+    $module_path = \Drupal::service('extension.list.module')->getPath('kamihaya_cms_custom_js_field');
+    $source_icon = $module_path . '/images/js.png';
+
+    if (file_exists($source_icon)) {
+      \Drupal::service('file_system')->copy($source_icon, $icon_path, FileSystemInterface::EXISTS_REPLACE);
+    }
+  }
+}
