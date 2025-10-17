@@ -710,6 +710,7 @@ function kamihaya_cms_views_extension_ajax_callback(array &$form, FormStateInter
   // Contains wrapper for each of the child filters.
   $elements = $target['#ajax']['wrapper'];
   $renderer = \Drupal::service('renderer');
+  $visible_filters = [];
   $response = new AjaxResponse();
   foreach ($elements as $name => $id) {
     // @see https://www.drupal.org/project/field_group/issues/3201653
@@ -736,7 +737,16 @@ function kamihaya_cms_views_extension_ajax_callback(array &$form, FormStateInter
       $html = $renderer->render($field);
       $command = new ReplaceCommand("$id", $html);
       $response->addCommand($command);
+      $visible_filters[] = $name;
     }
+  }
+  if (!empty($visible_filters) && !empty($form['secondary']['#attributes']['class']) && in_array('kamihaya-show-filter-bar', $form['secondary']['#attributes']['class'])) {
+    $response->addCommand(new InvokeCommand('#secondary-filters', 'removeClass', ['kamihaya-hide-filter-bar']));
+    $response->addCommand(new InvokeCommand('#secondary-filters', 'addClass', ['kamihaya-show-filter-bar']));
+  }
+  if (empty($visible_filters) && !empty($form['secondary']['#attributes']['class']) && in_array('kamihaya-hide-filter-bar', $form['secondary']['#attributes']['class'])) {
+    $response->addCommand(new InvokeCommand('#secondary-filters', 'removeClass', ['kamihaya-show-filter-bar']));
+    $response->addCommand(new InvokeCommand('#secondary-filters', 'addClass', ['kamihaya-hide-filter-bar']));
   }
   $submit_command = new InvokeCommand('input.form-submit[data-bef-auto-submit-click]', 'click');
   $response->addCommand($submit_command);
