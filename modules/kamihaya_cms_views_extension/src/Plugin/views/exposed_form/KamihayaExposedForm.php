@@ -93,6 +93,7 @@ class KamihayaExposedForm extends BetterExposedFilters {
     $options['bef']['general']['filter_grouping'] = ['default' => FALSE];
     $options['bef']['general']['filter_grouping_class'] = ['default' => ''];
     $options['bef']['general']['hide_filter_group'] = ['default' => FALSE];
+    $options['bef']['general']['hide_filter_bar'] = ['default' => FALSE];
     $options['bef']['sort']['optimize_sort_order'] = ['default' => FALSE];
     $options['bef']['sort']['hide'] = ['default' => FALSE];
     $options['bef']['sort']['label_inline'] = ['default' => FALSE];
@@ -164,6 +165,13 @@ class KamihayaExposedForm extends BetterExposedFilters {
       ],
     ];
 
+    $form['bef']['general']['hide_filter_bar'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Hide filter bar'),
+      '#description' => $this->t('If enabled, the filter bar will be hidden when Always Visible Filters are shown.'),
+      '#default_value' => $this->options['bef']['general']['hide_filter_bar'],
+    ];
+
     if (!empty($form['bef']['sort']['configuration'])) {
       $advanced = [];
       if (!empty($form['bef']['sort']['configuration']['advanced'])) {
@@ -222,6 +230,14 @@ class KamihayaExposedForm extends BetterExposedFilters {
         '#title' => $this->t('Disable search button'),
         '#description' => $this->t('Check this box to disable the search button if this exposed filter has no valid value selected.'),
         '#default_value' => $this->options['bef']['filter'][$key]['advanced']['disable_search_button'] ?? FALSE,
+      ];
+
+      // Add "Always Visible" option.
+      $filter['configuration']['advanced']['always_visible'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Always Visible'),
+        '#description' => $this->t('Check this box to always show this filter.'),
+        '#default_value' => $this->options['bef']['filter'][$key]['advanced']['always_visible'] ?? FALSE,
       ];
       if (array_key_exists('placeholder_text', $this->options['bef']['filter'][$key]['advanced'])) {
         $filter['configuration']['advanced']['min_keyword_length'] = [
@@ -410,6 +426,38 @@ class KamihayaExposedForm extends BetterExposedFilters {
     if (!empty($form['sort_by']) && empty($this->request->query->get('sort_by') && array_key_exists(0, $form['sort_by']['#options']))) {
       $form['sort_by']['#value'] = 0;
     }
+    if (!empty($this->options['bef']['general']['hide_filter_bar'])) {
+      $visible_fields = [];
+      $always_visible_fields = [];
+      foreach ($form as $key => &$field) {
+        if (!is_array($field) || empty($this->options['bef']['filter'][$key]) || empty($field['#group']) || empty($form[$field['#group']])) {
+          continue;
+        }
+        $group = $form[$field['#group']];
+        if (!empty($group['#group']) && $group['#group'] !== 'secondary') {
+          $group = !empty($form[$group['#group']]) ? $form[$group['#group']] : [];
+        }
+        if (empty($group)) {
+          continue;
+        }
+        if (empty($this->options['bef']['filter'][$key]['advanced']['always_visible']) && empty($field['#options'])) {
+          continue;
+        }
+        $visible_fields[] = $key;
+        if (empty($this->options['bef']['filter'][$key]['advanced']['always_visible'])) {
+          continue;
+        }
+        $always_visible_fields[] = $key;
+      }
+      $form['secondary']['#id'] = 'secondary-filters';
+      if (!empty($visible_fields) && !empty($always_visible_fields) && empty(array_diff($visible_fields, $always_visible_fields) && !empty($form['secondary']))) {
+        $form['secondary']['#attributes']['class'][] = 'kamihaya-hide-filter-bar';
+      }
+      else {
+        $form['secondary']['#attributes']['class'][] = 'kamihaya-show-filter-bar';
+      }
+    }
+
     if ($path === "view.{$view->id()}.{$view->current_display}" || $path === 'views.ajax') {
       return;
     }
