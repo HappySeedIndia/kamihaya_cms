@@ -178,12 +178,6 @@ class JsFileScriptTagFormatter extends FormatterBase implements ContainerFactory
         if ($this->getSetting('defer')) {
           $attributes['defer'] = 'defer';
         }
-
-        $elements[$delta] = [
-          '#type' => 'html_tag',
-          '#tag' => 'script',
-          '#attributes' => $attributes + ['src' => $url_with_timestamp],
-        ];
         $elements[$delta]['#attached']['html_head'][] = [
           [
             '#tag' => 'script',
