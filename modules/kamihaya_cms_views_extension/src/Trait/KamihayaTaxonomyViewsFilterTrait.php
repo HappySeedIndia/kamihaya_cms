@@ -4,6 +4,7 @@ namespace Drupal\kamihaya_cms_views_extension\Trait;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\taxonomy\Plugin\views\argument\Taxonomy;
 
 /**
  * Builds the query with the limited display depth.
@@ -64,6 +65,18 @@ trait KamihayaTaxonomyViewsFilterTrait {
         ],
       ],
     ];
+    // Add an option to check the default value and disable it.
+    $form['check_disabled'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Default selected and disabled'),
+      '#default_value' => $this->options['check_disabled'] ?? FALSE,
+      '#description' => $this->t('Select the options by default with the value of contextual taxonomy term and disable them.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="options[type]"]' => ['value' => 'select'],
+        ],
+      ],
+    ];
   }
 
   /**
@@ -102,6 +115,10 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
     if (!empty($this->options['reduce_by_relation'])) {
        $this->reduceTermByRelation($form, $form['value']['#options']);
+       if (!empty($this->options['check_disabled'])) {
+         // If the options are not empty, select the default value and disable it.
+         $this->defaultSelectAndDisabled($form, $form_state);
+       }
       return;
     }
 
@@ -123,6 +140,10 @@ trait KamihayaTaxonomyViewsFilterTrait {
       return;
     }
     $form['value']['#options'] = $options;
+    if (!empty($this->options['check_disabled'])) {
+      // If the options are not empty, select the default value and disable it.
+      $this->defaultSelectAndDisabled($form, $form_state);
+    }
   }
 
   /**
@@ -258,4 +279,29 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
   }
 
+  /**
+   * Select the default value and disable it.
+   *
+   * @param array $form
+   *   The form array.
+   */
+  protected function defaultSelectAndDisabled(array &$form, FormStateInterface $form_state) {
+    if (empty($this->options['vid']) || empty($this->options['check_disabled']) || empty($form['value']['#options']) || empty($this->view->argument)) {
+      return;
+    }
+
+    $user_input = $form_state->getUserInput();
+    foreach($this->view->argument as $name => $argument) {
+      if (! ($argument instanceof Taxonomy)) {
+        continue;
+      }
+      $value = $argument->getValue();
+      if (empty($value) || !array_key_exists($value, $form['value']['#options'])) {
+        continue;
+      }
+      $user_input[$this->options['expose']['identifier']] = [$value => $value];
+      $form_state->setUserInput($user_input);
+    }
+    $form['value']['#attributes']['disabled'] = 'disabled';
+  }
 }
