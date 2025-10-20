@@ -690,6 +690,10 @@
   padding: 0.5em 1.5em 1.5rem;
 }
 
+.views-exposed-form .bef--secondary.kamihaya-hide-filter-bar > .details-wrapper {
+  padding-bottom: 0.5rem;
+}
+
 .views-exposed-form details.bef--secondary > .details-wrapper details,
 .views-exposed-form details.bef--secondary > .details-wrapper details summary {
   color: var(--bs-body-color);
@@ -716,6 +720,10 @@
 
 .views-exposed-form details.bef--secondary > .details-wrapper > div.form-item {
   padding-top: 1.5rem;
+}
+
+.views-exposed-form .bef--secondary.kamihaya-hide-filter-bar > .details-wrapper > div.form-item {
+  padding-top: 0.5rem;
 }
 
 .views-exposed-form details.bef--secondary > .details-wrapper details .details-wrapper {
