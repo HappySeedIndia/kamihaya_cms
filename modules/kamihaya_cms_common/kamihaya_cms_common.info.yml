@@ -8,3 +8,4 @@ dependencies:
   - ckeditor5_plugin_pack:ckeditor5_plugin_pack
   - ckeditor5_plugin_pack_font:ckeditor5_plugin_pack_font
   - drupal:remove_http_headers
+  - drupal:easy_breadcrumb

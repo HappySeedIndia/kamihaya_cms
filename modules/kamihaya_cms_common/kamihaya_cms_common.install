@@ -148,3 +148,16 @@ function kamihaya_cms_common_update_10005() {
     $config->save(TRUE);
   }
 }
+
+/**
+ * Enable easy_breadcrumb module.
+ */
+function kamihaya_cms_common_update_10006() {
+  $installed = \Drupal::service('module_installer')->install(['easy_breadcrumb'], TRUE);
+  if ($installed) {
+    $config_factory = \Drupal::configFactory();
+    $config = $config_factory->getEditable('easy_breadcrumb.settings');
+    $config->set('include_title_segment', TRUE);
+    $config->save(TRUE);
+  }
+}
