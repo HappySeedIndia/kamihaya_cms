@@ -158,6 +158,7 @@ function kamihaya_cms_common_update_10006() {
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('easy_breadcrumb.settings');
     $config->set('include_title_segment', TRUE);
+    $config->set('capitalizator_mode', 'none');
     $config->save(TRUE);
   }
 }
