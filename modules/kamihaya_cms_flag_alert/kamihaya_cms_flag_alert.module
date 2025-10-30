@@ -1,0 +1,382 @@
+<?php
+
+use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\kamihaya_cms_flag_alert\Entity\KamihayaFlag;
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function kamihaya_cms_flag_alert_entity_type_alter(array &$entity_types) {
+  // Ensure the 'flag' entity type exists and is a ConfigEntityInterface.
+  if (empty($entity_types['flag']) || !($entity_types['flag'] instanceof ConfigEntityTypeInterface)) {
+    return;
+  }
+  $definition = $entity_types['flag'];
+
+  $definition->set('class', KamihayaFlag::class);
+  // Add custom configuration export fields for the flag alert module.
+  $current_export = $definition->get('config_export');
+  if (in_array([
+    'flag_alert_message',
+    'flag_alert_message_link_url',
+    'flag_alert_message_link_label',
+    'flag_alert_message_color',
+    'flag_alert_message_bg_color',
+    'flag_alert_message_bg_color_opacity',
+    'flag_alert_position',
+    'unflag_alert_message',
+    'unflag_alert_message_link_url',
+    'unflag_alert_message_link_label',
+    'unflag_alert_message_color',
+    'unflag_alert_message_bg_color',
+    'unflag_alert_message_bg_color_opacity',
+    'unflag_alert_position',
+  ], $current_export)) {
+    return; // Already added.
+  }
+  $current_export[] = 'flag_alert_message';
+  $current_export[] = 'flag_alert_message_link_url';
+  $current_export[] = 'flag_alert_message_link_label';
+  $current_export[] = 'flag_alert_message_color';
+  $current_export[] = 'flag_alert_message_bg_color';
+  $current_export[] = 'flag_alert_message_bg_color_opacity';
+  $current_export[] = 'flag_alert_position';
+  $current_export[] = 'unflag_alert_message';
+  $current_export[] = 'unflag_alert_message_link_url';
+  $current_export[] = 'unflag_alert_message_link_label';
+  $current_export[] = 'unflag_alert_message_color';
+  $current_export[] = 'unflag_alert_message_bg_color';
+  $current_export[] = 'unflag_alert_message_bg_color_opacity';
+  $current_export[] = 'unflag_alert_position';
+  $definition->set('config_export', $current_export);
+
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for field config edit form.
+ */
+function kamihaya_cms_flag_alert_form_flag_edit_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  $old_messages = &$form['messages'] ?? [];
+  if (empty($old_messages)) {
+    return;
+  }
+
+  $flag = $form['#flag'] ?? NULL;
+
+  $messages = [];
+  $flag_message = [];
+  $unflag_message = [];
+  foreach ($old_messages as $key => $message) {
+    if (strpos($key, 'flag_') === FALSE || strpos($key, 'unflag_') === FALSE) {
+      $messages[$key] = $message;
+      continue;
+    }
+    if (strpos($key, 'flag_') === 0) {
+      $flag_message[$key] = $message;
+    }
+    if (strpos($key, 'unflag_') === 0) {
+      $unflag_message[$key] = $message;
+    }
+  }
+
+  // Add the flag alert message fields.
+  $flag_message['flag_alert'] = [
+    '#type' => 'details',
+    '#title' => t('Flag alert message'),
+    '#open' => FALSE,
+  ];
+  $flag_message['flag_alert']['message'] = [
+    '#type' => 'details',
+    '#title' => t('Message'),
+    '#open' => TRUE,
+  ];
+  $flag_message['flag_alert']['message']['flag_alert_message'] = [
+    '#type' => 'textfield',
+    '#title' => t('Flag alert message'),
+    '#default_value' => $flag->getFlagAlertMessage() ?? '',
+    '#description' => t('Message to display when a flag is applied.'),
+    '#max_length' => 255,
+  ];
+  $flag_message['flag_alert']['message']['flag_alert_message_link_url'] = [
+    '#type' => 'textfield',
+    '#title' => t('Flag alert message link URL'),
+    '#default_value' => $flag->getFlagAlertMessageLinkUrl() ?? '',
+    '#description' => t('URL to link the flag alert message to.'),
+  ];
+  $flag_message['flag_alert']['message']['flag_alert_message_link_label'] = [
+    '#type' => 'textfield',
+    '#title' => t('Flag alert message link label'),
+    '#default_value' => $flag->getFlagAlertMessageLinkLabel() ?? '',
+    '#description' => t('Label for the link in the flag alert message.'),
+  ];
+  $flag_message['flag_alert']['flag_alert_message_color'] = [
+    '#type' => 'color',
+    '#title' => t('Flag alert message color'),
+    '#default_value' => $flag->getFlagAlertMessageColor() ?? '#000000',
+    '#description' => t('Color of the flag alert message text.'),
+  ];
+  $flag_message['flag_alert']['flag_alert_message_bg_color'] = [
+    '#type' => 'color',
+    '#title' => t('Flag alert message background color'),
+    '#default_value' => $flag->getFlagAlertMessageBgColor() ?? '#cccccc',
+    '#description' => t('Background color of the flag alert message text.'),
+  ];
+  $flag_message['flag_alert']['flag_alert_message_bg_color_opacity'] = [
+    '#type' => 'number',
+    '#title' => t('Flag alert message background color opacity'),
+    '#default_value' => $flag->getFlagAlertMessageBgColorOpacity() ?? 1.0,
+    '#min' => 0,
+    '#max' => 1,
+    '#step' => 0.01,
+    '#description' => t('Opacity of the flag alert message background color (0.0 to 1.0).'),
+  ];
+  $flag_message['flag_alert']['flag_alert_position'] = [
+    '#type' => 'select',
+    '#title' => t('Flag alert position'),
+    '#options' => [
+      'top' => t('Top of the page'),
+      'middle' => t('Middle of the page'),
+      'bottom' => t('Bottom of the page'),
+    ],
+    '#default_value' => $flag->getFlagAlertPosition() ?? 'top',
+    '#description' => t('Position of the flag alert on the page.'),
+  ];
+  $unflag_message['unflag_alert'] = [
+    '#type' => 'details',
+    '#title' => t('Unflag alert messages'),
+    '#open' => FALSE,
+  ];
+  $unflag_message['unflag_alert']['message'] = [
+    '#type' => 'details',
+    '#title' => t('Message'),
+    '#open' => TRUE,
+  ];
+  $unflag_message['unflag_alert']['message']['unflag_alert_message'] = [
+    '#type' => 'textfield',
+    '#title' => t('Unflag alert message'),
+    '#default_value' => $flag->getUnflagAlertMessage() ?? '',
+    '#description' => t('Message to display when a flag is removed.'),
+    '#max_length' => 255,
+  ];
+  $unflag_message['unflag_alert']['message']['unflag_alert_message_link_url'] = [
+    '#type' => 'textfield',
+    '#title' => t('Unflag alert message link URL'),
+    '#default_value' => $flag->getUnflagAlertMessageLinkUrl() ?? '',
+    '#description' => t('URL to link the unflag alert message to.'),
+  ];
+  $unflag_message['unflag_alert']['message']['unflag_alert_message_link_label'] = [
+    '#type' => 'textfield',
+    '#title' => t('Unflag alert message link label'),
+    '#default_value' => $flag->getUnflagAlertMessageLinkLabel() ?? '',
+    '#description' => t('Label for the link in the unflag alert message.'),
+  ];
+  $unflag_message['unflag_alert']['unflag_alert_message_color'] = [
+    '#type' => 'color',
+    '#title' => t('Unflag alert message color'),
+    '#default_value' => $flag->getUnflagAlertMessageColor() ?? '#000000',
+    '#description' => t('Color of the unflag alert message text.'),
+  ];
+  $unflag_message['unflag_alert']['unflag_alert_message_bg_color'] = [
+    '#type' => 'color',
+    '#title' => t('Unflag alert message background color'),
+    '#default_value' => $flag->getUnflagAlertMessageBgColor() ?? '#cccccc',
+    '#description' => t('Background color of the unflag alert message text.'),
+  ];
+  $unflag_message['unflag_alert']['unflag_alert_message_bg_color_opacity'] = [
+    '#type' => 'number',
+    '#title' => t('Unflag alert message background color opacity'),
+    '#default_value' => $flag->getUnflagAlertMessageBgColorOpacity() ?? 1.0,
+    '#min' => 0,
+    '#max' => 1,
+    '#step' => 0.01,
+    '#description' => t('Opacity of the unflag alert message background color (0.0 to 1.0).'),
+  ];
+  $unflag_message['unflag_alert']['unflag_alert_position'] = [
+    '#type' => 'select',
+    '#title' => t('Unflag alert position'),
+    '#options' => [
+      'top' => t('Top of the page'),
+      'middle' => t('Middle of the page'),
+      'bottom' => t('Bottom of the page'),
+    ],
+    '#default_value' => $flag->getUnflagAlertPosition() ?? 'top',
+    '#description' => t('Position of the unflag alert on the page.'),
+  ];
+  kamihaya_cms_flag_add_color_spectrum('flag_alert_message_color', $flag_message['flag_alert']['flag_alert_message_color']);
+  kamihaya_cms_flag_add_color_spectrum('flag_alert_message_bg_color', $flag_message['flag_alert']['flag_alert_message_bg_color']);
+  kamihaya_cms_flag_add_color_spectrum('unflag_alert_message_color', $unflag_message['unflag_alert']['unflag_alert_message_color']);
+  kamihaya_cms_flag_add_color_spectrum('unflag_alert_message_bg_color', $unflag_message['unflag_alert']['unflag_alert_message_bg_color']);
+  $form['messages'] = $messages + $flag_message + $unflag_message;
+
+  if (!empty($form['actions']['submit'])) {
+    $form['actions']['submit']['#submit'][] = 'kamihaya_cms_flag_alert_flag_edit_form_submit';
+  }
+  $form['#validators'][] = 'kamihaya_cms_flag_alert_flag_edit_form_validate';
+}
+
+/**
+ * Validate the flag edit form.
+ *
+ * @param array $form
+ *   The form structure.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ */
+function kamihaya_cms_flag_alert_flag_edit_form_validate(array &$form, FormStateInterface $form_state) {
+  $values = $form_state->getValues();
+  $path_validator = \Drupal::service('path.validator');
+  $flag_alert_message_link_url = $values['flag_alert']['message']['flag_alert_message_link_url'] ?? '';
+  $unflag_alert_message_link_url = $values['unflag_alert']['message']['unflag_alert_message_link_url'] ?? '';
+
+  // Validate the flag alert message link URL.
+  if (!empty($flag_alert_message_link_url) && (!filter_var($flag_alert_message_link_url, FILTER_VALIDATE_URL) || $path_validator->isValid($flag_alert_message_link_url) === FALSE)) {
+    $form_state->setErrorByName('flag_alert][message][flag_alert_message_link_url', t('The flag alert message link URL is not valid.'));
+  }
+
+  // Validate the unflag alert message link URL.
+  if (!empty($unflag_alert_message_link_url) && (!filter_var($unflag_alert_message_link_url, FILTER_VALIDATE_URL) || $path_validator->isValid($unflag_alert_message_link_url) === FALSE)) {
+    $form_state->setErrorByName('unflag_alert][message][unflag_alert_message_link_url', t('The unflag alert message link URL is not valid.'));
+  }
+}
+
+/**
+ * Submit handler for the flag edit form.
+ *
+ * Saves the flag alert messages and other related settings.
+ *
+ * @param array $form
+ *   The form structure.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ */
+function kamihaya_cms_flag_alert_flag_edit_form_submit(array $form, FormStateInterface $form_state) {
+  $flag = $form_state->getFormObject()->getEntity();
+  $values = $form_state->getValues();
+
+  // Save the flag alert messages.
+  $flag->setFlagAlertMessage($values['flag_alert_message'] ?? '');
+  $flag->setFlagAlertMessageLinkUrl($values['flag_alert_message_link_url'] ?? '');
+  $flag->setFlagAlertMessageLinkLabel($values['flag_alert_message_link_label'] ?? '');
+  $flag->setFlagAlertMessageColor($values['flag_alert_message_color'] ?? '#000000');
+  $flag->setFlagAlertMessageBgColor($values['flag_alert_message_bg_color'] ?? '#cccccc');
+  $flag->setFlagAlertMessageBgColorOpacity($values['flag_alert_message_bg_color_opacity'] ?? 1.0);
+  $flag->setFlagAlertPosition($values['flag_alert_position'] ?? 'top');
+  $flag->setUnflagAlertMessage($values['unflag_alert_message'] ?? '');
+  $flag->setUnflagAlertMessageLinkUrl($values['unflag_alert_message_link_url'] ?? '');
+  $flag->setUnflagAlertMessageLinkLabel($values['unflag_alert_message_link_label'] ?? '');
+  $flag->setUnflagAlertMessageColor($values['unflag_alert_message_color'] ?? '#000000');
+  $flag->setUnflagAlertMessageBgColor($values['unflag_alert_message_bg_color'] ?? '#cccccc');
+  $flag->setUnflagAlertMessageBgColorOpacity($values['unflag_alert_message_bg_color_opacity'] ?? 1.0);
+  $flag->setUnflagAlertPosition($values['unflag_alert_position'] ?? 'top');
+
+  $flag->save();
+}
+
+/**
+ * Implements hook_preprocess_views_view_flag().
+ */
+function kamihaya_cms_flag_alert_preprocess_flag(&$variables) {
+  $flag = $variables['flag'] ?? NULL;
+  if (!$flag || !($flag instanceof KamihayaFlag) || (!$flag->getFlagAlertMessage() && !$flag->getUnflagAlertMessage())) {
+    return;
+  }
+  $variables['#attached']['library'][] = 'kamihaya_cms_flag_alert/flag-alert';
+  $css_vars = [];
+  if ($flag->getFlagAlertMessage() ) {
+    $variables['#attached']['drupalSettings']['flag_alert']['message'] = $flag->getFlagAlertMessage();
+    $url = $flag->getFlagAlertMessageLinkUrl();
+    if ($url) {
+      $url = filter_var($url, FILTER_VALIDATE_URL)
+      ? $url
+      : Url::fromUserInput($url)->toString();
+      $variables['#attached']['drupalSettings']['flag_alert']['link_url'] = $url;
+    }
+    $variables['#attached']['drupalSettings']['flag_alert']['link_label'] = $flag->getFlagAlertMessageLinkLabel();
+    $variables['#attached']['drupalSettings']['flag_alert']['opacity'] = $flag->getFlagAlertMessageBgColorOpacity();
+    $variables['#attached']['drupalSettings']['flag_alert']['position'] = $flag->getFlagAlertPosition();
+    $css_vars[] = "--flag-alert-color: {$flag->getFlagAlertMessageColor()} !important;";
+    $css_vars[] = "--flag-alert-bg-color: {$flag->getFlagAlertMessageBgColor()} !important;";
+    $css_vars[] = "--flag-alert-bg-color-opacity: {$flag->getFlagAlertMessageBgColorOpacity()} !important;";
+    $css_vars[] = "--flag-alert-position: {$flag->getFlagAlertPosition()};";
+  }
+  if ($flag->getUnflagAlertMessage()) {
+    $variables['#attached']['drupalSettings']['unflag_alert']['message'] = $flag->getUnflagAlertMessage();
+    $url = $flag->getUnflagAlertMessageLinkUrl();
+    if ($url) {
+      $url = filter_var($url, FILTER_VALIDATE_URL)
+      ? $url
+      : Url::fromUserInput($url)->toString();
+      $variables['#attached']['drupalSettings']['unflag_alert']['link_url'] = $url;
+    }
+    $variables['#attached']['drupalSettings']['unflag_alert']['link_label'] = $flag->getUnflagAlertMessageLinkLabel();
+    $variables['#attached']['drupalSettings']['unflag_alert']['opacity'] = $flag->getUnflagAlertMessageBgColorOpacity();
+    $variables['#attached']['drupalSettings']['unflag_alert']['position'] = $flag->getUnflagAlertPosition();
+    $css_vars[] = "--unflag-alert-color: {$flag->getUnflagAlertMessageColor()} !important;";
+    $css_vars[] = "--unflag-alert-bg-color: {$flag->getUnflagAlertMessageBgColor()} !important;";
+    $css_vars[] = "--unflag-alert-bg-color-opacity: {$flag->getUnflagAlertMessageBgColorOpacity()} !important;";
+    $css_vars[] = "--unflag-alert-position: {$flag->getUnflagAlertPosition()};";
+  }
+
+  if (empty($css_vars)) {
+    return; // No CSS variables to attach.
+  }
+
+  // Add CSS color variables.
+  $variables['#attached']['html_head'][] = [
+    [
+      '#tag' => 'style',
+      '#attributes' => [
+        'type' => 'text/css',
+      ],
+      '#value' => '.flag-alert, .unflag-alert {'
+        . implode(' ', $css_vars)
+      . '}',
+    ],
+    ' kamihaya_cms_flag_alert',
+  ];
+}
+
+/**
+ * Add color spectrum to the element.
+ *
+ * @param string $name
+ *   The name of the element.
+ * @param array $element
+ *   The element to add the color spectrum to.
+ */
+function kamihaya_cms_flag_add_color_spectrum($name, array &$element) {
+  $palette = [
+    ["#000", "#444", "#666", "#999", "#ccc", "#eee", "#f3f3f3", "#fff"],
+    ["#f00", "#f90", "#ff0", "#0f0", "#0ff", "#00f", "#90f", "#f0f"],
+    ["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc"],
+    ["#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#9fc5e8", "#b4a7d6", "#d5a6bd"],
+    ["#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6fa8dc", "#8e7cc3", "#c27ba0"],
+    ["#c00", "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3d85c6", "#674ea7", "#a64d79"],
+    ["#900", "#b45f06", "#bf9000", "#38761d", "#134f5c", "#0b5394", "#351c75", "#741b47"],
+    ["#600", "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130"],
+  ];
+  $settings = [
+    'show_input' => TRUE,
+    'show_palette' => TRUE,
+    'palette' => $palette,
+    'show_palette_only' => FALSE,
+    'show_buttons' => TRUE,
+    'cancel_text' => t('Cancel'),
+    'choose_text' => t('Choose'),
+    'allow_empty' => TRUE,
+  ];
+
+  $element[$name] = $element;
+  $element['#type'] = 'container';
+
+  $element['#uid'] = str_replace('_', '-', $name);
+  $element['#attributes']['id'] = $element['#uid'];
+  $element['#attributes']['class'][] = 'js-color-field-widget-spectrum';
+  $element['#attached']['drupalSettings']['color_field']['color_field_widget_spectrum'][$element['#uid']] = $settings;
+  $element['#attached']['library'][] = 'color_field/color-field-widget-spectrum';
+  $element[$name]['#attributes']['class'][] = 'js-color-field-widget-spectrum__color';
+  $element['opacity']['#attributes']['class'][] = 'js-color-field-widget-spectrum__opacity';
+
+}

@@ -1,0 +1,10 @@
+name: Kamihaya CMS Flag Alert
+type: module
+description: 'Provides a flag alert module for Kamihaya CMS.'
+core_version_requirement: ^10 || ^11
+package: Kamihaya
+
+project: 'kamihaya'
+
+dependencies:
+  - flag:flag

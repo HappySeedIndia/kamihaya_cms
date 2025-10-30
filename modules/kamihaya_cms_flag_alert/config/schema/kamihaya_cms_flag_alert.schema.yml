@@ -1,0 +1,106 @@
+flag.flag.*:
+  type: config_entity
+  label: 'Flag'
+  mapping:
+    id:
+      type: string
+      label: 'Flag identifier'
+    uuid:
+      type: string
+      label: 'UUID'
+    label:
+      type: label
+      label: 'Name'
+    bundles:
+      type: sequence
+      label: 'The entity bundles this flag applies to'
+      sequence:
+        type: string
+    entity_type:
+      type: string
+      label: 'Flaggable entity type'
+    global:
+      type: boolean
+      label: 'Whether the flag is global'
+    flag_short:
+      type: label
+      label: 'Flag link text'
+    flag_long:
+      type: label
+      label: 'Flag link description text'
+    flag_message:
+      type: label
+      label: 'Flag message'
+    unflag_short:
+      type: label
+      label: 'Unflag link text'
+    unflag_long:
+      type: label
+      label: 'Unflag link description text'
+    unflag_message:
+      type: label
+      label: 'Unflag message'
+    unflag_denied_text:
+      type: label
+      label: 'Unflag denied text'
+    weight:
+      type: integer
+      label: 'Weight'
+    flag_type:
+      type: string
+      label: 'ID of the Flag Type plugin'
+    link_type:
+      type: string
+      label: 'ID of the Link Type plugin'
+    flagTypeConfig:
+      type: flag.flag_type.plugin.[%parent.flag_type]
+      label: 'Flag type configuration'
+    linkTypeConfig:
+      type: flag.link_type.plugin.[%parent.link_type]
+      label: 'Link type configuration'
+    flag_alert_message:
+      type: label
+      label: 'Flag alert message'
+    flag_alert_message_link_url:
+      type: string
+      label: 'Flag alert message link URL'
+    flag_alert_message_link_label:
+      type: label
+      label: 'Flag alert message link label'
+    flag_alert_message_color:
+      type: string
+      label: 'Flag alert message color'
+    flag_alert_message_bg_color:
+      type: string
+      label: 'Flag alert message background color'
+    flag_alert_message_bg_color_opacity:
+      type: float
+      label: 'Flag alert message background color opacity'
+    flag_alert_position:
+      type: string
+      label: 'Flag alert position'
+      description: 'Position of the flag alert on the page.'
+      default_value: 'top'
+    unflag_alert_message:
+      type: label
+      label: 'Unflag alert message'
+    unflag_alert_message_link_url:
+      type: string
+      label: 'Unflag alert message link URL'
+    unflag_alert_message_link_label:
+      type: label
+      label: 'Unflag alert message link label'
+    unflag_alert_message_color:
+      type: string
+      label: 'Unflag alert message color'
+    unflag_alert_message_bg_color:
+      type: string
+      label: 'Unflag alert message background color'
+    unflag_alert_message_bg_color_opacity:
+      type: float
+      label: 'Unflag alert message background color opacity'
+    unflag_alert_position:
+      type: string
+      label: 'Unflag alert position'
+      description: 'Position of the unflag alert on the page.'
+      default_value: 'top'

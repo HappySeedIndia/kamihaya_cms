@@ -1,0 +1,9 @@
+flag-alert:
+  css:
+    base:
+      css/flag-alert.css: {}
+  js:
+    js/flag-alert.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
