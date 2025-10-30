@@ -205,9 +205,9 @@ function kamihaya_cms_flag_alert_form_flag_edit_form_alter(array &$form, FormSta
     '#description' => t('Position of the unflag alert on the page.'),
   ];
   kamihaya_cms_flag_add_color_spectrum('flag_alert_message_color', $flag_message['flag_alert']['flag_alert_message_color']);
-  kamihaya_cms_flag_add_color_spectrum('flag_alert_message_bg_color', $flag_message['flag_alert']['flag_alert_message_bg_color'], TRUE);
+  kamihaya_cms_flag_add_color_spectrum('flag_alert_message_bg_color', $flag_message['flag_alert']['flag_alert_message_bg_color']);
   kamihaya_cms_flag_add_color_spectrum('unflag_alert_message_color', $unflag_message['unflag_alert']['unflag_alert_message_color']);
-  kamihaya_cms_flag_add_color_spectrum('unflag_alert_message_bg_color', $unflag_message['unflag_alert']['unflag_alert_message_bg_color'], TRUE);
+  kamihaya_cms_flag_add_color_spectrum('unflag_alert_message_bg_color', $unflag_message['unflag_alert']['unflag_alert_message_bg_color']);
   $form['messages'] = $messages + $flag_message + $unflag_message;
 
   if (!empty($form['actions']['submit'])) {

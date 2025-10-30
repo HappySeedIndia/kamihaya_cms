@@ -146,6 +146,7 @@
         "drupal/feeds": "^3.0",
         "drupal/field_formatter": "^3.0",
         "drupal/field_group_table": "^1.1",
+        "drupal/flag": "^5.0",
         "drupal/fontawesome": "^2.26",
         "drupal/fontyourface": "^4.0",
         "drupal/geolocation": "^3.14",
