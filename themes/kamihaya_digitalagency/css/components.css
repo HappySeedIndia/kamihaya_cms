@@ -1309,7 +1309,8 @@ h2.accordion-header::after {
   color: #E1383A !important;
 }
 
-.flag.action-unflag a .fa-star {
+.flag.action-unflag a .fa-star,
+.flag-alert a .fa-star {
   color: #FFC802 !important;
 }
 
