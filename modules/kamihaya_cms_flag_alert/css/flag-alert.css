@@ -59,6 +59,7 @@
   max-width: var(--bs-site-max-width);
   margin: 0 auto;
   padding: 1rem;
+  min-height: 3rem;
 }
 
 .flag-alert .message,
@@ -102,4 +103,23 @@
   border: none;
   font-size: 2rem;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .flag-alert .message,
+  .unflag-alert .message {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+  .flag-alert .message a,
+  .unflag-alert .message a {
+    padding-top:0.3rem;
+    padding-bottom: 0.3rem;
+  }
+  .flag-alert button.close,
+  .unflag-alert button.close {
+    right: 0.8rem;
+  }
 }
