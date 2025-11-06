@@ -1,0 +1,9 @@
+name: 'Kamihaya CMS Dynamic filter label'
+type: module
+description: 'Allows referenced terms to display a different label.'
+package: Kamihaya
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:field
+  - drupal:taxonomy
+  - drupal:views
