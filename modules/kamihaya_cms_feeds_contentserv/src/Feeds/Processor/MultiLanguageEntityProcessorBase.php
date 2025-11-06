@@ -409,7 +409,21 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
       $referenced_entity = NULL;
       if (!empty($target_ids)) {
         $default_entity = $this->entityTypeManager->getStorage($target_type)->load($target_ids[0]);
-        if (!empty($default_entity)) {
+        $default_value = $default_entity->get($mapping['settings']['reference_by'])->getValue();
+        if (!empty($default_value) && !empty($default_value[0]['value']) && $default_value[0]['value'] === $value) {
+          // If the default entity already has the value, we can use it.
+          return;
+        }
+        if (!empty($default_entity) && $default_entity->hasTranslation($langcode)) {
+          $translated_entity = $default_entity->getTranslation($langcode);
+          if ($translated_entity->get($mapping['settings']['reference_by'])->getValue() === $value) {
+            // If the translated entity already has the value, we can use it.
+            return;
+          }
+          $item->set($mapping['map']['target_id'], (is_array($value) ? [] : ''));
+          continue;
+        }
+        if (!empty($default_entity) && !$default_entity->hasTranslation($langcode)) {
           $referenced_entity = $default_entity->addTranslation($langcode);
         }
       }
