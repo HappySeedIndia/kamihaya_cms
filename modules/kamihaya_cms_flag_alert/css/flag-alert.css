@@ -62,20 +62,13 @@
 }
 
 .flag-alert .message,
-.unflag-alert .message,
-.flag-alert .message > p,
-.unflag-alert .message > p {
+.unflag-alert .message {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 0;
   gap: 1.5rem;
   position: static;
-  line-height: 3.5rem;
-}
-
-.flag-alert .message>p,
-.unflag-alert .message>p {
   line-height: 3.5rem;
 }
 
