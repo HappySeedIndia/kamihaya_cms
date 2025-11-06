@@ -58,20 +58,18 @@
 .unflag-alert .message {
   max-width: var(--bs-site-max-width);
   margin: 0 auto;
-  padding: 1rem;
   min-height: 3rem;
 }
 
 .flag-alert .message,
-.unflag-alert .message,
-.flag-alert .message > p,
-.unflag-alert .message > p {
+.unflag-alert .message {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 0;
   gap: 1.5rem;
   position: static;
+  line-height: 3.5rem;
 }
 
 .flag-alert .message a,
@@ -85,6 +83,7 @@
   background: var(--bs-body-bg);
   padding: 0.5rem 1.5rem;
   border-radius: 20px;
+  line-height: 1;
 }
 
 .flag-alert .message a:hover,
@@ -94,11 +93,12 @@
 
 .flag-alert button.close,
 .unflag-alert button.close {
-  display: inline-flex;
-  align-self: anchor-center;
+  display: flex;
+  align-items: center;
   position: absolute;
   top: 0;
   right: 2.5rem;
+  height: 100%;
   background: transparent;
   border: none;
   font-size: 2rem;
@@ -110,8 +110,9 @@
   .unflag-alert .message {
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
+    gap: 0.3rem;
+    padding: 0.5rem 2.5rem;
+    line-height: 1.5;
   }
   .flag-alert .message a,
   .unflag-alert .message a {
