@@ -1,57 +1,72 @@
 (function ($, Drupal, drupalSettings, once) {
   Drupal.behaviors.dynamicFilterLabel = {
     attach: function (context) {
-      const map = drupalSettings.dynamicFilterLabel || {};
+      const map = drupalSettings.dynamicFilterLabel?.map || {};
+      const currentTermId = drupalSettings.dynamicFilterLabel?.currentTermId || null;
+
       if (!Object.keys(map).length) {
         return;
       }
 
-      // Use once() so we only attach to selects once per render.
+      // ✅ Apply immediately if we have a known current term
+      if (currentTermId && map[currentTermId]) {
+        applyLabelMapping(map[currentTermId], context);
+      }
+
+      // ✅ Attach to selects only once per render
       once('dynamicFilterLabel', '.views-exposed-form select', context).forEach(function (element) {
         $(element).on('change', function () {
           const val = $(this).val();
-          const labels = map[val] || {};
-
-          // Handle .summary-title updates.
-          $('.summary-title', context).each(function () {
-            const $summary = $(this);
-
-            // Store the original text the first time.
-            if (!$summary.data('original-filter-label')) {
-              $summary.data('original-filter-label', $summary.text().trim());
-            }
-
-            const original = $summary.data('original-filter-label');
-            const currentText = $summary.text().trim();
-            const keyMatch = Object.keys(labels).find(
-              key => currentText.toLowerCase() === key.toLowerCase() ||
-                     original.toLowerCase() === key.toLowerCase()
-            );
-
-            if (keyMatch && labels[keyMatch]) {
-              // Apply mapped label
-              $summary.text(labels[keyMatch]);
-            } else {
-              // Restore original if no mapping found for this selection
-              $summary.text(original);
-            }
-          });
-
-          // Handle form label updates (e.g., exposed filters)
-          // Object.entries(labels).forEach(([key, labelText]) => {
-          //   const $label = $('label[for="edit-' + key + '"]', context);
-          //   if ($label.length) {
-          //     $label.text(labelText);
-          //   } else {
-          //     $('[id*="' + key + '"]', context)
-          //       .closest('.form-item')
-          //       .find('label')
-          //       .first()
-          //       .text(labelText);
-          //   }
-          // });
+          if (!val || !map[val]) {
+            restoreOriginalSummaryLabels(context);
+            return;
+          }
+          applyLabelMapping(map[val], context);
         });
       });
+
+      // ---- Helper Functions ----
+      function applyLabelMapping(labels, context) {
+        // Update summary titles.
+        $('.summary-title', context).each(function () {
+          const $summary = $(this);
+          if (!$summary.data('original-filter-label')) {
+            $summary.data('original-filter-label', $summary.text().trim());
+          }
+          const original = $summary.data('original-filter-label');
+          const match = Object.keys(labels).find(
+            key => original.toLowerCase() === key.toLowerCase()
+          );
+          if (match && labels[match]) {
+            $summary.text(labels[match]);
+          } else {
+            $summary.text(original);
+          }
+        });
+
+        // Update exposed form labels.
+        // Object.entries(labels).forEach(([key, labelText]) => {
+        //   const $label = $('label[for="edit-' + key + '"]', context);
+        //   if ($label.length) {
+        //     $label.text(labelText);
+        //   } else {
+        //     $('[id*="' + key + '"]', context)
+        //       .closest('.form-item')
+        //       .find('label')
+        //       .first()
+        //       .text(labelText);
+        //   }
+        // });
+      }
+
+      function restoreOriginalSummaryLabels(context) {
+        $('.summary-title', context).each(function () {
+          const $summary = $(this);
+          if ($summary.data('original-filter-label')) {
+            $summary.text($summary.data('original-filter-label'));
+          }
+        });
+      }
     },
   };
 })(jQuery, Drupal, drupalSettings, once);

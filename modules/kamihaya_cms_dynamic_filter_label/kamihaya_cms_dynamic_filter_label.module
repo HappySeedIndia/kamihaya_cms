@@ -102,7 +102,24 @@ function kamihaya_cms_dynamic_filter_label_form_views_exposed_form_alter(&$form,
     // ✅ Attach library & settings here
     if (!empty($js_mapping)) {
       $form['#attached']['library'][] = 'kamihaya_cms_dynamic_filter_label/dynamic-filter-label';
-      $form['#attached']['drupalSettings']['dynamicFilterLabel'] = $js_mapping;
+      $form['#attached']['drupalSettings']['dynamicFilterLabel']['map'] = $js_mapping;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function kamihaya_cms_dynamic_filter_label_preprocess_page(array &$variables) {
+  if ($term = \Drupal::routeMatch()->getParameter('taxonomy_term')) {
+    if ($term instanceof \Drupal\taxonomy\Entity\Term) {
+      $term_id = $term->id();
+
+      $variables['#attached']['library'][] = 'dynamic_filter_label/dynamic-filter-label';
+      $variables['#attached']['drupalSettings']['dynamicFilterLabel'] = [
+        'currentTermId' => $term_id,
+        // 'map' => $mapping,
+      ];
     }
   }
 }
