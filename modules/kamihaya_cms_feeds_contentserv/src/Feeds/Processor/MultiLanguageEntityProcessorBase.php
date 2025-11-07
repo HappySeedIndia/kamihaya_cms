@@ -410,7 +410,8 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
       if (!empty($target_ids)) {
         $default_entity = $this->entityTypeManager->getStorage($target_type)->load($target_ids[0]);
         $default_value = $default_entity->get($mapping['settings']['reference_by'])->getValue();
-        if (!empty($default_value) && !empty($default_value[0]['value']) && $default_value[0]['value'] === $value) {
+        $default_value = !empty($default_value) && !empty($default_value[0]['value']) ? $default_value[0]['value'] : '';
+        if (!empty($default_value) && $default_value === $value) {
           // If the default entity already has the value, we can use it.
           return;
         }
@@ -420,7 +421,9 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
             // If the translated entity already has the value, we can use it.
             return;
           }
-          $item->set($mapping['map']['target_id'], (is_array($value) ? [] : ''));
+          // If the default entity has a translation for the given language code,
+          // we can use it.
+          $item->set($mapping['map']['target_id'], (is_array($value) ? [$default_value] : $default_value));
           continue;
         }
         if (!empty($default_entity) && !$default_entity->hasTranslation($langcode)) {
