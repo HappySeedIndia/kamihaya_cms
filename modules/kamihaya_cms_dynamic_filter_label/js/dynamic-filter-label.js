@@ -43,20 +43,6 @@
             $summary.text(original);
           }
         });
-
-        // Update exposed form labels.
-        // Object.entries(labels).forEach(([key, labelText]) => {
-        //   const $label = $('label[for="edit-' + key + '"]', context);
-        //   if ($label.length) {
-        //     $label.text(labelText);
-        //   } else {
-        //     $('[id*="' + key + '"]', context)
-        //       .closest('.form-item')
-        //       .find('label')
-        //       .first()
-        //       .text(labelText);
-        //   }
-        // });
       }
 
       function restoreOriginalSummaryLabels(context) {
