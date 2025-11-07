@@ -115,7 +115,7 @@ function kamihaya_cms_dynamic_filter_label_preprocess_page(array &$variables) {
     if ($term instanceof \Drupal\taxonomy\Entity\Term) {
       $term_id = $term->id();
 
-      $variables['#attached']['library'][] = 'dynamic_filter_label/dynamic-filter-label';
+      $variables['#attached']['library'][] = 'kamihaya_cms_dynamic_filter_label/dynamic-filter-label';
       $variables['#attached']['drupalSettings']['dynamicFilterLabel'] = [
         'currentTermId' => $term_id,
         // 'map' => $mapping,
