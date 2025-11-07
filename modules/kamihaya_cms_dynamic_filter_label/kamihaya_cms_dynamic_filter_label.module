@@ -1,0 +1,125 @@
+<?php
+
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
+
+/**
+ * Implements hook_entity_field_storage_insert().
+ */
+function kamihaya_cms_dynamic_filter_label_entity_field_storage_insert(\Drupal\field\Entity\FieldStorageConfig $storage) {
+  if ($storage->getTargetEntityTypeId() === 'taxonomy_term' && $storage->getType() === 'entity_reference') {
+    dynamic_filter_label_scan_reference_fields();
+  }
+}
+
+/**
+ * Ensure that field_filter_labels exists for a target vocabulary.
+ */
+function _dynamic_filter_label_ensure_field($vocab_id) {
+  if($vocab_id == 'image') {
+    return;
+  }
+  $field_name = 'field_filter_labels';
+
+  // Check if the vocabulary exists in configuration.
+  $config = \Drupal::config('taxonomy.vocabulary.' . $vocab_id);
+  if ($config->isNew()) {
+    \Drupal::logger('kamihaya_cms_dynamic_filter_label')->warning(
+      'Vocabulary "@vocab" does not exist; skipping field creation.',
+      ['@vocab' => $vocab_id]
+    );
+    return;
+  }
+
+  // Skip if field already exists for this vocabulary.
+  if (FieldConfig::loadByName('taxonomy_term', $vocab_id, $field_name)) {
+    return;
+  }
+
+  // Create storage if it doesn't exist.
+  if (!FieldStorageConfig::loadByName('taxonomy_term', $field_name)) {
+    FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'taxonomy_term',
+      'type' => 'string_long',
+      'cardinality' => 1,
+      'translatable' => TRUE,
+    ])->save();
+  }
+
+  // Create the field on this vocabulary.
+  FieldConfig::create([
+    'field_name' => $field_name,
+    'entity_type' => 'taxonomy_term',
+    'bundle' => $vocab_id,
+    'label' => t('Filter label mapping'),
+    'description' => t('Stores mapping of exposed filter labels for referencing vocabularies.'),
+  ])->save();
+
+  \Drupal::messenger()->addMessage(t('Added field_filter_labels to vocabulary "@vocab".', ['@vocab' => $vocab_id]));
+}
+
+/**
+ * Implements hook_form_views_exposed_form_alter().
+ */
+function kamihaya_cms_dynamic_filter_label_form_views_exposed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if (!$view) return;
+  if (isset($form['term_node_tid_depth']) && (!empty($form['term_node_tid_depth']['#options']))) {
+    $input = $form['term_node_tid_depth']['#options'];
+    $selected_terms = [];
+
+    foreach ($input as $key => $val) {
+      if (is_numeric($key)) {
+        $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($key);
+        if ($term) {
+          $selected_terms[$key] = $term->bundle();
+        }
+      }
+    }
+
+    // Build the mapping array for JS
+    $js_mapping = [];
+
+    foreach ($selected_terms as $filter_key => $vocab_id) {
+      $config = \Drupal::config('taxonomy.vocabulary.' . $vocab_id);
+      if ($config->isNew()) continue;
+
+      $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')
+        ->loadByProperties(['vid' => $vocab_id]);
+
+      foreach ($terms as $term) {
+        if ($term->hasField('field_filter_labels') && !$term->get('field_filter_labels')->isEmpty()) {
+          $raw = $term->get('field_filter_labels')->value;
+          $mappings = json_decode($raw, TRUE);
+          if (is_array($mappings)) {
+            $js_mapping[$term->id()] = $mappings;
+          }
+        }
+      }
+    }
+
+    // ✅ Attach library & settings here
+    if (!empty($js_mapping)) {
+      $form['#attached']['library'][] = 'kamihaya_cms_dynamic_filter_label/dynamic-filter-label';
+      $form['#attached']['drupalSettings']['dynamicFilterLabel']['map'] = $js_mapping;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function kamihaya_cms_dynamic_filter_label_preprocess_page(array &$variables) {
+  if ($term = \Drupal::routeMatch()->getParameter('taxonomy_term')) {
+    if ($term instanceof \Drupal\taxonomy\Entity\Term) {
+      $term_id = $term->id();
+
+      $variables['#attached']['library'][] = 'kamihaya_cms_dynamic_filter_label/dynamic-filter-label';
+      $variables['#attached']['drupalSettings']['dynamicFilterLabel'] = [
+        'currentTermId' => $term_id,
+        // 'map' => $mapping,
+      ];
+    }
+  }
+}

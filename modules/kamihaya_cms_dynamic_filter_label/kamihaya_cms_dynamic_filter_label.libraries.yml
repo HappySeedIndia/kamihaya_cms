@@ -1,0 +1,8 @@
+dynamic-filter-label:
+  version: 1.0
+  js:
+    js/dynamic-filter-label.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once

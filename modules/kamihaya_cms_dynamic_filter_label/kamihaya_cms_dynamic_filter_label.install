@@ -1,0 +1,38 @@
+<?php
+
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+
+/**
+ * Implements hook_install().
+ *
+ * On install, detect existing taxonomy entity reference fields
+ * and ensure referenced vocabularies have the filter label field.
+ */
+function kamihaya_cms_dynamic_filter_label_install() {
+  dynamic_filter_label_scan_reference_fields();
+}
+
+/**
+ * Scan taxonomy term fields for references to other vocabularies
+ * and add field_filter_labels to those target vocabularies.
+ */
+function dynamic_filter_label_scan_reference_fields() {
+  $field_configs = \Drupal::entityTypeManager()
+    ->getStorage('field_config')
+    ->loadByProperties(['entity_type' => 'taxonomy_term']);
+
+  foreach ($field_configs as $field_config) {
+    /** @var \Drupal\field\Entity\FieldConfig $field_config */
+    $field_type = $field_config->getFieldStorageDefinition()->getType();
+    $target_type = $field_config->getSetting('target_type');
+
+    if ($field_type === 'entity_reference' && $target_type === 'taxonomy_term') {
+      $settings = $field_config->getSetting('handler_settings') ?: [];
+      $target_vocabs = $settings['target_bundles'] ?? [];
+      foreach ($target_vocabs as $vocab_id) {
+        _dynamic_filter_label_ensure_field($vocab_id);
+      }
+    }
+  }
+}
