@@ -1492,7 +1492,8 @@ h2.accordion-header::after {
   gap: 0.5rem;
 }
 .expand-collapse .ec-content {
-  word-break: break-all;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 .expand-collapse a {
