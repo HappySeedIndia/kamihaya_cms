@@ -37,7 +37,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
         '#title' => $this->t('Additional vocabularies'),
         '#default_value' => $this->options['extra_vids'],
         '#options' => $form['vid']['#options'],
-        '#description' => $this->t('Select additional vocabularies to filter by.<br/><strong>This option does not apply to the "Simple hierarchical select" type.</strong>'),
+        '#description' => $this->t('Select additional vocabularies to filter by.<br/><strong>This option does not apply to the "Simple hierarchical select" type or not selected entity bundle filter.</strong>'),
       ];
       unset($form['vid']);
     }
@@ -101,14 +101,15 @@ trait KamihayaTaxonomyViewsFilterTrait {
    * {@inheritdoc}
    */
   protected function valueForm(&$form, FormStateInterface $form_state) {
-    // Call the parent method to ensure the value form is built.
+    // Call the parent method to build the default value form.
     parent::valueForm($form, $form_state);
 
-    // If the type is 'shs', only calling the parent function.
+    // If the filter type is 'shs', no further customization is needed.
     if ($this->options['type'] === 'shs') {
       return;
     }
 
+    // Load additional vocabularies specified in 'extra_vids', excluding the main 'vid'.
     $vocabularies = [];
     foreach ($this->options['extra_vids'] as $vid) {
       if (empty($vid) || $vid === $this->options['vid']) {
@@ -122,14 +123,20 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
     $vids = array_keys($vocabularies);
 
+    // If the filter is a textfield and there are extra vocabularies, set the title and selection bundles.
     if ($this->options['type'] === 'textfield' && !empty($vocabularies)) {
-      // Get vocabulary labels for the textfield.
       $labels = array_map(function ($vocabulary) {
-        return $vocabulary->label();
+          return $vocabulary->label();
       }, $vocabularies);
 
       $form['value']['#title'] = $this->options['limit']
-        ? $this->formatPlural(count($labels), 'Select terms from vocabulary @voc', 'Select terms from vocabularies @voc', ['@voc' => implode(', ', $labels)]) : $this->t('Select terms');
+        ? $this->formatPlural(
+          count($labels),
+          'Select terms from vocabulary @voc',
+          'Select terms from vocabularies @voc',
+          ['@voc' => implode(', ', $labels)]
+        )
+        : $this->t('Select terms');
 
       if ($this->options['limit']) {
         $form['value']['#selection_settings']['target_bundles'] = array_merge([$this->options['vid']], $vids);
@@ -137,10 +144,12 @@ trait KamihayaTaxonomyViewsFilterTrait {
       return;
     }
 
+    // If the filter is not a select box or is not exposed, skip further processing.
     if (($this->options['type'] !== 'select') || !$form_state->get('exposed')) {
       return;
     }
 
+    // Limit options based on display depth if configured.
     if (!empty($this->options['display_depth'])) {
       $vocabulary = $this->vocabularyStorage->load($this->options['vid']);
       $tree = $this->termStorage->loadTree($vocabulary->id(), 0, $this->options['display_depth'], TRUE);
@@ -151,61 +160,59 @@ trait KamihayaTaxonomyViewsFilterTrait {
       $form['value']['#options'] = array_intersect_key($form['value']['#options'], $terms);
     }
 
+    // Process additional vocabularies for select filters.
     if (count($vocabularies) > 0) {
+      // If hierarchy and limit are enabled, add hierarchical options.
       if (!empty($this->options['hierarchy']) && $this->options['limit']) {
         foreach ($vocabularies as $vocabulary) {
           $depth = !empty($this->options['display_depth']) ? $this->options['display_depth'] : NULL;
           $tree = $this->termStorage->loadTree($vocabulary->id(), 0, $depth, TRUE);
-          if (empty($tree)) {
-            continue;
-          }
+          if (empty($tree)) continue;
+
           foreach ($tree as $term) {
+            // Skip unpublished terms unless user has admin permission.
             if (!$term->isPublished() && !$this->currentUser->hasPermission('administer taxonomy')) {
               continue;
             }
+            // Build hierarchical option.
             $choice = new \stdClass();
             $choice->option = [$term->id() => str_repeat('-', $term->depth) . \Drupal::service('entity.repository')->getTranslationFromContext($term)->label()];
             $form['value']['#options'][] = $choice;
           }
         }
       }
+      // Otherwise, load all terms with optional depth consideration.
       else {
         if ($this->options['limit']) {
           $options_with_depth = $form['value']['#options'];
           foreach ($vocabularies as $vocabulary) {
-            // If the vocabulary is not loaded, skip it.
-            if (empty($vocabulary->id())) {
-              continue;
-            }
+            if (empty($vocabulary->id())) continue;
+
             $query = \Drupal::entityQuery('taxonomy_term')
               ->accessCheck(TRUE)
               ->condition('vid', $vocabulary->id())
               ->sort('weight')
               ->sort('name')
               ->addTag('taxonomy_term_access');
+
             if (!$this->currentUser->hasPermission('administer taxonomy')) {
               $query->condition('status', 1);
             }
+
             $terms = Term::loadMultiple($query->execute());
             foreach ($terms as $term) {
               $form['value']['#options'][$term->id()] = \Drupal::service('entity.repository')->getTranslationFromContext($term)->label();
             }
 
-            if (empty($this->options['display_depth'])) {
-              continue;
-            }
+            if (empty($this->options['display_depth'])) continue;
 
             $tree = $this->termStorage->loadTree($vocabulary->id(), 0, $this->options['display_depth'], TRUE);
-            if (empty($tree)) {
-              continue;
-            }
+            if (empty($tree)) continue;
+
             foreach ($tree as $term) {
-              if (!$term->isPublished() && !$this->currentUser->hasPermission('administer taxonomy')) {
-                continue;
-              }
+              if (!$term->isPublished() && !$this->currentUser->hasPermission('administer taxonomy')) continue;
               $options_with_depth[$term->id()] = \Drupal::service('entity.repository')->getTranslationFromContext($term)->label();
             }
-            continue;
           }
 
           if (!empty($this->options['display_depth'])) {
@@ -215,12 +222,13 @@ trait KamihayaTaxonomyViewsFilterTrait {
       }
     }
 
+    // If no options are available or depth/relation filtering is disabled, return early.
     if (empty($form['value']['#options'])
       || (empty($this->options['display_depth']) && empty($this->options['reduce_by_relation']))) {
       return;
     }
 
-    // Hide the filter if it has no available options.
+    // Hide the filter if it has no options and 'hide_if_empty_options' is enabled.
     $form['value']['#hide_if_empty_options'] = !empty($this->options['hide_if_empty_options']) ? $this->options['hide_if_empty_options'] : FALSE;
     if (!empty($this->options['hide_if_empty_options']) && empty($form['value']['#options'])) {
       if (empty($this->options['reduce_by_relation'])) {
@@ -231,18 +239,19 @@ trait KamihayaTaxonomyViewsFilterTrait {
       return;
     }
 
+    // Reduce options based on entity relationships if enabled.
     if (!empty($this->options['reduce_by_relation'])) {
-       $this->reduceTermByRelation($form, $form['value']['#options']);
-       if (!empty($this->options['check_disabled'])) {
-         // If the options are not empty, select the default value and disable it.
-         $this->defaultSelectAndDisabled($form, $form_state);
-       }
+      $this->reduceTermByRelation($form, $form['value']['#options']);
+      if (!empty($this->options['check_disabled'])) {
+        // Select default value and disable the filter if configured.
+        $this->defaultSelectAndDisabled($form, $form_state);
+      }
       return;
     }
 
-    if (empty($tree)) {
-      return;
-    }
+    // Build hierarchical options for the main vocabulary tree.
+    if (empty($tree)) return;
+
     $options = [];
     foreach ($tree as $term) {
       if (!empty($this->options['hierarchy'])) {
@@ -254,12 +263,13 @@ trait KamihayaTaxonomyViewsFilterTrait {
         $options[$term->id()] = \Drupal::service('entity.repository')->getTranslationFromContext($term)->label();
       }
     }
-    if (empty($options)) {
-      return;
-    }
+
+    if (empty($options)) return;
+
     $form['value']['#options'] = $options;
+
+    // Select default value and disable the filter if configured.
     if (!empty($this->options['check_disabled'])) {
-      // If the options are not empty, select the default value and disable it.
       $this->defaultSelectAndDisabled($form, $form_state);
     }
   }
@@ -380,7 +390,15 @@ trait KamihayaTaxonomyViewsFilterTrait {
     foreach ($options as $key => $option) {
       $tid = is_array($option) ? key($option) : $key;
       $term = $this->termStorage->load($tid);
+      if (empty($term)) {
+        unset($options[$key]);
+        continue;
+      }
       foreach ($bundles as $field_name => $bundle) {
+        if (!$term->hasField($field_name)) {
+          unset($options[$key]);
+          continue;
+        }
         $field = $term->get($field_name);
         // If the field doesn't contain any reference, unset the option.
         if (empty($field)) {
@@ -406,6 +424,144 @@ trait KamihayaTaxonomyViewsFilterTrait {
       $form['value']['#wrapper_attributes']['class'][] = 'hidden';
     }
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function opHelper() {
+    // Call the parent operation helper to preserve base functionality.
+    parent::opHelper();
+
+    // Exit early if there is no value, the operator is not 'OR',
+    // or required vocabulary IDs are missing.
+    if (empty($this->value) || $this->operator !== 'or' || empty($this->options['extra_vids']) || empty($this->options['vid'])) {
+      return;
+    }
+
+    // Prepare an array to store extra vocabularies to process.
+    $vids = [];
+  foreach ($this->options['extra_vids'] as $vid) {
+      if (empty($vid) || $vid === $this->options['vid']) {
+        continue;
+      }
+      $vids[$vid] = [];
+    }
+    if (empty($vids)) {
+      return;
+    }
+
+    // Exit if the view filter or its type is not available.
+    if (empty($this->view->filter) || empty($this->view->filter['type'])) {
+      return;
+    }
+
+    // Get the entity type and bundles for the main filter.
+    $type_filter = $this->view->filter['type'];
+    $entity_type = $type_filter->getEntityType();
+    $bundles = $type_filter->value;
+    if (empty($bundles) || !is_array($bundles)) {
+      return;
+    }
+
+    // Get the tables currently in the query to match field tables.
+    $tables = $this->query->getTableQueue();
+    if (empty($tables) || !is_array($tables)) {
+      return;
+    }
+
+    // Iterate over bundles to find entity reference fields referencing taxonomy terms.
+    foreach ($bundles as $bundle) {
+      $field_definitions = $this->entityFieldManager->getFieldDefinitions($entity_type, $bundle);
+
+      // Only consider fields starting with 'field_', of type 'entity_reference',
+      // and referencing taxonomy terms.
+      foreach ($field_definitions as $field_name => $field_definition) {
+        if (strpos($field_name, 'field_') !== 0
+          || $field_definition->getType() !== 'entity_reference'
+          || strpos($field_definition->getSetting('handler'), 'taxonomy_term') === FALSE) {
+          continue;
+        }
+
+        $handler_settings = $field_definition->getSetting('handler_settings');
+        if (empty($handler_settings['target_bundles']) || empty(array_intersect_key($handler_settings['target_bundles'], $vids))) {
+          continue;
+        }
+
+        // For each target bundle, map the field to the correct table and column.
+        foreach (array_intersect_key($handler_settings['target_bundles'], $vids) as $target_bundle) {
+          if (!isset($vids[$target_bundle])) {
+            continue;
+          }
+
+          $storage = $this->entityTypeManager->getStorage($entity_type);
+          $table_mapping = $storage->getTableMapping();
+
+          // Determine the actual table and column names for the field.
+          $data_table = $table_mapping->getFieldTableName($field_name);
+          $columns = $table_mapping->getColumnNames($field_name);
+          if (empty($columns) || empty($columns['target_id'])) {
+            continue;
+          }
+
+          // Match the table alias used in the query.
+          foreach ($tables as $alias => $table) {
+            if ($data_table === $alias) {
+              break;
+            }
+            if ($table['table'] === $data_table) {
+              $data_table = $alias;
+              break;
+            }
+          }
+
+          // Store the fully-qualified field names for adding OR conditions.
+          $vids[$target_bundle][] = "$data_table.{$columns['target_id']}";
+        }
+      }
+    }
+
+    // Prepare to replace the original filter condition with OR logic.
+    $default_field = $this->helper->getField();
+    $where = &$this->query->where;
+    $field_conditution = [];
+    $max_index = 0;
+
+    // Find and remove existing conditions related to the original filter field.
+    foreach ($where as $group_idx => $group) {
+      if ($max_index < $group_idx) {
+        $max_index = $group_idx;
+      }
+      if (empty($group['conditions'])) {
+        continue;
+      }
+      foreach ($group['conditions'] as $idx => $condition) {
+        if (empty($condition['field']) || strpos($condition['field'], $default_field) === FALSE) {
+          continue;
+        }
+        $field_conditution = $condition;
+        unset($where[$group_idx]['conditions'][$idx]);
+      }
+    }
+    if (empty($field_conditution)) {
+      return;
+    }
+
+    // Add the original filter field as the first condition in a new OR group.
+    $max_index++;
+    $this->query->addWhere($max_index, $default_field, $this->value, 'IN');
+    $this->query->setWhereGroup('OR', $max_index);
+
+    // Add all extra taxonomy reference fields to the same OR group.
+    foreach ($vids as $vid => $fields) {
+      if (empty($fields)) {
+        continue;
+      }
+      foreach ($fields as $field) {
+        $this->query->addWhere($max_index, $field, $this->value, 'IN');
+      }
+    }
+  }
+
 
   /**
    * Select the default value and disable it.
