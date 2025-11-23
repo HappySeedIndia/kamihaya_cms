@@ -18,6 +18,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
     $options = parent::defineOptions();
     $options['display_depth'] = ['default' => 0];
     $options['reduce_by_relation'] = ['default' => 0];
+    $options['extra_vids'] = ['default' => []];
     return $options;
   }
 
@@ -26,6 +27,23 @@ trait KamihayaTaxonomyViewsFilterTrait {
    */
   public function buildExtraOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildExtraOptionsForm($form, $form_state);
+
+    if (!empty($form['vid'])) {
+      $vid_form = [
+        'vid' => $form['vid'],
+      ];
+      $vid_form['extra_vids'] = [
+        '#type' => 'checkboxes',
+        '#title' => $this->t('Additional vocabularies'),
+        '#default_value' => $this->options['extra_vids'],
+        '#options' => $form['vid']['#options'],
+        '#description' => $this->t('Select additional vocabularies to filter by.<br/><strong>This option does not apply to the "Simple hierarchical select" type.</strong>'),
+      ];
+      unset($form['vid']);
+    }
+
+    $form = array_merge($vid_form, $form);
+
     $form['display_depth'] = [
       '#type' => 'select',
       '#options' => [
@@ -83,9 +101,124 @@ trait KamihayaTaxonomyViewsFilterTrait {
    * {@inheritdoc}
    */
   protected function valueForm(&$form, FormStateInterface $form_state) {
-    $vocabulary = $this->vocabularyStorage->load($this->options['vid']);
-    // Let the parent class generate the base form.
+    // Call the parent method to ensure the value form is built.
     parent::valueForm($form, $form_state);
+
+    // If the type is 'shs', only calling the parent function.
+    if ($this->options['type'] === 'shs') {
+      return;
+    }
+
+    $vocabularies = [];
+    foreach ($this->options['extra_vids'] as $vid) {
+      if (empty($vid) || $vid === $this->options['vid']) {
+        continue;
+      }
+      $vocabulary = $this->vocabularyStorage->load($vid);
+      if (empty($vocabulary)) {
+        continue;
+      }
+      $vocabularies[$vid] = $vocabulary;
+    }
+    $vids = array_keys($vocabularies);
+
+    if ($this->options['type'] === 'textfield' && !empty($vocabularies)) {
+      // Get vocabulary labels for the textfield.
+      $labels = array_map(function ($vocabulary) {
+        return $vocabulary->label();
+      }, $vocabularies);
+
+      $form['value']['#title'] = $this->options['limit']
+        ? $this->formatPlural(count($labels), 'Select terms from vocabulary @voc', 'Select terms from vocabularies @voc', ['@voc' => implode(', ', $labels)]) : $this->t('Select terms');
+
+      if ($this->options['limit']) {
+        $form['value']['#selection_settings']['target_bundles'] = array_merge([$this->options['vid']], $vids);
+      }
+      return;
+    }
+
+    if (($this->options['type'] !== 'select') || !$form_state->get('exposed')) {
+      return;
+    }
+
+    if (!empty($this->options['display_depth'])) {
+      $vocabulary = $this->vocabularyStorage->load($this->options['vid']);
+      $tree = $this->termStorage->loadTree($vocabulary->id(), 0, $this->options['display_depth'], TRUE);
+      $terms = [];
+      foreach ($tree as $term) {
+        $terms[$term->id()] = $term;
+      }
+      $form['value']['#options'] = array_intersect_key($form['value']['#options'], $terms);
+    }
+
+    if (count($vocabularies) > 0) {
+      if (!empty($this->options['hierarchy']) && $this->options['limit']) {
+        foreach ($vocabularies as $vocabulary) {
+          $depth = !empty($this->options['display_depth']) ? $this->options['display_depth'] : NULL;
+          $tree = $this->termStorage->loadTree($vocabulary->id(), 0, $depth, TRUE);
+          if (empty($tree)) {
+            continue;
+          }
+          foreach ($tree as $term) {
+            if (!$term->isPublished() && !$this->currentUser->hasPermission('administer taxonomy')) {
+              continue;
+            }
+            $choice = new \stdClass();
+            $choice->option = [$term->id() => str_repeat('-', $term->depth) . \Drupal::service('entity.repository')->getTranslationFromContext($term)->label()];
+            $form['value']['#options'][] = $choice;
+          }
+        }
+      }
+      else {
+        if ($this->options['limit']) {
+          $options_with_depth = $form['value']['#options'];
+          foreach ($vocabularies as $vocabulary) {
+            // If the vocabulary is not loaded, skip it.
+            if (empty($vocabulary->id())) {
+              continue;
+            }
+            $query = \Drupal::entityQuery('taxonomy_term')
+              ->accessCheck(TRUE)
+              ->condition('vid', $vocabulary->id())
+              ->sort('weight')
+              ->sort('name')
+              ->addTag('taxonomy_term_access');
+            if (!$this->currentUser->hasPermission('administer taxonomy')) {
+              $query->condition('status', 1);
+            }
+            $terms = Term::loadMultiple($query->execute());
+            foreach ($terms as $term) {
+              $form['value']['#options'][$term->id()] = \Drupal::service('entity.repository')->getTranslationFromContext($term)->label();
+            }
+
+            if (empty($this->options['display_depth'])) {
+              continue;
+            }
+
+            $tree = $this->termStorage->loadTree($vocabulary->id(), 0, $this->options['display_depth'], TRUE);
+            if (empty($tree)) {
+              continue;
+            }
+            foreach ($tree as $term) {
+              if (!$term->isPublished() && !$this->currentUser->hasPermission('administer taxonomy')) {
+                continue;
+              }
+              $options_with_depth[$term->id()] = \Drupal::service('entity.repository')->getTranslationFromContext($term)->label();
+            }
+            continue;
+          }
+
+          if (!empty($this->options['display_depth'])) {
+            $form['value']['#options'] = array_intersect_key($form['value']['#options'], $options_with_depth);
+          }
+        }
+      }
+    }
+
+    if (empty($form['value']['#options'])
+      || (empty($this->options['display_depth']) && empty($this->options['reduce_by_relation']))) {
+      return;
+    }
 
     // Hide the filter if it has no available options.
     $form['value']['#hide_if_empty_options'] = !empty($this->options['hide_if_empty_options']) ? $this->options['hide_if_empty_options'] : FALSE;
@@ -98,21 +231,6 @@ trait KamihayaTaxonomyViewsFilterTrait {
       return;
     }
 
-    if (($this->options['type'] !== 'select')
-      || !$form_state->get('exposed')
-      || empty($form['value']['#options'])
-      || (empty($this->options['display_depth']) && empty($this->options['reduce_by_relation']))) {
-      return;
-    }
-
-    if (!empty($this->options['display_depth'])) {
-      $tree = $this->termStorage->loadTree($vocabulary->id(), 0, $this->options['display_depth'], TRUE);
-      $terms = [];
-      foreach ($tree as $term) {
-        $terms[$term->id()] = $term;
-      }
-      $form['value']['#options'] = array_intersect_key($form['value']['#options'], $terms);
-    }
     if (!empty($this->options['reduce_by_relation'])) {
        $this->reduceTermByRelation($form, $form['value']['#options']);
        if (!empty($this->options['check_disabled'])) {
@@ -155,16 +273,24 @@ trait KamihayaTaxonomyViewsFilterTrait {
    *   The options array.
    */
   private function reduceTermByRelation(array &$form, array $options) {
-    $field_definitions = $this->entityFieldManager->getFieldDefinitions('taxonomy_term', $this->options['vid']);
-    // Bundles should store the child filters which will be updated using AJAX.
+    $vids = array_merge([$this->options['vid']], $this->options['extra_vids']);
     $bundles = [];
     $form['value']['#related_filter'] = [];
-    foreach ($field_definitions as $field_name => $field_definition) {
-      if (strpos($field_name, 'field_') !== 0 || $field_definition->getType() !== 'entity_reference' || strpos($field_definition->getSetting('handler'), 'taxonomy_term') === FALSE) {
+    foreach ($vids as $vid) {
+      if (empty($vid)) {
         continue;
       }
-      $bundles[$field_name] = reset($field_definition->getSetting('handler_settings')['target_bundles']);
+      $field_definitions = $this->entityFieldManager->getFieldDefinitions('taxonomy_term', $vid);
+      // Bundles should store the child filters which will be updated using AJAX.
+      foreach ($field_definitions as $field_name => $field_definition) {
+        if (strpos($field_name, 'field_') !== 0 || $field_definition->getType() !== 'entity_reference' || strpos($field_definition->getSetting('handler'), 'taxonomy_term') === FALSE) {
+          continue;
+        }
+
+        $bundles[$field_name] = reset($field_definition->getSetting('handler_settings')['target_bundles']);
+      }
     }
+
     // $request_params consists the AJAX request query parameters including (term_node_tid_depth).
     $request_params = array_merge($this->request->query->all(), $this->request->request->all());
     $filters = [];
@@ -175,7 +301,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
         continue;
       }
       // Ignore non-taxonomy filters and continue.
-      if (strpos($filter->options['plugin_id'], 'taxonomy_index_tid') === FALSE || !in_array($filter->options['vid'], $bundles)) {
+      if (strpos($filter->options['plugin_id'], 'taxonomy_index_tid') === FALSE || (!in_array($filter->options['vid'], $bundles) && empty(array_intersect($bundles, $vids)))) {
         continue;
       }
       $form['value']['#related_filter'][] = $name;
@@ -250,6 +376,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
       }
       return;
     }
+
     foreach ($options as $key => $option) {
       $tid = is_array($option) ? key($option) : $key;
       $term = $this->termStorage->load($tid);
@@ -269,6 +396,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
       }
       unset($options[$key]);
     }
+
     // Return the filtered options.
     $form['value']['#options'] = $options;
     if (empty($options)) {
