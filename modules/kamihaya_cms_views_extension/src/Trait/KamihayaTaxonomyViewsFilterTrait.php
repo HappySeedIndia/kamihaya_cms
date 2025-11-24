@@ -487,6 +487,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
           continue;
         }
 
+        $new_table = TRUE;
         // For each target bundle, map the field to the correct table and column.
         foreach (array_intersect_key($handler_settings['target_bundles'], $vids) as $target_bundle) {
           if (!isset($vids[$target_bundle])) {
@@ -506,12 +507,31 @@ trait KamihayaTaxonomyViewsFilterTrait {
           // Match the table alias used in the query.
           foreach ($tables as $alias => $table) {
             if ($data_table === $alias) {
+              $new_table = FALSE;
               break;
             }
             if ($table['table'] === $data_table) {
               $data_table = $alias;
+              $new_table = FALSE;
               break;
             }
+          }
+
+          if ($new_table) {
+            $relationship = $this->view->storage->get('base_table');
+            $entity_type_def = $this->entityTypeManager->getDefinition($entity_type);
+            $id_field = $table_mapping->getColumnNames($entity_type_def->getKey('id'))['value'];
+            // Add the new table to the query if it doesn't exist.
+            $config = [
+              'table' => $data_table,
+              'field' => 'entity_id',
+              'left_table' => $relationship,
+              'left_field' => $id_field,
+              'type' => 'LEFT',
+            ];
+
+            $join = $this->joinHandler->createInstance('standard', $config);
+            $this->query->addTable($data_table, $relationship, $join, $data_table);
           }
 
           // Store the fully-qualified field names for adding OR conditions.
