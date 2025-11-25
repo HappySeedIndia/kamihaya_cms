@@ -42,3 +42,10 @@ advanced-filter-exposed-form:
     - core/drupal
     - core/drupalSettings
     - core/once
+
+checkboxes_ajax:
+  js:
+    assets/js/checkboxes-ajax.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
