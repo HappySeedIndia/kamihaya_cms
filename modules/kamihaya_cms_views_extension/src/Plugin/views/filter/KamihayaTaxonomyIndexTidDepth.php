@@ -4,6 +4,7 @@ namespace Drupal\kamihaya_cms_views_extension\Plugin\views\filter;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\kamihaya_cms_views_extension\Trait\KamihayaTaxonomyViewsFilterTrait;
@@ -39,6 +40,13 @@ class KamihayaTaxonomyIndexTidDepth extends ShsTaxonomyIndexTidDepth {
   protected $entityFieldManager;
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * The route match.
    *
    * @var \Drupal\Core\Routing\RouteMatchInterface
@@ -64,15 +72,18 @@ class KamihayaTaxonomyIndexTidDepth extends ShsTaxonomyIndexTidDepth {
    *   The request object.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   The entity field manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, VocabularyStorageInterface $vocabulary_storage, TermStorageInterface $term_storage, Connection $database, Request $request, EntityFieldManagerInterface $entity_field_manager, RouteMatchInterface $route_match, ?AccountInterface $current_user = NULL) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, VocabularyStorageInterface $vocabulary_storage, TermStorageInterface $term_storage, Connection $database, Request $request, EntityFieldManagerInterface $entity_field_manager, EntityTypeManagerInterface $entity_type_manager, RouteMatchInterface $route_match, ?AccountInterface $current_user = NULL) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $vocabulary_storage, $term_storage, $database, $current_user);
     $this->request = $request;
     $this->entityFieldManager = $entity_field_manager;
+    $this->entityTypeManager = $entity_type_manager;
     $this->routeMatch = $route_match;
   }
 
@@ -89,6 +100,7 @@ class KamihayaTaxonomyIndexTidDepth extends ShsTaxonomyIndexTidDepth {
       $container->get('database'),
       $container->get('request_stack')->getCurrentRequest(),
       $container->get('entity_field.manager'),
+      $container->get('entity_type.manager'),
       $container->get('current_route_match'),
       $container->get('current_user')
     );

@@ -111,7 +111,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
 
     // Load additional vocabularies specified in 'extra_vids', excluding the main 'vid'.
     $vocabularies = [];
-    foreach ($this->options['extra_vids'] as $vid) {
+    foreach (array_filter($this->options['extra_vids']) as $vid) {
       if (empty($vid) || $vid === $this->options['vid']) {
         continue;
       }
@@ -241,7 +241,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
 
     // Reduce options based on entity relationships if enabled.
     if (!empty($this->options['reduce_by_relation'])) {
-      $this->reduceTermByRelation($form, $form['value']['#options']);
+      $this->reduceTermByRelation($form, $form_state, $form['value']['#options']);
       if (!empty($this->options['check_disabled'])) {
         // Select default value and disable the filter if configured.
         $this->defaultSelectAndDisabled($form, $form_state);
@@ -279,45 +279,53 @@ trait KamihayaTaxonomyViewsFilterTrait {
    *
    * @param array $form
    *   The form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
    * @param array $options
    *   The options array.
    */
-  private function reduceTermByRelation(array &$form, array $options) {
-    $vids = array_merge([$this->options['vid']], $this->options['extra_vids']);
+  private function reduceTermByRelation(array &$form, FormStateInterface $form_state, array $options) {
+    $vids = array_merge([$this->options['vid']], array_filter($this->options['extra_vids']));
     $bundles = [];
+    $bundle_field_mapping = [];
     $form['value']['#related_filter'] = [];
     foreach ($vids as $vid) {
       if (empty($vid)) {
         continue;
       }
+      $bundle_field_mapping[$vid] = [];
       $field_definitions = $this->entityFieldManager->getFieldDefinitions('taxonomy_term', $vid);
       // Bundles should store the child filters which will be updated using AJAX.
       foreach ($field_definitions as $field_name => $field_definition) {
         if (strpos($field_name, 'field_') !== 0 || $field_definition->getType() !== 'entity_reference' || strpos($field_definition->getSetting('handler'), 'taxonomy_term') === FALSE) {
           continue;
         }
-
-        $bundles[$field_name] = reset($field_definition->getSetting('handler_settings')['target_bundles']);
+        $bundle = reset($field_definition->getSetting('handler_settings')['target_bundles']);
+        $bundle_field_mapping[$vid][$field_name] = $bundle;
+        if (in_array($bundle, $bundles)) {
+          continue;
+        }
+        $bundles[] = $bundle;
       }
     }
 
     // $request_params consists the AJAX request query parameters including (term_node_tid_depth).
     $request_params = array_merge($this->request->query->all(), $this->request->request->all());
     $filters = [];
-
     // Loop through all the filters configured in the current view.
     foreach ($this->view->filter ?: [] as $name => $filter) {
       if (empty($filter->options)) {
         continue;
       }
+
       // Ignore non-taxonomy filters and continue.
-      if (strpos($filter->options['plugin_id'], 'taxonomy_index_tid') === FALSE || (!in_array($filter->options['vid'], $bundles) && empty(array_intersect($bundles, $vids)))) {
+      if (strpos($filter->options['plugin_id'], 'taxonomy_index_tid') === FALSE || (!in_array($filter->options['vid'], $bundles))) {
         continue;
       }
       $form['value']['#related_filter'][] = $name;
       // Add the filter name to the form attributes for AJAX.
       $form['value']['#attributes']['data-related-filter'][] = $name;
-      if (empty($request_params[$name])) {
+      if (empty($request_params[$name]) || (is_string($request_params[$name]) && strtolower($request_params[$name]) === 'all')) {
         continue;
       }
       if (is_array($request_params[$name])) {
@@ -378,6 +386,18 @@ trait KamihayaTaxonomyViewsFilterTrait {
     // If no parent filter is selected display no child filters.
     if (empty($filters)) {
       $form['value']['#options'] = [];
+      $identifier = $this->options['expose']['identifier'];
+      $user_input = $form_state->getUserInput();
+      if (!empty($user_input[$identifier])) {
+        $user_input[$identifier] = [];
+        $form_state->setUserInput($user_input);
+      }
+      $request = $this->request->request->all();
+      if (!empty($request[$identifier])) {
+        unset($request[$identifier]);
+        $this->request->request->replace($request);
+      }
+      $this->value = [];
       if (!empty($this->options['hide_if_empty_options'])) {
         if (empty($this->options['reduce_by_relation'])) {
           $form['value']['#access'] = FALSE;
@@ -387,6 +407,18 @@ trait KamihayaTaxonomyViewsFilterTrait {
       return;
     }
 
+    $filter_bundles = [];
+    foreach ($filters as $filter) {
+      $term = $this->termStorage->load($filter);
+      if (empty($term)) {
+        continue;
+      }
+      if (in_array($term->bundle(), $filter_bundles)) {
+        continue;
+      }
+      $filter_bundles[] = $term->bundle();
+    }
+
     foreach ($options as $key => $option) {
       $tid = is_array($option) ? key($option) : $key;
       $term = $this->termStorage->load($tid);
@@ -394,23 +426,41 @@ trait KamihayaTaxonomyViewsFilterTrait {
         unset($options[$key]);
         continue;
       }
-      foreach ($bundles as $field_name => $bundle) {
-        if (!$term->hasField($field_name)) {
-          unset($options[$key]);
+      foreach ($bundle_field_mapping as $vid => $mappings) {
+        if (empty($mappings)) {
           continue;
         }
-        $field = $term->get($field_name);
-        // If the field doesn't contain any reference, unset the option.
-        if (empty($field)) {
-          unset($options[$key]);
+        if ($vid !== $term->bundle()) {
+          continue;
         }
-
-        $target_ids = $field->getValue();
-        foreach ($target_ids as $target_id) {
-          if (in_array($target_id['target_id'], $filters)) {
+        foreach ($mappings as $field_name => $bundle) {
+          if (!in_array($bundle, $filter_bundles)) {
+            continue;
+          }
+          if (!$term->hasField($field_name)) {
+            unset($options[$key]);
             continue 3;
           }
+          $field = $term->get($field_name);
+          // If the field doesn't contain any reference, unset the option.
+          if (empty($field)) {
+            unset($options[$key]);
+            continue 3;
+          }
+          $target_ids = $field->getValue();
+          if (empty($target_ids)) {
+            unset($options[$key]);
+            continue 3;
+          }
+          // If the target IDs do not match any of the filters, unset the option.
+          foreach ($target_ids as $target_id) {
+            if (!in_array($target_id['target_id'], $filters)) {
+              unset($options[$key]);
+              continue 4;
+            }
+          }
         }
+        continue 2;
       }
       unset($options[$key]);
     }
@@ -422,6 +472,18 @@ trait KamihayaTaxonomyViewsFilterTrait {
         $form['value']['#access'] = FALSE;
       }
       $form['value']['#wrapper_attributes']['class'][] = 'hidden';
+      $identifier = $this->options['expose']['identifier'];
+      $user_input = $form_state->getUserInput();
+      if (!empty($user_input[$identifier])) {
+        $user_input[$identifier] = [];
+        $form_state->setUserInput($user_input);
+      }
+      $request = $this->request->request->all();
+      if (!empty($request[$identifier])) {
+        unset($request[$identifier]);
+        $this->request->request->replace($request);
+      }
+      $this->value = [];
     }
   }
 
@@ -434,13 +496,13 @@ trait KamihayaTaxonomyViewsFilterTrait {
 
     // Exit early if there is no value, the operator is not 'OR',
     // or required vocabulary IDs are missing.
-    if (empty($this->value) || $this->operator !== 'or' || empty($this->options['extra_vids']) || empty($this->options['vid'])) {
+    if (empty($this->value) || $this->operator !== 'or' || empty(array_filter($this->options['extra_vids'])) || empty($this->options['vid'])) {
       return;
     }
 
     // Prepare an array to store extra vocabularies to process.
     $vids = [];
-  foreach ($this->options['extra_vids'] as $vid) {
+  foreach (array_filter($this->options['extra_vids']) as $vid) {
       if (empty($vid) || $vid === $this->options['vid']) {
         continue;
       }

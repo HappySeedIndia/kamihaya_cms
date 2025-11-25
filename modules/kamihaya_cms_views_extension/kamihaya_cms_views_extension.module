@@ -8,6 +8,7 @@ use Drupal\Core\Database\DatabaseExceptionWrapper;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\ConditionInterface;
 use Drupal\Core\Database\Query\SelectInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Template\Attribute;
@@ -678,6 +679,36 @@ function kamihaya_cms_views_extension_add_ajax(array &$form, FormStateInterface 
     }
     $related_filter = $value['#related_filter'];
     foreach ($related_filter as $filter) {
+      $type = $form[$filter]['#type'];
+      if ($type === 'checkboxes') {
+        $trigger_element = "{$filter}_ajax_trigger";
+        if (empty($form[$trigger_element])) {
+          // Create a trigger element for the AJAX callback.
+          $form[$trigger_element] = [
+            '#type' => 'textfield',
+            '#value' => '',
+            '#group' => $value['#group'] ?? '',
+            '#ajax' => [
+              'callback' => 'kamihaya_cms_views_extension_ajax_callback',
+              'event' => 'change',
+              'wrapper' => [],
+              'progress' => [
+                'type' => 'throbber',
+                'message' => '',
+              ],
+            ],
+            '#wrapper_attributes' => [
+              'class' => ['d-none'],
+            ],
+          ];
+
+          $form[$filter]['#attributes']['class'][] = 'kamihaya-ajax-trigger';
+          $form[$filter]['#attributes']['data-trigger'] = $trigger_element;
+        }
+        $form[$trigger_element]['#ajax']['wrapper'][$key] =  '#' . $id . $class;
+        continue;
+      }
+
       // Initiate AJAX only once for the parent filter.
       if (empty($form[$filter]['#ajax'])) {
         $form[$filter]['#ajax'] = [
@@ -691,10 +722,11 @@ function kamihaya_cms_views_extension_add_ajax(array &$form, FormStateInterface 
         ];
       }
       // If there are multiple field options which needs to be updated, specify the wrappers for each field.
-      $target = $key;
-      $form[$filter]['#ajax']['wrapper'][$target] =  '#' . $id . $class;
+      $form[$filter]['#ajax']['wrapper'][$key] =  '#' . $id . $class;
     }
   }
+  // Attach the library for AJAX functionality.
+  $form['#attached']['library'][] = 'kamihaya_cms_views_extension/checkboxes_ajax';
 }
 
 /**
@@ -722,7 +754,6 @@ function kamihaya_cms_views_extension_ajax_callback(array &$form, FormStateInter
     if (empty($field) && !empty($form['filter_grouping']) && !empty($form['filter_grouping'][$name])) {
       $field = &$form['filter_grouping'][$name];
     }
-
     if (empty($field)) {
       continue;
     }
