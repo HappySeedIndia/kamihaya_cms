@@ -452,12 +452,13 @@ trait KamihayaTaxonomyViewsFilterTrait {
             unset($options[$key]);
             continue 3;
           }
-          // If the target IDs do not match any of the filters, unset the option.
-          foreach ($target_ids as $target_id) {
-            if (!in_array($target_id['target_id'], $filters)) {
-              unset($options[$key]);
-              continue 4;
-            }
+          $target_ids = array_map(function ($item) {
+            return $item['target_id'];
+          }, $target_ids);
+          if (empty(array_intersect($target_ids, $filters))) {
+            // If no intersection with the filters, unset the option.
+            unset($options[$key]);
+            continue 3;
           }
         }
         continue 2;
