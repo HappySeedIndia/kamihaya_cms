@@ -18,6 +18,9 @@ trait KamihayaTaxonomyViewsFilterTrait {
     $options = parent::defineOptions();
     $options['display_depth'] = ['default' => 0];
     $options['reduce_by_relation'] = ['default' => 0];
+    $options['hide_if_empty_options'] = ['default' => FALSE];
+    $options['hide_if_vid_term_empty'] = ['default' => FALSE];
+    $options['check_disabled'] = ['default' => FALSE];
     $options['extra_vids'] = ['default' => []];
     return $options;
   }
@@ -83,6 +86,28 @@ trait KamihayaTaxonomyViewsFilterTrait {
         ],
       ],
     ];
+    if (!empty($form['extra_vids'])) {
+      // Add an option to hide the filter if the term of the selected vocabulary is empty.
+      $form['hide_if_vid_term_empty'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Hide if term of <strong>Vocabulary</strong> is empty'),
+        '#default_value' => $this->options['hide_if_vid_term_empty'] ?? FALSE,
+        '#description' => $this->t('Hide this exposed filter if no terms are available in the <strong>Vocabulary</strong>.'),
+        '#states' => [
+          'visible' => [
+            ':input[name="options[extra_vids]"]' => ['value' => 'select'],
+          ],
+        ],
+      ];
+      $states = [];
+      foreach ($this->options['extra_vids'] as $key => $label) {
+        $states[':input[name="options[extra_vids][' . $key . ']"]'] = ['checked' => FALSE];
+      }
+
+      $form['hide_if_vid_term_empty']['#states'] = [
+        'invisible' => $states,
+      ];
+    }
     // Add an option to check the default value and disable it.
     $form['check_disabled'] = [
       '#type' => 'checkbox',
@@ -167,7 +192,9 @@ trait KamihayaTaxonomyViewsFilterTrait {
         foreach ($vocabularies as $vocabulary) {
           $depth = !empty($this->options['display_depth']) ? $this->options['display_depth'] : NULL;
           $tree = $this->termStorage->loadTree($vocabulary->id(), 0, $depth, TRUE);
-          if (empty($tree)) continue;
+          if (empty($tree)) {
+            continue;
+          }
 
           foreach ($tree as $term) {
             // Skip unpublished terms unless user has admin permission.
@@ -186,7 +213,9 @@ trait KamihayaTaxonomyViewsFilterTrait {
         if ($this->options['limit']) {
           $options_with_depth = $form['value']['#options'];
           foreach ($vocabularies as $vocabulary) {
-            if (empty($vocabulary->id())) continue;
+            if (empty($vocabulary->id())) {
+              continue;
+            }
 
             $query = \Drupal::entityQuery('taxonomy_term')
               ->accessCheck(TRUE)
@@ -204,13 +233,19 @@ trait KamihayaTaxonomyViewsFilterTrait {
               $form['value']['#options'][$term->id()] = \Drupal::service('entity.repository')->getTranslationFromContext($term)->label();
             }
 
-            if (empty($this->options['display_depth'])) continue;
+            if (empty($this->options['display_depth'])) {
+              continue;
+            }
 
             $tree = $this->termStorage->loadTree($vocabulary->id(), 0, $this->options['display_depth'], TRUE);
-            if (empty($tree)) continue;
+            if (empty($tree)) {
+              continue;
+            }
 
             foreach ($tree as $term) {
-              if (!$term->isPublished() && !$this->currentUser->hasPermission('administer taxonomy')) continue;
+              if (!$term->isPublished() && !$this->currentUser->hasPermission('administer taxonomy')) {
+                continue;
+              }
               $options_with_depth[$term->id()] = \Drupal::service('entity.repository')->getTranslationFromContext($term)->label();
             }
           }
@@ -250,7 +285,9 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
 
     // Build hierarchical options for the main vocabulary tree.
-    if (empty($tree)) return;
+    if (empty($tree)) {
+      return;
+    }
 
     $options = [];
     foreach ($tree as $term) {
@@ -264,7 +301,9 @@ trait KamihayaTaxonomyViewsFilterTrait {
       }
     }
 
-    if (empty($options)) return;
+    if (empty($options)) {
+      return;
+    }
 
     $form['value']['#options'] = $options;
 
@@ -419,6 +458,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
       $filter_bundles[] = $term->bundle();
     }
 
+    $exist_vid_term = FALSE;
     foreach ($options as $key => $option) {
       $tid = is_array($option) ? key($option) : $key;
       $term = $this->termStorage->load($tid);
@@ -460,10 +500,20 @@ trait KamihayaTaxonomyViewsFilterTrait {
             unset($options[$key]);
             continue 3;
           }
+          if (!$exist_vid_term && $term->bundle() === $this->options['vid']) {
+            // If the term belongs to the main vocabulary, set the flag.
+            $exist_vid_term = TRUE;
+          }
         }
         continue 2;
       }
       unset($options[$key]);
+    }
+
+    if ($this->options['hide_if_vid_term_empty'] && !$exist_vid_term) {
+      // If the main vocabulary has no terms, and the hide_if_vid_term_empty option is enabled,
+      // hide the filter.
+      $options = [];
     }
 
     // Return the filtered options.
@@ -503,7 +553,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
 
     // Prepare an array to store extra vocabularies to process.
     $vids = [];
-  foreach (array_filter($this->options['extra_vids']) as $vid) {
+    foreach (array_filter($this->options['extra_vids']) as $vid) {
       if (empty($vid) || $vid === $this->options['vid']) {
         continue;
       }
@@ -645,7 +695,6 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
   }
 
-
   /**
    * Select the default value and disable it.
    *
@@ -658,8 +707,8 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
 
     $user_input = $form_state->getUserInput();
-    foreach($this->view->argument as $name => $argument) {
-      if (! ($argument instanceof Taxonomy)) {
+    foreach ($this->view->argument as $name => $argument) {
+      if (!($argument instanceof Taxonomy)) {
         continue;
       }
       $value = $argument->getValue();
@@ -671,4 +720,5 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
     $form['value']['#attributes']['disabled'] = 'disabled';
   }
+
 }
