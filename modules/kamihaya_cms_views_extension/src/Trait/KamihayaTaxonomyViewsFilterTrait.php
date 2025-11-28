@@ -20,6 +20,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
     $options['reduce_by_relation'] = ['default' => 0];
     $options['hide_if_empty_options'] = ['default' => FALSE];
     $options['hide_if_vid_term_empty'] = ['default' => FALSE];
+    $options['hide_if_extra_vids_term_empty'] = ['default' => FALSE];
     $options['check_disabled'] = ['default' => FALSE];
     $options['extra_vids'] = ['default' => []];
     return $options;
@@ -93,18 +94,21 @@ trait KamihayaTaxonomyViewsFilterTrait {
         '#title' => $this->t('Hide if term of <strong>Vocabulary</strong> is empty'),
         '#default_value' => $this->options['hide_if_vid_term_empty'] ?? FALSE,
         '#description' => $this->t('Hide this exposed filter if no terms are available in the <strong>Vocabulary</strong>.'),
-        '#states' => [
-          'visible' => [
-            ':input[name="options[extra_vids]"]' => ['value' => 'select'],
-          ],
-        ],
+      ];
+      $form['hide_if_extra_vids_term_empty'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Hide if term of <strong>Additional vocabularies</strong> is empty'),
+        '#default_value' => $this->options['hide_if_extra_vids_term_empty'] ?? FALSE,
+        '#description' => $this->t('Hide this exposed filter if no terms are available in the <strong>Additional vocabularies</strong>.'),
       ];
       $states = [];
       foreach ($this->options['extra_vids'] as $key => $label) {
         $states[':input[name="options[extra_vids][' . $key . ']"]'] = ['checked' => FALSE];
       }
-
       $form['hide_if_vid_term_empty']['#states'] = [
+        'invisible' => $states,
+      ];
+      $form['hide_if_extra_vids_term_empty']['#states'] = [
         'invisible' => $states,
       ];
     }
@@ -459,6 +463,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
 
     $exist_vid_term = FALSE;
+    $exist_extra_vid_term = FALSE;
     foreach ($options as $key => $option) {
       $tid = is_array($option) ? key($option) : $key;
       $term = $this->termStorage->load($tid);
@@ -504,6 +509,10 @@ trait KamihayaTaxonomyViewsFilterTrait {
             // If the term belongs to the main vocabulary, set the flag.
             $exist_vid_term = TRUE;
           }
+          if (!$exist_extra_vid_term && in_array($term->bundle(), array_filter($this->options['extra_vids']))) {
+            // If the term belongs to any of the extra vocabularies, set the flag.
+            $exist_extra_vid_term = TRUE;
+          }
         }
         continue 2;
       }
@@ -512,6 +521,11 @@ trait KamihayaTaxonomyViewsFilterTrait {
 
     if ($this->options['hide_if_vid_term_empty'] && !$exist_vid_term) {
       // If the main vocabulary has no terms, and the hide_if_vid_term_empty option is enabled,
+      // hide the filter.
+      $options = [];
+    }
+    if ($this->options['hide_if_extra_vids_term_empty'] && !$exist_extra_vid_term) {
+      // If the additional vocabularies have no terms, and the hide_if_extra_vids_term_empty option is enabled,
       // hide the filter.
       $options = [];
     }
