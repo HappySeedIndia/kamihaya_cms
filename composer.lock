@@ -3151,16 +3151,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "10.4.6",
+            "version": "10.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "c04823253d7d35c731b7b6fa1a1fddb671e984eb"
+                "reference": "d9a817ddf1d94ab0f9f6bae194f0ec5520901beb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/c04823253d7d35c731b7b6fa1a1fddb671e984eb",
-                "reference": "c04823253d7d35c731b7b6fa1a1fddb671e984eb",
+                "url": "https://api.github.com/repos/drupal/core/zipball/d9a817ddf1d94ab0f9f6bae194f0ec5520901beb",
+                "reference": "d9a817ddf1d94ab0f9f6bae194f0ec5520901beb",
                 "shasum": ""
             },
             "require": {
@@ -3309,9 +3309,9 @@
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
             "support": {
-                "source": "https://github.com/drupal/core/tree/10.4.6"
+                "source": "https://github.com/drupal/core/tree/10.4.9"
             },
-            "time": "2025-04-02T21:06:44+00:00"
+            "time": "2025-11-12T21:54:16+00:00"
         },
         {
             "name": "drupal/csv_serialization",
