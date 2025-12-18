@@ -8,15 +8,16 @@ use Drupal\Core\Database\DatabaseExceptionWrapper;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\ConditionInterface;
 use Drupal\Core\Database\Query\SelectInterface;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
 use Drupal\views\Plugin\views\pager\Full;
 use Drupal\views\Plugin\views\pager\Mini;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\Views;
 use Drupal\views\ViewExecutable;
-use Drupal\Core\Url;
 
 /**
  * @file
@@ -947,6 +948,218 @@ function kamihaya_cms_views_extension_query_reduce_duplicate_paragraph_alter(Alt
         str_starts_with($field['table'], 'paragraph') &&
         $field['field'] === 'id') {
       unset($fields[$alias]);
+    }
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function kamihaya_cms_views_extension_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if (!\Drupal::moduleHandler()->moduleExists('language')) {
+    return;
+  }
+
+  if (count(\Drupal::languageManager()->getLanguages()) <= 1) {
+    return;
+  }
+
+  $langcode = \Drupal::languageManager()
+    ->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)
+    ->getId();
+
+  if (empty($query->tables) || empty($query->where)) {
+    return;
+  }
+
+  // Alter the query for term_node_tid_depth filter.
+  kamihaya_cms_views_extension_query_alter_for_term_node_tid_depth($view, $query, $langcode);
+
+  // Find all taxonomy_term_field_data related tables.
+  $taxonomy_related_tables = [];
+  $table_queue = $query->getTableQueue();
+  foreach ($query->tables as $key => $tables) {
+    foreach ($tables as $alias => $table) {
+      if (empty($table_queue[$alias]) || empty($table_queue[$alias]['table']) || $table_queue[$alias]['table'] !== 'taxonomy_term_field_data' || empty($table_queue[$alias]['join'])) {
+        continue;
+      }
+      $taxonomy_related_tables[] = $alias;
+
+      // If the table is taxonomy_term_field_data, check if it has a join condition.
+      $left_table = $table_queue[$alias]['join']->leftTable;
+      foreach ($table_queue as $queue_alias => $queue_table) {
+        if (empty($queue_table['table']) || $queue_table['table'] !== $left_table) {
+          continue;
+        }
+        $taxonomy_related_tables[] = $queue_alias;
+        break;
+      }
+    }
+  }
+
+  // If no taxonomy_term_field_data related tables found, return.
+  if (empty($taxonomy_related_tables)) {
+    return;
+  }
+
+  // Add the language condition to the query.
+  foreach ($query->where as $group => $where) {
+    if (empty($where['conditions'])) {
+      continue;
+    }
+    foreach ($where['conditions'] as $idx => $condition) {
+      foreach ($taxonomy_related_tables as $alias) {
+        // If the condition is related to taxonomy_term_field_data, update the field and value.
+        if (!is_string($condition['field']) || strpos($condition['field'], "$alias.") !== 0) {
+          continue;
+        }
+        $query->addWhere($group, "{$alias}.langcode", $langcode, '=');
+        $join = &$table_queue[$alias]['join'];
+        if (empty($join) || empty($join->extra)) {
+          continue 2;
+        }
+        foreach ($join->extra as $idx => $extra) {
+          if (empty($extra['field']) || strpos($extra['field'], 'langcode') === FALSE) {
+            continue;
+          }
+          unset($join->extra[$idx]);
+          break;
+        }
+        continue 2;
+      }
+    }
+  }
+}
+
+/**
+ * Implementation for term_node_tid_depth filter.
+ *
+ * @param \Drupal\views\ViewExecutable $view
+ *   The view executable object.
+ * @param \Drupal\views\Plugin\views\query\QueryPluginBase $query
+ *   The query plugin object.
+ * @param string $langcode
+ *   The language code to filter by.
+ */
+function kamihaya_cms_views_extension_query_alter_for_term_node_tid_depth(ViewExecutable $view, QueryPluginBase $query, $langcode) {
+  if (empty($view->filter)) {
+    return;
+  }
+
+  $term_depth_vids = [];
+  foreach ($view->filter as $name => $filter) {
+    // If the filter is not related to taxonomy_index, continue.
+    if (strpos($name, 'term_node_tid_depth') === FALSE || empty($filter->options['vid'])) {
+      continue;
+    }
+    $term_depth_vids[] = $filter->options['vid'];
+  }
+
+  if (empty($term_depth_vids)) {
+    return;
+  }
+
+  // Get the entity type and bundles from the view.
+  $entity_type = $view->getBaseEntityType()->id();
+  $bundles = [];
+  foreach ($view->filter as $name => $filter) {
+    if (empty($filter->getPluginId()) || $filter->getPluginId() !== 'bundle') {
+      continue;
+    }
+    $bundles = array_merge($bundles, $filter->value);
+  }
+
+  $field_definitions = [];
+  // Get the field definitions for the entity type and bundles.
+  if (empty($bundles)) {
+    // If no bundles are specified, load all field definitions for the entity type.
+    $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type);
+  }
+  else {
+    // Load field definitions for the specified bundles.
+    foreach ($bundles as $bundle) {
+      $field_definitions = array_merge($field_definitions, \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type, $bundle));
+    }
+  }
+
+  if (empty($field_definitions)) {
+    return;
+  }
+
+  // Find all term reference fields that reference taxonomy terms with depth.
+  $term_depth_fields = [];
+  /** @var \Drupal\Core\Field\FieldDefinitionInterface $field_definition */
+  foreach ($field_definitions as $field_name => $field_definition) {
+    if ($field_definition->getType() !== 'entity_reference' || $field_definition->getSetting('target_type') !== 'taxonomy_term') {
+      continue;
+    }
+    $handler_settings = $field_definition->getSetting('handler_settings');
+    if (empty($handler_settings) || empty($handler_settings['target_bundles'])) {
+      continue;
+    }
+    $target_bundles = $handler_settings['target_bundles'];
+    if (empty(array_intersect($term_depth_vids, $target_bundles))) {
+      continue;
+    }
+    $term_depth_fields[] = $field_name;
+  }
+
+  if (empty($term_depth_fields)) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\Sql\SqlContentEntityStorage $storage */
+  $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+
+  /** @var \Drupal\Core\Entity\Sql\TableMappingInterface $table_mapping */
+  $table_mapping = $storage->getTableMapping();
+  // Get the field table names for the term depth fields.
+  $term_depth_tables = [];
+  foreach ($term_depth_fields as $field_name) {
+    // Get the field table name and column names for the term reference field.
+    $field_table = $table_mapping->getFieldTableName($field_name);
+    $column = $table_mapping->getColumnNames($field_name);
+    if (empty($field_table) || empty($column) || empty($column['target_id'])) {
+      continue;
+    }
+    $term_depth_tables[$field_table] = $column['target_id'];
+  }
+
+  if (empty($term_depth_tables)) {
+    return;
+  }
+
+  // Add the language condition to the subqueries.
+  foreach ($query->where as $group => $where) {
+    if (empty($where['conditions'])) {
+      continue;
+    }
+    foreach ($where['conditions'] as $idx => $condition) {
+      if (empty($condition['value']) || !($condition['value'] instanceof SelectInterface)) {
+        continue;
+      }
+      $sub_query = $condition['value'];
+      $sub_query_tables = $sub_query->getTables();
+      if (empty($sub_query_tables)) {
+        continue;
+      }
+      $or_condition = $sub_query->orConditionGroup();
+      $sub_query->condition($or_condition);
+      // If the subquery contains taxonomy_index table, add the language condition.
+      foreach ($sub_query_tables as $alias => $table) {
+        if ($table['table'] !== 'taxonomy_index') {
+          continue;
+        }
+        foreach ($term_depth_tables as $term_depth_table => $column) {
+          // Add a LEFT JOIN to the term depth table.
+          $sub_query->addJoin('LEFT', $term_depth_table, "ti_$term_depth_table", "ti_$term_depth_table.entity_id = $alias.nid");
+          // Add the language condition to the subquery.
+          $and_condition = $sub_query->andConditionGroup();
+          $and_condition->where("ti_$term_depth_table.$column = $alias.tid");
+          $and_condition->condition("ti_$term_depth_table.langcode", $langcode, '=');
+          $or_condition->condition($and_condition);
+        }
+      }
     }
   }
 }
