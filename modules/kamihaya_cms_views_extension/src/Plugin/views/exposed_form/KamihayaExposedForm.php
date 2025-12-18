@@ -239,7 +239,7 @@ class KamihayaExposedForm extends BetterExposedFilters {
         '#description' => $this->t('Check this box to always show this filter.'),
         '#default_value' => $this->options['bef']['filter'][$key]['advanced']['always_visible'] ?? FALSE,
       ];
-      if (array_key_exists('placeholder_text', $this->options['bef']['filter'][$key]['advanced'])) {
+      if (!empty($this->options['bef']['filter'][$key]['advanced']) && array_key_exists('placeholder_text', $this->options['bef']['filter'][$key]['advanced'])) {
         $filter['configuration']['advanced']['min_keyword_length'] = [
           '#type' => 'number',
           '#title' => $this->t('Minimum keyword length'),
