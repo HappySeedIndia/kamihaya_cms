@@ -63,6 +63,7 @@ final class FlowiseClient extends FlowiseClientBase {
       "/document-store/upsert/{$document_store_id}",
       [
         'json' => $items,
+        'timeout' => 60,
       ]
     );
   }
@@ -96,6 +97,7 @@ final class FlowiseClient extends FlowiseClientBase {
       "/document-store/refresh/{$document_store_id}",
       [
         'json' => $items,
+        'timeout' => 60,
       ]
     );
   }
@@ -115,10 +117,10 @@ final class FlowiseClient extends FlowiseClientBase {
       return [];
     }
     return [
-      "docId" =>  $loader['id'] ?? '',
-      "metadata" =>  $loader['metadata']['loaderConfig']['metadata'] ?? [],
-      "replaceExisting" =>  true,
-      "createNewDocStore" =>  false,
+      "docId" => $loader['id'] ?? '',
+      "metadata" => $loader['metadata']['loaderConfig']['metadata'] ?? [],
+      "replaceExisting" => TRUE,
+      "createNewDocStore" => FALSE,
     ];
   }
 
