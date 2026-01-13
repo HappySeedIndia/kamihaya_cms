@@ -295,7 +295,7 @@ function kamihaya_cms_content_type_update_10008() {
     return;
   }
   foreach($content_types as $content_type) {
-    _kamihaya_cms_common_add_paragraph('node', $content_type, 'field_not_display_title', 'field_body');
+    _kamihaya_cms_common_add_fields('kamihaya_cms_content_type', 'node', $content_type, ['field_not_display_title', 'field_body'], 'optional');
   }
 }
 
