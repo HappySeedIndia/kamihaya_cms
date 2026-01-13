@@ -1,6 +1,6 @@
 <?php
 
-use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\File\FileExists;
 use \Drupal\file\FileInterface;
 use Drupal\media\MediaInterface;
 
@@ -60,7 +60,7 @@ function kamihaya_cms_custom_js_field_media_presave(MediaInterface $media) {
         $new_uri = str_replace(basename($old_uri), $new_name, $old_uri);
 
         // Move the file to the new URI.
-        \Drupal::service('file_system')->move($old_uri, $new_uri, FileSystemInterface::EXISTS_REPLACE);
+        \Drupal::service('file_system')->move($old_uri, $new_uri, FileExists::Replace);
         $file->setFilename($new_name);
         $file->setFileUri($new_uri);
         // Save the file entity.

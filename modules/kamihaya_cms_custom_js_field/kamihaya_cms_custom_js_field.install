@@ -5,8 +5,8 @@
  * Install, update and uninstall functions for the js_file_field module.
  */
 
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
-use Drupal\media\Entity\MediaType;
 
 /**
  * Implements hook_install().
@@ -38,7 +38,7 @@ function _kamihaya_cms_custom_js_field_create_default_icon() {
     $source_icon = $module_path . '/images/js.png';
 
     if (file_exists($source_icon)) {
-      \Drupal::service('file_system')->copy($source_icon, $icon_path, FileSystemInterface::EXISTS_REPLACE);
+      \Drupal::service('file_system')->copy($source_icon, $icon_path, FileExists::Replace);
     }
   }
 }
