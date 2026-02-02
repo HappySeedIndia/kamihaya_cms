@@ -30,7 +30,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
    *
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The file system.
-   * @param \Drupal\kamihaya_cms_exabase_api\ExabaseClient $exabaseClient
+   * @param \Drupal\kamihaya_cms_loan_proposal_api\ExabaseClient $exabaseClient
    *   The Exabase client.
    * @param \Drupal\kamihaya_cms_ai_loan_proposal_draft\FallbackResponseProvider $fallbackClient
    *   The fallback response provider.
@@ -148,13 +148,6 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
     if (!$error_mode) {
       // Remove the session key if it is already set.
       $session->remove(self::SESSION_KEY);
-    }
-
-    if (empty($company)) {
-      return [
-        'status' => 'error',
-        'message' => $this->t('The request is invalid.'),
-      ];
     }
 
     if (empty($file) && empty($pdf_text) && !$error_mode) {

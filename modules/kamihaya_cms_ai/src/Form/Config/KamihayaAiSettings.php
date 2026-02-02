@@ -73,7 +73,7 @@ class KamihayaAiSettings extends ConfigFormBase {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Text color'),
-      '#default_value' => $config->get('color'),
+      '#default_value' => $this->getHexColor($config->get('color')),
     ];
 
     // Glass color.
@@ -82,7 +82,7 @@ class KamihayaAiSettings extends ConfigFormBase {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Glass color'),
-      '#default_value' => $config->get('glass_color'),
+      '#default_value' => $this->getHexColor($config->get('glass_color')),
     ];
 
     // Background settings.
@@ -116,7 +116,7 @@ class KamihayaAiSettings extends ConfigFormBase {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Background color'),
-      '#default_value' => $config->get('bg_color'),
+      '#default_value' => $this->getHexColor($config->get('bg_color')),
     ];
 
     // Background item colors.
@@ -126,7 +126,7 @@ class KamihayaAiSettings extends ConfigFormBase {
         '#maxlength' => 7,
         '#size' => 7,
         '#title' => $this->t("Background item color $i"),
-        '#default_value' => $config->get("bg_item_color_$i"),
+        '#default_value' => $this->getHexColor($config->get("bg_item_color_$i")),
       ];
     }
 
@@ -179,7 +179,7 @@ class KamihayaAiSettings extends ConfigFormBase {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Text color'),
-      '#default_value' => $config->get('second_text_color'),
+      '#default_value' => $this->getHexColor($config->get('second_text_color')),
       '#states' => [
         'visible' => [
           ':input[name="second_mode"]' => ['checked' => TRUE],
@@ -193,7 +193,7 @@ class KamihayaAiSettings extends ConfigFormBase {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Glass color'),
-      '#default_value' => $config->get('glass_color'),
+      '#default_value' => $this->getHexColor($config->get('second_glass_color')),
       '#states' => [
         'visible' => [
           ':input[name="second_mode"]' => ['checked' => TRUE],
@@ -221,7 +221,7 @@ class KamihayaAiSettings extends ConfigFormBase {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Background color'),
-      '#default_value' => $config->get('bg_color'),
+      '#default_value' => $this->getHexColor($config->get('second_bg_color')),
     ];
 
     // Second mode background item colors.
@@ -231,7 +231,7 @@ class KamihayaAiSettings extends ConfigFormBase {
         '#maxlength' => 7,
         '#size' => 7,
         '#title' => $this->t("Background item color $i"),
-        '#default_value' => $config->get("bg_item_color_$i"),
+        '#default_value' => $this->getHexColor($config->get("second_bg_item_color_$i")),
       ];
     }
 
@@ -437,10 +437,46 @@ class KamihayaAiSettings extends ConfigFormBase {
    *   RGB color.
    */
   private function getRgbColor($color) {
-    $red = (($color & 0xFF0000) >> 16);
-    $green = (($color & 0x00FF00) >> 8);
-    $blue = (($color & 0x0000FF));
+    if (!is_string($color) || !preg_match('/^#?[0-9a-fA-F]{6}$/', $color)) {
+      return '';
+    }
+    $hex = ltrim($color, '#');
+    $red   = hexdec(substr($hex, 0, 2));
+    $green = hexdec(substr($hex, 2, 2));
+    $blue  = hexdec(substr($hex, 4, 2));
     return "$red, $green, $blue";
   }
+
+  /**
+   * Convert an RGB string to a HEX color string.
+   *
+   * Supported format:
+   * - 255,0,128
+   *
+   * @param string $rgb
+   *   RGB color string.
+   *
+   * @return string
+   *   HEX color string (#RRGGBB) or '' if conversion fails.
+   */
+  private function getHexColor(string $rgb): string {
+    // Extract numeric RGB values from the string.
+    preg_match_all('/\d{1,3}/', $rgb, $matches);
+
+    // Ensure exactly three components (R, G, B).
+    if (count($matches[0]) !== 3) {
+      return '';
+    }
+
+    // Normalize values to the valid RGB range (0–255).
+    [$red, $green, $blue] = array_map(
+      static fn ($value) => max(0, min(255, (int) $value)),
+      $matches[0]
+    );
+
+    // Convert RGB to HEX format.
+    return sprintf('#%02X%02X%02X', $red, $green, $blue);
+  }
+
 
 }

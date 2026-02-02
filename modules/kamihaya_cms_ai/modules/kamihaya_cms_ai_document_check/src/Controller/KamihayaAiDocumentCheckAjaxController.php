@@ -22,7 +22,7 @@ class KamihayaAiDocumentCheckAjaxController extends KamihayaAiAjaxController {
    *
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The file system.
-   * @param \Drupal\kamihaya_cms_exabase_api\ExabaseClient $exabaseClient
+   * @param \Drupal\kamihaya_cms_document_check_api\ExabaseClient $exabaseClient
    *   The Exabase client.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request object.
