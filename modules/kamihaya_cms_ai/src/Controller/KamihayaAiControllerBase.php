@@ -4,6 +4,7 @@ namespace Drupal\kamihaya_cms_ai\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\File\FileUrlGeneratorInterface;
+use Drupal\file\FileInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -75,10 +76,10 @@ class KamihayaAiControllerBase extends ControllerBase {
     ];
 
     if ($background === 'image') {
-      $variables['#bg_image'] = file_create_url($config->get('bg_image')[0]['uri']);
+      $variables['#bg_image'] = $this->fileUrlGenerator->generateString($config->get('bg_image')[0]['uri']);
     }
     if ($background === 'video') {
-      $variables['#bg_video'] = file_create_url($config->get('bg_video')[0]['uri']);
+      $variables['#bg_video'] = $this->fileUrlGenerator->generateString($config->get('bg_video')[0]['uri']);
     }
 
     $steps = $this->getSteps();
@@ -88,7 +89,7 @@ class KamihayaAiControllerBase extends ControllerBase {
       if (!empty($fid)) {
         /** @var \Drupal\file\FileInterface $file */
         $file = $this->entityTypeManager->getStorage('file')->load($fid[0]);
-        if (!empty($file)) {
+        if ($file instanceof FileInterface) {
           $value['wait_movie'] = $this->fileUrlGenerator->generate($file->getFileUri());
         }
       }
@@ -98,7 +99,7 @@ class KamihayaAiControllerBase extends ControllerBase {
       if (!empty($fid)) {
         /** @var \Drupal\file\FileInterface $file */
         $file = $this->entityTypeManager->getStorage('file')->load($fid[0]);
-        if (empty($file)) {
+        if ($file instanceof FileInterface) {
           $value['process_image'] = '';
           continue;
         }

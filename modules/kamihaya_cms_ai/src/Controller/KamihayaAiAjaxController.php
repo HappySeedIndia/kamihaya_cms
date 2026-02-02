@@ -48,7 +48,7 @@ class KamihayaAiAjaxController extends ControllerBase {
   protected function formatResult($result) {
     $result = $this->convertToHtml($result);
     $result_array = explode(PHP_EOL, $result);
-    if (empty($result_array) || count($result_array) === 1) {
+    if (count($result_array) === 1) {
       return $result;
     }
     $formated_result = '';
@@ -116,7 +116,7 @@ class KamihayaAiAjaxController extends ControllerBase {
         $table_value[] = $result_array[$idx];
         $idx++;
       }
-      if (!empty($table_value)) {
+      if (count($table_value) > 0) {
         $table_end = $idx;
         $formated_result .= $this->convertToTable($table_value);
         $idx--;
@@ -166,7 +166,7 @@ class KamihayaAiAjaxController extends ControllerBase {
     }
     $table = '<table class="table table-bordered result-table my-4">';
     $heads = explode('|', $table_value[0]);
-    if (!empty($heads)) {
+    if (count($heads) > 0) {
       $table .= '<thead><tr>';
       foreach ($heads as $head) {
         if (empty($head)) {
