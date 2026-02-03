@@ -30,7 +30,7 @@ function kamihaya_cms_common_update_10002() {
 function kamihaya_cms_common_update_10003() {
   $editor_config = \Drupal::configFactory()->getEditable('editor.editor.full_html');
   $file_config = _kamihaya_cms_common_load_config_file('kamihaya_cms_common', 'editor.editor.full_html.yml', 'optional');
-  if (!empty($editor_config) && !empty($file_config)) {
+  if (!$editor_config->isNew() && !empty($file_config)) {
     $items = !empty($file_config['settings']['toolbar']['items']) ? $file_config['settings']['toolbar']['items'] : [];
     $plugins = !empty($file_config['settings']['plugins']) ? $file_config['settings']['plugins'] : [];
     if (!empty($items)) {
@@ -44,7 +44,7 @@ function kamihaya_cms_common_update_10003() {
 
   $filter_config = \Drupal::configFactory()->getEditable('filter.format.full_html');
   $file_config = _kamihaya_cms_common_load_config_file('kamihaya_cms_common', 'filter.format.full_html.yml', 'optional');
-  if (!empty($filter_config) && !empty($file_config)) {
+  if (!$filter_config->isNew() && !empty($file_config)) {
     $dep_config = !empty($file_config['dependencies']['config']) ? $file_config['dependencies']['config'] : [];
     $dep_module = !empty($file_config['dependencies']['module']) ? $file_config['dependencies']['module'] : [];
     $filters = !empty($file_config['filters']) ? $file_config['filters'] : [];
@@ -64,7 +64,7 @@ function kamihaya_cms_common_update_10003() {
     return;
   }
   $admin_profile = \Drupal::configFactory()->getEditable('imce.profile.admin');
-  if (empty($admin_profile)) {
+  if ($admin_profile->isNew()) {
     return;
   }
   $imce_config = \Drupal::configFactory()->getEditable('imce.settings');
@@ -97,7 +97,7 @@ function kamihaya_cms_common_update_10004() {
   // Update full HTML editor config.
   $editor_config = \Drupal::configFactory()->getEditable('editor.editor.full_html');
   $file_config = _kamihaya_cms_common_load_config_file('kamihaya_cms_common', 'editor.editor.full_html.yml', 'optional');
-  if (!empty($editor_config) && !empty($file_config)) {
+  if (!$editor_config->isNew() && !empty($file_config)) {
     $items = !empty($file_config['settings']['toolbar']['items']) ? $file_config['settings']['toolbar']['items'] : [];
     $plugins = !empty($file_config['settings']['plugins']) ? $file_config['settings']['plugins'] : [];
     if (!empty($items)) {
