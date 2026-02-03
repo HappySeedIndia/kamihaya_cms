@@ -19,6 +19,11 @@ class KamihayaCMSResponsivePreviewTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
+  protected $profile = 'kamihaya_cms';
+
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = ['toolbar', 'responsive_preview', 'kamihaya_cms_common'];
 
   /**
@@ -50,11 +55,13 @@ class KamihayaCMSResponsivePreviewTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   public function testResponsivePreviews(): void {
-     $edit = [];
-
     $this->drupalLogin($this->previewUser);
     $tab_xpath = '//nav[@id="toolbar-bar"]//div[contains(@class, "toolbar-tab-responsive-preview")]';
-    $this->assertSession()->elementExists('xpath', $tab_xpath);
+    $element = $this->getSession()
+      ->getPage()
+      ->find('xpath', $tab_xpath);
+
+    $this->assertNotNull($element, 'The tab element exists.');
 
     $devices = array_keys($this->getDefaultDevices(TRUE));
     $this->assertDeviceListEquals($devices);
@@ -103,9 +110,11 @@ class KamihayaCMSResponsivePreviewTest extends BrowserTestBase {
    *   An array of devices to check.
    */
   protected function assertDeviceListEquals(array $devices) {
-    $device_buttons = $this->xpath('//button[@data-responsive-preview-name]');
-    $this->assertTrue(count($devices) === count($device_buttons));
+    $device_buttons = $this->getSession()
+      ->getPage()
+      ->findAll('xpath', '//button[@data-responsive-preview-name]');
 
+    /** @var \Behat\Mink\Element\NodeElement $button */
     foreach ($device_buttons as $button) {
       $name = $button->getAttribute('data-responsive-preview-name');
       $this->assertTrue(!empty($name) && in_array($name, $devices), new FormattableMarkup('%name device shown', ['%name' => $name]));

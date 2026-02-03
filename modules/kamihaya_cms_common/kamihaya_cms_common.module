@@ -1,7 +1,6 @@
 <?php
 
 use Drupal\Component\Serialization\Yaml;
-use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\paragraphs\Entity\ParagraphsType;
 
@@ -51,14 +50,10 @@ function _kamihaya_cms_common_change_configs($module, array $files, $path_name) 
 /**
  * Save translation configs.
  *
- * @param string $module
- *   The module name.
  * @param array $files
  *   The array of file names to be changed.
  * @param string $lang_code
  *   The lang code.
- * @param string $path_name
- *   The path name under the config directory.
  */
 function _kamihaya_cms_common_save_translation_configs(array $files, $lang_code) {
   $config_manager = \Drupal::service('locale.config_manager');
@@ -113,7 +108,7 @@ function _kamihaya_cms_common_add_paragraph($entity_type, $bundle, $paragraph_ty
     return;
   }
   $field_config = \Drupal::configFactory()->getEditable("field.field.{$entity_type}.{$bundle}.{$field}");
-  if (empty($field_config)) {
+  if ($field_config->isNew()) {
     return;
   }
   $dependencies = $field_config->get('dependencies.config');
@@ -283,7 +278,7 @@ function _kamihaya_cms_common_create_paragraph($paragraph_type, array $fields, a
 
   foreach($add_fields ?: [] as $paragraph_name => $field) {
     $field_config = \Drupal::configFactory()->getEditable("field.field.paragraph.{$paragraph_name}.{$field}");
-    if (empty($field_config)) {
+    if ($field_config->isNew()) {
       return;
     }
     $dependencies = $field_config->get('dependencies.config');
