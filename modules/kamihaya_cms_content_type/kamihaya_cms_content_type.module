@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Field\FieldConfigInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\node\Entity\NodeType;
@@ -34,7 +35,7 @@ function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
   // Get the view display.
   $view_display = $display_repository->getViewDisplay($node->getEntityTypeId(), $node->bundle(), 'default');
 
-  if (empty($view_display)) {
+  if ($view_display->isNew()) {
     return;
   }
 
@@ -49,8 +50,8 @@ function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
 /**
  * Create anchor links for field groups.
  *
- * @param \Drupal\node\NodeInterface $node
- *   The node to check.
+ * @param \Drupal\Core\Entity\Display\EntityViewDisplayInterface $view_display
+ *   The view display.
  * @param array $variables
  *   The variables to add the anchor links to.
  */
@@ -61,6 +62,7 @@ function kamihaya_cms_content_type_create_anchor_link(EntityViewDisplayInterface
     return;
   }
   $sticky = FALSE;
+  $full_width = FALSE;
   foreach($variables['content'] as $name => &$element) {
     if (is_array($element) && array_key_exists('anchor_links', $element)) {
       $anchor_links = &$element['anchor_links'];
@@ -136,12 +138,13 @@ function kamihaya_cms_content_type_create_headins_anchor_link(NodeInterface $nod
     if ($field_type !== 'entity_reference_revisions' || $field_def->getSetting('target_type') !== 'paragraph') {
       continue;
     }
-    /** @var \Drupal\Core\Field\EntityReferenceRevisionsFieldItemList $field */
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
     $paragraphs = $field->referencedEntities();
     if (empty($paragraphs)) {
       continue;
     }
     // Check if any of the referenced Paragraphs is of type 'headings' and has an anchor link ID.
+    /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
     foreach ($paragraphs as $paragraph) {
       if ($paragraph->bundle() !== 'headings' || empty($paragraph->get('field_anchor_link_id')->value)) {
         continue;
@@ -174,7 +177,7 @@ function kamihaya_cms_content_type_create_headins_anchor_link(NodeInterface $nod
     }
 
     foreach ($headings_paragraphs_fields[$name] as $anchor_id => $link) {
-      if (empty($anchor_id) || empty($link)) {
+      if (empty($anchor_id)) {
         continue;
       }
 
@@ -269,12 +272,13 @@ function kamihaya_cms_content_type_need_check_headings_paragraph(NodeInterface $
     if ($field_type !== 'entity_reference_revisions' || $field_def->getSetting('target_type') !== 'paragraph') {
       continue;
     }
-    /** @var \Drupal\Core\Field\EntityReferenceRevisionsFieldItemList $field */
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
     $paragraphs = $field->referencedEntities();
     if (empty($paragraphs)) {
       continue;
     }
     // Check if any of the referenced Paragraphs is of type 'headings' and has an anchor link ID.
+    /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
     foreach ($paragraphs as $paragraph) {
       if ($paragraph->bundle() === 'headings' && !empty($paragraph->get('field_anchor_link_id')->value)) {
         return TRUE;
@@ -368,6 +372,8 @@ function kamihaya_cms_content_type_field_group_pre_render(array &$element, $grou
       if (empty($value['contents']['#view'])) {
         continue;
       }
+
+      /** @var \Drupal\views\ViewExecutable $view */
       $view = $value['contents']['#view'];
       if (empty($view->result)) {
         continue;
@@ -394,11 +400,9 @@ function kamihaya_cms_content_type_node_load(array $nodes) {
   /** @var \Drupal\node\NodeInterface $node */
   foreach ($nodes as $node) {
     $field_configs = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('node', $node->bundle());
-    foreach ($field_configs ?: [] as $field_name => $field_config) {
-      if (!empty($field_config)) {
-        continue;
-      }
-      if (empty($field_config) || $field_config->getType() !== 'entity_reference'
+    /** @var \Drupal\Core\Field\FieldDefinitionInterface $field_config */
+    foreach ($field_configs as $field_name => $field_config) {
+      if (!($field_config instanceof FieldConfigInterface) || $field_config->getType() !== 'entity_reference'
         || empty($field_config->getDefaultValue($node))
         || empty($field_config->getDefaultValue($node)[0]['target_id']))  {
         continue;
@@ -441,6 +445,7 @@ function kamihaya_cms_content_type_entity_view_display_edit_form_process(array $
     return $form;
   }
 
+  /** @var \Drupal\field_group\FieldGroupFormatterPluginManager $manager */
   $manager = \Drupal::service('plugin.manager.field_group.formatters');
   $field_group_form_state = $form_state->get('field_group');
   if (empty($field_group_form_state)) {
@@ -452,6 +457,8 @@ function kamihaya_cms_content_type_entity_view_display_edit_form_process(array $
     }
 
     $group = $field_group_form_state[$field_group];
+
+    /** @var \Drupal\field_group\FieldGroupFormatterBase $plugin */
     $plugin = $manager->getInstance([
       'format_type' => $group->format_type,
       'configuration' => [

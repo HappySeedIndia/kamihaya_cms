@@ -3,10 +3,8 @@
 namespace Drupal\kamihaya_cms_deel;
 
 use Drupal\Component\Serialization\Json;
-use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
@@ -49,8 +47,6 @@ class DeelApi {
    */
   public function __construct(
       ClientInterface $http_client,
-      EntityTypeManagerInterface $entity_type_manager,
-      CacheBackendInterface $cache,
       ConfigFactoryInterface $configFactory) {
     $this->httpClient = $http_client;
     $this->configFactory = $configFactory;
@@ -60,11 +56,11 @@ class DeelApi {
   /**
    * Constructs a API request with required options.
    *
-   * @var $method
+   * @param string $method
    *   The type of request.
-   * @var $endpoint
+   * @param string $endpoint
    *   API endpoint.
-   * @var $query
+   * @param array $query
    *   Query parameters sent to the API.
    */
   protected function request($method, $endpoint, array $query = []) {

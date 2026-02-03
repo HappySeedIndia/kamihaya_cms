@@ -6,6 +6,7 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\media\Plugin\media\Source\File;
 use Drupal\media\Attribute\MediaSource;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\media\MediaSourceFieldConstraintsInterface;
 use Drupal\media\MediaTypeInterface;
 
 /**
@@ -21,18 +22,18 @@ use Drupal\media\MediaTypeInterface;
      "media_library_add" => "\Drupal\media_library\Form\FileUploadForm",
   ]
 )]
-class JsFile extends File {
+class JsFile extends File implements MediaSourceFieldConstraintsInterface {
 
   /**
    * {@inheritdoc}
    */
-  protected function getSourceFieldConstraints() {
-    $constraints = parent::getSourceFieldConstraints();
-
-    // Enforce JS file extensions
-    $constraints['FileExtension'] = ['extensions' => 'js txt'];
-
-    return $constraints;
+  public function getSourceFieldConstraints() {
+  return [
+    'field_type' => ['js_file'],
+    'settings' => [
+      'file_extensions' => ['js', 'txt'],
+    ],
+  ];
   }
 
   /**
@@ -40,6 +41,7 @@ class JsFile extends File {
    */
   public function createSourceField(MediaTypeInterface $type) {
     // Let parent create the field
+    /** @var \Drupal\Core\Field\FieldConfigInterface $field */
     $field = parent::createSourceField($type);
 
     // Customize field settings for JS files
