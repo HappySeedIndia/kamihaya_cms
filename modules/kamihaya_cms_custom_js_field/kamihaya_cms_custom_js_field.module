@@ -27,6 +27,7 @@ function kamihaya_cms_custom_js_field_media_presave(MediaInterface $media) {
       continue;
     }
     $items = $media->get($field_name);
+    /** @var Drupal\file\Plugin\Field\FieldType\FileItem $item */
     foreach ($items as $item) {
       /** @var \Drupal\file\FileInterface $file */
       $file = $item->entity;

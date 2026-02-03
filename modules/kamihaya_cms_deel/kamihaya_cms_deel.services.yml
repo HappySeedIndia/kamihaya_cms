@@ -1,4 +1,4 @@
 services:
   kamihaya_cms_deel.client:
     class: Drupal\kamihaya_cms_deel\DeelApi
-    arguments: ['@http_client', '@entity_type.manager', '@cache.default', '@config.factory']
+    arguments: ['@http_client', '@config.factory']
