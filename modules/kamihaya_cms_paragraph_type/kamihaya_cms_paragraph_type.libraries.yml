@@ -88,3 +88,8 @@ background-image-css:
   css:
     base:
       assets/css/background-image.css: {}
+
+tab-css:
+  css:
+    base:
+      assets/css/tab.css: {}

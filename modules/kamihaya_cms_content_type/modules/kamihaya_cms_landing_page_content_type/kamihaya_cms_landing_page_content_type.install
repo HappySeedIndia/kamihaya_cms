@@ -61,3 +61,22 @@ function kamihaya_cms_landing_page_content_type_install() {
 
   $block->save();
 }
+
+/**
+ * Add tab parafraph to body fields.
+ */
+function kamihaya_cms_landing_page_content_type_update_10001() {
+  _kamihaya_cms_common_add_paragraph('node', 'kamihaya_landing_page', 'tab', 'field_lp_contents');
+}
+
+/**
+ * Implements hook_update_dependencies().
+ */
+function kamihaya_cms_landing_page_content_type_update_dependencies() {
+  $dependencies['kamihaya_cms_landing_page_content_type'] = [
+    10001 => [
+      'kamihaya_cms_paragraph_type' => 10018,
+    ],
+  ];
+  return $dependencies;
+}

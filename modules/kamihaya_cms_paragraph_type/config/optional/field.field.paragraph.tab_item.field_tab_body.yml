@@ -2,8 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - block_content.type.kamihaya_block
-    - field.storage.block_content.field_body
+    - field.storage.paragraph.field_tab_body
     - paragraphs.paragraphs_type.accordion
     - paragraphs.paragraphs_type.anchor_link
     - paragraphs.paragraphs_type.background_image
@@ -23,21 +22,22 @@ dependencies:
     - paragraphs.paragraphs_type.left_image_text
     - paragraphs.paragraphs_type.link_button
     - paragraphs.paragraphs_type.right_image_text
-    - paragraphs.paragraphs_type.slider
+    - paragraphs.paragraphs_type.tab
+    - paragraphs.paragraphs_type.tab_item
     - paragraphs.paragraphs_type.two_col_table
     - paragraphs.paragraphs_type.video
     - paragraphs.paragraphs_type.views
     - paragraphs.paragraphs_type.wysiwyg_editor
   module:
     - entity_reference_revisions
-id: block_content.kamihaya_block.field_body
-field_name: field_body
-entity_type: block_content
-bundle: kamihaya_block
-label: Body
+id: paragraph.tab_item.field_tab_body
+field_name: field_tab_body
+entity_type: paragraph
+bundle: tab_item
+label: 'Tab body'
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
@@ -58,23 +58,20 @@ settings:
       link_button: link_button
       anchor_link: anchor_link
       file_download: file_download
-      modal_dialog: modal_dialog
       accordion: accordion
       divider: divider
-      slider: slider
       embed_tag: embed_tag
       featured_content: featured_content
       tab: tab
       border_box: border_box
       background_image: background_image
       two_col_table: two_col_table
-      drawer: drawer
       block: block
       views: views
     negate: 0
     target_bundles_drag_drop:
       accordion:
-        weight: -72
+        weight: -73
         enabled: true
       accordion_item:
         weight: -58
@@ -83,13 +80,13 @@ settings:
         weight: -75
         enabled: true
       background_image:
-        weight: -65
+        weight: -67
         enabled: true
       block:
-        weight: -62
+        weight: -65
         enabled: true
       border_box:
-        weight: -66
+        weight: -68
         enabled: true
       border_box_item:
         weight: -59
@@ -98,22 +95,22 @@ settings:
         weight: -55
         enabled: false
       divider:
-        weight: -71
+        weight: -72
         enabled: true
       drawer:
-        weight: -63
-        enabled: true
+        weight: -60
+        enabled: false
       educational_background:
         weight: -54
         enabled: false
       embed_tag:
-        weight: -69
+        weight: -71
         enabled: true
       english_skill:
         weight: -53
         enabled: false
       featured_content:
-        weight: -68
+        weight: -70
         enabled: true
       file_download:
         weight: -74
@@ -155,8 +152,8 @@ settings:
         weight: -76
         enabled: true
       modal_dialog:
-        weight: -73
-        enabled: true
+        weight: -63
+        enabled: false
       other_language:
         weight: -50
         enabled: false
@@ -173,22 +170,22 @@ settings:
         weight: -48
         enabled: false
       slider:
-        weight: -70
-        enabled: true
+        weight: -61
+        enabled: false
       slider_item:
-        weight: -60
+        weight: -62
         enabled: false
       source_code:
         weight: -47
         enabled: false
       tab:
-        weight: -67
+        weight: -69
         enabled: true
       tab_item:
         weight: -46
         enabled: false
       two_col_table:
-        weight: -64
+        weight: -66
         enabled: true
       two_col_table_row:
         weight: -56
@@ -197,7 +194,7 @@ settings:
         weight: -80
         enabled: true
       views:
-        weight: -61
+        weight: -64
         enabled: true
       wysiwyg_editor:
         weight: -82

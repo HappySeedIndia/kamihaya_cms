@@ -351,6 +351,28 @@ function kamihaya_cms_content_type_update_10011() {
 }
 
 /**
+ * Add tab parafraph to body fields.
+ */
+function kamihaya_cms_content_type_update_10012() {
+  $content_types = [];
+  if (!empty(NodeType::load('kamihaya_article'))) {
+    $content_types[] = 'kamihaya_article';
+  }
+  if (!empty(NodeType::load('kamihaya_basic'))) {
+    $content_types[] = 'kamihaya_basic';
+  }
+  if (!empty(NodeType::load('kamihaya_news'))) {
+    $content_types[] = 'kamihaya_news';
+  }
+  if (empty($content_types)) {
+    return;
+  }
+  foreach($content_types as $content_type) {
+    _kamihaya_cms_common_add_paragraph('node', $content_type, 'tab', 'field_body');
+  }
+}
+
+/**
  * Implements hook_update_dependencies().
  */
 function kamihaya_cms_content_type_update_dependencies() {
@@ -366,6 +388,9 @@ function kamihaya_cms_content_type_update_dependencies() {
     ],
     10010 => [
       'kamihaya_cms_paragraph_type' => 10013,
+    ],
+    10012 => [
+      'kamihaya_cms_paragraph_type' => 10018,
     ],
   ];
   return $dependencies;

@@ -75,6 +75,9 @@ function kamihaya_cms_paragraph_type_theme() {
     'paragraph__background_image' => [
       'base hook' => 'paragraph',
     ],
+    'paragraph__tab' => [
+      'base hook' => 'paragraph',
+    ],
   ];
 }
 
@@ -176,5 +179,92 @@ function kamihaya_cms_paragraph_type_preprocess_paragraph(array &$variables) {
       $variables['#attributes']['class'] = [];
     }
     $variables['attributes']['class'][] = 'links-' . count($link_items);
+  }
+
+  if ($paragraph->bundle() === 'tab') {
+    $id = "tab-paragraph-{$paragraph->id()}";
+    $css_vars = [
+      ".paragraph--type--tab#{$id} .nav-tabs" => [],
+      ".paragraph--type--tab#{$id} .tab-content" => [],
+    ];
+
+    // Tab color.
+    if (!empty($paragraph->get('field_tab_color')->color)) {
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-button-color:' .  $paragraph->get('field_tab_color')->color . ';';
+    }
+    // Tab background color.
+    if (!empty($paragraph->get('field_tab_bg_color')->color)) {
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-button-bg-color:' .  $paragraph->get('field_tab_bg_color')->color . ';';
+    }
+    // Tab border color.
+    if (!empty($paragraph->get('field_tab_bd_color')->color)) {
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-button-bd-color:' .  $paragraph->get('field_tab_bd_color')->color . ';';
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '---tabs-bd-btm-color:' .  $paragraph->get('field_tab_bd_color')->color . ';';
+    }
+    // Tab active color.
+    if (!empty($paragraph->get('field_active_tab_color')->color)) {
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-active-button-color:' .  $paragraph->get('field_active_tab_color')->color . ';';
+    }
+    // Tab active background bcolor.
+    if (!empty($paragraph->get('field_active_tab_bg_color')->color)) {
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-active-button-bg-color:' .  $paragraph->get('field_active_tab_bg_color')->color . ';';
+    }
+    // Tab active border color.
+    if (!empty($paragraph->get('field_active_tab_bd_color')->color)) {
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-active-button-bd-color:' .  $paragraph->get('field_active_tab_bd_color')->color . ';';
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tabs-bd-btm-color:' .  $paragraph->get('field_active_tab_bd_color')->color . ';';
+    }
+    // Active tab background color.
+    if (!empty($paragraph->get('field_active_tab_body_bg_color')->color)) {
+      $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = '--tab-body-bg-color:' .  $paragraph->get('field_active_tab_body_bg_color')->color . ';';
+    }
+    // Tab width.
+    if (!empty($paragraph->get('field_width')->value)) {
+      $unit = $paragraph->get('field_width_unit')->value ?? 'px';
+      if ($unit === 'px') {
+        $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-max-width:' .  $paragraph->get('field_width')->value . "{$unit};";
+        $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = '--tab-body-max-width:' .  $paragraph->get('field_width')->value . "{$unit};";
+      }
+      else {
+        $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-width:' .  $paragraph->get('field_width')->value . "{$unit};";
+        $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = '--tab-body-width:' .  $paragraph->get('field_width')->value . "{$unit};";
+      }
+
+      if ($unit === 'vw') {
+        $width = $paragraph->get('field_width')->value;
+        $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-max-width: none;';
+        $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = 'margin-left: calc(-' . $width/2 . 'vw + 50%);';
+        $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = '--tab-body-max-width: none;' ;
+        $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = 'margin-left: calc(-' . $width/2 . 'vw + 50%);';
+      }
+    }
+    // Tab align.
+    if (!empty($paragraph->get('field_tab_button_align')->value)) {
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-button-align:' .  $paragraph->get('field_tab_button_align')->value . ';';
+    }
+
+    $css_string = '';
+    foreach($css_vars as $selector => $colors) {
+      if (empty($colors)) {
+        continue;
+      }
+      $css_string .= "$selector {";
+      $css_string .= implode(' ', $colors);
+      $css_string .= "}";
+    }
+
+    if (strlen($css_string) > 0) {
+      // Add CSS color variables.
+      $variables['#attached']['html_head'][] = [
+        [
+          '#tag' => 'style',
+          '#attributes' => [
+            'type' => 'text/css',
+          ],
+          '#value' => $css_string
+        ],
+        'kamihaya_cms_paragraph',
+      ];
+    }
   }
 }

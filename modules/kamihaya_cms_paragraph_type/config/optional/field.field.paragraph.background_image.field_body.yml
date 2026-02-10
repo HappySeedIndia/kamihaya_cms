@@ -3,10 +3,14 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_body
+    - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.anchor_link
     - paragraphs.paragraphs_type.background_image
     - paragraphs.paragraphs_type.block
     - paragraphs.paragraphs_type.border_box
     - paragraphs.paragraphs_type.divider
+    - paragraphs.paragraphs_type.embed_tag
+    - paragraphs.paragraphs_type.featured_content
     - paragraphs.paragraphs_type.file_download
     - paragraphs.paragraphs_type.h2_title
     - paragraphs.paragraphs_type.h3_title
@@ -15,7 +19,11 @@ dependencies:
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.image_link
     - paragraphs.paragraphs_type.layout_paragraph
+    - paragraphs.paragraphs_type.left_image_text
     - paragraphs.paragraphs_type.link_button
+    - paragraphs.paragraphs_type.right_image_text
+    - paragraphs.paragraphs_type.tab
+    - paragraphs.paragraphs_type.two_col_table
     - paragraphs.paragraphs_type.video
     - paragraphs.paragraphs_type.views
     - paragraphs.paragraphs_type.wysiwyg_editor
@@ -28,7 +36,7 @@ bundle: background_image
 label: Body
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
@@ -36,113 +44,158 @@ settings:
   handler_settings:
     target_bundles:
       layout_paragraph: layout_paragraph
-      headings: headings
       h2_title: h2_title
       h3_title: h3_title
       h4_title: h4_title
+      headings: headings
       wysiwyg_editor: wysiwyg_editor
       image: image
+      video: video
+      left_image_text: left_image_text
+      right_image_text: right_image_text
       image_link: image_link
       link_button: link_button
+      anchor_link: anchor_link
       file_download: file_download
-      video: video
+      accordion: accordion
       divider: divider
+      embed_tag: embed_tag
+      featured_content: featured_content
+      tab: tab
       border_box: border_box
+      background_image: background_image
+      two_col_table: two_col_table
       block: block
       views: views
     negate: 0
     target_bundles_drag_drop:
       accordion:
-        weight: -39
-        enabled: false
+        weight: -73
+        enabled: true
       accordion_item:
-        weight: -36
+        weight: -58
         enabled: false
       anchor_link:
-        weight: -34
-        enabled: false
+        weight: -75
+        enabled: true
       background_image:
-        weight: -33
-        enabled: false
+        weight: -67
+        enabled: true
       block:
-        weight: -50
+        weight: -65
         enabled: true
       border_box:
-        weight: -51
+        weight: -68
         enabled: true
       border_box_item:
-        weight: -35
+        weight: -59
+        enabled: false
+      career:
+        weight: -55
         enabled: false
       divider:
-        weight: -52
+        weight: -72
         enabled: true
       drawer:
-        weight: -38
+        weight: -60
+        enabled: false
+      educational_background:
+        weight: -54
         enabled: false
       embed_tag:
-        weight: -46
+        weight: -71
+        enabled: true
+      english_skill:
+        weight: -53
         enabled: false
       featured_content:
-        weight: -42
-        enabled: false
-      file_download:
-        weight: -54
+        weight: -70
         enabled: true
+      file_download:
+        weight: -74
+        enabled: true
+      groups:
+        weight: -52
+        enabled: false
       h2_title:
-        weight: -61
+        weight: -86
         enabled: true
       h3_title:
-        weight: -60
+        weight: -85
         enabled: true
       h4_title:
-        weight: -59
+        weight: -84
         enabled: true
       headings:
-        weight: -62
+        weight: -83
         enabled: true
-      image:
-        weight: -57
-        enabled: true
-      image_link:
-        weight: -56
-        enabled: true
-      layout_paragraph:
-        weight: -63
-        enabled: true
-      left_image_text:
-        weight: -47
-        enabled: false
-      link_button:
-        weight: -55
-        enabled: true
-      modal_dialog:
-        weight: -48
-        enabled: false
-      q_a:
+      hero_banner:
         weight: -45
         enabled: false
+      image:
+        weight: -81
+        enabled: true
+      image_link:
+        weight: -77
+        enabled: true
+      layout_paragraph:
+        weight: -87
+        enabled: true
+      left_image_text:
+        weight: -79
+        enabled: true
+      license:
+        weight: -51
+        enabled: false
+      link_button:
+        weight: -76
+        enabled: true
+      modal_dialog:
+        weight: -62
+        enabled: false
+      other_language:
+        weight: -50
+        enabled: false
+      other_notice:
+        weight: -49
+        enabled: false
+      q_a:
+        weight: -57
+        enabled: false
       right_image_text:
-        weight: -44
+        weight: -78
+        enabled: true
+      skill:
+        weight: -48
         enabled: false
       slider:
-        weight: -43
+        weight: -63
         enabled: false
       slider_item:
-        weight: -41
+        weight: -61
+        enabled: false
+      source_code:
+        weight: -47
+        enabled: false
+      tab:
+        weight: -69
+        enabled: true
+      tab_item:
+        weight: -46
         enabled: false
       two_col_table:
-        weight: -40
-        enabled: false
+        weight: -66
+        enabled: true
       two_col_table_row:
-        weight: -37
+        weight: -56
         enabled: false
       video:
-        weight: -53
+        weight: -80
         enabled: true
       views:
-        weight: -49
+        weight: -64
         enabled: true
       wysiwyg_editor:
-        weight: -58
+        weight: -82
         enabled: true
 field_type: entity_reference_revisions
