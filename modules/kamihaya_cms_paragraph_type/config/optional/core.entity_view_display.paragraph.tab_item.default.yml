@@ -1,0 +1,43 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.tab_item.field_default_active
+    - field.field.paragraph.tab_item.field_tab_body
+    - field.field.paragraph.tab_item.field_tab_label
+    - paragraphs.paragraphs_type.tab_item
+  module:
+    - layout_paragraphs
+id: paragraph.tab_item.default
+targetEntityType: paragraph
+bundle: tab_item
+mode: default
+content:
+  field_default_active:
+    type: boolean
+    label: hidden
+    settings:
+      format: custom
+      format_custom_false: ''
+      format_custom_true: active
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_tab_body:
+    type: layout_paragraphs
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_tab_label:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

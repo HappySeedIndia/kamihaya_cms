@@ -1,0 +1,153 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_tab_item
+    - paragraphs.paragraphs_type.tab
+    - paragraphs.paragraphs_type.tab_item
+  module:
+    - entity_reference_revisions
+id: paragraph.tab.field_tab_item
+field_name: field_tab_item
+entity_type: paragraph
+bundle: tab
+label: 'Tab item'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      tab_item: tab_item
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: -84
+        enabled: false
+      accordion_item:
+        weight: -83
+        enabled: false
+      anchor_link:
+        weight: -82
+        enabled: false
+      background_image:
+        weight: -81
+        enabled: false
+      block:
+        weight: -80
+        enabled: false
+      border_box:
+        weight: -79
+        enabled: false
+      border_box_item:
+        weight: -78
+        enabled: false
+      career:
+        weight: -77
+        enabled: false
+      divider:
+        weight: -76
+        enabled: false
+      drawer:
+        weight: -75
+        enabled: false
+      educational_background:
+        weight: -74
+        enabled: false
+      embed_tag:
+        weight: -73
+        enabled: false
+      english_skill:
+        weight: -72
+        enabled: false
+      featured_content:
+        weight: -71
+        enabled: false
+      file_download:
+        weight: -70
+        enabled: false
+      groups:
+        weight: -69
+        enabled: false
+      h2_title:
+        weight: -68
+        enabled: false
+      h3_title:
+        weight: -67
+        enabled: false
+      h4_title:
+        weight: -66
+        enabled: false
+      headings:
+        weight: -65
+        enabled: false
+      image:
+        weight: -64
+        enabled: false
+      image_link:
+        weight: -63
+        enabled: false
+      layout_paragraph:
+        weight: -62
+        enabled: false
+      left_image_text:
+        weight: -61
+        enabled: false
+      license:
+        weight: -60
+        enabled: false
+      link_button:
+        weight: -59
+        enabled: false
+      modal_dialog:
+        weight: -58
+        enabled: false
+      other_language:
+        weight: -57
+        enabled: false
+      other_notice:
+        weight: -56
+        enabled: false
+      q_a:
+        weight: -55
+        enabled: false
+      right_image_text:
+        weight: -54
+        enabled: false
+      skill:
+        weight: -53
+        enabled: false
+      slider:
+        weight: -52
+        enabled: false
+      slider_item:
+        weight: -51
+        enabled: false
+      source_code:
+        weight: -50
+        enabled: false
+      tab:
+        weight: -49
+        enabled: false
+      tab_item:
+        weight: -85
+        enabled: true
+      two_col_table:
+        weight: -48
+        enabled: false
+      two_col_table_row:
+        weight: -47
+        enabled: false
+      video:
+        weight: -46
+        enabled: false
+      views:
+        weight: -45
+        enabled: false
+      wysiwyg_editor:
+        weight: -44
+        enabled: false
+field_type: entity_reference_revisions

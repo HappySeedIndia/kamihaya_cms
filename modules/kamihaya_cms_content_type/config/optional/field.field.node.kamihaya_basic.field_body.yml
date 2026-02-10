@@ -26,6 +26,7 @@ dependencies:
     - paragraphs.paragraphs_type.modal_dialog
     - paragraphs.paragraphs_type.right_image_text
     - paragraphs.paragraphs_type.slider
+    - paragraphs.paragraphs_type.tab
     - paragraphs.paragraphs_type.two_col_table
     - paragraphs.paragraphs_type.video
     - paragraphs.paragraphs_type.views
@@ -58,6 +59,7 @@ settings:
       right_image_text: right_image_text
       image_link: image_link
       link_button: link_button
+      anchor_link: anchor_link
       file_download: file_download
       modal_dialog: modal_dialog
       accordion: accordion
@@ -65,106 +67,142 @@ settings:
       slider: slider
       embed_tag: embed_tag
       featured_content: featured_content
-      two_col_table: two_col_table
-      anchor_link: anchor_link
-      drawer: drawer
+      tab: tab
       border_box: border_box
       background_image: background_image
+      two_col_table: two_col_table
+      drawer: drawer
       block: block
       views: views
     negate: 0
     target_bundles_drag_drop:
       accordion:
-        weight: -49
+        weight: -72
         enabled: true
       accordion_item:
-        weight: -35
+        weight: -58
         enabled: false
       anchor_link:
-        weight: -43
+        weight: -75
         enabled: true
       background_image:
-        weight: -40
+        weight: -65
         enabled: true
       block:
-        weight: -39
-        enabled: true
-      border_box:
-        weight: -41
-        enabled: true
-      border_box_item:
-        weight: -36
-        enabled: false
-      divider:
-        weight: -48
-        enabled: true
-      drawer:
-        weight: -42
-        enabled: true
-      embed_tag:
-        weight: -46
-        enabled: true
-      featured_content:
-        weight: -45
-        enabled: true
-      file_download:
-        weight: -51
-        enabled: true
-      h2_title:
         weight: -62
         enabled: true
-      h3_title:
-        weight: -61
+      border_box:
+        weight: -66
         enabled: true
-      h4_title:
-        weight: -60
-        enabled: true
-      headings:
+      border_box_item:
         weight: -59
+        enabled: false
+      career:
+        weight: -55
+        enabled: false
+      divider:
+        weight: -71
         enabled: true
-      image:
-        weight: -57
-        enabled: true
-      image_link:
-        weight: -53
-        enabled: true
-      layout_paragraph:
+      drawer:
         weight: -63
         enabled: true
-      left_image_text:
-        weight: -55
+      educational_background:
+        weight: -54
+        enabled: false
+      embed_tag:
+        weight: -69
         enabled: true
-      link_button:
+      english_skill:
+        weight: -53
+        enabled: false
+      featured_content:
+        weight: -68
+        enabled: true
+      file_download:
+        weight: -74
+        enabled: true
+      groups:
         weight: -52
+        enabled: false
+      h2_title:
+        weight: -86
+        enabled: true
+      h3_title:
+        weight: -85
+        enabled: true
+      h4_title:
+        weight: -84
+        enabled: true
+      headings:
+        weight: -83
+        enabled: true
+      hero_banner:
+        weight: -45
+        enabled: false
+      image:
+        weight: -81
+        enabled: true
+      image_link:
+        weight: -77
+        enabled: true
+      layout_paragraph:
+        weight: -87
+        enabled: true
+      left_image_text:
+        weight: -79
+        enabled: true
+      license:
+        weight: -51
+        enabled: false
+      link_button:
+        weight: -76
         enabled: true
       modal_dialog:
-        weight: -50
+        weight: -73
         enabled: true
+      other_language:
+        weight: -50
+        enabled: false
+      other_notice:
+        weight: -49
+        enabled: false
       q_a:
-        weight: -34
+        weight: -57
         enabled: false
       right_image_text:
-        weight: -54
+        weight: -78
         enabled: true
+      skill:
+        weight: -48
+        enabled: false
       slider:
-        weight: -47
+        weight: -70
         enabled: true
       slider_item:
-        weight: -37
+        weight: -60
+        enabled: false
+      source_code:
+        weight: -47
+        enabled: false
+      tab:
+        weight: -67
+        enabled: true
+      tab_item:
+        weight: -46
         enabled: false
       two_col_table:
-        weight: -44
+        weight: -64
         enabled: true
       two_col_table_row:
-        weight: -33
+        weight: -56
         enabled: false
       video:
-        weight: -56
+        weight: -80
         enabled: true
       views:
-        weight: -38
+        weight: -61
         enabled: true
       wysiwyg_editor:
-        weight: -58
+        weight: -82
         enabled: true
 field_type: entity_reference_revisions

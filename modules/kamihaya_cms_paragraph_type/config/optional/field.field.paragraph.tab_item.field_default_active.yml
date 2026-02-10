@@ -1,0 +1,39 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_default_active
+    - paragraphs.paragraphs_type.tab_item
+  module:
+    - kamihaya_cms_field_marker
+third_party_settings:
+  kamihaya_cms_field_marker:
+    display_marker: false
+    condtion: '0'
+    marker_label: ''
+    label_color:
+      marker_label_color: ''
+      opacity: null
+    bg_color:
+      marker_bg_color: ''
+      opacity: null
+    border_color:
+      marker_border_color: ''
+      opacity: null
+    font_size: 16
+    marker_position: ''
+    marker_view_position: ''
+id: paragraph.tab_item.field_default_active
+field_name: field_default_active
+entity_type: paragraph
+bundle: tab_item
+label: 'Default active'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

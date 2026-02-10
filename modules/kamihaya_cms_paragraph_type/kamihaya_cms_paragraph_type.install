@@ -586,6 +586,43 @@ function kamihaya_cms_paragraph_type_update_10017() {
 
 }
 
+
+/**
+ * Create tab and tab item paragraph.
+ */
+function kamihaya_cms_paragraph_type_update_10018() {
+  // Create Tab Item Paragraph.
+  _kamihaya_cms_common_create_paragraph('tab_item', [
+    'field_default_active',
+    'field_tab_body',
+    'field_tab_label',
+  ], [], 'optional');
+
+    // Create Tab Paragraph.
+  _kamihaya_cms_common_create_paragraph('tab', [
+    'field_active_tab_bg_color',
+    'field_active_tab_body_bg_color',
+    'field_active_tab_bd_color',
+    'field_active_tab_color',
+    'field_align',
+    'field_tab_bg_color',
+    'field_tab_bd_color',
+    'field_tab_button_align',
+    'field_tab_color',
+    'field_tab_item',
+    'field_width',
+    'field_width_unit',
+  ],
+  [
+    'accordion_item' => 'field_accordion_body',
+    'background_image' => 'field_body',
+    'border_box_item' => 'field_border_box_body',
+    'drawer' => 'field_drawer_body',
+    'modal_dialog' => 'field_dialog_body',
+    'two_col_table_row' => 'field_row_data',
+  ], 'optional');
+}
+
 /**
  * Implements hook_update_dependencies().
  */

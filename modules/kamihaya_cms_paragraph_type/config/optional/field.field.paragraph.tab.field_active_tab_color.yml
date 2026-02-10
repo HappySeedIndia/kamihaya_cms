@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_active_tab_color
+    - paragraphs.paragraphs_type.tab
+  module:
+    - color_field
+id: paragraph.tab.field_active_tab_color
+field_name: field_active_tab_color
+entity_type: paragraph
+bundle: tab
+label: 'Active tab color'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  opacity: 1
+field_type: color_field_type

@@ -66,6 +66,13 @@ function kamihaya_cms_block_type_update_10005() {
 }
 
 /**
+ * Add tab paragraph to the body field.
+ */
+function kamihaya_cms_block_type_update_10006() {
+  _kamihaya_cms_common_add_paragraph('block_content', 'kamihaya_block', 'tab', 'field_body');
+}
+
+/**
  * Implements hook_update_dependencies().
  */
 function kamihaya_cms_block_type_update_dependencies() {
@@ -81,6 +88,9 @@ function kamihaya_cms_block_type_update_dependencies() {
     ],
     10005 => [
       'kamihaya_cms_paragraph_type' => 10013,
+    ],
+    10005 => [
+      'kamihaya_cms_paragraph_type' => 10018,
     ],
   ];
   return $dependencies;

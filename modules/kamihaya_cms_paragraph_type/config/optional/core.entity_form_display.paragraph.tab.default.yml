@@ -1,0 +1,223 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.tab.field_active_tab_bd_color
+    - field.field.paragraph.tab.field_active_tab_bg_color
+    - field.field.paragraph.tab.field_active_tab_body_bg_color
+    - field.field.paragraph.tab.field_active_tab_color
+    - field.field.paragraph.tab.field_align
+    - field.field.paragraph.tab.field_tab_bd_color
+    - field.field.paragraph.tab.field_tab_bg_color
+    - field.field.paragraph.tab.field_tab_button_align
+    - field.field.paragraph.tab.field_tab_color
+    - field.field.paragraph.tab.field_tab_item
+    - field.field.paragraph.tab.field_width
+    - field.field.paragraph.tab.field_width_unit
+    - paragraphs.paragraphs_type.tab
+  module:
+    - color_field
+    - field_group
+    - paragraphs
+third_party_settings:
+  field_group:
+    group_color_settings:
+      children:
+        - group_non_active_tab
+        - group_active_tab
+      label: 'Color settings'
+      region: content
+      parent_name: ''
+      weight: 5
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        description: ''
+        required_fields: true
+    group_active_tab:
+      children:
+        - field_active_tab_color
+        - field_active_tab_bg_color
+        - field_active_tab_bd_color
+        - field_active_tab_body_bg_color
+      label: 'Active tab'
+      region: content
+      parent_name: group_color_settings
+      weight: 5
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        description: ''
+        required_fields: true
+    group_non_active_tab:
+      children:
+        - field_tab_color
+        - field_tab_bg_color
+        - field_tab_bd_color
+      label: 'Non-active tab'
+      region: content
+      parent_name: group_color_settings
+      weight: 4
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        description: ''
+        required_fields: true
+id: paragraph.tab.default
+targetEntityType: paragraph
+bundle: tab
+mode: default
+content:
+  field_active_tab_bd_color:
+    type: color_field_widget_spectrum
+    weight: 6
+    region: content
+    settings:
+      show_input: '1'
+      show_palette: '1'
+      palette: "[\"#000\",\"#444\",\"#666\",\"#999\",\"#ccc\",\"#eee\",\"#f3f3f3\",\"#fff\"],\r\n[\"#f00\",\"#f90\",\"#ff0\",\"#0f0\",\"#0ff\",\"#00f\",\"#90f\",\"#f0f\"],\r\n[\"#f4cccc\",\"#fce5cd\",\"#fff2cc\",\"#d9ead3\",\"#d0e0e3\",\"#cfe2f3\",\"#d9d2e9\",\"#ead1dc\"],\r\n[\"#ea9999\",\"#f9cb9c\",\"#ffe599\",\"#b6d7a8\",\"#a2c4c9\",\"#9fc5e8\",\"#b4a7d6\",\"#d5a6bd\"],\r\n[\"#e06666\",\"#f6b26b\",\"#ffd966\",\"#93c47d\",\"#76a5af\",\"#6fa8dc\",\"#8e7cc3\",\"#c27ba0\"],\r\n[\"#c00\",\"#e69138\",\"#f1c232\",\"#6aa84f\",\"#45818e\",\"#3d85c6\",\"#674ea7\",\"#a64d79\"],\r\n[\"#900\",\"#b45f06\",\"#bf9000\",\"#38761d\",\"#134f5c\",\"#0b5394\",\"#351c75\",\"#741b47\"],\r\n[\"#600\",\"#783f04\",\"#7f6000\",\"#274e13\",\"#0c343d\",\"#073763\",\"#20124d\",\"#4c1130\"]"
+      show_palette_only: '0'
+      show_buttons: '1'
+      cancel_text: Cancel
+      choose_text: Choose
+      allow_empty: '1'
+    third_party_settings: {  }
+  field_active_tab_bg_color:
+    type: color_field_widget_spectrum
+    weight: 5
+    region: content
+    settings:
+      show_input: '1'
+      show_palette: '1'
+      palette: "[\"#000\",\"#444\",\"#666\",\"#999\",\"#ccc\",\"#eee\",\"#f3f3f3\",\"#fff\"],\r\n[\"#f00\",\"#f90\",\"#ff0\",\"#0f0\",\"#0ff\",\"#00f\",\"#90f\",\"#f0f\"],\r\n[\"#f4cccc\",\"#fce5cd\",\"#fff2cc\",\"#d9ead3\",\"#d0e0e3\",\"#cfe2f3\",\"#d9d2e9\",\"#ead1dc\"],\r\n[\"#ea9999\",\"#f9cb9c\",\"#ffe599\",\"#b6d7a8\",\"#a2c4c9\",\"#9fc5e8\",\"#b4a7d6\",\"#d5a6bd\"],\r\n[\"#e06666\",\"#f6b26b\",\"#ffd966\",\"#93c47d\",\"#76a5af\",\"#6fa8dc\",\"#8e7cc3\",\"#c27ba0\"],\r\n[\"#c00\",\"#e69138\",\"#f1c232\",\"#6aa84f\",\"#45818e\",\"#3d85c6\",\"#674ea7\",\"#a64d79\"],\r\n[\"#900\",\"#b45f06\",\"#bf9000\",\"#38761d\",\"#134f5c\",\"#0b5394\",\"#351c75\",\"#741b47\"],\r\n[\"#600\",\"#783f04\",\"#7f6000\",\"#274e13\",\"#0c343d\",\"#073763\",\"#20124d\",\"#4c1130\"]"
+      show_palette_only: '0'
+      show_buttons: '1'
+      cancel_text: Cancel
+      choose_text: Choose
+      allow_empty: '1'
+    third_party_settings: {  }
+  field_active_tab_body_bg_color:
+    type: color_field_widget_spectrum
+    weight: 7
+    region: content
+    settings:
+      show_input: '1'
+      show_palette: '1'
+      palette: "[\"#000\",\"#444\",\"#666\",\"#999\",\"#ccc\",\"#eee\",\"#f3f3f3\",\"#fff\"],\r\n[\"#f00\",\"#f90\",\"#ff0\",\"#0f0\",\"#0ff\",\"#00f\",\"#90f\",\"#f0f\"],\r\n[\"#f4cccc\",\"#fce5cd\",\"#fff2cc\",\"#d9ead3\",\"#d0e0e3\",\"#cfe2f3\",\"#d9d2e9\",\"#ead1dc\"],\r\n[\"#ea9999\",\"#f9cb9c\",\"#ffe599\",\"#b6d7a8\",\"#a2c4c9\",\"#9fc5e8\",\"#b4a7d6\",\"#d5a6bd\"],\r\n[\"#e06666\",\"#f6b26b\",\"#ffd966\",\"#93c47d\",\"#76a5af\",\"#6fa8dc\",\"#8e7cc3\",\"#c27ba0\"],\r\n[\"#c00\",\"#e69138\",\"#f1c232\",\"#6aa84f\",\"#45818e\",\"#3d85c6\",\"#674ea7\",\"#a64d79\"],\r\n[\"#900\",\"#b45f06\",\"#bf9000\",\"#38761d\",\"#134f5c\",\"#0b5394\",\"#351c75\",\"#741b47\"],\r\n[\"#600\",\"#783f04\",\"#7f6000\",\"#274e13\",\"#0c343d\",\"#073763\",\"#20124d\",\"#4c1130\"]"
+      show_palette_only: '0'
+      show_buttons: '1'
+      cancel_text: Cancel
+      choose_text: Choose
+      allow_empty: '1'
+    third_party_settings: {  }
+  field_active_tab_color:
+    type: color_field_widget_spectrum
+    weight: 4
+    region: content
+    settings:
+      show_input: '1'
+      show_palette: '1'
+      palette: "[\"#000\",\"#444\",\"#666\",\"#999\",\"#ccc\",\"#eee\",\"#f3f3f3\",\"#fff\"],\r\n[\"#f00\",\"#f90\",\"#ff0\",\"#0f0\",\"#0ff\",\"#00f\",\"#90f\",\"#f0f\"],\r\n[\"#f4cccc\",\"#fce5cd\",\"#fff2cc\",\"#d9ead3\",\"#d0e0e3\",\"#cfe2f3\",\"#d9d2e9\",\"#ead1dc\"],\r\n[\"#ea9999\",\"#f9cb9c\",\"#ffe599\",\"#b6d7a8\",\"#a2c4c9\",\"#9fc5e8\",\"#b4a7d6\",\"#d5a6bd\"],\r\n[\"#e06666\",\"#f6b26b\",\"#ffd966\",\"#93c47d\",\"#76a5af\",\"#6fa8dc\",\"#8e7cc3\",\"#c27ba0\"],\r\n[\"#c00\",\"#e69138\",\"#f1c232\",\"#6aa84f\",\"#45818e\",\"#3d85c6\",\"#674ea7\",\"#a64d79\"],\r\n[\"#900\",\"#b45f06\",\"#bf9000\",\"#38761d\",\"#134f5c\",\"#0b5394\",\"#351c75\",\"#741b47\"],\r\n[\"#600\",\"#783f04\",\"#7f6000\",\"#274e13\",\"#0c343d\",\"#073763\",\"#20124d\",\"#4c1130\"]"
+      show_palette_only: '0'
+      show_buttons: '1'
+      cancel_text: Cancel
+      choose_text: Choose
+      allow_empty: '1'
+    third_party_settings: {  }
+  field_align:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tab_bd_color:
+    type: color_field_widget_spectrum
+    weight: 7
+    region: content
+    settings:
+      show_input: '1'
+      show_palette: '1'
+      palette: "[\"#000\",\"#444\",\"#666\",\"#999\",\"#ccc\",\"#eee\",\"#f3f3f3\",\"#fff\"],\r\n[\"#f00\",\"#f90\",\"#ff0\",\"#0f0\",\"#0ff\",\"#00f\",\"#90f\",\"#f0f\"],\r\n[\"#f4cccc\",\"#fce5cd\",\"#fff2cc\",\"#d9ead3\",\"#d0e0e3\",\"#cfe2f3\",\"#d9d2e9\",\"#ead1dc\"],\r\n[\"#ea9999\",\"#f9cb9c\",\"#ffe599\",\"#b6d7a8\",\"#a2c4c9\",\"#9fc5e8\",\"#b4a7d6\",\"#d5a6bd\"],\r\n[\"#e06666\",\"#f6b26b\",\"#ffd966\",\"#93c47d\",\"#76a5af\",\"#6fa8dc\",\"#8e7cc3\",\"#c27ba0\"],\r\n[\"#c00\",\"#e69138\",\"#f1c232\",\"#6aa84f\",\"#45818e\",\"#3d85c6\",\"#674ea7\",\"#a64d79\"],\r\n[\"#900\",\"#b45f06\",\"#bf9000\",\"#38761d\",\"#134f5c\",\"#0b5394\",\"#351c75\",\"#741b47\"],\r\n[\"#600\",\"#783f04\",\"#7f6000\",\"#274e13\",\"#0c343d\",\"#073763\",\"#20124d\",\"#4c1130\"]"
+      show_palette_only: '0'
+      show_buttons: '1'
+      cancel_text: Cancel
+      choose_text: Choose
+      allow_empty: '1'
+    third_party_settings: {  }
+  field_tab_bg_color:
+    type: color_field_widget_spectrum
+    weight: 6
+    region: content
+    settings:
+      show_input: '1'
+      show_palette: '1'
+      palette: "[\"#000\",\"#444\",\"#666\",\"#999\",\"#ccc\",\"#eee\",\"#f3f3f3\",\"#fff\"],\r\n[\"#f00\",\"#f90\",\"#ff0\",\"#0f0\",\"#0ff\",\"#00f\",\"#90f\",\"#f0f\"],\r\n[\"#f4cccc\",\"#fce5cd\",\"#fff2cc\",\"#d9ead3\",\"#d0e0e3\",\"#cfe2f3\",\"#d9d2e9\",\"#ead1dc\"],\r\n[\"#ea9999\",\"#f9cb9c\",\"#ffe599\",\"#b6d7a8\",\"#a2c4c9\",\"#9fc5e8\",\"#b4a7d6\",\"#d5a6bd\"],\r\n[\"#e06666\",\"#f6b26b\",\"#ffd966\",\"#93c47d\",\"#76a5af\",\"#6fa8dc\",\"#8e7cc3\",\"#c27ba0\"],\r\n[\"#c00\",\"#e69138\",\"#f1c232\",\"#6aa84f\",\"#45818e\",\"#3d85c6\",\"#674ea7\",\"#a64d79\"],\r\n[\"#900\",\"#b45f06\",\"#bf9000\",\"#38761d\",\"#134f5c\",\"#0b5394\",\"#351c75\",\"#741b47\"],\r\n[\"#600\",\"#783f04\",\"#7f6000\",\"#274e13\",\"#0c343d\",\"#073763\",\"#20124d\",\"#4c1130\"]"
+      show_palette_only: '0'
+      show_buttons: '1'
+      cancel_text: Cancel
+      choose_text: Choose
+      allow_empty: '1'
+    third_party_settings: {  }
+  field_tab_button_align:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tab_color:
+    type: color_field_widget_spectrum
+    weight: 5
+    region: content
+    settings:
+      show_input: '1'
+      show_palette: '1'
+      palette: "[\"#000\",\"#444\",\"#666\",\"#999\",\"#ccc\",\"#eee\",\"#f3f3f3\",\"#fff\"],\r\n[\"#f00\",\"#f90\",\"#ff0\",\"#0f0\",\"#0ff\",\"#00f\",\"#90f\",\"#f0f\"],\r\n[\"#f4cccc\",\"#fce5cd\",\"#fff2cc\",\"#d9ead3\",\"#d0e0e3\",\"#cfe2f3\",\"#d9d2e9\",\"#ead1dc\"],\r\n[\"#ea9999\",\"#f9cb9c\",\"#ffe599\",\"#b6d7a8\",\"#a2c4c9\",\"#9fc5e8\",\"#b4a7d6\",\"#d5a6bd\"],\r\n[\"#e06666\",\"#f6b26b\",\"#ffd966\",\"#93c47d\",\"#76a5af\",\"#6fa8dc\",\"#8e7cc3\",\"#c27ba0\"],\r\n[\"#c00\",\"#e69138\",\"#f1c232\",\"#6aa84f\",\"#45818e\",\"#3d85c6\",\"#674ea7\",\"#a64d79\"],\r\n[\"#900\",\"#b45f06\",\"#bf9000\",\"#38761d\",\"#134f5c\",\"#0b5394\",\"#351c75\",\"#741b47\"],\r\n[\"#600\",\"#783f04\",\"#7f6000\",\"#274e13\",\"#0c343d\",\"#073763\",\"#20124d\",\"#4c1130\"]"
+      show_palette_only: '0'
+      show_buttons: '1'
+      cancel_text: Cancel
+      choose_text: Choose
+      allow_empty: '1'
+    third_party_settings: {  }
+  field_tab_item:
+    type: paragraphs
+    weight: 0
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+      features:
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
+  field_width:
+    type: number
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_width_unit:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
