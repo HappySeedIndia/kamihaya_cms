@@ -135,7 +135,7 @@ function kamihaya_cms_paragraph_type_preprocess_paragraph(array &$variables) {
       }
       /* @var \Drupal\file\FileInterface $file */
       $file = \Drupal::entityTypeManager()->getStorage('file')->load($fid);
-      if (empty($file)) {
+      if (empty($file) || empty($image_style)) {
         continue;
       }
 
@@ -152,7 +152,7 @@ function kamihaya_cms_paragraph_type_preprocess_paragraph(array &$variables) {
       $style_url = $style->buildUrl($uri);
       $parsed_url = parse_url($style_url);
       $relative_path = $parsed_url['path'];
-      $variables['content']["{$key}_url"] = $relative_path ?? $uri;
+      $variables['content']["{$key}_url"] = !empty($relative_path) ? $relative_path : $uri;
     }
   }
 

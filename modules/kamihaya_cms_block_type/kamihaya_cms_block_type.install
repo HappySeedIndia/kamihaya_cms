@@ -89,7 +89,7 @@ function kamihaya_cms_block_type_update_dependencies() {
     10005 => [
       'kamihaya_cms_paragraph_type' => 10013,
     ],
-    10005 => [
+    10006 => [
       'kamihaya_cms_paragraph_type' => 10018,
     ],
   ];

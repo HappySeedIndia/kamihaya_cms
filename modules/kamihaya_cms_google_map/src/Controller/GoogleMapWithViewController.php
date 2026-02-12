@@ -54,7 +54,7 @@ class GoogleMapWithViewController extends ControllerBase implements ContainerInj
     }
 
     $settings = $config->get();
-
+    $build = [];
     // Display page title if set.
     if (!empty($settings['page_title'])) {
       $build['#title'] = $settings['page_title'];
@@ -84,7 +84,7 @@ class GoogleMapWithViewController extends ControllerBase implements ContainerInj
             'page_name' => $config_name,
             'json_data_path' => $settings['json_data_path'] ?? '',
             'detail_data_path' => $settings['detail_data_path'] ?? '',
-            'ajax_path' => $ajax_path ?? '',
+            'ajax_path' => !empty($ajax_path) ? $ajax_path : '',
             'show_autocomplete' => $settings['show_autocomplete'] ?? FALSE,
             'map_min_height_pc' => $settings['map_min_height_pc'] ?? '',
             'view_height_sp' => $settings['view_height_sp'] ?? '',

@@ -21,7 +21,7 @@ class MarkerService {
    *
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $fieldManager
    *   The entity field manager.
-   * @param rupal\Core\Config\ConfigFactoryInterface $configFactory
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The configuration factory.
    */
   public function __construct(protected EntityFieldManagerInterface $fieldManager, protected ConfigFactoryInterface $configFactory) {
@@ -41,7 +41,7 @@ class MarkerService {
    * @return string|null
    *   The marker HTML string, or NULL if not displayed.
    */
-  public function createMarker(FieldConfig $field_config, $value, bool $is_node_page = TRUE) {
+  public function createMarker(FieldConfig $field_config, $value, bool $is_node_page = TRUE): ?string {
     $marker_setting = $field_config->getThirdPartySettings('kamihaya_cms_field_marker');
     if (empty($marker_setting['display_marker'])) {
       return $value;
@@ -65,6 +65,7 @@ class MarkerService {
       $name = str_replace('_', '-', $field_name);
       return "<div class='kamihaya-marker marker-{$position} marker-{$name}'>{$marker_label}</div>";
     }
+    return null;
   }
 
   /**

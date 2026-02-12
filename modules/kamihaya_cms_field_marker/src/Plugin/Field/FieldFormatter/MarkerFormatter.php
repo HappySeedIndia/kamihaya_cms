@@ -41,7 +41,7 @@ class MarkerFormatter extends FormatterBase {
    *   The view mode.
    * @param array $third_party_settings
    *   Any third party settings.
-   * @param Drupal\kamihaya_cms_field_marker\Service\MarkerService $markeService
+   * @param \Drupal\kamihaya_cms_field_marker\Service\MarkerService $markeService
    *   The marker service.
    */
   public function __construct(

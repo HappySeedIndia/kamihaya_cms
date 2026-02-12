@@ -6,11 +6,12 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Config\ConfigInstallerInterface;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\TranslatableInterface;
+use Drupal\Core\Entity\RevisionLogInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Validation\ConstraintManager;
@@ -21,6 +22,7 @@ use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Feeds\Processor\EntityProcessorBase;
 use Drupal\feeds\StateInterface;
 use Drupal\feeds\StateType;
+use Drupal\user\EntityOwnerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -114,6 +116,7 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
    */
   public function process(FeedInterface $feed, ItemInterface $item, StateInterface $state) {
     // Initialize clean list if needed.
+    /** @var \Drupal\feeds\Feeds\State\CleanStateInterface $clean_state */
     $clean_state = $feed->getState(StateInterface::CLEAN);
     if (!$clean_state->initiated()) {
       $this->initCleanList($feed, $clean_state);
@@ -160,6 +163,7 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
     }
 
     // Search for existing entity
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $existing_entity */
     $existing_entity = $this->findExistingEntity($translation_key_target, $translation_key);
 
     // If the entity is an existing entity it must be removed from the clean
@@ -168,13 +172,14 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
       $clean_state->removeItem($existing_entity->id());
     }
 
+    /** @var \Drupal\feeds\State $state */
     if ($existing_entity && $skip_existing && ($existing_entity->language()->getId() === $language_code || $existing_entity->hasTranslation($language_code))) {
       // Skip the item if the entity already existing and when we are not updating
       // existing entities.
       $state->report(StateType::SKIP, 'Skipped because the entity already exists.', [
         'feed' => $feed,
         'item' => $item,
-        'entity_label' => [$existing_entity_id, 'id'],
+        'entity_label' => [$existing_entity->id(), 'id'],
       ]);
       return;
     }
@@ -192,10 +197,13 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
     $hash = $this->hash($item);
     $translation_entity = $existing_entity && $existing_entity->language()->getId() !== $language_code && $existing_entity->hasTranslation($language_code)
       ? $existing_entity->getTranslation($language_code)
-      : NULL;
+      : null;
+
+    /** @var \Drupal\feeds\FeedsItemListInterface $feeds_item */
+    $feeds_item = $translation_entity->get('feeds_item');
     $changed = !empty($translation_entity)
-      ? $translation_entity && ($hash !== $translation_entity->get('feeds_item')->getItemHashByFeed($feed))
-      : $existing_entity && ($hash !== $existing_entity->get('feeds_item')->getItemHashByFeed($feed));
+      ? $translation_entity && ($hash !== $feeds_item->getItemHashByFeed($feed))
+      : $existing_entity && ($hash !== $feeds_item->getItemHashByFeed($feed));
 
     // Do not proceed if the item exists, has not changed, and we're not
     // forcing the update.
@@ -236,30 +244,30 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
       $handler = $this->entityTypeManager->getHandler($translation_entity->getEntityTypeId(), 'translation');
       $metadata = new $class($translation_entity, $handler);
       $traits = class_uses($translation_entity);
-      if (in_array('Drupal\Core\Entity\EntityOwnerInterface', $traits)) {
+      if ($translation_entity instanceof EntityOwnerInterface && in_array('Drupal\Core\Entity\EntityOwnerInterface', $traits)) {
         $translation_entity->setOwner($translation_entity->getOwner());
       }
-      if (in_array('Drupal\Core\Entity\  use EntityPublishedTrait', $traits)) {
-        $metadata->setCreatedTime($translation_entity->getCreatedTime());
+      if ($translation_entity->hasField('created') && !$translation_entity->get('created')->isEmpty()) {
+        $created_time = (int) $translation_entity->get('created')->value;
+        $metadata->setCreatedTime($created_time);
       }
       $metadata->setSource($source_langcode);
     }
 
     $item_data = $item->toArray();
 
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $working_entity */
     $working_entity = $translation_entity ?: $working_entity;
 
-    if (empty($working_entity)) {
-      $this->messenger()->addError(t('Unable to create or update entity for feed @feed.', ['@feed' => $feed->label()]));
-      return;
-    }
-
     // Set feeds_item values.
-    $feeds_item = $working_entity->get('feeds_item')->getItemByFeed($feed, TRUE);
+    /** @var \Drupal\feeds\FeedsItemListInterface $feeds_field */
+    $feeds_field = $working_entity->get('feeds_item');
+    /** @var \Drupal\feeds\Plugin\Field\FieldType\FeedsItem $feeds_item */
+    $feeds_item = $feeds_field->getItemByFeed($feed, TRUE);
     $feeds_item->hash = $hash;
 
     // Set new revision if needed.
-    if ($this->configuration['revision']) {
+    if ($this->configuration['revision'] && $working_entity instanceof RevisionLogInterface) {
       $working_entity->setNewRevision(TRUE);
       $working_entity->setRevisionCreationTime($this->dateTime->getRequestTime());
     }
@@ -322,7 +330,7 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
    *
    * @param string $target_field
    *   The target field to search by.
-   * @param mixed $entity_id
+   * @param mixed $target_value
    *   The value of the translation key to search for.
    *
    * @return \Drupal\Core\Entity\EntityInterface|null
@@ -396,7 +404,7 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
   protected function map(FeedInterface $feed, EntityInterface $entity, ItemInterface $item) {
     $mappings = $this->feedType->getMappings();
     $map_mappings = $feed->getType()->getMappings();
-    if ($entity instanceof TranslatableInterface && !$entity->isDefaultTranslation()) {
+    if ($entity instanceof ContentEntityInterface && !$entity->isDefaultTranslation()) {
       foreach ($map_mappings as $idx => $mapping) {
         if (empty($mapping['target']) || (empty($mapping['map']['value']) && empty($mapping['map']['target_id']))) {
           continue;
@@ -464,7 +472,7 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
     foreach ($map_mappings as $delta => $mapping) {
       $plugin = $this->feedType->getTargetPlugin($delta);
       $target = $mapping['target'];
-      if ($entity->hasField($target) && $target !== 'langcode') {
+      if ($entity instanceof ContentEntityInterface && $entity->hasField($target) && $target !== 'langcode') {
         $entity->set($target, NULL);
       }
       // Skip immutable targets for which the entity already has a value.
