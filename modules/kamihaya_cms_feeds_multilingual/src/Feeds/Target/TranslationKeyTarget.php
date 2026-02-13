@@ -21,7 +21,7 @@ class TranslationKeyTarget extends Temporary implements ConfigurableTargetInterf
    * {@inheritdoc}
    */
   public static function targets(array &$targets, FeedTypeInterface $feed_type, array $definition) {
-    /* @var \Drupal\kamihaya_cms_feeds_multilingual\Feeds\Processor\MultilingualEntityProcessor $processor */
+    /** @var \Drupal\kamihaya_cms_feeds_multilingual\Feeds\Processor\MultilingualEntityProcessor $processor */
     $processor = $feed_type->getProcessor();
     $entity_type = $processor->entityType();
     $entity_type = \Drupal::entityTypeManager()->getDefinition($entity_type);
@@ -30,7 +30,9 @@ class TranslationKeyTarget extends Temporary implements ConfigurableTargetInterf
     if (!$entity_type->isTranslatable()) {
       return;
     }
-    $targets['translation_key'] = TargetDefinition::create()
+    /** @var \Drupal\feeds\TargetDefinition $target */
+    $target = TargetDefinition::create();
+    $targets['translation_key'] = $target
       ->setPluginId($definition['id'])
       ->setLabel(t('Translation Key'))
       ->setDescription(t('Target for translation key to group translations together.'))

@@ -307,6 +307,7 @@ function _kamihaya_cms_google_map_build_distance_formula($user_lat, $user_lng, $
  */
 function kamihaya_cms_google_map_query_longitude_filter_alter(AlterableInterface $query) {
   // Get the view from query metadata
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
   $view = $query->getMetaData('view');
   if (!$view || !$view instanceof ViewExecutable) {
     return;
@@ -401,7 +402,9 @@ function kamihaya_cms_google_map_views_pre_render(ViewExecutable $view) {
     foreach ($view->result as $row) {
       if (isset($row->calculated_distance)) {
         // Round distance to 2 decimal places
+        /** @phpstan-ignore-next-line */
         $row->distance_km = round($row->calculated_distance, 2);
+        /** @phpstan-ignore-next-line */
         $row->distance_formatted = $row->distance_km . ' km';
       }
     }

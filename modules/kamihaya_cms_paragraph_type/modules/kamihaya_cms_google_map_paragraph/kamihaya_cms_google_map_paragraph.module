@@ -25,7 +25,7 @@ function kamihaya_cms_google_map_paragraph_preprocess_paragraph(&$variables) {
       '@url' => Url::fromRoute('kamihaya_cms_google_map_paragraph.settings'),
     ]);
     $config = Drupal::configFactory()->get('kamihaya_cms_google_map_paragraph.settings');
-    if (empty($config)) {
+    if ($config->isNew()) {
       Drupal::messenger()->addWarning($wargning);
       return;
     }
