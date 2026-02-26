@@ -1,7 +1,7 @@
-name: Kamihaya CMS Views Extension
+name: 'Kamihaya CMS Views Extension'
 type: module
 core_version_requirement: ^9 || ^10
-package: Kamihaya
+package: 'Kamihaya CMS'
 description: 'Extend the view functions.'
 
 dependencies:
@@ -10,4 +10,3 @@ dependencies:
   - shs:shs
   - views_flipped_table:views_flipped_table
 
-project: 'kamihaya'

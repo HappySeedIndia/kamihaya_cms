@@ -1,7 +1,7 @@
-name: Kamihaya CMS Content type
+name: 'Kamihaya CMS Content type'
 type: module
 core_version_requirement: ^9 || ^10
-package: Kamihaya
+package: 'Kamihaya CMS'
 description: 'Kamihaya content type for Kamihaya CMS.'
 
 dependencies:
@@ -24,5 +24,3 @@ dependencies:
   - kamihaya_cms_media_type:kamihaya_cms_media_type
   - kamihaya_cms_paragraph_type:kamihaya_cms_paragraph_type
   - kamihaya_cms_media_type:kamihaya_cms_media_type
-
-project: 'kamihaya'

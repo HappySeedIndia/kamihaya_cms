@@ -2,9 +2,8 @@ name: 'Kamihaya CMS Field Marker'
 description: 'Display a marker with the value of fields on specific condition.'
 type: module
 core_version_requirement: '^9.4 || ^10'
+package: 'Kamihaya CMS'
 
 dependencies:
   - drupal:datetime
   - drupal:layout_discovery
-
-project: 'kamihaya'

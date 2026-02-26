@@ -1,6 +1,7 @@
 name: 'Kamihaya CMS Commerce'
 type: module
 core_version_requirement: '^9.4 || ^10'
+package: 'Kamihaya CMS'
 dependencies:
   - 'address:address'
   - 'commerce:commerce'

@@ -1,10 +1,8 @@
-name: Kamihaya CMS JSON Field
+name: 'Kamihaya CMS JSON Field'
 type: module
 description: 'Manages the json field.'
 core_version_requirement: ^9 || ^10
-package: Kamihaya
-
-project: 'kamihaya'
+package: 'Kamihaya CMS'
 
 dependencies:
   - drupal:field

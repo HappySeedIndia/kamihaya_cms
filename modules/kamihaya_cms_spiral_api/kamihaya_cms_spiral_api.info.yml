@@ -1,7 +1,7 @@
 name: 'Kamihaya CMS SPIRAL API'
 type: module
 description: 'Connect to SPIRAL with API'
-package: Kamihaya
+package: 'Kamihaya CMS'
 dependencies:
   - externalauth:externalauth
 

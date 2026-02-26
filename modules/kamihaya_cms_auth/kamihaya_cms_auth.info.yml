@@ -1,10 +1,8 @@
-name: Kamihaya CMS Authentification
+name: 'Kamihaya CMS Authentification'
 type: module
 core_version_requirement: ^9 || ^10
-package: Kamihaya
+package: 'Kamihaya CMS'
 description: 'Customize the login url.'
 
 dependencies:
   - drupal:user
-
-project: 'kamihaya'

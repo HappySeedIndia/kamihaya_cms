@@ -1,7 +1,7 @@
-name: Kamihaya CMS Paragraph type
+name: 'Kamihaya CMS Paragraph type'
 type: module
 core_version_requirement: ^9 || ^10
-package: Kamihaya
+package: 'Kamihaya CMS'
 description: 'Paragraphs for Kamihaya CMS.'
 
 dependencies:
@@ -28,4 +28,3 @@ dependencies:
   - kamihaya_cms_common:kamihaya_cms_common
   - kamihaya_cms_content_type:kamihaya_cms_content_type
 
-project: 'kamihaya'

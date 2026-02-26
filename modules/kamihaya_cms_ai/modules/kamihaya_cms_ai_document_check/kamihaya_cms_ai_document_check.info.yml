@@ -1,6 +1,6 @@
 name: 'Kamihaya CMS AI Document Check'
 description: 'Kamihaya CMS AI Document Check module.'
-package: Kamihaya
+package: 'Kamihaya CMS'
 type: module
 core_version_requirement: '^9.4 || ^10'
 dependencies:
