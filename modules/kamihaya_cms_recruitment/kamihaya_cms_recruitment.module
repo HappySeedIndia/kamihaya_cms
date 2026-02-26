@@ -2,6 +2,9 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
@@ -12,11 +15,9 @@ use Drupal\user\UserInterface;
  * Implements hook_entity_type_alter().
  */
 function kamihaya_cms_recruitment_entity_type_alter(array &$entity_types) {
-  $entity_types['user']->setFormClass('recruitment_register', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserRegisterForm');
   $entity_types['user']->setFormClass('applicant_edit', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserEditForm');
   $entity_types['user']->setFormClass('recruiter_edit', 'Drupal\kamihaya_cms_recruitment\Form\KamihayaUserEditForm');
 }
-
 
 /**
  * Implements hook_query_TAG_alter().
@@ -36,7 +37,9 @@ function kamihaya_cms_recruitment_query_job_match_alter(AlterableInterface $quer
   if (empty($skills)) {
     return;
   }
-  foreach ($query->conditions() as &$conditions) {
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+  $query_conditions = $query->conditions();
+  foreach ($query_conditions as &$conditions) {
     if (is_array($conditions) && is_object($conditions['field'])) {
       $conditions1 = &$conditions['field']->conditions();
       foreach ($conditions1 as $idx => &$condition) {
@@ -63,6 +66,7 @@ function kamihaya_cms_recruitment_query_job_match_alter(AlterableInterface $quer
  * Implements hook_query_TAG_alter().
  */
 function kamihaya_cms_recruitment_query_applicant_search_alter(AlterableInterface $query) {
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
   $tables = &$query->getTables();
   foreach ($tables as $key => &$table) {
     if ($key === 'field_skill_paragraphs_item_field_data'
@@ -184,4 +188,113 @@ function kamihaya_cms_recruitment_control_user_access(UserInterface $user, $oper
   }
 
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_entity_form_display_alter().
+ */
+function kamihaya_cms_recruitment_entity_form_display_alter(EntityFormDisplay $form_display, array $context) {
+  if ($context['entity_type'] !== 'user') {
+    return;
+  }
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($route_name !== 'kamihaya_cms_recruitment.user.register') {
+    return;
+  }
+
+  $custom_display = EntityFormDisplay::load('user.user.recruitment_register');
+  if ($custom_display) {
+    foreach ($custom_display->getComponents() as $name => $component) {
+      $form_display->setComponent($name, $component);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function kamihaya_cms_recruitment_form_user_register_form_alter(array &$form, FormStateInterface $form_state) {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  if ($route_name === 'kamihaya_cms_recruitment.user.register') {
+    kamihaya_cms_recruitment_alter_user_form($form, $form_state);
+  }
+}
+
+/**
+ * Altering user form.
+ *
+ * @param array $form
+ *   The array of form elements.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ */
+function kamihaya_cms_recruitment_alter_user_form(array &$form, FormStateInterface $form_state) {
+  if (!empty($form['account']['status'])) {
+    $form['account']['status']['#access'] = FALSE;
+  }
+  if (!empty($form['account']['notify'])) {
+    $form['account']['notify']['#access'] = FALSE;
+  }
+  if (!empty($form['account']['roles'])) {
+    $options = &$form['account']['roles']['#options'];
+    foreach ($options as $key => $value) {
+      if (!in_array($key, ['applicant', 'recruiter'])) {
+        unset($options[$key]);
+      }
+    }
+    $form['account']['roles']['#type'] = 'radios';
+    $form['account']['roles']['#required'] = TRUE;
+  }
+
+  foreach ($form as $name => &$element) {
+    if ($name === 'account' || $name === 'actions' || $name[0] === '#' || strpos($name, 'field_') === 0 || strpos($name, 'form_') === 0) {
+      continue;
+    }
+    $element['#access'] = FALSE;
+  }
+
+  if (\Drupal::moduleHandler()->moduleExists('password_policy')) {
+    $fields = [
+      'field_last_password_reset',
+      'field_password_expiration',
+      'field_pending_expire_sent'];
+    foreach ($fields as $field) {
+      if (empty($form[$field])) {
+        continue;
+      }
+      $form[$field]['#access'] = FALSE;
+    }
+  }
+  $form['#submit'][] = 'kamihaya_cms_recruitment_user_submit';
+}
+
+/**
+ * Custom submit function for user form.
+ *
+ * @param array $form
+ *   The array of form elements.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ */
+function kamihaya_cms_recruitment_user_submit(array &$form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+  if (!$form_object instanceof EntityFormInterface) {
+    return;
+  }
+
+  /** @var \Drupal\user\UserInterface $account */
+  $account = $form_object->getEntity();
+  $roles = ['authenticated'];
+  $selected = $form_state->getValue('roles');
+  if (is_string($selected)) {
+    $roles[] = $selected;
+
+    /** @var \Drupal\Core\Session\AccountProxy $current_user */
+    $current_user = \Drupal::currentUser();
+    if ($current_user->hasRole('administrator')) {
+      $roles[] = 'administrator';
+    }
+    $account->set('roles', array_unique($roles));
+  }
 }

@@ -2,7 +2,7 @@
 
 namespace Drupal\kamihaya_cms_spiral_api\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Drupal\Component\EventDispatcher\Event;
 
 /**
  * Notify event listeners about an externalauth user registration.

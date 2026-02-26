@@ -83,7 +83,7 @@ function kamihaya_cms_spiral_api_user_load(&$users) {
     return;
   }
   $account = Drupal::currentUser();
-  /** @var \Drupal\user\Entity\UserInterface $current_user */
+  /** @var \Drupal\user\UserInterface $current_user */
   $current_user = null;
   foreach ($users as $user) {
     if ($account->id() === $user->id()) {

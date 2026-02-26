@@ -3,11 +3,9 @@
 namespace Drupal\kamihaya_cms_views_extension\Plugin\Action;
 
 use Drupal\Core\Action\Attribute\Action;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
@@ -35,20 +33,17 @@ class RedirectToViewAction extends ViewsBulkOperationsActionBase implements Cont
    *   The plugin Id.
    * @param mixed $plugin_definition
    *   Plugin definition.
-   * @param \Drupal\views_bulk_operations\Plugin\Action\Drupal\Core\Session\AccountInterface $currentUser
+   * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The current user.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
    *   Module handler service.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The config factory object.
    */
   public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
     protected readonly AccountInterface $currentUser,
-    protected readonly ModuleHandlerInterface $moduleHandler,
-    ConfigFactoryInterface $config_factory,
+    protected readonly ModuleHandlerInterface $moduleHandler
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -62,8 +57,7 @@ class RedirectToViewAction extends ViewsBulkOperationsActionBase implements Cont
       $plugin_id,
       $plugin_definition,
       $container->get('current_user'),
-      $container->get('module_handler'),
-      $container->get('config.factory')
+      $container->get('module_handler')
     );
   }
 

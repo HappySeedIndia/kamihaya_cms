@@ -2,16 +2,12 @@
 
 namespace Drupal\kamihaya_cms_views_extension\Plugin\views\exposed_form;
 
-use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\ElementInfoManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\better_exposed_filters\Plugin\BetterExposedFiltersWidgetManager;
 use Drupal\better_exposed_filters\Plugin\views\exposed_form\BetterExposedFilters;
 use Drupal\views\Attribute\ViewsExposedForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Extend Better Exposed Filters.
@@ -25,62 +21,19 @@ use Symfony\Component\HttpFoundation\Request;
 class KamihayaExposedForm extends BetterExposedFilters {
 
   /**
-   * KamihayaExposedForm constructor.
+   * The route match.
    *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\better_exposed_filters\Plugin\BetterExposedFiltersWidgetManager $filterWidgetManager
-   *   The better exposed filter widget manager for filter widgets.
-   * @param \Drupal\better_exposed_filters\Plugin\BetterExposedFiltersWidgetManager $pagerWidgetManager
-   *   The better exposed filter widget manager for pager widgets.
-   * @param \Drupal\better_exposed_filters\Plugin\BetterExposedFiltersWidgetManager $sortWidgetManager
-   *   The better exposed filter widget manager for sort widgets.
-   * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
-   *   Manage drupal modules.
-   * @param \Drupal\Core\Render\ElementInfoManagerInterface $elementInfo
-   *   The element info manager.
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *   The Request object.
-   *
-   * @patam \Drupal\Core\Routing\RouteMatchInterface
-   *  The currently active route match object.
+   * @var \Drupal\Core\Routing\RouteMatchInterface
    */
-  public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    protected BetterExposedFiltersWidgetManager $filterWidgetManager,
-    protected BetterExposedFiltersWidgetManager $pagerWidgetManager,
-    protected BetterExposedFiltersWidgetManager $sortWidgetManager,
-    protected ModuleHandlerInterface $moduleHandler,
-    protected ElementInfoManagerInterface $elementInfo,
-    protected Request $request,
-    protected RouteMatchInterface $routeMatch,
-  ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $filterWidgetManager, $pagerWidgetManager, $sortWidgetManager, $moduleHandler, $elementInfo, $request);
-  }
+  protected RouteMatchInterface $routeMatch;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    // @phpstan-ignore-next-line
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('plugin.manager.better_exposed_filters_filter_widget'),
-      $container->get('plugin.manager.better_exposed_filters_pager_widget'),
-      $container->get('plugin.manager.better_exposed_filters_sort_widget'),
-      $container->get('module_handler'),
-      $container->get('element_info'),
-      $container->get('request_stack')->getCurrentRequest(),
-      $container->get('current_route_match')
-    );
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $instance->routeMatch = $container->get('current_route_match');
+    return $instance;;
   }
 
   /**
@@ -488,7 +441,7 @@ class KamihayaExposedForm extends BetterExposedFilters {
       parent::query();
       return;
     }
-    if (!empty($sort_by)) {
+    if (!is_null($sort_by)) {
       $view = $this->view;
       $sort_alias = NULL;
       $sort_field = NULL;
@@ -498,20 +451,23 @@ class KamihayaExposedForm extends BetterExposedFilters {
           break;
         }
       }
-      foreach ($view->query->fields as $key => $field) {
+      /** @var \Drupal\views\Plugin\views\query\Sql $query */
+      $query = $view->query;
+      foreach ($query->fields as $key => $field) {
         if ($field['table'] === $sort_field->table && $field['field'] === $sort_field->field) {
           $sort_alias = $key;
           break;
         }
       }
-      foreach ($view->query->orderby as $key => $order) {
+      $order = [];
+      foreach ($query->orderby as $key => $order) {
         if ($order['field'] === $sort_alias) {
-          $order = $view->query->orderby[$key];
-          unset($view->query->orderby[$key]);
+          $order = $query->orderby[$key];
+          unset($query->orderby[$key]);
           break;
         }
       }
-      $view->query->orderby = array_merge([$order], $view->query->orderby);
+      $query->orderby = array_merge([$order], $query->orderby);
     }
   }
 
