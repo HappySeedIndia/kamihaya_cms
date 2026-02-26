@@ -1,13 +1,12 @@
 <?php
 
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
-use Drupal\Core\Site\Settings;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\kamihaya_digitalagency\KamihayaSettingsManager;
-use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -302,10 +301,7 @@ function _kamihaya_digitalagency_preprocess_menu_items(array &$items) {
   foreach ($items as &$item) {
     /** @var \Drupal\Core\Menu\MenuLinkInterface $menu_link */
     $menu_link = $item['original_link'] ?? NULL;
-    if (!empty($menu_link)) {
-      $options = ($menu_link instanceof MenuLinkContentInterface)
-        ? $menu_link->link->first()->options
-        : $menu_link->getOptions();
+    if (!is_null($menu_link)) {
       if (empty($item['attributes'])) {
         continue;
       }
@@ -438,10 +434,15 @@ function kamihaya_digitalagency_preprocess_field(&$variables, $hook) {
  */
 function kamihaya_digitalagency_preprocess_block(array &$variables) {
   if (!empty($variables['plugin_id']) && $variables['plugin_id'] === 'page_title_block') {
-    /** @var \Drupal\Entity\FieldableEntityInterface $entity */
-    $entity = !empty(\Drupal::routeMatch()->getParameter('node'))
-      ? \Drupal::routeMatch()->getParameter('node')
-      : \Drupal::routeMatch()->getParameter('taxonomy_term');
+    $route_match = \Drupal::routeMatch();
+    $entity = NULL;
+
+    foreach ($route_match->getParameters() as $parameter) {
+      if ($parameter instanceof FieldableEntityInterface) {
+        $entity = $parameter;
+        break;
+      }
+    }
 
     if (empty($entity)) {
       return;
@@ -727,7 +728,7 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
 
   }
 
-  if (empty($css_vars)) {
+  if (count($css_vars) === 0) {
     return;
   }
 
@@ -771,7 +772,7 @@ function kamihaya_digitalagency_create_css_vars(array $colors, array $bg_colors)
 /**
  * Create custom css variables.
  *
- * @param array $vars
+ * @param array $css_vars
  *   Color vars definition.
  *
  * @return string
@@ -809,10 +810,14 @@ function kamihaya_digitalagency_create_css_custom_vars(array $css_vars) : string
  *   RGB color.
  */
 function _kamihaya_digitalagency_get_rgb_color($color) {
-  $red = (($color & 0xFF0000) >> 16);
-  $green = (($color & 0x00FF00) >> 8);
-  $blue = (($color & 0x0000FF));
-  return "$red, $green, $blue";
+    if (!is_string($color) || !preg_match('/^#?[0-9a-fA-F]{6}$/', $color)) {
+      return '';
+    }
+    $hex = ltrim($color, '#');
+    $red   = hexdec(substr($hex, 0, 2));
+    $green = hexdec(substr($hex, 2, 2));
+    $blue  = hexdec(substr($hex, 4, 2));
+    return "$red, $green, $blue";
 }
 
 /**
@@ -869,7 +874,7 @@ function kamihaya_digitalagency_preprocess_addtoany_standard(&$variables) {
   }
   // Check if the custom universal button is set in the AddToAny settings.
   $config = \Drupal::config('addtoany.settings');
-  if (empty($config) || empty($config->get('custom_universal_button'))) {
+  if ($config->isNew() || empty($config->get('custom_universal_button'))) {
     return;
   }
 
