@@ -1,9 +1,0 @@
-name: 'Kamihaya CMS SEO policy'
-type: module
-core_version_requirement: ^9 || ^10
-package: 'Kamihaya CMS'
-description: 'Enforces SEO-related policies such as search engine visibility, indexing rules, and sitemap inclusion.'
-
-dependencies:
-  - kamihaya_cms_auth/kamihaya_cms_auth
-  - xmlsitemap/xmlsitemap
