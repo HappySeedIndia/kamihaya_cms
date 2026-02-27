@@ -1,0 +1,23 @@
+<?php
+
+use Drupal\Core\Database\Query\AlterableInterface;
+
+/**
+ * Implements hook_query_TAG_alter() for language module.
+ */
+function kamihaya_cms_seo_policy_query_xmlsitemap_generate_alter(AlterableInterface $query) {
+  $config = \Drupal::config('system.site');
+
+  $exclude_paths = [
+    $config->get('page.front'),
+    $config->get('page.403'),
+    $config->get('page.404'),
+  ];
+
+  $exclude_paths = array_filter($exclude_paths);
+  $exclude_paths = array_map(fn($p) => '/' . ltrim($p, '/'), $exclude_paths);
+
+  // Exclude the path of the front page.
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+  $query->condition('x.loc', $exclude_paths, 'NOT IN');
+}
