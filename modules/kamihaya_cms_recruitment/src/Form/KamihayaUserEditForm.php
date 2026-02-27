@@ -8,9 +8,8 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\kamihaya_cms_recruitment\Traits\KamihayaUserTrait;
+use Drupal\user\AccountForm;
 use Drupal\user\Entity\User;
-use Drupal\user\ProfileForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -18,9 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @internal
  */
-class KamihayaUserEditForm extends ProfileForm {
-
-  use KamihayaUserTrait;
+class KamihayaUserEditForm extends AccountForm {
 
   /**
    * The current user.
@@ -70,29 +67,21 @@ class KamihayaUserEditForm extends ProfileForm {
   /**
    * {@inheritdoc}
    */
-  public function form(array $form, FormStateInterface $form_state) {
+  public function save(array $form, FormStateInterface $form_state): void {
+    $account = $this->entity;
+    $account->save();
+    $form_state->setValue('uid', $account->id());
+
+    $this->messenger()->addStatus($this->t('The changes have been saved.'));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function form(array $form, FormStateInterface $form_state): array {
     $this->setEntity($this->currentUser);
-    $form = $this->alterForm($form, $form_state);
-
-    if (!empty($form['account']['roles'])) {
-      $form['account']['roles']['#access'] = FALSE;
-    }
-
+    $form = parent::form($form, $form_state);
     return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->alterSubmitForm($form, $form_state, $this->currentUser);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function buildEntity(array $form, FormStateInterface $form_state) {
-    return $this->alterBuildEntity($form, $form_state, $this->currentUser);
   }
 
 }

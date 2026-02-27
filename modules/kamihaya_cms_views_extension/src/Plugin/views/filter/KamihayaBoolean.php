@@ -95,7 +95,9 @@ class KamihayaBoolean extends BooleanOperator {
     if (!$this->value) {
       return;
     }
-    $this->query->addWhere($this->options['group'], $field, intval($this->options['value']), $query_operator);
+    /** @var \Drupal\views\Plugin\views\query\Sql $query */
+    $query = $this->query;
+    $query->addWhere($this->options['group'], $field, intval($this->options['value']), $query_operator);
   }
 
 }

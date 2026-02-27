@@ -179,6 +179,7 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
  */
 function kamihaya_cms_views_extension_query_reduce_duplicate_term_alter(AlterableInterface $query) {
   $field_names = ['tid', 'weight', 'id'];
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
   $fields = &$query->getFields();
   $order_by = &$query->getOrderBy();
   $order_by_keys = array_keys($order_by);
@@ -202,6 +203,7 @@ function kamihaya_cms_views_extension_query_reduce_duplicate_term_alter(Alterabl
  */
 function kamihaya_cms_views_extension_query_reduce_duplicate_node_alter(AlterableInterface $query) {
   $field_names = ['nid', 'delta', 'id'];
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
   $fields = &$query->getFields();
   $order_by = &$query->getOrderBy();
   $order_by_keys = array_keys($order_by);
@@ -227,6 +229,7 @@ function kamihaya_cms_views_extension_query_reduce_duplicate_node_alter(Alterabl
  *   The query object.
  */
 function kamihaya_cms_views_extension_query_current_language_alter(AlterableInterface $query) {
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
   $tables = &$query->getTables();
   if (!array_key_exists('node_field_data', $tables)) {
     return;
@@ -284,6 +287,7 @@ function kamihaya_cms_views_extension_query_current_language_alter(AlterableInte
  * Implements hook_query_TAG_alter().
  */
 function kamihaya_cms_views_extension_query_multiple_media_field_union_alter(AlterableInterface $query) {
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
   $tables = &$query->getTables();
   $media_aliases = [];
   // Find media_field_data table.
@@ -346,6 +350,7 @@ function kamihaya_cms_views_extension_query_multiple_media_field_union_alter(Alt
  * Implements hook_query_TAG_alter().
  */
 function kamihaya_cms_views_extension_query_allow_media_empty_alter(AlterableInterface $query) {
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
   $conditions = $query->conditions();
   $tables = $query->getTables();
   $media_alias = [];
@@ -403,7 +408,7 @@ function kamihaya_cms_views_extension_query_allow_media_empty_alter(AlterableInt
  * @return bool
  *   TRUE if the condition is related to the remove tables.
  */
-function _kamihaya_cms_views_extension_check_condition(array $condition, array $remove_tables) {
+function _kamihaya_cms_views_extension_check_condition(array $condition, array $remove_tables): bool {
   if (!is_array($condition) || empty($condition['field']) || !is_string($condition['field'])) {
     return FALSE;
   }
@@ -413,6 +418,7 @@ function _kamihaya_cms_views_extension_check_condition(array $condition, array $
     }
     return TRUE;
   }
+  return FALSE;
 }
 
 /**
@@ -940,6 +946,7 @@ function kamihaya_cms_views_extension_views_data_alter(array &$data): void {
  */
 function kamihaya_cms_views_extension_query_reduce_duplicate_paragraph_alter(AlterableInterface $query) {
   // Get the list of fields in the query.
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
   $fields = &$query->getFields();
 
   // Loop through the fields and remove any that are paragraph.id.
@@ -977,6 +984,7 @@ function kamihaya_cms_views_extension_views_query_alter(ViewExecutable $view, Qu
 
   // Find all taxonomy_term_field_data related tables.
   $taxonomy_related_tables = [];
+  /** @var \Drupal\views\Plugin\views\query\Sql $query */
   $table_queue = $query->getTableQueue();
   foreach ($query->tables as $key => $tables) {
     foreach ($tables as $alias => $table) {
@@ -1073,7 +1081,7 @@ function kamihaya_cms_views_extension_query_alter_for_term_node_tid_depth(ViewEx
   // Get the field definitions for the entity type and bundles.
   if (empty($bundles)) {
     // If no bundles are specified, load all field definitions for the entity type.
-    $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type);
+    $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type, $entity_type);
   }
   else {
     // Load field definitions for the specified bundles.
@@ -1130,7 +1138,9 @@ function kamihaya_cms_views_extension_query_alter_for_term_node_tid_depth(ViewEx
   }
 
   // Add the language condition to the subqueries.
-  foreach ($query->where as $group => $where) {
+  /** @var \Drupal\views\Plugin\views\query\Sql $query */
+  $wheres = $query->where;
+  foreach ($wheres as $group => $where) {
     if (empty($where['conditions'])) {
       continue;
     }

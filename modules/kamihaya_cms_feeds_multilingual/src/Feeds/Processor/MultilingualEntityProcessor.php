@@ -2,19 +2,10 @@
 
 namespace Drupal\kamihaya_cms_feeds_multilingual\Feeds\Processor;
 
-use Drupal\Component\Datetime\TimeInterface;
-use Drupal\Component\Plugin\PluginManagerInterface;
-use Drupal\Core\Config\ConfigInstallerInterface;
-use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\RevisionLogInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Render\RendererInterface;
-use Drupal\Core\Validation\ConstraintManager;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\Feeds\Item\DynamicItem;
@@ -23,7 +14,6 @@ use Drupal\feeds\Feeds\Processor\EntityProcessorBase;
 use Drupal\feeds\StateInterface;
 use Drupal\feeds\StateType;
 use Drupal\user\EntityOwnerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -42,73 +32,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class MultilingualEntityProcessor extends EntityProcessorBase {
 
-    /**
-   * Constructs an EntityProcessorBase object.
+  /**
+   * The entity field manager.
    *
-   * @param array $configuration
-   *   The plugin configuration.
-   * @param string $plugin_id
-   *   The plugin id.
-   * @param array $plugin_definition
-   *   The plugin definition.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
-   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
-   *   The entity type bundle info.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
-   *   The language manager.
-   * @param \Drupal\Component\Datetime\TimeInterface $date_time
-   *   The datetime service for getting the system time.
-   * @param \Drupal\Component\Plugin\PluginManagerInterface $action_manager
-   *   The action plugin manager.
-   * @param \Drupal\Core\Render\RendererInterface $renderer
-   *   The renderer service.
-   * @param \Psr\Log\LoggerInterface $logger
-   *   The logger for the feeds channel.
-   * @param \Drupal\Core\Database\Connection $database
-   *   The database service.
-   * @param \Drupal\Core\Validation\ConstraintManager $constraint_manager
-   *   The validation constraint manager.
-   * @param \Drupal\Core\Config\ConfigInstallerInterface $config_installer
-   *   The config installer, used to check if config is syncing.
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
    */
-  public function __construct(array $configuration,
-    $plugin_id,
-    array $plugin_definition,
-    EntityTypeManagerInterface $entity_type_manager,
-    EntityTypeBundleInfoInterface $entity_type_bundle_info,
-    LanguageManagerInterface $language_manager,
-    TimeInterface $date_time,
-    PluginManagerInterface $action_manager,
-    RendererInterface $renderer,
-    LoggerInterface $logger,
-    Connection $database,
-    ConstraintManager $constraint_manager,
-    ConfigInstallerInterface $config_installer,
-    protected EntityFieldManagerInterface $entityFieldManager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $entity_type_bundle_info, $language_manager, $date_time, $action_manager, $renderer, $logger, $database, $constraint_manager, $config_installer);
-  }
+  protected EntityFieldManagerInterface $entityFieldManager;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('entity_type.manager'),
-      $container->get('entity_type.bundle.info'),
-      $container->get('language_manager'),
-      $container->get('datetime.time'),
-      $container->get('plugin.manager.action'),
-      $container->get('renderer'),
-      $container->get('logger.factory')->get('feeds'),
-      $container->get('database'),
-      $container->get('validation.constraint'),
-      $container->get('config.installer'),
-      $container->get('entity_field.manager')
-    );
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $instance->entityFieldManager = $container->get('entity_field.manager');
+    return $instance;;
   }
 
   /**
@@ -199,11 +136,13 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
       ? $existing_entity->getTranslation($language_code)
       : null;
 
-    /** @var \Drupal\feeds\FeedsItemListInterface $feeds_item */
-    $feeds_item = $translation_entity->get('feeds_item');
-    $changed = !empty($translation_entity)
-      ? $translation_entity && ($hash !== $feeds_item->getItemHashByFeed($feed))
-      : $existing_entity && ($hash !== $feeds_item->getItemHashByFeed($feed));
+    $feeds_entity = $translation_entity ?: $existing_entity;
+    $changed = false;
+    if ($feeds_entity) {
+      /** @var \Drupal\feeds\FeedsItemListInterface $feedsItem */
+      $feedsItem = $feeds_entity->get('feeds_item');
+      $changed = $hash !== $feedsItem->getItemHashByFeed($feed);
+    }
 
     // Do not proceed if the item exists, has not changed, and we're not
     // forcing the update.

@@ -54,9 +54,9 @@ function kamihaya_cms_recruitment_update_10001() {
         continue;
       }
       $form_component = $form_display->getComponent($field);
-      $forn_weight = !empty($form_component) ? $form_component['weight'] : $form_display->getHeighestWeight() + 1;
+      $forn_weight = !empty($form_component) ? $form_component['weight'] : $form_display->getHighestWeight() + 1;
       $view_component = $view_display->getComponent($field);
-      $view_weight = !empty($view_component) ? $view_component['weight'] : $view_display->getHeighestWeight() + 1;
+      $view_weight = !empty($view_component) ? $view_component['weight'] : $view_display->getHighestWeight() + 1;
 
       if (!empty($field_config)) {
         $field_config->delete();
@@ -159,11 +159,11 @@ function kamihaya_cms_recruitment_update_10002() {
     $view_weight = 0;
     if (!empty($field_config) && $field_config->get('field_type') !== 'entity_reference') {
       $form_component = $form_display->getComponent('field_skill');
-      $form_weight = !empty($form_component) ? $form_component['weight'] : $form_display->getHeighestWeight() + 1;
+      $form_weight = !empty($form_component) ? $form_component['weight'] : $form_display->getHighestWeight() + 1;
       $view_component = $view_display->getComponent('field_skill');
-      $view_weight = !empty($view_component) ? $view_component['weight'] : $view_display->getHeighestWeight() + 1;
+      $view_weight = !empty($view_component) ? $view_component['weight'] : $view_display->getHighestWeight() + 1;
 
-      if (!empty($field_config)) {
+      if (!$field_config->isNew()) {
         $field_config->delete();
       }
       $field_storage = FieldStorageConfig::loadByName('paragraph', 'field_skill');
@@ -200,7 +200,7 @@ function kamihaya_cms_recruitment_update_10002() {
   // Set field_first_name_kana and field_last_name_kana of user entity to not required.
   foreach(['field_first_name_kana', 'field_last_name_kana'] ?: [] as $field) {
     $field_config = \Drupal::configFactory()->getEditable("field.field.user.user.{$field}");
-    if (empty($field_config)) {
+    if ($field_config->isNew()) {
       return;
     }
     $field_config->set('required', FALSE);
@@ -238,7 +238,7 @@ function kamihaya_cms_recruitment_update_10002() {
     }
 
     $form_display = $display_repository->getFormDisplay('user', 'user', $mode);
-    if (empty($form_display) || $form_display->isNew()) {
+    if ($form_display->isNew()) {
       _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
         "core.entity_form_display.user.user.{$mode}.yml",
       ], 'install');
@@ -259,7 +259,7 @@ function kamihaya_cms_recruitment_update_10002() {
     }
 
     $view_display = $display_repository->getViewDisplay('taxonomy_term', 'company_info', 'recruitment');
-    if (empty($view_display) || $view_display->isNew()) {
+    if ($view_display->isNew()) {
       _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
         'core.entity_view_display.taxonomy_term.company_info.recruitment.yml',
       ], 'install');
@@ -280,7 +280,7 @@ function kamihaya_cms_recruitment_update_10002() {
     }
 
     $view_display = $display_repository->getViewDisplay('node', 'recruitment', 'job_match_list');
-    if (empty($view_display) || $view_display->isNew()) {
+    if ($view_display->isNew()) {
       _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
         'core.entity_view_display.node.recruitment.job_match_list.yml',
       ], 'install');
@@ -309,7 +309,7 @@ function kamihaya_cms_recruitment_update_10003() {
       $form_display = $display_repository->getFormDisplay('paragraph', 'source_code');
       $view_display = $display_repository->getViewDisplay('paragraph', 'source_code');
 
-      if (!empty($field_config)) {
+      if (!$field_config->isNew()) {
         $field_config->delete();
       }
       $field_storage = FieldStorageConfig::loadByName('paragraph', 'field_score');
@@ -337,7 +337,7 @@ function kamihaya_cms_recruitment_update_10003() {
     $field_config = FieldConfig::loadByName('paragraph', 'skill', 'field_skill');
     if (!empty($field_config)) {
       $field_config->set('required', TRUE);
-      $field_config->save(TRUE);
+      $field_config->save();
     }
   }
 
@@ -354,7 +354,7 @@ function kamihaya_cms_recruitment_update_10003() {
       $view_mode->save();
     }
     $view_display = $display_repository->getViewDisplay('node', 'recruitment', 'applicant_list');
-    if (empty($view_display) || $view_display->isNew()) {
+    if ($view_display->isNew()) {
       _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
         'core.entity_view_display.node.recruitment.applicant_list.yml',
       ], 'install');
@@ -373,7 +373,7 @@ function kamihaya_cms_recruitment_update_10003() {
       $view_mode->save();
     }
     $view_display = $display_repository->getViewDisplay('paragraph', 'source_code', 'applicant_list');
-    if (empty($view_display) || $view_display->isNew()) {
+    if ($view_display->isNew()) {
       _kamihaya_cms_common_change_configs('kamihaya_cms_recruitment', [
         'core.entity_view_display.paragraph.source_code.applicant_list.yml',
       ], 'install');

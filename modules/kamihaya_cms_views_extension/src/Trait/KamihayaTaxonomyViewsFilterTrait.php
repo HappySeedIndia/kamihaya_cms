@@ -32,6 +32,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
   public function buildExtraOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildExtraOptionsForm($form, $form_state);
 
+    $vid_form = [];
     if (!empty($form['vid'])) {
       $vid_form = [
         'vid' => $form['vid'],
@@ -305,7 +306,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
       }
     }
 
-    if (empty($options)) {
+    if (count($options) === 0) {
       return;
     }
 
@@ -487,11 +488,6 @@ trait KamihayaTaxonomyViewsFilterTrait {
             continue 3;
           }
           $field = $term->get($field_name);
-          // If the field doesn't contain any reference, unset the option.
-          if (empty($field)) {
-            unset($options[$key]);
-            continue 3;
-          }
           $target_ids = $field->getValue();
           if (empty($target_ids)) {
             unset($options[$key]);
@@ -591,7 +587,9 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
 
     // Get the tables currently in the query to match field tables.
-    $tables = $this->query->getTableQueue();
+    /** @var \Drupal\views\Plugin\views\query\Sql $query */
+    $query = $this->query;
+    $tables = $query->getTableQueue();
     if (empty($tables) || !is_array($tables)) {
       return;
     }
@@ -621,6 +619,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
             continue;
           }
 
+          /** @var \Drupal\Core\Entity\Sql\SqlEntityStorageInterface $storage */
           $storage = $this->entityTypeManager->getStorage($entity_type);
           $table_mapping = $storage->getTableMapping();
 
@@ -658,7 +657,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
             ];
 
             $join = $this->joinHandler->createInstance('standard', $config);
-            $this->query->addTable($data_table, $relationship, $join, $data_table);
+            $query->addTable($data_table, $relationship, $join, $data_table);
           }
 
           // Store the fully-qualified field names for adding OR conditions.
@@ -669,7 +668,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
 
     // Prepare to replace the original filter condition with OR logic.
     $default_field = $this->helper->getField();
-    $where = &$this->query->where;
+    $where = &$query->where;
     $field_conditution = [];
     $max_index = 0;
 
@@ -695,8 +694,8 @@ trait KamihayaTaxonomyViewsFilterTrait {
 
     // Add the original filter field as the first condition in a new OR group.
     $max_index++;
-    $this->query->addWhere($max_index, $default_field, $this->value, 'IN');
-    $this->query->setWhereGroup('OR', $max_index);
+    $query->addWhere($max_index, $default_field, $this->value, 'IN');
+    $query->setWhereGroup('OR', $max_index);
 
     // Add all extra taxonomy reference fields to the same OR group.
     foreach ($vids as $vid => $fields) {
@@ -704,7 +703,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
         continue;
       }
       foreach ($fields as $field) {
-        $this->query->addWhere($max_index, $field, $this->value, 'IN');
+        $query->addWhere($max_index, $field, $this->value, 'IN');
       }
     }
   }

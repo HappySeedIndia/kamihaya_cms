@@ -206,8 +206,8 @@ class SPIRALSettings extends ConfigFormBase {
           $errors[] = "<li>$value</li>";
           continue;
         }
+        $values[$key] = $value;
       }
-      $values[$key] = $value;
     }
 
     if (!empty($errors)) {
