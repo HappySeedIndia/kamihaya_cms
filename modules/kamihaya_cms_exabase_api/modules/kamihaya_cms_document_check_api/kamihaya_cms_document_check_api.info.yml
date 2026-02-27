@@ -1,7 +1,7 @@
 name: 'Kamihaya CMS Document Check API'
 type: module
 description: 'Provide integration with Exabase API for document check.'
-package: Exabase
+package: 'Kamihaya CMS'
 core_version_requirement: ^10 || ^11
 
 dependencies:

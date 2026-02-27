@@ -1,7 +1,8 @@
-name: 基本ページ
-description: 'Provides 基本ページ コンテンツタイプ and related configuration. 「About us」のような、あまり更新されない内容の場合は <em>基本ページ</em> を使ってください。'
+name: 'Kamihaya CMS Page content type'
+description: 'Provides page content type and related configuration. Please use <em>Page content type</em> for content that is not updated very often, such as an “About Us” page.'
 type: module
 core_version_requirement: '^9.4 || ^10'
+package: 'Kamihaya CMS'
 dependencies:
   - 'drupal:field'
   - 'drupal:node'

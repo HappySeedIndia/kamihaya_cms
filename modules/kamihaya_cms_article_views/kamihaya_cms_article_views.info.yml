@@ -1,7 +1,7 @@
-name: Kamihaya CMS Article Views
+name: 'Kamihaya CMS Article Views'
 type: module
 core_version_requirement: ^9 || ^10
-package: Kamihaya
+package: 'Kamihaya CMS'
 description: 'Define the views for kamihaya article content type.'
 
 dependencies:
@@ -12,5 +12,3 @@ dependencies:
   - masonry_views:masonry_views
   - views_infinite_scroll:views_infinite_scroll
   - kamihaya_cms_content_type:kamihaya_cms_content_type
-
-project: 'kamihaya'

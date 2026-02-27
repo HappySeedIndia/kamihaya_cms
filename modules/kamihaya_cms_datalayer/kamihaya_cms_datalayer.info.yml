@@ -1,5 +1,5 @@
 name: 'Kamihaya CMS Datalayer'
 type: module
 description: 'Integration with Google DataLayer.'
-package: kamihaya
+package: 'Kamihaya CMS'
 core_version_requirement: ^10 || ^11

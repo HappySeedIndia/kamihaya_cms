@@ -1,7 +1,8 @@
-name: Kamihaya CMS Workflow
+name: 'Kamihaya CMS Workflow'
 description: 'Workflow for Kamihaya CMS.'
 type: module
 core_version_requirement: '^9.4 || ^10'
+package: 'Kamihaya CMS'
 dependencies:
   - drupal:content_moderation
   - drupal:block_content

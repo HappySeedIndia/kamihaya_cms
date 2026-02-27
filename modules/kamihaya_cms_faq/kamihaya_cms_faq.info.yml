@@ -1,7 +1,8 @@
-name: よくある質問
-description: 'Provides よくある質問 コンテンツタイプ and related configuration. '
+name: 'Kamihaya CMS FAQ'
+description: 'Provides FAQ content type and related configuration. '
 type: module
 core_version_requirement: '^9.4 || ^10'
+package: 'Kamihaya CMS'
 dependencies:
   - 'drupal:field'
   - 'drupal:language'

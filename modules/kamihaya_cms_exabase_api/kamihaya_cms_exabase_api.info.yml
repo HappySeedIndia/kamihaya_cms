@@ -1,5 +1,5 @@
 name: 'Kamihaya ExabaseApi Integration'
 type: module
 description: 'Provide integration with Exabase API.'
-package: Exabase
+package: 'Kamihaya CMS'
 core_version_requirement: ^10 || ^11
