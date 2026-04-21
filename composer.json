@@ -131,7 +131,7 @@
         "drupal/colorbox": "^2.1",
         "drupal/colorbutton": "^1.5",
         "drupal/commerce": "^2.40",
-        "drupal/content_access": "^2.0",
+        "drupal/content_access": "^2.1@RC",
         "drupal/custom_pub": "^1.0",
         "drupal/default_content": "^2.0@alpha",
         "drupal/diff": "^1.8",
