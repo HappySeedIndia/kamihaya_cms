@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec66cbbe66709501b4866318254af026",
+    "content-hash": "55564511e6ad2ed236f05156882cd178",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -237,7 +237,7 @@
             "version": "1.8.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:bgrins/spectrum.git",
+                "url": "https://github.com/bgrins/spectrum.git",
                 "reference": "9aa028de7e8039c41ac792485a928edb97d4ac40"
             },
             "dist": {
@@ -8769,17 +8769,17 @@
         },
         {
             "name": "drupal/views_bulk_operations",
-            "version": "4.3.4",
+            "version": "4.4.5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/views_bulk_operations.git",
-                "reference": "4.3.4"
+                "reference": "4.4.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/views_bulk_operations-4.3.4.zip",
-                "reference": "4.3.4",
-                "shasum": "c0974356f26d49ad9e99450e9db9650de94c6010"
+                "url": "https://ftp.drupal.org/files/projects/views_bulk_operations-4.4.5.zip",
+                "reference": "4.4.5",
+                "shasum": "0f4a674e79149ad7306209ac90890d9ba6f60d14"
             },
             "require": {
                 "drupal/core": "^10.3 || ^11"
@@ -8788,7 +8788,10 @@
                 "drush/drush": "<12.5.1"
             },
             "require-dev": {
-                "drush/drush": "^12 || ^13"
+                "drupal/coder": "^8.3.16",
+                "drush/drush": "^12 || ^13",
+                "phpstan/phpstan-deprecation-rules": "^2",
+                "phpstan/phpstan-strict-rules": "^2"
             },
             "suggest": {
                 "drush/drush": "^12 || ^13"
@@ -8796,8 +8799,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "4.3.4",
-                    "datestamp": "1741604495",
+                    "version": "4.4.5",
+                    "datestamp": "1778674066",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -9856,12 +9859,12 @@
             "version": "v6.10.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/firebase/php-jwt.git",
+                "url": "https://github.com/googleapis/php-jwt.git",
                 "reference": "500501c2ce893c824c801da135d02661199f60c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/500501c2ce893c824c801da135d02661199f60c5",
+                "url": "https://api.github.com/repos/googleapis/php-jwt/zipball/500501c2ce893c824c801da135d02661199f60c5",
                 "reference": "500501c2ce893c824c801da135d02661199f60c5",
                 "shasum": ""
             },
