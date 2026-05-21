@@ -28,10 +28,12 @@
         "process-timeout": 0,
         "sort-packages": true,
         "allow-plugins": {
-            "php-http/discovery": true,
             "composer/installers": true,
+            "cweagans/composer-patches": true,
+            "drupal/core-composer-scaffold": true,
+            "drupal/core-project-message": true,
             "oomphinc/composer-installers-extender": true,
-            "cweagans/composer-patches": true
+            "php-http/discovery": true
         }
     },
     "extra": {
@@ -97,10 +99,6 @@
             "drupal/expand_collapse_formatter": {
                 "KD-465 and KD-521": "https://raw.githubusercontent.com/HappySeedIndia/kamihaya_cms/refs/heads/master/patches/expand_collapse_formatter.patch"
             },
-            "drupal/views_bulk_operations":{
-                "https://www.drupal.org/project/views_bulk_operations/issues/3479950": "https://www.drupal.org/files/issues/2024-10-10/3479950-views_bulk_operations-fixes-label-message-override-config-translations-2.patch",
-                "https://www.drupal.org/project/views_bulk_operations/issues/3199534": "https://raw.githubusercontent.com/HappySeedIndia/kamihaya_cms/refs/heads/KD-540/patches/view_bulk_operations.patch"
-            },
             "drupal/feeds": {
               "KD-491: Fix default value issue on translation during feed import": "https://raw.githubusercontent.com/HappySeedIndia/kamihaya_cms/refs/heads/develop/patches/feeds_fix_default_value_on_translation.patch"
             }
@@ -132,6 +130,9 @@
         "drupal/colorbutton": "^1.5",
         "drupal/commerce": "^2.40",
         "drupal/content_access": "^2.1@RC",
+        "drupal/core-composer-scaffold": "10.4.10",
+        "drupal/core-project-message": "10.4.10",
+        "drupal/core-recommended": "10.4.10",
         "drupal/custom_pub": "^1.0",
         "drupal/default_content": "^2.0@alpha",
         "drupal/diff": "^1.8",
