@@ -43,7 +43,7 @@ class RedirectToViewAction extends ViewsBulkOperationsActionBase implements Cont
     $plugin_id,
     $plugin_definition,
     protected readonly AccountInterface $currentUser,
-    protected readonly ModuleHandlerInterface $moduleHandler
+    protected readonly ModuleHandlerInterface $moduleHandler,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -110,6 +110,7 @@ class RedirectToViewAction extends ViewsBulkOperationsActionBase implements Cont
 
     return [];
   }
+
   /**
    * {@inheritdoc}
    */

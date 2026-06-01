@@ -38,10 +38,11 @@ class KamihayaJsonDataField extends FieldPluginBase {
           <li>%value : The value of %attr2.</li>
           <li>%attr3 : Attribute name to render its value.</li>
         </ul>', [
-        '%attr1' => 'attrbutte_1',
-        '%attr2' => 'attribute_2',
-        '%value' => 'value',
-        '%attr3' => 'attribute_3']),
+          '%attr1' => 'attrbutte_1',
+          '%attr2' => 'attribute_2',
+          '%value' => 'value',
+          '%attr3' => 'attribute_3',
+        ]),
       '#default_value' => $this->options['render_value'],
     ];
 
@@ -123,4 +124,5 @@ class KamihayaJsonDataField extends FieldPluginBase {
     }
     return $value;
   }
+
 }

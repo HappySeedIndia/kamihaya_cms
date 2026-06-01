@@ -55,7 +55,6 @@ class ProcessFormBase extends FormBase {
       '#open' => TRUE,
     ];
 
-
     $form['actions'] = [
       '#type' => 'actions',
     ];

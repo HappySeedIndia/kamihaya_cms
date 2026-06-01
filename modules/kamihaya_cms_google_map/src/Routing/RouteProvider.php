@@ -2,8 +2,8 @@
 
 namespace Drupal\kamihaya_cms_google_map\Routing;
 
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 
@@ -61,4 +61,5 @@ class RouteProvider implements ContainerInjectionInterface {
 
     return $routes;
   }
+
 }

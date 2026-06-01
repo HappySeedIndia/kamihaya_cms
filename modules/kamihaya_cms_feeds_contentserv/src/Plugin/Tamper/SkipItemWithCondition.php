@@ -6,8 +6,8 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\feeds\FeedInterface;
 use Drupal\tamper\Exception\SkipTamperItemException;
-use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
+use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for skipping item with condition.
@@ -58,7 +58,6 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
       '#description' => $this->t('The matching condition.'),
     ];
 
-
     $form[self::SETTING_CONDITION_VALUE] = [
       '#type' => 'textfield',
       '#title' => $this->t('Condition value'),
@@ -66,7 +65,7 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
       '#description' => $this->t('The source value to check the condition.'),
       '#states' => [
         'invisible' => [
-          'input[name="plugin_configuration[matching_condition]"]' =>  [
+          'input[name="plugin_configuration[matching_condition]"]' => [
             ['value' => 'empty'],
             'or',
             ['value' => 'not_empty'],
@@ -217,7 +216,7 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
         '@name' => $feed->label(),
         '@label' => $label,
         '@type' => $type,
-        '@source' => $source
+        '@source' => $source,
       ]));
     }
 

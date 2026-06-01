@@ -68,4 +68,5 @@ class KamihayaCombine extends Combine {
     }
     $form['value']['#attributes']['minlength'] = $this->options['expose']['min_length'];
   }
+
 }

@@ -8,9 +8,9 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Messenger\MessengerTrait;
 use Drupal\Core\Url;
-use Http\Client\Exception\RequestException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
+use Http\Client\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 
 /**

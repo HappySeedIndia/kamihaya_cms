@@ -21,7 +21,7 @@ class DocumentStoreUpsertForm extends FormBase {
    *   The Flowise API client.
    */
   public function __construct(
-    protected FlowiseClient $flowiseClient
+    protected FlowiseClient $flowiseClient,
   ) {
   }
 
@@ -95,10 +95,12 @@ class DocumentStoreUpsertForm extends FormBase {
             '@skipped' => $response['numSkipped'] ?? 0,
           ]));
 
-      } else {
+      }
+      else {
         $this->messenger()->addError($this->t('Failed to upsert Document Store %id.', ['%id' => $document_store_id]));
       }
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $this->messenger()->addError($this->t('An error occurred while upserting the Document Store: @message', ['@message' => $e->getMessage()]));
     }
   }

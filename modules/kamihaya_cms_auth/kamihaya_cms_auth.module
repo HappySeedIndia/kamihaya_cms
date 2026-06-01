@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\User;
 
@@ -29,20 +33,19 @@ function kamihaya_cms_auth_form_user_login_form_alter(&$form, FormStateInterface
  *
  * @param array $form
  *   The form.
- * @param FormStateInterface $form_state
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form state.
- *
  */
 function kamihaya_cms_auth_validate_as_user(array &$form, FormStateInterface $form_state) {
   $uid = $form_state->get('uid');
   Drupal::logger('kamihaya_cms_auth_user')->notice('uid: ' . $uid);
   if (empty($uid)) {
-    return false;
+    return FALSE;
   }
   $user = User::load($uid);
 
   if (empty($user) || $user->isAnonymous()) {
-    return false;
+    return FALSE;
   }
   if ($user->hasRole('administrator')) {
     $form_state->setErrorByName('mail', t("You can't login from this form."));
@@ -54,20 +57,19 @@ function kamihaya_cms_auth_validate_as_user(array &$form, FormStateInterface $fo
  *
  * @param array $form
  *   The form.
- * @param FormStateInterface $form_state
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form state.
- *
  */
 function kamihaya_cms_auth_validate_as_admin(array &$form, FormStateInterface $form_state) {
   $uid = $form_state->get('uid');
   Drupal::logger('kamihaya_cms_auth_admin')->notice('uid: ' . $uid);
   if (empty($uid)) {
-    return false;
+    return FALSE;
   }
   $user = User::load($uid);
 
   if (empty($user)) {
-    return false;
+    return FALSE;
   }
   if (!$user->hasRole('administrator')) {
     $form_state->setErrorByName('mail', t("You can't login from this form."));

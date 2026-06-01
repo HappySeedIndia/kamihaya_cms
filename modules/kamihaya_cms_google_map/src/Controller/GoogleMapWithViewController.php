@@ -2,14 +2,14 @@
 
 namespace Drupal\kamihaya_cms_google_map\Controller;
 
+use Drupal\Core\Block\BlockManagerInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\Core\Block\BlockManagerInterface;
 use Drupal\Core\Url;
 use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Controller for Google Map with View pages.
@@ -23,7 +23,8 @@ class GoogleMapWithViewController extends ControllerBase implements ContainerInj
    *   The block manager.
    */
   public function __construct(
-    protected BlockManagerInterface $blockManager) {
+    protected BlockManagerInterface $blockManager,
+  ) {
   }
 
   /**
@@ -96,7 +97,7 @@ class GoogleMapWithViewController extends ControllerBase implements ContainerInj
     return $build;
   }
 
-    /**
+  /**
    * Get Google Map Block render array.
    */
   private function getGoogleMapBlock() {

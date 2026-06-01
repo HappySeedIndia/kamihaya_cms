@@ -1,6 +1,8 @@
 <?php
 
-use Drupal\Component\Serialization\Yaml;
+/**
+ * @file
+ */
 
 /**
  * Update configs.

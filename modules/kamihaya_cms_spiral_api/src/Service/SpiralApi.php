@@ -116,7 +116,8 @@ class SpiralApi {
     ClientInterface $http_client,
     Messenger $messenger,
     TranslationInterface $string_translation,
-    AccountInterface $current_user) {
+    AccountInterface $current_user,
+  ) {
     $this->logger = $logger;
     $this->config = $config_factory->get('kamihaya_cms_spiral_api.settings');
     $this->httpClient = $http_client;

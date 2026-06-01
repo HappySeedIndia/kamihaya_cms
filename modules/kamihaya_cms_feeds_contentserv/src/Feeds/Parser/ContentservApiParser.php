@@ -2,13 +2,12 @@
 
 namespace Drupal\kamihaya_cms_feeds_contentserv\Feeds\Parser;
 
-use Drupal\content_moderation\ModerationInformation;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\File\FileSystemInterface;
-use GuzzleHttp\Psr7\Stream;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\content_moderation\ModerationInformation;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\DynamicItem;
@@ -23,8 +22,9 @@ use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\kamihaya_cms_feeds_contentserv\Service\ContentservClient;
 use Drupal\kamihaya_cms_feeds_contentserv\Trait\ContentservApiTrait;
-use GuzzleHttp\RequestOptions;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Stream;
+use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -61,15 +61,16 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    * @param \Drupal\content_moderation\ModerationInformation $moderationInformation
    *   The content moderation information service.
    */
-  public function __construct
-    (array $configuration,
+  public function __construct(
+    array $configuration,
     $plugin_id,
     array $plugin_definition,
     protected ContentservClient $contentservClient,
     protected FileSystemInterface $fileSystem,
     protected EntityTypeManagerInterface $entityTypeManager,
     protected LoggerInterface $logger,
-    protected ModerationInformation $moderationInformation) {
+    protected ModerationInformation $moderationInformation,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -219,8 +220,9 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
 
             try {
               // Create the media file.
-               $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
-            } catch (GuzzleException $e) {
+              $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
+            }
+            catch (GuzzleException $e) {
               // Skip the file if failed to create media.
               $state->report(StateType::FAIL, strtr('Skipped the file because failed to create the media file. [@type ID: @id, File label: @label, File ID: @value]', [
                 '@type' => $data_type,
@@ -248,7 +250,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         if (!empty($langcode)) {
           // Get additional language data.
           $add_options = $options;
-          //  Add the language code to the query.
+          // Add the language code to the query.
           $add_options[RequestOptions::QUERY] = ['lang' => $langcode];
           // Get the additional data.
           $response = $this->getData($feed, $url, "$data_url{$result_data['ID']}", $fetcher_result->getAccessToken(), $add_options);
@@ -288,7 +290,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
                 try {
                   // Create the media file.
                   $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
-                } catch (GuzzleException $e) {
+                }
+                catch (GuzzleException $e) {
                   // Skip the file if failed to create media.
                   $state->report(StateType::SKIP, strtr('Skipped the file because failed to create the media file. [@type ID: @id, File label: @label, File ID: @value, Language: @lang]', [
                     '@type' => $data_type,
@@ -765,6 +768,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     $entity->setUnpublished();
     $entity->save();
   }
+
   /**
    * Update the last imported time in the feed configuration.
    *

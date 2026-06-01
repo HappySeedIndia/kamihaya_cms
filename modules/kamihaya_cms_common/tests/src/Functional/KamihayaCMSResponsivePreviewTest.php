@@ -5,6 +5,9 @@ namespace Drupal\Tests\kamihaya_cms_common\Functional;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Tests\BrowserTestBase;
 
+/**
+ *
+ */
 class KamihayaCMSResponsivePreviewTest extends BrowserTestBase {
 
   /**

@@ -46,8 +46,9 @@ class DeelApi {
    * {@inheritdoc}
    */
   public function __construct(
-      ClientInterface $http_client,
-      ConfigFactoryInterface $configFactory) {
+    ClientInterface $http_client,
+    ConfigFactoryInterface $configFactory,
+  ) {
     $this->httpClient = $http_client;
     $this->configFactory = $configFactory;
     $this->baseUri = $this->configFactory->get('kamihaya_cms_deel.settings')->get('api_url');

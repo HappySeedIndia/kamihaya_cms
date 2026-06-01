@@ -97,7 +97,8 @@ class KamihayaTaxonomyIndexTid extends ShsTaxonomyIndexTid {
     EntityTypeManagerInterface $entity_type_manager,
     ViewsHandlerManager $join_handler,
     RouteMatchInterface $route_match,
-    ?AccountInterface $current_user = NULL) {
+    ?AccountInterface $current_user = NULL,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $vocabulary_storage, $term_storage, $current_user);
     $this->request = $request;
     $this->entityFieldManager = $entity_field_manager;

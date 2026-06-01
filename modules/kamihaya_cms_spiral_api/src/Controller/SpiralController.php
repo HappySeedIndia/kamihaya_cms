@@ -9,7 +9,6 @@ use Drupal\Core\Session\SessionManager;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Url;
-use Drupal\kamihaya_cms_spiral_api\Config\AppConfig;
 use Drupal\kamihaya_cms_spiral_api\Service\SpiralApi;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -142,7 +141,8 @@ class SpiralController {
     SessionManager $session_manager,
     SessionInterface $session,
     EventDispatcherInterface $event_dispatcher,
-    SpiralApi $spiral_api) {
+    SpiralApi $spiral_api,
+  ) {
     // Setup the logger.
     $this->logger = $logger;
     // Setup the configuration factory.

@@ -18,6 +18,7 @@ trait ContentservApiTrait {
    *   The feed object.
    * @param string $url
    *   The url to get the access token.
+   *
    * @return string
    *   The access token.
    */
@@ -129,8 +130,9 @@ trait ContentservApiTrait {
   /**
    * Check if the feed has 'Tags' in source.
    *
-   * @param FeedInterface $feed
+   * @param \Drupal\feeds\FeedInterface $feed
    *   The feed object.
+   *
    * @return bool
    *   TRUE if the feed has 'Tags' in source, FALSE otherwise.
    */
@@ -142,4 +144,5 @@ trait ContentservApiTrait {
     }
     return FALSE;
   }
+
 }

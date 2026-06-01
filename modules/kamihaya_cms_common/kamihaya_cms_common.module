@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 use Drupal\Component\Serialization\Yaml;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\paragraphs\Entity\ParagraphsType;
@@ -115,7 +119,7 @@ function _kamihaya_cms_common_add_paragraph($entity_type, $bundle, $paragraph_ty
   $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
   $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
   $max_weight = 0;
-  foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
+  foreach ($target_bundles_drag_drop ?: [] as $target_bundle) {
     if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
       continue;
     }
@@ -146,7 +150,7 @@ function _kamihaya_cms_common_add_paragraph($entity_type, $bundle, $paragraph_ty
  * Add a paragraph to a field.
  *
  * @param string $module
- *  The module name.
+ *   The module name.
  * @param string $entity_type
  *   The entity type.
  * @param string $bundle
@@ -160,7 +164,7 @@ function _kamihaya_cms_common_add_fields($module, $entity_type, $bundle, array $
   $storage_configs = [];
   $install_configs = [];
 
-  foreach($fields as $field) {
+  foreach ($fields as $field) {
     $field_storage = FieldStorageConfig::loadByName($entity_type, $field);
     if ($field_storage) {
       continue;
@@ -169,7 +173,7 @@ function _kamihaya_cms_common_add_fields($module, $entity_type, $bundle, array $
     $storage_configs[] = $field_storage_file_name;
   }
 
-  foreach($fields as $field) {
+  foreach ($fields as $field) {
     $field_config_file_name = "field.field.{$entity_type}.{$bundle}.{$field}.yml";
     $install_configs[] = $field_config_file_name;
   }
@@ -185,18 +189,17 @@ function _kamihaya_cms_common_add_fields($module, $entity_type, $bundle, array $
     _kamihaya_cms_common_save_translation_configs($install_configs, 'ja');
   }
 
-  foreach($fields as $field) {
+  foreach ($fields as $field) {
     _kamihaya_cms_common_set_field_display($module, $entity_type, $bundle, $field, $path_name);
     _kamihaya_cms_common_set_field_display($module, $entity_type, $bundle, $field, $path_name, FALSE);
   }
 }
 
-
 /**
  * Add a paragraph to a field.
  *
  * @param string $module
- *  The module name.
+ *   The module name.
  * @param string $entity_type
  *   The entity type.
  * @param string $bundle
@@ -254,7 +257,7 @@ function _kamihaya_cms_common_create_paragraph($paragraph_type, array $fields, a
       "core.entity_view_display.paragraph.{$paragraph_type}.default.yml",
     ],
   ];
-  foreach($fields as $field) {
+  foreach ($fields as $field) {
     $field_storage = FieldStorageConfig::loadByName('paragraph', $field);
     if ($field_storage) {
       continue;
@@ -263,12 +266,12 @@ function _kamihaya_cms_common_create_paragraph($paragraph_type, array $fields, a
     $configs['storage'][] = $field_storage_file_name;
   }
 
-  foreach($fields as $field) {
+  foreach ($fields as $field) {
     $field_config_file_name = "field.field.paragraph.{$paragraph_type}.{$field}.yml";
     $configs['field'][] = $field_config_file_name;
   }
 
-  foreach($configs as $key => $config) {
+  foreach ($configs as $key => $config) {
     _kamihaya_cms_common_change_configs('kamihaya_cms_paragraph_type', $config, $path_name);
     if ($key === 'storage' || $key === 'entity_display') {
       continue;
@@ -276,7 +279,7 @@ function _kamihaya_cms_common_create_paragraph($paragraph_type, array $fields, a
     _kamihaya_cms_common_save_translation_configs($config, 'ja');
   }
 
-  foreach($add_fields ?: [] as $paragraph_name => $field) {
+  foreach ($add_fields ?: [] as $paragraph_name => $field) {
     $field_config = \Drupal::configFactory()->getEditable("field.field.paragraph.{$paragraph_name}.{$field}");
     if ($field_config->isNew()) {
       return;
@@ -285,7 +288,7 @@ function _kamihaya_cms_common_create_paragraph($paragraph_type, array $fields, a
     $target_bundles = $field_config->get('settings.handler_settings.target_bundles');
     $target_bundles_drag_drop = $field_config->get('settings.handler_settings.target_bundles_drag_drop');
     $max_weight = 0;
-    foreach($target_bundles_drag_drop ?: [] as $target_bundle) {
+    foreach ($target_bundles_drag_drop ?: [] as $target_bundle) {
       if (!$target_bundle['enabled'] || $target_bundle['weight'] < $max_weight) {
         continue;
       }

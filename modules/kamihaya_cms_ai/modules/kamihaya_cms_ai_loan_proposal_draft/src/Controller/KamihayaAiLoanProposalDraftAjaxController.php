@@ -5,8 +5,8 @@ namespace Drupal\kamihaya_cms_ai_loan_proposal_draft\Controller;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\file\Entity\File;
 use Drupal\kamihaya_cms_ai\Controller\KamihayaAiAjaxController;
-use Drupal\kamihaya_cms_loan_proposal_api\ExabaseClient;
 use Drupal\kamihaya_cms_ai_loan_proposal_draft\FallbackResponseProvider;
+use Drupal\kamihaya_cms_loan_proposal_api\ExabaseClient;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -232,7 +232,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
         'pdf_summary' => $result,
         'loan_document_prompt' => $loan_prompt,
         'loan_document_used_prompt' => empty($data['loan_prompt']) ? $loan_prompt : $data['loan_prompt'],
-        'used_company_detail' => empty($data['company_detail']) ? null : $data['company_detail'],
+        'used_company_detail' => empty($data['company_detail']) ? NULL : $data['company_detail'],
       ];
       $session->set(self::SESSION_KEY, $api_response);
 
@@ -422,7 +422,9 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
    *
    * @param $result
    * @param $company_detail
+   *
    * @return void
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
@@ -432,7 +434,7 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
     $api_response = $session->get(self::SESSION_KEY);
     $node = $this->entityTypeManager->getStorage('node')->create([
       'type' => 'loan_proposal',
-      'title' => 'Loan Proposal: ' . $this->currentUser()->getEmail() . '-' .time() ,
+      'title' => 'Loan Proposal: ' . $this->currentUser()->getEmail() . '-' . time() ,
       'field_company_name' => $api_response['company'],
       'body' => [
         'value' => $company_detail,
@@ -457,4 +459,5 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
     ]);
     $node->save();
   }
+
 }

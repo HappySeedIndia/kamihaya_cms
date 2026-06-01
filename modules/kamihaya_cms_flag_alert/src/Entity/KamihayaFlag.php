@@ -14,84 +14,98 @@ class KamihayaFlag extends Flag {
 
   /**
    * The alert message displayed when a flag is set.
+   *
    * @var string
    */
   protected $flag_alert_message;
 
   /**
    * The link URL for the alert message when a flag is set.
+   *
    * @var string
    */
   protected $flag_alert_message_link_url;
 
   /**
    * The label for the link in the alert message when a flag is set.
+   *
    * @var string
    */
   protected $flag_alert_message_link_label;
 
   /**
    * The color of the alert message when a flag is set.
+   *
    * @var string
    */
   protected $flag_alert_message_color;
 
   /**
    * The background color of the alert message when a flag is set.
+   *
    * @var string
    */
   protected $flag_alert_message_bg_color;
 
   /**
    * The opacity of the background color of the alert message when a flag is set.
+   *
    * @var float
    */
   protected $flag_alert_message_bg_color_opacity = 1.0;
 
   /**
    * The position of the alert message on the page.
+   *
    * @var string
    */
   protected $flag_alert_position = 'top';
 
   /**
    * The alert message displayed when a flag is removed.
+   *
    * @var string
    */
   protected $unflag_alert_message;
 
   /**
    * The link URL for the alert message when a flag is removed.
+   *
    * @var string
    */
   protected $unflag_alert_message_link_url;
 
   /**
    * The label for the link in the alert message when a flag is removed.
+   *
    * @var string
    */
   protected $unflag_alert_message_link_label;
 
   /**
    * The color of the alert message when a flag is removed.
+   *
    * @var string
    */
   protected $unflag_alert_message_color;
 
   /**
    * The background color of the alert message when a flag is removed.
+   *
    * @var string
    */
   protected $unflag_alert_message_bg_color;
 
   /**
    * The opacity of the background color of the alert message when a flag is removed.
+   *
    * @var float
    */
   protected $unflag_alert_message_bg_color_opacity = 1.0;
 
   /**
    * The position of the unflag alert message on the page.
+   *
    * @var string
    */
   protected $unflag_alert_position = 'top';
@@ -381,4 +395,5 @@ class KamihayaFlag extends Flag {
   public function setUnflagAlertPosition($position) {
     $this->unflag_alert_position = $position;
   }
+
 }

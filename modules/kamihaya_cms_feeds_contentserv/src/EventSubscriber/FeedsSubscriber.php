@@ -37,7 +37,7 @@ class FeedsSubscriber implements EventSubscriberInterface {
     return $events;
   }
 
-    /**
+  /**
    * Acts on parser result.
    */
   public function afterParse(ParseEvent $event) {

@@ -34,7 +34,6 @@ class KamihayaAiControllerBase extends ControllerBase {
     );
   }
 
-
   /**
    * Set the title of the page.
    *

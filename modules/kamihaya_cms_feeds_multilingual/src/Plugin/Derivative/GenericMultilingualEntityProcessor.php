@@ -24,7 +24,7 @@ class GenericMultilingualEntityProcessor extends GenericContentEntityProcessor {
         continue;
       }
       $this->derivatives[$entity_type_id] = $base_plugin_definition;
-      $this->derivatives[$entity_type_id]['title'] = $entity_type->getLabel(). '(multilingual)';
+      $this->derivatives[$entity_type_id]['title'] = $entity_type->getLabel() . '(multilingual)';
       $this->derivatives[$entity_type_id]['description'] = $this->t('Creates multilingual @plural_label from feed items.', [
         '@plural_label' => $entity_type->getPluralLabel(),
       ]);

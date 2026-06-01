@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 use Drupal\Core\Entity\Entity\EntityFormMode;
 use Drupal\Core\Entity\Entity\EntityViewMode;
 use Drupal\field\Entity\FieldConfig;
@@ -7,7 +11,6 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\taxonomy\Entity\Vocabulary;
-
 
 /**
  * Update configs.
@@ -48,7 +51,7 @@ function kamihaya_cms_recruitment_update_10001() {
     $form_display = $display_repository->getFormDisplay('node', 'recruitment');
     $view_display = $display_repository->getViewDisplay('node', 'recruitment');
 
-    foreach($fields as $field) {
+    foreach ($fields as $field) {
       $field_config = FieldConfig::loadByName('node', 'recruitment', $field);
       if (!empty($field_config) && $field_config->get('field_type') === 'entity_reference') {
         continue;
@@ -74,21 +77,21 @@ function kamihaya_cms_recruitment_update_10001() {
         "field.field.node.recruitment.{$field}.yml",
       ], 'ja');
 
-      foreach($fields as $field) {
+      foreach ($fields as $field) {
         $form_display->setComponent($field, [
-            'type' => 'options_select',
-            'weight' => $forn_weight,
-          ])
+          'type' => 'options_select',
+          'weight' => $forn_weight,
+        ])
           ->save();
 
         $view_display->setComponent($field, [
-            'label' => 'hidden',
-            'type' => 'entity_reference_label',
-            'weight' => $view_weight,
-            'settings' => [
-              'link' => FALSE,
-            ],
-          ])
+          'label' => 'hidden',
+          'type' => 'entity_reference_label',
+          'weight' => $view_weight,
+          'settings' => [
+            'link' => FALSE,
+          ],
+        ])
           ->save();
       }
     }
@@ -184,7 +187,7 @@ function kamihaya_cms_recruitment_update_10002() {
       'type' => 'options_select',
       'weight' => $form_weight,
     ])
-    ->save();
+      ->save();
 
     $view_display->setComponent('field_skill', [
       'label' => 'inline',
@@ -194,11 +197,11 @@ function kamihaya_cms_recruitment_update_10002() {
         'link' => FALSE,
       ],
     ])
-    ->save();
+      ->save();
   }
 
   // Set field_first_name_kana and field_last_name_kana of user entity to not required.
-  foreach(['field_first_name_kana', 'field_last_name_kana'] ?: [] as $field) {
+  foreach (['field_first_name_kana', 'field_last_name_kana'] ?: [] as $field) {
     $field_config = \Drupal::configFactory()->getEditable("field.field.user.user.{$field}");
     if ($field_config->isNew()) {
       return;
@@ -293,7 +296,6 @@ function kamihaya_cms_recruitment_update_10002() {
     'views.view.matching_result_dashboard.yml',
   ], 'install');
 }
-
 
 /**
  * Update configs.

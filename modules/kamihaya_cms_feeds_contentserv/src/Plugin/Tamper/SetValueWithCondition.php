@@ -5,8 +5,8 @@ namespace Drupal\kamihaya_cms_feeds_contentserv\Plugin\Tamper;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\feeds\FeedInterface;
-use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
+use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for setting a value or default value.
@@ -76,7 +76,7 @@ class SetValueWithCondition extends TamperBase implements KamihayaTamperInterfac
       '#description' => $this->t('The source value to check the condition.'),
       '#states' => [
         'invisible' => [
-          'input[name="plugin_configuration[matching_condition]"]' =>  [
+          'input[name="plugin_configuration[matching_condition]"]' => [
             ['value' => 'empty'],
             'or',
             ['value' => 'not_empty'],
@@ -154,7 +154,7 @@ class SetValueWithCondition extends TamperBase implements KamihayaTamperInterfac
     $not_match_value = $this->getSetting(self::SETTING_NOT_MATCH_VALUE);
     $value = array_key_exists($condition_source, $item->getSource()) ? $item->getSource()[$condition_source] : NULL;
 
-     if (!isset($value)) {
+    if (!isset($value)) {
       $value = '';
     }
 

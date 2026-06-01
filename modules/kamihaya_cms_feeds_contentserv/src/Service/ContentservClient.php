@@ -3,8 +3,8 @@
 namespace Drupal\kamihaya_cms_feeds_contentserv\Service;
 
 use Drupal\feeds\FeedInterface;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -12,13 +12,12 @@ use Psr\Log\LoggerInterface;
  */
 class ContentservClient {
 
-
   /**
    * Constructs an ExabaseClient object.
    */
   public function __construct(
     protected ClientInterface $httpClient,
-    protected LoggerInterface $logger
+    protected LoggerInterface $logger,
   ) {
   }
 
@@ -67,7 +66,9 @@ class ContentservClient {
       $this->logger->error('Request failed with exception: @message', [
         '@message' => $e->getMessage(),
       ]);
-      throw $e; // Re-throw the exception after max retries.
+      // Re-throw the exception after max retries.
+      throw $e;
     }
   }
+
 }

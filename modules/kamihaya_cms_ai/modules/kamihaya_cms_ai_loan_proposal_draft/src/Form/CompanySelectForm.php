@@ -25,17 +25,17 @@ class CompanySelectForm extends FormBase {
   /**
    * The constructor of CompanySelectForm.
    *
-   * @param AccountProxyInterface $currentUser
+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user.
-   * @param ExabaseClient $exabaseClient
-   *  The Exabase client.
+   * @param \Drupal\kamihaya_cms_loan_proposal_api\ExabaseClient $exabaseClient
+   *   The Exabase client.
    */
   public function __construct(
     protected AccountProxyInterface $currentUser,
     protected ConfigFactoryInterface $config_factory,
     protected ExabaseClient $exabaseClient,
     protected ExabaseClient $fallbackClient,
-    ) {
+  ) {
     $this->config = $this->config_factory->getEditable('kamihaya_cms_ai_loan_proposal_draft.settings');
   }
 
@@ -163,7 +163,10 @@ class CompanySelectForm extends FormBase {
     // Do nothing.
   }
 
-  function ajaxSelectCompanyCallback(array &$form, FormStateInterface $form_state) {
+  /**
+   *
+   */
+  public function ajaxSelectCompanyCallback(array &$form, FormStateInterface $form_state) {
     return $form['file_upload'];
   }
 

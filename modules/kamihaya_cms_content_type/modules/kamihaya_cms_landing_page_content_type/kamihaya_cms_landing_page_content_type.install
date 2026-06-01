@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 use Drupal\block\Entity\Block;
 use Drupal\node\Entity\NodeType;
 

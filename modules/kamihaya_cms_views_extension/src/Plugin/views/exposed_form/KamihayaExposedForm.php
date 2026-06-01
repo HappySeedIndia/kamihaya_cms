@@ -33,7 +33,8 @@ class KamihayaExposedForm extends BetterExposedFilters {
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->routeMatch = $container->get('current_route_match');
-    return $instance;;
+    return $instance;
+    ;
   }
 
   /**
@@ -256,7 +257,7 @@ class KamihayaExposedForm extends BetterExposedFilters {
     if (!empty($form['secondary'])) {
       // Open the secondary option if the filter is selected.
       $request_params = array_merge($this->request->query->all(), $this->request->request->all());
-      foreach($request_params as $key => $value) {
+      foreach ($request_params as $key => $value) {
         if ($key === 'sort_by') {
           continue;
         }
@@ -290,7 +291,7 @@ class KamihayaExposedForm extends BetterExposedFilters {
         // Define which widget types support min length checking.
         $supported_types = ['entity_autocomplete', 'textfield'];
         // If the widget type is supported, set the minlength value from options.
-        if (!empty($filter_widget_type) && in_array($filter_widget_type, $supported_types, true)) {
+        if (!empty($filter_widget_type) && in_array($filter_widget_type, $supported_types, TRUE)) {
           $form['#attached']['drupalSettings']['exposed_form']['minlength'][$key] =
             $this->options['bef']['filter'][$key]['advanced']['min_keyword_length'];
         }

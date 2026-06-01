@@ -9,8 +9,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\feeds\Entity\Feed;
 use Drupal\feeds\FeedInterface;
-use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
+use Drupal\tamper\TamperableItemInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -112,7 +112,7 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public function tamper($data, TamperableItemInterface $item = NULL) {
+  public function tamper($data, ?TamperableItemInterface $item = NULL) {
     return $data;
   }
 
@@ -131,7 +131,7 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
     $name = $feed->label() . ' - ' . $this->getSetting(self::SETTING_FEEDS);
     $feeds = $this->entityTypeManager->getStorage('feeds_feed')->loadByProperties(['title' => $name]);
 
-    /* @var Drupal\feeds\FeedInterface $additinal_feed */
+    /** @var Drupal\feeds\FeedInterface $additinal_feed */
     $additinal_feed = NULL;
     if (!empty($feeds)) {
       $additinal_feed = reset($feeds);
@@ -189,7 +189,7 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
     return;
   }
 
-    /**
+  /**
    * Check if the entity exists.
    *
    * @param \Drupal\feeds\FeedInterface $feed

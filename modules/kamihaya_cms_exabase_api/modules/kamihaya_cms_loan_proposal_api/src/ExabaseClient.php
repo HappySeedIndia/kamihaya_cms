@@ -25,12 +25,12 @@ class ExabaseClient extends ExabaseClientBase {
     $this->baseUrl = $this->configFactory->get('kamihaya_cms_loan_proposal_api.settings')->get('endpoint');
   }
 
-    /**
+  /**
    * Generic request method.
    */
   public function request(string $method, string $endpoint, array $options = []) {
     $options += ['timeout' => 60];
-      $response = $this->httpClient->request(
+    $response = $this->httpClient->request(
         $method,
         $this->baseUrl . $endpoint,
         $options,
@@ -114,7 +114,7 @@ class ExabaseClient extends ExabaseClientBase {
     );
   }
 
-    /**
+  /**
    * Calls the make loan proposal endpoint.
    */
   public function makeLoanProposal(string $prompt, string $loan, string $company) {

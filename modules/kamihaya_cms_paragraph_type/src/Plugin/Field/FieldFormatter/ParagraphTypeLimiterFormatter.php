@@ -15,7 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'paragraph_type_limiter' formatter.
- *
  */
 #[FieldFormatter(
   id: 'paragraph_type_limiter',
@@ -54,7 +53,8 @@ class ParagraphTypeLimiterFormatter extends FormatterBase {
     $label,
     $view_mode,
     array $third_party_settings,
-    protected EntityTypeManagerInterface $entityTypeManager) {
+    protected EntityTypeManagerInterface $entityTypeManager,
+  ) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
   }
 

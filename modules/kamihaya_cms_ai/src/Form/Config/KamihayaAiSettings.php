@@ -440,7 +440,7 @@ class KamihayaAiSettings extends ConfigFormBase {
     if (!is_string($color) || !preg_match('/^#?[0-9a-fA-F]{6}$/', $color)) {
       return '';
     }
-    $hex = ltrim($color, '#');
+    $hex   = ltrim($color, '#');
     $red   = hexdec(substr($hex, 0, 2));
     $green = hexdec(substr($hex, 2, 2));
     $blue  = hexdec(substr($hex, 4, 2));
@@ -477,6 +477,5 @@ class KamihayaAiSettings extends ConfigFormBase {
     // Convert RGB to HEX format.
     return sprintf('#%02X%02X%02X', $red, $green, $blue);
   }
-
 
 }

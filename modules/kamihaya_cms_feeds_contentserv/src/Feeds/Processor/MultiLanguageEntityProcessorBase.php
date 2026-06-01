@@ -28,7 +28,6 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
     $this->setDefaultValueToEmptyFeild($entity);
   }
 
-
   /**
    * Process multi language entity.
    *
@@ -156,6 +155,7 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
    *
    * @param string $entity_id
    *   The entity id.
+   *
    * @return \Drupal\Core\Entity\EntityInterface
    *   The entity object.
    */
@@ -241,7 +241,6 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to process.
-   *
    */
   protected function setDefaultValueToEmptyFeild(EntityInterface $entity) {
     // Get the mappings.
@@ -350,7 +349,7 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
       }
 
       if (count($values) > 1 || count($target_ids) > 1) {
-        foreach($values as $idx => $value) {
+        foreach ($values as $idx => $value) {
           // Check if the translated entity already exists.
           $translated_entity = $this->getAutoCreateEntityTranslation(
             $target_type,

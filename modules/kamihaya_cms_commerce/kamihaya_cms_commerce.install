@@ -1,7 +1,10 @@
 <?php
 
+/**
+ * @file
+ */
+
 use Drupal\commerce_product\Entity\ProductType;
-use Drupal\paragraphs\Entity\ParagraphsType;
 
 /**
  * Implements hook_install().
@@ -54,7 +57,7 @@ function kamihaya_cms_commerce_update_10002() {
     'core.entity_form_display.taxonomy_term.product_category.default.yml',
   ], 'install');
 
-    _kamihaya_cms_common_change_configs('kamihaya_cms_commerce', [
+  _kamihaya_cms_common_change_configs('kamihaya_cms_commerce', [
     'pathauto.pattern.product_page.yml',
     'core.entity_view_mode.commerce_product.product_list.yml',
     'core.entity_view_display.commerce_product.default.product_list.yml',

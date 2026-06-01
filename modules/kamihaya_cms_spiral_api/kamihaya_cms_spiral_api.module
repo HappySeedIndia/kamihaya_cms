@@ -1,8 +1,10 @@
 <?php
 
+/**
+ * @file
+ */
+
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\kamihaya_cms_spiral_api\Controller\SpiralController;
 use Drupal\user\Entity\Role;
@@ -62,7 +64,7 @@ function kamihaya_cms_spiral_api_authenticate_validate(array &$form, FormStateIn
     $auth = \Drupal::service('externalauth.externalauth');
     $account = $auth->loginRegister($user["sso_uid"], 'kamihaya_cms_spiral_api');
     $form_state->set('uid', $account->id());
-    $user =User::load($account->id());
+    $user = User::load($account->id());
     Cache::invalidateTags($user->getCacheTags());
   }
   else {
@@ -84,7 +86,7 @@ function kamihaya_cms_spiral_api_user_load(&$users) {
   }
   $account = Drupal::currentUser();
   /** @var \Drupal\user\UserInterface $current_user */
-  $current_user = null;
+  $current_user = NULL;
   foreach ($users as $user) {
     if ($account->id() === $user->id()) {
       $current_user = $user;

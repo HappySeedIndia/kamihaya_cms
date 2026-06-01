@@ -31,10 +31,10 @@ function kamihaya_cms_json_field_token_info_alter(&$data) {
       continue;
     }
     $fields = [];
-    foreach( ['json', 'json_native', 'json_native_binary'] as $type) {
+    foreach (['json', 'json_native', 'json_native_binary'] as $type) {
       $fields = array_merge($fields, \Drupal::entityTypeManager()->getStorage('field_storage_config')->loadByProperties([
         'entity_type' => $entity_type_id,
-        'type' => $type
+        'type' => $type,
       ]));
     }
     foreach ($fields as $field) {

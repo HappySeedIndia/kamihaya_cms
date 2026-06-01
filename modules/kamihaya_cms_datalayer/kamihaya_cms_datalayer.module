@@ -5,6 +5,9 @@
  * Primary module hooks for Kamihaya CMS Datalayer module.
  */
 
+/**
+ *
+ */
 function kamihaya_cms_datalayer_page_attachments(array &$attachments) {
   $active_theme = \Drupal::theme()->getActiveTheme()->getName();
   if ($active_theme === 'kamihaya_digitalagency') {

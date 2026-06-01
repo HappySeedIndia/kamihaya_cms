@@ -3,18 +3,17 @@
 namespace Drupal\kamihaya_cms_google_map\Controller;
 
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\views\Views;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Controller for Ajax location filtering.
  */
-class LocationFilterController extends ControllerBase implements ContainerInjectionInterface{
+class LocationFilterController extends ControllerBase implements ContainerInjectionInterface {
 
   /**
    * Ajax callback to update view with location filter.
@@ -33,31 +32,32 @@ class LocationFilterController extends ControllerBase implements ContainerInject
     $response = new AjaxResponse();
     $wrapper_id = 'location-view';
 
-    // Load and execute the view
+    // Load and execute the view.
     $view = Views::getView($view_name);
     if (!$view) {
       $response->addCommand(new ReplaceCommand("#{$wrapper_id}", '<div class="error">View not found</div>'));
       return $response;
     }
 
-    $view->setDisplay($view_display); // Adjust display ID as needed
+    // Adjust display ID as needed.
+    $view->setDisplay($view_display);
 
     // The coordinates will be picked up by hook_query_location_filter_alter
-    // No need to set exposed input since we're not using exposed filters
-
-    // Execute the view
+    // No need to set exposed input since we're not using exposed filters.
+    // Execute the view.
     $view->execute();
 
-    // Render the view
+    // Render the view.
     $rendered_view = $view->render();
 
     if (!empty($rendered_view['#attached'])) {
       $response->addAttachments($rendered_view['#attached']);
     }
 
-    // Add the replace command
+    // Add the replace command.
     $response->addCommand(new ReplaceCommand("#{$wrapper_id}", $rendered_view));
 
     return $response;
   }
+
 }

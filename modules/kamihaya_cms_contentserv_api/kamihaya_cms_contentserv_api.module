@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 
@@ -72,7 +76,7 @@ function _kamihaya_cms_contentserv_api_update_entities(array $api_result) {
 
   $product_storage = Drupal::entityTypeManager()->getStorage('commerce_product');
 
-  foreach($api_result ?: [] as $result) {
+  foreach ($api_result ?: [] as $result) {
     if (empty($result['ID']) || empty($result['Label'])) {
       break;
     }

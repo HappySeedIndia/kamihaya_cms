@@ -122,7 +122,7 @@ class ContentservApiFetcherForm extends ExternalPluginFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('State IDs'),
       '#description' => $this->t('Comma-separated list of state IDs to filter by.'),
-      '#default_value' => !empty($this->plugin->getConfiguration('state_ids', [])) ? implode(',', $this->plugin->getConfiguration('state_ids')): [],
+      '#default_value' => !empty($this->plugin->getConfiguration('state_ids', [])) ? implode(',', $this->plugin->getConfiguration('state_ids')) : [],
       '#maxlength' => 255,
       '#states' => [
         'visible' => [
@@ -145,7 +145,7 @@ class ContentservApiFetcherForm extends ExternalPluginFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Class IDs'),
       '#description' => $this->t('Comma-separated list of class IDs to filter by.'),
-      '#default_value' => !empty($this->plugin->getConfiguration('class_ids')) ? implode(',', $this->plugin->getConfiguration('class_ids')): [],
+      '#default_value' => !empty($this->plugin->getConfiguration('class_ids')) ? implode(',', $this->plugin->getConfiguration('class_ids')) : [],
       '#maxlength' => 255,
       '#states' => [
         'visible' => [
@@ -180,7 +180,7 @@ class ContentservApiFetcherForm extends ExternalPluginFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Tag IDs'),
       '#description' => $this->t('Comma-separated list of tag IDs to filter by.'),
-      '#default_value' => !empty($this->plugin->getConfiguration('tag_ids')) ? implode(',', $this->plugin->getConfiguration('tag_ids')): [],
+      '#default_value' => !empty($this->plugin->getConfiguration('tag_ids')) ? implode(',', $this->plugin->getConfiguration('tag_ids')) : [],
       '#maxlength' => 512,
       '#states' => [
         'visible' => [
@@ -257,4 +257,5 @@ class ContentservApiFetcherForm extends ExternalPluginFormBase {
     $values['tag_ids'] = !empty($values['tag_ids']) ? array_filter(array_map('trim', explode(',', $values['tag_ids']))) : [];
     $this->plugin->setConfiguration($values);
   }
+
 }
