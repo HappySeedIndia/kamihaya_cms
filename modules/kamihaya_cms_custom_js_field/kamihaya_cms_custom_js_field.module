@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hooks for the Kamihaya CMS Custom JS Field module.
  */
 
 use Drupal\Core\File\FileExists;

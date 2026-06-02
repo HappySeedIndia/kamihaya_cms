@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hooks and helpers for the Kamihaya CMS Views Extension module.
  */
 
 use Drupal\Core\Ajax\AjaxResponse;
@@ -136,9 +137,10 @@ function kamihaya_cms_views_extension_views_pre_render(ViewExecutable $view) {
               $language_manager = \Drupal::languageManager();
               $langcode = $language_manager->getCurrentLanguage()->getId();
               $default_langcode = $language_manager->getDefaultLanguage()->getId();
-              // Load the language negotiation configuration and get the URL prefix
-              // for the current language. This prefix is defined under
-              // "Detection and selection → Language from the URL (Path prefix or domain)".
+              // Load the language negotiation configuration and get the URL
+              // prefix for the current language. This prefix is defined under
+              // "Detection and selection → Language from the URL
+              // (Path prefix or domain)".
               $config = \Drupal::config('language.negotiation');
               $langcode_prefix = $config->get('url.prefixes.' . $langcode);
 
@@ -307,6 +309,9 @@ function kamihaya_cms_views_extension_query_multiple_media_field_union_alter(Alt
   }
 
   // Set the union query before working on the base query.
+  // Create a deep copy of the query object to build the union query
+  // independently. clone would only do a shallow copy.
+  // phpcs:ignore DrupalPractice.FunctionCalls.InsecureUnserialize.InsecureUnserialize
   $union_query = unserialize(serialize($query));
   // Working on the base query.
   _kamihaya_cms_views_extension_media_query_for_union($query, $media_aliases[1], FALSE);
@@ -376,7 +381,7 @@ function kamihaya_cms_views_extension_query_allow_media_empty_alter(AlterableInt
       continue;
     }
     $cons = &$condition['field']->conditions();
-    foreach ($cons as $idx => &$con) {
+    foreach ($cons as &$con) {
       if (!is_array($con) || empty($con['field']) || !($con['field'] instanceof ConditionInterface)) {
         continue;
       }
@@ -570,7 +575,7 @@ function kamihaya_cms_views_extension_preprocess_views_view_table(&$variables) {
 
   if ($view->getStyle()->getPluginId() === 'kamihaya_responsive_table') {
     $variables['#attached']['library'][] = 'kamihaya_cms_views_extension/responsive_table';
-    foreach ($rows as $idx => &$row) {
+    foreach ($rows as &$row) {
       foreach ($row['columns'] as $field_name => &$col) {
         if (empty($variables['header'][$field_name]) || $field_name === 'views_bulk_operations_bulk_form') {
           continue;
@@ -623,7 +628,7 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
   // Add AJAX functionality to the exposed fields.
   kamihaya_cms_views_extension_add_ajax($form, $form_state);
 
-  /**`@var Drupal\views\ViewExecutable $view */
+  /** @var \Drupal\views\ViewExecutable $view */
   $view = $form_state->get('view');
   $filters = $view->getHandlers('filter');
   if (empty($filters)) {
@@ -645,7 +650,8 @@ function kamihaya_cms_views_extension_form_views_exposed_form_alter(array &$form
     if (empty($filter['default_check'])) {
       continue;
     }
-    // If the default check is set to TRUE, set the default value of the checkbox to TRUE.
+    // If the default check is set to TRUE, set the default value of the
+    // checkbox to TRUE.
     $form[$name]['#default_value'] = TRUE;
     $user_input[$name] = TRUE;
     // Set the user input to the form state.
@@ -734,7 +740,8 @@ function kamihaya_cms_views_extension_add_ajax(array &$form, FormStateInterface 
           ],
         ];
       }
-      // If there are multiple field options which needs to be updated, specify the wrappers for each field.
+      // If there are multiple field options which needs to be updated,
+      // specify the wrappers for each field.
       $form[$filter]['#ajax']['wrapper'][$key] = '#' . $id . $class;
     }
   }
@@ -760,7 +767,8 @@ function kamihaya_cms_views_extension_ajax_callback(array &$form, FormStateInter
   foreach ($elements as $name => $id) {
     // @see https://www.drupal.org/project/field_group/issues/3201653
     if (isset($form[$name]['#group'])) {
-      // Render function returns empty html if #group attribute is present, so remove this.
+      // Render function returns empty html if #group attribute is present,
+      // so remove this.
       unset($form[$name]['#group']);
     }
     $field = &$form[$name];
@@ -893,7 +901,7 @@ function kamihaya_cms_views_extension_preprocess_views_view_flipped_table(array 
   if (empty($row_class) && empty($no_value_text)) {
     return;
   }
-  foreach ($variables['rows_flipped'] as $idx => &$row) {
+  foreach ($variables['rows_flipped'] as &$row) {
     if (!empty($row_class)) {
       if (empty($row['attributes'])) {
         $row['attributes'] = new Attribute();
@@ -906,7 +914,7 @@ function kamihaya_cms_views_extension_preprocess_views_view_flipped_table(array 
     foreach ($row['columns'] as &$col) {
       if (empty($col['content'])) {
         $col['content'][] = [
-          'field_output' => Markup::create(t($no_value_text)),
+          'field_output' => Markup::create($no_value_text),
         ];
       }
     }
@@ -943,12 +951,10 @@ function kamihaya_cms_views_extension_views_data_alter(array &$data): void {
 /**
  * Implements hook_query_TAG_alter() for 'reduce_duplicate_paragraph' tag.
  *
- * This hook removes the 'paragraph.id' field from the SELECT clause
- * to prevent duplicate paragraph results in Views using paragraph relationships.
- * Add the 'reduce_duplicate_paragraph' tag to the query settings in the view.
- *
- * @param \Drupal\Core\Database\Query\AlterableInterface $query
- *   The query object being altered.
+ * Removes the 'paragraph.id' field from the SELECT clause to prevent
+ * duplicate paragraph results in Views using paragraph relationships.
+ * Add the 'reduce_duplicate_paragraph' tag to the query settings in the
+ * view.
  */
 function kamihaya_cms_views_extension_query_reduce_duplicate_paragraph_alter(AlterableInterface $query) {
   // Get the list of fields in the query.
@@ -992,14 +998,15 @@ function kamihaya_cms_views_extension_views_query_alter(ViewExecutable $view, Qu
   $taxonomy_related_tables = [];
   /** @var \Drupal\views\Plugin\views\query\Sql $query */
   $table_queue = $query->getTableQueue();
-  foreach ($query->tables as $key => $tables) {
+  foreach ($query->tables as $tables) {
     foreach ($tables as $alias => $table) {
       if (empty($table_queue[$alias]) || empty($table_queue[$alias]['table']) || $table_queue[$alias]['table'] !== 'taxonomy_term_field_data' || empty($table_queue[$alias]['join'])) {
         continue;
       }
       $taxonomy_related_tables[] = $alias;
 
-      // If the table is taxonomy_term_field_data, check if it has a join condition.
+      // If the table is taxonomy_term_field_data, check if it has a join
+      // condition.
       $left_table = $table_queue[$alias]['join']->leftTable;
       foreach ($table_queue as $queue_alias => $queue_table) {
         if (empty($queue_table['table']) || $queue_table['table'] !== $left_table) {
@@ -1023,7 +1030,8 @@ function kamihaya_cms_views_extension_views_query_alter(ViewExecutable $view, Qu
     }
     foreach ($where['conditions'] as $idx => $condition) {
       foreach ($taxonomy_related_tables as $alias) {
-        // If the condition is related to taxonomy_term_field_data, update the field and value.
+        // If the condition is related to taxonomy_term_field_data, update
+        // the field and value.
         if (!is_string($condition['field']) || strpos($condition['field'], "$alias.") !== 0) {
           continue;
         }
@@ -1086,7 +1094,8 @@ function kamihaya_cms_views_extension_query_alter_for_term_node_tid_depth(ViewEx
   $field_definitions = [];
   // Get the field definitions for the entity type and bundles.
   if (empty($bundles)) {
-    // If no bundles are specified, load all field definitions for the entity type.
+    // If no bundles are specified, load all field definitions for the
+    // entity type.
     $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type, $entity_type);
   }
   else {
@@ -1146,11 +1155,11 @@ function kamihaya_cms_views_extension_query_alter_for_term_node_tid_depth(ViewEx
   // Add the language condition to the subqueries.
   /** @var \Drupal\views\Plugin\views\query\Sql $query */
   $wheres = $query->where;
-  foreach ($wheres as $group => $where) {
+  foreach ($wheres as $where) {
     if (empty($where['conditions'])) {
       continue;
     }
-    foreach ($where['conditions'] as $idx => $condition) {
+    foreach ($where['conditions'] as $condition) {
       if (empty($condition['value']) || !($condition['value'] instanceof SelectInterface)) {
         continue;
       }
@@ -1161,7 +1170,8 @@ function kamihaya_cms_views_extension_query_alter_for_term_node_tid_depth(ViewEx
       }
       $or_condition = $sub_query->orConditionGroup();
       $sub_query->condition($or_condition);
-      // If the subquery contains taxonomy_index table, add the language condition.
+      // If the subquery contains taxonomy_index table, add the language
+      // condition.
       foreach ($sub_query_tables as $alias => $table) {
         if ($table['table'] !== 'taxonomy_index') {
           continue;

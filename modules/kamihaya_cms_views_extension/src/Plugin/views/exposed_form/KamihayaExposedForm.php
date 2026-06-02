@@ -209,7 +209,7 @@ class KamihayaExposedForm extends BetterExposedFilters {
       }
 
       $index = 0;
-      foreach (array_keys($filter['configuration']['advanced']) as $idx => $name) {
+      foreach (array_keys($filter['configuration']['advanced']) as $name) {
         if (!is_array($filter['configuration']['advanced'][$name])/* || empty($filter['configuration']['advanced'][$name]['#type'])*/) {
           continue;
         }
@@ -277,20 +277,24 @@ class KamihayaExposedForm extends BetterExposedFilters {
         continue;
       }
 
-      // Check if the current filter has the "Disable search button" option enabled.
+      // Check if the current filter has the "Disable search button" option
+      // enabled.
       if (
         !empty($this->options['bef']['filter'][$key]) &&
         !empty($this->options['bef']['filter'][$key]['advanced']['disable_search_button'])
       ) {
-        // Attach the custom JS library responsible for handling the exposed form behavior.
+        // Attach the custom JS library responsible for handling the exposed
+        // form behavior.
         $form['#attached']['library'][] = 'kamihaya_cms_views_extension/advanced-filter-exposed-form';
         // Register this filter key to the list of filters to be handled by JS.
         $form['#attached']['drupalSettings']['exposed_form']['filter_name'][] = $key;
-        // Get the widget type of the current exposed filter (e.g., 'textfield', 'entity_autocomplete').
+        // Get the widget type of the current exposed filter
+        // (e.g., 'textfield', 'entity_autocomplete').
         $filter_widget_type = $form[$key]['#type'] ?? '';
         // Define which widget types support min length checking.
         $supported_types = ['entity_autocomplete', 'textfield'];
-        // If the widget type is supported, set the minlength value from options.
+        // If the widget type is supported, set the minlength value from
+        // options.
         if (!empty($filter_widget_type) && in_array($filter_widget_type, $supported_types, TRUE)) {
           $form['#attached']['drupalSettings']['exposed_form']['minlength'][$key] =
             $this->options['bef']['filter'][$key]['advanced']['min_keyword_length'];

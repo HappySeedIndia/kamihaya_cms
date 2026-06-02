@@ -6,7 +6,7 @@ use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\feeds\Plugin\Derivative\GenericContentEntityProcessor;
 
 /**
- * Provides generic Feeds processor plugin definitions for multilingual content entities.
+ * Provides Feeds processor plugin definitions for multilingual entities.
  *
  * @see \Drupal\feeds\Feeds\Processor\GenericContentEntityProcessor
  */

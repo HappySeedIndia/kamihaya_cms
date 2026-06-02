@@ -65,7 +65,8 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
 
     $mappings = $feed->getType()->getMappings();
 
-    // Get langcode key, translation key map and translation key target from feeds mapping.
+    // Get langcode key, translation key map and translation key target from
+    // feeds mapping.
     foreach ($mappings as $mapping) {
       if (empty($mapping['target']) || empty($mapping['map']['value'])) {
         continue;
@@ -112,8 +113,8 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
 
     /** @var \Drupal\feeds\State $state */
     if ($existing_entity && $skip_existing && ($existing_entity->language()->getId() === $language_code || $existing_entity->hasTranslation($language_code))) {
-      // Skip the item if the entity already existing and when we are not updating
-      // existing entities.
+      // Skip the item if the entity already existing and when we are not
+      // updating existing entities.
       $state->report(StateType::SKIP, 'Skipped because the entity already exists.', [
         'feed' => $feed,
         'item' => $item,

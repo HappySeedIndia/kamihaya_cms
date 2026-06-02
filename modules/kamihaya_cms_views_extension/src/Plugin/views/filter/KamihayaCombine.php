@@ -15,6 +15,8 @@ use Drupal\views\Plugin\views\filter\Combine;
 class KamihayaCombine extends Combine {
 
   /**
+   * The views query plugin instance.
+   *
    * @var \Drupal\views\Plugin\views\query\QueryPluginBase
    */
   public $query;

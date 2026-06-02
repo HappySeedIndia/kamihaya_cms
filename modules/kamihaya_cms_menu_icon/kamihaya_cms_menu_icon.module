@@ -119,7 +119,7 @@ function kamihaya_cms_menu_icon_form_menu_link_content_form_alter(array &$form, 
 /**
  * Submit handler for menu link content form.
  *
- * @param $form
+ * @param array $form
  *   The form array.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form state.

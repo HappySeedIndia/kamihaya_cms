@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hooks for the Kamihaya CMS Access Control module.
  */
 
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -12,7 +13,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
 function kamihaya_cms_access_control_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type): void {
   if ($entity_type->id() == 'user') {
     if (isset($fields['mail'])) {
-      // Allow user mail field visibilty to be configured from manage display section.
+      // Allow user mail field visibilty to be configured from manage
+      // display section.
       $fields['mail']->setDisplayConfigurable('view', TRUE);
     }
   }

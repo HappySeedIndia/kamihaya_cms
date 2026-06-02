@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hooks for the Kamihaya CMS Document Store API module.
  */
 
 /**
