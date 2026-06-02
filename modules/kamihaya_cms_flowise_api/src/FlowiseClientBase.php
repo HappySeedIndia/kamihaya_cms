@@ -7,6 +7,7 @@ namespace Drupal\kamihaya_cms_flowise_api;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Messenger\MessengerTrait;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
@@ -19,6 +20,7 @@ use Psr\Log\LoggerInterface;
 class FlowiseClientBase {
 
   use MessengerTrait;
+  use StringTranslationTrait;
 
   /**
    * The base URL for the Flowise API.
@@ -43,14 +45,14 @@ class FlowiseClientBase {
     protected ConfigFactoryInterface $configFactory,
   ) {
     if (empty($this->configFactory->get('kamihaya_cms_flowise_api.settings')->get('endpoint'))) {
-      $this->messenger()->addError(t('Flowise API endpoint is not configured. Please set it in @link', [
-        '@link' => Link::fromTextAndUrl(t('Flowise Settings'), Url::fromRoute('kamihaya_cms_flowise_api.settings'))->toString(),
+      $this->messenger()->addError($this->t('Flowise API endpoint is not configured. Please set it in @link', [
+        '@link' => Link::fromTextAndUrl($this->t('Flowise Settings'), Url::fromRoute('kamihaya_cms_flowise_api.settings'))->toString(),
       ]));
       return;
     }
     if (empty($this->configFactory->get('kamihaya_cms_flowise_api.settings')->get('api_key'))) {
-      $this->messenger()->addError(t('Flowise API key is not configured. Please set it in @link', [
-        '@link' => Link::fromTextAndUrl(t('Flowise Settings'), Url::fromRoute('kamihaya_cms_flowise_api.settings'))->toString(),
+      $this->messenger()->addError($this->t('Flowise API key is not configured. Please set it in @link', [
+        '@link' => Link::fromTextAndUrl($this->t('Flowise Settings'), Url::fromRoute('kamihaya_cms_flowise_api.settings'))->toString(),
       ]));
       return;
     }

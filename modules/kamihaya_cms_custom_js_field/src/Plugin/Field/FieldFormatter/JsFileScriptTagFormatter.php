@@ -2,6 +2,7 @@
 
 namespace Drupal\kamihaya_cms_custom_js_field\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -10,7 +11,6 @@ use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\file\Entity\File;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -35,6 +35,7 @@ class JsFileScriptTagFormatter extends FormatterBase implements ContainerFactory
     $view_mode,
     array $third_party_settings,
     protected FileUrlGeneratorInterface $fileUrlGenerator,
+    protected EntityTypeManagerInterface $entityTypeManager,
   ) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
   }
@@ -51,7 +52,8 @@ class JsFileScriptTagFormatter extends FormatterBase implements ContainerFactory
       $configuration['label'],
       $configuration['view_mode'],
       $configuration['third_party_settings'],
-      $container->get('file_url_generator')
+      $container->get('file_url_generator'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -141,7 +143,7 @@ class JsFileScriptTagFormatter extends FormatterBase implements ContainerFactory
     $elements = [];
 
     foreach ($items as $delta => $item) {
-      $file = File::load($item->target_id);
+      $file = $this->entityTypeManager->getStorage('file')->load($item->target_id);
       if (!$file) {
         continue;
       }

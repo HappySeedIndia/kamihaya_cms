@@ -85,7 +85,7 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
     }
 
     if (empty($langcode_target) || empty($translation_key_map) || empty($translation_key_target)) {
-      $this->messenger()->addError(t('Missing required mappings for language code or translation key.'));
+      $this->messenger()->addError($this->t('Missing required mappings for language code or translation key.'));
       return;
     }
 
@@ -97,7 +97,7 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
 
     // Validate language code.
     if (!$this->isValidLanguageCode($language_code)) {
-      $this->messenger()->addError(t('Invalid language code: @code', ['@code' => $language_code]));
+      $this->messenger()->addError($this->t('Invalid language code: @code', ['@code' => $language_code]));
       return;
     }
 
@@ -342,7 +342,6 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
    * {@inheritdoc}
    */
   protected function map(FeedInterface $feed, EntityInterface $entity, ItemInterface $item) {
-    $mappings = $this->feedType->getMappings();
     $map_mappings = $feed->getType()->getMappings();
     if ($entity instanceof ContentEntityInterface && !$entity->isDefaultTranslation()) {
       foreach ($map_mappings as $idx => $mapping) {
@@ -353,7 +352,7 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
         // If the mapping target is not translatable, remove it from the item.
         if ($mapping['target'] !== 'langcode' && $mapping['target'] !== 'translation_key' && !$entity->getFieldDefinitions()[$mapping['target']]->isTranslatable()) {
           unset($map_mappings[$idx]);
-          $this->messenger()->addWarning(t('The mapping target @target is not translatable and will be removed from the item.', ['@target' => $mapping['target']]));
+          $this->messenger()->addWarning($this->t('The mapping target @target is not translatable and will be removed from the item.', ['@target' => $mapping['target']]));
         }
       }
     }

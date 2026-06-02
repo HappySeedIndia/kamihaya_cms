@@ -3,7 +3,6 @@
 namespace Drupal\kamihaya_cms_custom_js_field\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\Attribute\FieldType;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\file\Plugin\Field\FieldType\FileFieldItemList;
@@ -44,13 +43,6 @@ class JsFileItem extends FileItem {
     $element['file_directory']['#default_value'] = $this->getSetting('file_directory');
 
     return $element;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function schema(FieldStorageDefinitionInterface $field_definition): array {
-    return parent::schema($field_definition);
   }
 
 }

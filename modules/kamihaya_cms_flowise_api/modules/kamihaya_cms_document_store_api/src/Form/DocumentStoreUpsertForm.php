@@ -64,13 +64,6 @@ class DocumentStoreUpsertForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state): void {
-    parent::validateForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $document_store_id = $form_state->getValue('document_store_id');
     if (empty($document_store_id)) {
