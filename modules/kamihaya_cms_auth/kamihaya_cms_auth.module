@@ -2,13 +2,14 @@
 
 /**
  * @file
+ * Hooks for the Kamihaya CMS Auth module.
  */
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\User;
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_FORM_ID_alter() for user_login_form.
  */
 function kamihaya_cms_auth_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $route_name = \Drupal::routeMatch()->getRouteName();

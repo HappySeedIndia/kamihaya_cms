@@ -120,7 +120,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
 
     /** @var \Drupal\kamihaya_cms_feeds_contentserv\Result\ContentservApiFetcherResultInterface $fetcher_result */
     if (empty($fetcher_result->getResults())) {
-      // If there are no results, set the last imported time and throw an exception.
+      // If there are no results, set the last imported time and throw an
+      // exception.
       $this->updateLastImportedTime($feed);
       throw new EmptyFeedException(strtr('@name: There is no fetched data.', ['@name' => $feed->label()]));
     }
@@ -155,7 +156,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         // Get the data ID from the result data.
         $data_id = $result_data['ID'];
 
-        // Skip the data if its last changed time is less than the last imported time.
+        // Skip the data if its last changed time is less than the last
+        // imported time.
         if (!$fetcher_config['filter_by_date'] && !empty($result_data['Changed']) && strtotime($result_data['Changed']) < $last_imported_time
           && ($this->checkExistsEntity($feed, $data_id) || !$fetcher_config['create_content'])) {
           $state->report(StateType::SKIP, strtr('Skipped the data because it is not changed since last import. [@type ID: @id]', [
@@ -268,14 +270,16 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
               $value = $this->getAttributeValue($data[$data_type], $json_key);
 
               $alt = FALSE;
-              // Skip the value is not set or the value is same as the original language value and not alt or description.
+              // Skip when the value is not set, or it matches the original
+              // language value and is not an alt or description.
               foreach ($mappings as $mapping) {
                 if (empty($mapping['map']['alt']) || $mapping['map']['alt'] !== $key) {
                   continue;
                 }
                 $alt = TRUE;
               }
-              // Skip the value is not set or the value is same as the original language value and not alt or description.
+              // Skip when the value is not set, or it matches the original
+              // language value and is not an alt or description.
               if (strlen($value) === 0 || (!$has_translation && $value === $item->get($key) && !$alt)) {
                 continue;
               }
@@ -487,6 +491,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    *   The file name.
    * @param string $langcode
    *   The langcode.
+   * @param bool $retry
+   *   Whether this is a retry attempt.
    *
    * @return int
    *   The file id.
@@ -602,6 +608,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    *   The feed object.
    * @param string $data_id
    *   The data ID to check.
+   * @param string|null $langcode
+   *   The language code to check, or NULL for none.
    *
    * @return bool
    *   TRUE if the entity exists, FALSE otherwise.
@@ -746,7 +754,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     $states = $workflow->getTypePlugin()->getStates();
     foreach ($states as $state_id => $state) {
       if (!$state->isPublishedState() && $state->isDefaultRevisionState()) {
-        // Return the moderation state if it is unpublished and is the default revision.
+        // Return the moderation state if it is unpublished and is the default
+        // revision.
         return $state_id;
       }
     }

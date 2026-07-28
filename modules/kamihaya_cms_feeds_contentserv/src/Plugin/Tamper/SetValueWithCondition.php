@@ -190,10 +190,20 @@ class SetValueWithCondition extends TamperBase implements KamihayaTamperInterfac
         }
         break;
 
-      default:
-        if (eval("return '$value' $matching_condition '$condition_value';")) {
+      case '==':
+        if ((string) $value == (string) $condition_value) {
           return $data_value;
         }
+        break;
+
+      case '!=':
+        if ((string) $value != (string) $condition_value) {
+          return $data_value;
+        }
+        break;
+
+      default:
+        // Unknown matching condition; no match.
         break;
     }
 
@@ -211,7 +221,6 @@ class SetValueWithCondition extends TamperBase implements KamihayaTamperInterfac
    * {@inheritdoc}
    */
   public function preSaveTamper(FeedInterface $feed, EntityInterface $entity, ?TamperableItemInterface $item, $source) {
-    return;
   }
 
 }

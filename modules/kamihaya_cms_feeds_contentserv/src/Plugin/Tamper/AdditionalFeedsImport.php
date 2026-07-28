@@ -186,7 +186,6 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public function preSaveTamper(FeedInterface $feed, EntityInterface $entity, ?TamperableItemInterface $item, $source) {
-    return;
   }
 
   /**
@@ -194,8 +193,8 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
    *
    * @param \Drupal\feeds\FeedInterface $feed
    *   The feed object.
-   * @param string $data_id
-   *   The data ID to check.
+   * @param string $data
+   *   The data value to check.
    *
    * @return bool
    *   TRUE if the entity exists, FALSE otherwise.

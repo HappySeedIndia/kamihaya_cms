@@ -125,7 +125,7 @@ class KamihayaAiSettings extends ConfigFormBase {
         '#type' => 'textfield',
         '#maxlength' => 7,
         '#size' => 7,
-        '#title' => $this->t("Background item color $i"),
+        '#title' => $this->t('Background item color @num', ['@num' => $i]),
         '#default_value' => $this->getHexColor($config->get("bg_item_color_$i")),
       ];
     }
@@ -230,7 +230,7 @@ class KamihayaAiSettings extends ConfigFormBase {
         '#type' => 'textfield',
         '#maxlength' => 7,
         '#size' => 7,
-        '#title' => $this->t("Background item color $i"),
+        '#title' => $this->t('Background item color @num', ['@num' => $i]),
         '#default_value' => $this->getHexColor($config->get("second_bg_item_color_$i")),
       ];
     }

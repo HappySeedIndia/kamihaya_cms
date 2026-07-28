@@ -2,9 +2,9 @@
 
 /**
  * @file
+ * Install, update and uninstall hooks for the Kamihaya CMS Content Type module.
  */
 
-use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
 use Drupal\taxonomy\Entity\Vocabulary;
@@ -122,8 +122,6 @@ function kamihaya_cms_content_type_update_10003() {
   $display_repository = \Drupal::service('entity_display.repository');
 
   foreach ($bundles as $bundle) {
-    $field = FieldConfig::loadByName('node', $bundle, 'field_meta_tag');
-
     $display_repository->getFormDisplay('node', $bundle)
       ->setComponent('field_meta_tag', [
         'type' => 'metatag_firehose',
@@ -299,7 +297,8 @@ function kamihaya_cms_content_type_update_10008() {
     return;
   }
   foreach ($content_types as $content_type) {
-    _kamihaya_cms_common_add_fields('kamihaya_cms_content_type', 'node', $content_type, ['field_not_display_title', 'field_body'], 'optional');
+    $fields = ['field_not_display_title', 'field_body'];
+    _kamihaya_cms_common_add_fields('kamihaya_cms_content_type', 'node', $content_type, $fields, 'optional');
   }
 }
 

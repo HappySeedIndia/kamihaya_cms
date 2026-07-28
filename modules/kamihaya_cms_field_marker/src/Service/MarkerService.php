@@ -54,7 +54,15 @@ class MarkerService {
       $operator = $marker_setting['operator'];
       $condition_time = $this->getSystemTime($condition);
       $field_time = $this->getSystemTime($value);
-      $display = eval("return $condition_time $operator $field_time;");
+      $display = match ($operator) {
+        '>' => $condition_time > $field_time,
+        '>=' => $condition_time >= $field_time,
+        '==' => $condition_time == $field_time,
+        '!=' => $condition_time != $field_time,
+        '<=' => $condition_time <= $field_time,
+        '<' => $condition_time < $field_time,
+        default => FALSE,
+      };
     }
     if ($field_type === 'boolean') {
       $display = $condition ? !$value : $value;

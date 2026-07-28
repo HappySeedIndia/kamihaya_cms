@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Class Contentserv API Settings.
  */
-class ContentServApiSettings extends ConfigFormBase {
+class ContentservApiSettings extends ConfigFormBase {
 
   /**
    * The entity bundle info.

@@ -44,8 +44,6 @@ class KamihayaNoIndexSubscriber implements EventSubscriberInterface {
    *
    * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
    *   The kernel response event.
-   *
-   * @return void
    */
   public function onResponse(ResponseEvent $event): void {
 

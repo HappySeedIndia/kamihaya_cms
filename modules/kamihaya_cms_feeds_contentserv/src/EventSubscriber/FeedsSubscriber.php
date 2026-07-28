@@ -3,6 +3,7 @@
 namespace Drupal\kamihaya_cms_feeds_contentserv\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\feeds\Event\EntityEvent;
 use Drupal\feeds\Event\FeedsEvents;
@@ -23,7 +24,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class FeedsSubscriber implements EventSubscriberInterface {
 
-  public function __construct(protected FeedTypeTamperManagerInterface $tamperManager) {
+  public function __construct(
+    protected FeedTypeTamperManagerInterface $tamperManager,
+    protected EntityTypeManagerInterface $entityTypeManager,
+  ) {
   }
 
   /**
@@ -200,7 +204,8 @@ class FeedsSubscriber implements EventSubscriberInterface {
    * Alters a single item.
    *
    * @param \Drupal\feeds\FeedInterface $feed
-   *   The feed.@param \Drupal\Core\Entity\EntityInterface $entity
+   *   The feed.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to alter.
    * @param \Drupal\feeds\Feeds\Item\ItemInterface $item
    *   The item to alter.
@@ -263,7 +268,7 @@ class FeedsSubscriber implements EventSubscriberInterface {
       $values = $entity->toArray();
       $translation = $entity->addTranslation($langcode, $values);
       $class = $translation->getEntityType()->get('content_translation_metadata');
-      $handler = \Drupal::entityTypeManager()->getHandler($translation->getEntityTypeId(), 'translation');
+      $handler = $this->entityTypeManager->getHandler($translation->getEntityTypeId(), 'translation');
       $metadata = new $class($translation, $handler);
       $metadata->setAuthor($translation->getOwner());
       $metadata->setCreatedTime($translation->getCreatedTime());

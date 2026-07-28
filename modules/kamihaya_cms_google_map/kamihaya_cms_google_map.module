@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hooks for the Kamihaya CMS Google Map module.
  */
 
 use Drupal\Core\Database\Query\AlterableInterface;
@@ -185,6 +186,7 @@ function _kamihaya_cms_google_map_add_geolocation_filter($query, $geolocation_fi
 
 /**
  * Add distance-based sorting to the query.
+ *
  * Uses Haversine formula to calculate distance from center point.
  */
 function _kamihaya_cms_google_map_add_distance_sorting($query, $geolocation_fields, $center_lat, $center_lng) {
@@ -204,9 +206,10 @@ function _kamihaya_cms_google_map_add_distance_sorting($query, $geolocation_fiel
   $lat_column = $primary_field['lat_column'];
   $lng_column = $primary_field['lng_column'];
 
-  // Haversine formula for distance calculation in kilometers
-  // Formula: 2 * R * asin(sqrt(sin²(Δlat/2) + cos(lat1) * cos(lat2) * sin²(Δlon/2)))
-  // Where R = Earth's radius in km (6371)
+  // Haversine formula for distance calculation in kilometers.
+  // Formula: 2 * R * asin(sqrt(sin²(Δlat/2)
+  // + cos(lat1) * cos(lat2) * sin²(Δlon/2)))
+  // Where R = Earth's radius in km (6371).
   // Earth radius in kilometers.
   $earth_radius = 6371;
 
@@ -247,6 +250,7 @@ function _kamihaya_cms_google_map_add_distance_sorting($query, $geolocation_fiel
 
 /**
  * Add distance-based sorting for multiple geolocation fields.
+ *
  * Calculates minimum distance when multiple fields exist.
  */
 function _kamihaya_cms_google_map_add_distance_sorting_multiple($query, $geolocation_fields, $center_lat, $center_lng) {
@@ -340,7 +344,7 @@ function kamihaya_cms_google_map_query_longitude_filter_alter(AlterableInterface
   $filter = $view->filter;
   $nelng_field = NULL;
   $swlng_field = NULL;
-  foreach ($filter as $key => $value) {
+  foreach ($filter as $value) {
     if (empty($value->field) || strpos($value->field, '_lng') === FALSE) {
       continue;
     }
@@ -363,7 +367,7 @@ function kamihaya_cms_google_map_query_longitude_filter_alter(AlterableInterface
 
   $conditions = $query->conditions();
   // Remove existing longitude conditions.
-  foreach ($conditions as $key => &$condition) {
+  foreach ($conditions as &$condition) {
     if (!is_array($condition) || empty($condition['field']) || is_string($condition['field'])) {
       continue;
     }
@@ -410,14 +414,12 @@ function _kamihaya_cms_google_map_remove_longitude_filter(ConditionInterface &$c
 function kamihaya_cms_google_map_views_pre_render(ViewExecutable $view) {
   // Check if this view has location filter applied.
   if (isset($view->query->locationFilterCoords)) {
-    $coords = $view->query->locationFilterCoords;
-
     foreach ($view->result as $row) {
       if (isset($row->calculated_distance)) {
         // Round distance to 2 decimal places.
-        /** @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         $row->distance_km = round($row->calculated_distance, 2);
-        /** @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         $row->distance_formatted = $row->distance_km . ' km';
       }
     }

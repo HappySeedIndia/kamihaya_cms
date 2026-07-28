@@ -30,6 +30,8 @@ class ContentservClient {
    *   The URL to request.
    * @param array $options
    *   The options for the request.
+   * @param int $retry_count
+   *   The current retry count.
    */
   public function request(FeedInterface $feed, string $url, array $options = [], $retry_count = 0) {
     // Get the fetcher.

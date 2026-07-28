@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Install, update and uninstall hooks for the Paragraph Type module.
  */
 
 use Drupal\Core\Serialization\Yaml;
@@ -357,7 +358,7 @@ function kamihaya_cms_paragraph_type_update_10010() {
 }
 
 /**
- * Change field settings of Link button Paragraph and add fields to some paragraphs.
+ * Change Link button field settings and add fields to some paragraphs.
  */
 function kamihaya_cms_paragraph_type_update_10011() {
   $field_storage = FieldStorageConfig::loadByName('paragraph', 'field_button_link');

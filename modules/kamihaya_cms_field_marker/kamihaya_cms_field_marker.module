@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hooks for the Kamihaya CMS Field Marker module.
  */
 
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -439,7 +440,8 @@ function kamihaya_cms_field_marker_preprocess_page_title(array &$variables) {
     if (empty($marker_setting['display_marker']) || empty($entity->get($name)->value)) {
       continue;
     }
-    if (empty($marker_setting['marker_position']) || !in_array($marker_setting['marker_position'], ['title_left', 'title_right'])) {
+    $valid_positions = ['title_left', 'title_right'];
+    if (empty($marker_setting['marker_position']) || !in_array($marker_setting['marker_position'], $valid_positions)) {
       continue;
     }
     $position = $marker_setting['marker_position'];

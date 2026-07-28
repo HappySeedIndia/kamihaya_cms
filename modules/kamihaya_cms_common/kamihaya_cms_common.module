@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hooks for the Kamihaya CMS Common module.
  */
 
 use Drupal\Component\Serialization\Yaml;
@@ -84,8 +85,6 @@ function _kamihaya_cms_common_save_translation_configs(array $files, $lang_code)
 function _kamihaya_cms_common_load_config_file($module, $file, $path_name) {
   $module_path = \Drupal::service('extension.path.resolver')->getPath('module', $module);
   $config_path = "$module_path/config/$path_name";
-  $config_manager = \Drupal::service('config.manager');
-  $entity_type_manager = \Drupal::entityTypeManager();
 
   $filename = $config_path . '/' . $file;
   $file = file_get_contents($filename);

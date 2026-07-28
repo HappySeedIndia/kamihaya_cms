@@ -137,8 +137,8 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
     // Get the file.
     $file = File::load($fid);
 
-    // Get the pdf text and the file name from the session if it is already in the session when the file is removed.
-    // This meeasn this process is 're-draft'.
+    // Get the pdf text and the file name from the session if it is already
+    // there when the file is removed. This means this process is 're-draft'.
     $api_response = $session->get(self::SESSION_KEY);
     if (empty($file) && !empty($api_response)) {
       $file_name = !empty($api_response['file_name']) ? $api_response['file_name'] : '';
@@ -420,10 +420,10 @@ class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController
   /**
    * Save summary details in a entity.
    *
-   * @param $result
-   * @param $company_detail
-   *
-   * @return void
+   * @param array $result
+   *   The AI generation result containing the loan summary.
+   * @param string $company_detail
+   *   The company detail HTML stored in the node body field.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException

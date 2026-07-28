@@ -60,7 +60,7 @@ class ContentservApiDataParser extends ContentservApiParser {
     try {
       $results = $fetcher_result->getResults();
       if (empty($results[0])) {
-        throw new FetchException($this->t('@name: No detailed results found.', ['@name' => $feed->label()]));
+        throw new FetchException(strtr('@name: No detailed results found.', ['@name' => $feed->label()]));
       }
       $result_data = $results[0];
       $data_id = $result_data[$data_type]['ID'];
@@ -160,7 +160,8 @@ class ContentservApiDataParser extends ContentservApiParser {
               }
               $label = TRUE;
             }
-            // Skip the value is not set or the value is same as the original language value and not alt or description.
+            // Skip when the value is not set, or it matches the original
+            // language value and is not an alt or description.
             if (strlen($value) === 0 || (!$has_translation && $value === $item->get($key) && !$label)) {
               continue;
             }

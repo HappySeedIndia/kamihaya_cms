@@ -103,7 +103,7 @@ class ParagraphTypeLimiterFormatter extends FormatterBase {
       // If the field definition is not a FieldConfig, load the FieldConfig.
       $field_name = $field_definition->getName();
       $entity_type = $field_definition->getTargetEntityTypeId();
-      $field_configs = \Drupal::entityTypeManager()
+      $field_configs = $this->entityTypeManager
         ->getStorage('field_config')
         ->loadByProperties([
           'field_name' => $field_name,
@@ -112,7 +112,7 @@ class ParagraphTypeLimiterFormatter extends FormatterBase {
 
       if (empty($field_configs)) {
         // If no field config is found, try to load it by field name.
-        $field_config = FieldConfig::load($field_name);
+        $field_config = $this->entityTypeManager->getStorage('field_config')->load($field_name);
         if ($field_config) {
           $handler_settings = $field_config->getSetting('handler_settings');
           $target_bundles = $handler_settings['target_bundles'] ?? [];

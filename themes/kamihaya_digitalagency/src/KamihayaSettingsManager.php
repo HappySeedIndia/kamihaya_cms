@@ -25,7 +25,7 @@ class KamihayaSettingsManager extends SettingsManager {
   public function themeSettingsAlter(array &$form, FormStateInterface $form_state, $form_id) {
     parent::themeSettingsAlter($form, $form_state, $form_id);
     if (!empty($form['logo']['#title'])) {
-      $form['logo']['#title'] = t('Logo');
+      $form['logo']['#title'] = $this->t('Logo');
     }
 
     if (!empty($form['logo']['settings'])) {

@@ -18,6 +18,10 @@ trait ContentservApiTrait {
    *   The feed object.
    * @param string $url
    *   The url to get the access token.
+   * @param bool $retry
+   *   Whether this is a retry attempt.
+   * @param int $retry_count
+   *   The current retry count.
    *
    * @return string
    *   The access token.
@@ -51,14 +55,14 @@ trait ContentservApiTrait {
     if ($status_code != 200) {
       $this->logger->error('Failed to get the access token. Status code: @status_code', ['@status_code' => $status_code]);
       // Throw the exception if the status code is not 200.
-      throw new FetchException($this->t('Faild to get the access token'));
+      throw new FetchException('Failed to get the access token');
     }
     $result = json_decode($response->getBody()->getContents(), TRUE);
     $token = !empty($result['access_token']) ? $result['access_token'] : '';
     if (empty($token)) {
       $this->logger->error('Failed to get the access token. Response: @response', ['@response' => $response->getBody()->getContents()]);
       // Throw the exception if the access token is empty.
-      throw new FetchException($this->t('Faild to get the access token'));
+      throw new FetchException('Failed to get the access token');
     }
     return $token;
   }
@@ -68,7 +72,7 @@ trait ContentservApiTrait {
    *
    * @param \Drupal\feeds\FeedInterface $feed
    *   The feed object.
-   * @param string $u$bace_urlrl
+   * @param string $bace_url
    *   The base url to get the data.
    * @param string $additional_url
    *   The additional url to get the data.
@@ -122,7 +126,7 @@ trait ContentservApiTrait {
     if ($status_code != 200) {
       $this->logger->error('Failed to get the data. Status code: @status_code', ['@status_code' => $status_code]);
       // Throw the exception if the status code is not 200.
-      throw new FetchException($this->t('Faild to get the data'));
+      throw new FetchException('Failed to get the data');
     }
     return $response->getBody()->getContents();
   }
@@ -137,7 +141,7 @@ trait ContentservApiTrait {
    *   TRUE if the feed has 'Tags' in source, FALSE otherwise.
    */
   public function hasTagsInSource(FeedInterface $feed) {
-    foreach ($feed->getType()->getMappingSources() as $key => $info) {
+    foreach ($feed->getType()->getMappingSources() as $info) {
       if (!empty($info['value']) && trim(strval($info['value'])) === 'Tags') {
         return TRUE;
       }

@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hooks for the Kamihaya CMS Commerce module.
  */
 
 use Drupal\Core\Database\Query\AlterableInterface;

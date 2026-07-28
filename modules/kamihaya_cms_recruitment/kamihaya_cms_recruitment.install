@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Install, update and uninstall hooks for the Kamihaya CMS Recruitment module.
  */
 
 use Drupal\Core\Entity\Entity\EntityFormMode;
@@ -200,7 +201,8 @@ function kamihaya_cms_recruitment_update_10002() {
       ->save();
   }
 
-  // Set field_first_name_kana and field_last_name_kana of user entity to not required.
+  // Set field_first_name_kana and field_last_name_kana of user entity to not
+  // required.
   foreach (['field_first_name_kana', 'field_last_name_kana'] ?: [] as $field) {
     $field_config = \Drupal::configFactory()->getEditable("field.field.user.user.{$field}");
     if ($field_config->isNew()) {
@@ -234,7 +236,12 @@ function kamihaya_cms_recruitment_update_10002() {
       $form_mode = EntityFormMode::create([
         'id' => "user.{$mode}",
         'targetEntityType' => 'user',
-        'label' => t(ucfirst(str_replace('_', ' ', $mode))),
+        'label' => match ($mode) {
+          'recruitment_register' => t('Recruitment register'),
+          'applicant_edit' => t('Applicant edit'),
+          'recruiter_edit' => t('Recruiter edit'),
+          default => t('@mode', ['@mode' => ucfirst(str_replace('_', ' ', $mode))]),
+        },
         'status' => TRUE,
       ]);
       $form_mode->save();
@@ -308,9 +315,6 @@ function kamihaya_cms_recruitment_update_10003() {
     $field_config = FieldConfig::loadByName('paragraph', 'source_code', 'field_score');
     if (!empty($field_config) && $field_config->get('field_type') !== 'decimal') {
       // Change field_score type to decimal.
-      $form_display = $display_repository->getFormDisplay('paragraph', 'source_code');
-      $view_display = $display_repository->getViewDisplay('paragraph', 'source_code');
-
       if (!$field_config->isNew()) {
         $field_config->delete();
       }

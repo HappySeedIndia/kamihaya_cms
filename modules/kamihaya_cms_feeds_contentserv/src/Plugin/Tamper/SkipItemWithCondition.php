@@ -173,13 +173,26 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
         }
         break;
 
-      default:
-        if (eval("return '$data' $matching_condition '$condition_value';")) {
+      case '==':
+        if ((string) $data == (string) $condition_value) {
           $item->setSourceProperty('skipped', TRUE);
           if (!$skip_condition) {
             throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
           }
         }
+        break;
+
+      case '!=':
+        if ((string) $data != (string) $condition_value) {
+          $item->setSourceProperty('skipped', TRUE);
+          if (!$skip_condition) {
+            throw new SkipTamperItemException("Skip item with condition: $matching_condition $condition_value.");
+          }
+        }
+        break;
+
+      default:
+        // Unknown matching condition; do not skip.
         break;
     }
     return $data;
@@ -269,8 +282,8 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
         }
         break;
 
-      default:
-        if (eval("return '$value' $matching_condition '$condition_value';")) {
+      case '==':
+        if ((string) $value == (string) $condition_value) {
           throw new SkipTamperItemException(strtr("@name - Skip item[ type: @type, name: @label ] with condition: @source @condition @value.", [
             '@name' => $feed->label(),
             '@label' => $label,
@@ -280,6 +293,23 @@ class SkipItemWithCondition extends TamperBase implements KamihayaTamperInterfac
             '@value' => $condition_value,
           ]));
         }
+        break;
+
+      case '!=':
+        if ((string) $value != (string) $condition_value) {
+          throw new SkipTamperItemException(strtr("@name - Skip item[ type: @type, name: @label ] with condition: @source @condition @value.", [
+            '@name' => $feed->label(),
+            '@label' => $label,
+            '@type' => $type,
+            '@source' => $source,
+            '@condition' => $matching_condition,
+            '@value' => $condition_value,
+          ]));
+        }
+        break;
+
+      default:
+        // Unknown matching condition; do not skip.
         break;
     }
   }

@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hook implementations for the Kamihaya CMS Flag Alert module.
  */
 
 use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
@@ -209,10 +210,10 @@ function kamihaya_cms_flag_alert_form_flag_edit_form_alter(array &$form, FormSta
     '#default_value' => $flag->getUnflagAlertPosition() ?? 'top',
     '#description' => t('Position of the unflag alert on the page.'),
   ];
-  kamihaya_cms_flag_add_color_spectrum('flag_alert_message_color', $flag_message['flag_alert']['flag_alert_message_color']);
-  kamihaya_cms_flag_add_color_spectrum('flag_alert_message_bg_color', $flag_message['flag_alert']['flag_alert_message_bg_color']);
-  kamihaya_cms_flag_add_color_spectrum('unflag_alert_message_color', $unflag_message['unflag_alert']['unflag_alert_message_color']);
-  kamihaya_cms_flag_add_color_spectrum('unflag_alert_message_bg_color', $unflag_message['unflag_alert']['unflag_alert_message_bg_color']);
+  kamihaya_cms_flag_alert_add_color_spectrum('flag_alert_message_color', $flag_message['flag_alert']['flag_alert_message_color']);
+  kamihaya_cms_flag_alert_add_color_spectrum('flag_alert_message_bg_color', $flag_message['flag_alert']['flag_alert_message_bg_color']);
+  kamihaya_cms_flag_alert_add_color_spectrum('unflag_alert_message_color', $unflag_message['unflag_alert']['unflag_alert_message_color']);
+  kamihaya_cms_flag_alert_add_color_spectrum('unflag_alert_message_bg_color', $unflag_message['unflag_alert']['unflag_alert_message_bg_color']);
   $form['messages'] = $messages + $flag_message + $unflag_message;
 
   if (!empty($form['actions']['submit'])) {
@@ -352,7 +353,7 @@ function kamihaya_cms_flag_alert_preprocess_flag(&$variables) {
  * @param array $element
  *   The element to add the color spectrum to.
  */
-function kamihaya_cms_flag_add_color_spectrum($name, array &$element) {
+function kamihaya_cms_flag_alert_add_color_spectrum($name, array &$element) {
   $palette = [
     ["#000", "#444", "#666", "#999", "#ccc", "#eee", "#f3f3f3", "#fff"],
     ["#f00", "#f90", "#ff0", "#0f0", "#0ff", "#00f", "#90f", "#f0f"],

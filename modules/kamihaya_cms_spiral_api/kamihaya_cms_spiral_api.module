@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hooks for the Kamihaya CMS Spiral API module.
  */
 
 use Drupal\Core\Cache\Cache;
@@ -23,9 +24,9 @@ function kamihaya_cms_spiral_api_form_user_login_form_alter(array &$form, FormSt
 /**
  * Validate for the user authentication.
  *
- * @param $form
+ * @param array $form
  *   Nested array of form elements that comprise the form.
- * @param $form_state
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The current state of the form.
  */
 function kamihaya_cms_spiral_api_authenticate_validate(array &$form, FormStateInterface $form_state) {

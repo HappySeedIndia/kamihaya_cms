@@ -48,7 +48,7 @@ class KamihayaFlag extends Flag {
   protected $flag_alert_message_bg_color;
 
   /**
-   * The opacity of the background color of the alert message when a flag is set.
+   * The opacity of the alert message background color when a flag is set.
    *
    * @var float
    */
@@ -97,7 +97,7 @@ class KamihayaFlag extends Flag {
   protected $unflag_alert_message_bg_color;
 
   /**
-   * The opacity of the background color of the alert message when a flag is removed.
+   * The opacity of the alert message background color when a flag is removed.
    *
    * @var float
    */

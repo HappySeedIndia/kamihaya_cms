@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Install, update and uninstall hooks for the Kamihaya CMS Common module.
  */
 
 use Drupal\Core\Site\Settings;
@@ -125,7 +126,7 @@ function kamihaya_cms_common_update_10004() {
  * @param array $base_config
  *   The base config.
  * @param array $new_config
- *   T¥he new config.
+ *   The new config.
  *
  * @return array
  *   The merged config.

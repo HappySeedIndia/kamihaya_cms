@@ -459,6 +459,7 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
     ];
 
     if ($key !== 'new') {
+      $confirm_message = $this->t('Are you sure you want to remove this page configuration?');
       $form['remove'] = [
         '#type' => 'submit',
         '#value' => $this->t('Remove'),
@@ -466,7 +467,7 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
         '#name' => 'remove_' . $key,
         '#attributes' => [
           'class' => ['button', 'button--danger'],
-          'onclick' => 'return confirm("' . $this->t('Are you sure you want to remove this page configuration?') . '");',
+          'onclick' => 'return confirm("' . $confirm_message . '");',
         ],
       ];
     }

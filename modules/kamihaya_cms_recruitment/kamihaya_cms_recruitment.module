@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hooks for the Kamihaya CMS Recruitment module.
  */
 
 use Drupal\Core\Access\AccessResult;
@@ -45,7 +46,7 @@ function kamihaya_cms_recruitment_query_job_match_alter(AlterableInterface $quer
   foreach ($query_conditions as &$conditions) {
     if (is_array($conditions) && is_object($conditions['field'])) {
       $conditions1 = &$conditions['field']->conditions();
-      foreach ($conditions1 as $idx => &$condition) {
+      foreach ($conditions1 as &$condition) {
         if (is_array($condition) && is_object($condition['field']) && is_array($condition['field']->conditions())) {
           foreach ($condition['field']->conditions() as &$con) {
             if (is_array($con)) {
@@ -109,7 +110,7 @@ function kamihaya_cms_recruitment_query_applicant_search_alter(AlterableInterfac
   foreach ($query->conditions() as &$conditions) {
     if (is_array($conditions) && is_object($conditions['field'])) {
       $conditions1 = &$conditions['field']->conditions();
-      foreach ($conditions1 as $idx => &$condition) {
+      foreach ($conditions1 as &$condition) {
         if (is_array($condition) && is_object($condition['field']) && is_array($condition['field']->conditions())) {
           foreach ($condition['field']->conditions() as &$con) {
             if (is_array($con)) {

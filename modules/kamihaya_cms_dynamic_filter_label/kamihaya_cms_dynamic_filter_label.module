@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hooks for the Kamihaya CMS Dynamic Filter Label module.
  */
 
 use Drupal\Core\Form\FormStateInterface;
@@ -21,7 +22,7 @@ function kamihaya_cms_dynamic_filter_label_entity_field_storage_insert(FieldStor
 /**
  * Ensure that field_filter_labels exists for a target vocabulary.
  */
-function _dynamic_filter_label_ensure_field($vocab_id) {
+function _kamihaya_cms_dynamic_filter_label_ensure_field($vocab_id) {
   if ($vocab_id == 'image') {
     return;
   }
@@ -89,7 +90,7 @@ function kamihaya_cms_dynamic_filter_label_form_views_exposed_form_alter(&$form,
     // Build the mapping array for JS.
     $js_mapping = [];
 
-    foreach ($selected_terms as $filter_key => $vocab_id) {
+    foreach ($selected_terms as $vocab_id) {
       $config = \Drupal::config('taxonomy.vocabulary.' . $vocab_id);
       if ($config->isNew()) {
         continue;

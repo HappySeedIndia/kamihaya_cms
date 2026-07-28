@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Install hooks for the Kamihaya CMS Commerce module.
  */
 
 use Drupal\commerce_product\Entity\ProductType;

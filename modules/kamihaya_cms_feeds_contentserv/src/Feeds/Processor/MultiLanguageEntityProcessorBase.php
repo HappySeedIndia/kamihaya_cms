@@ -166,10 +166,6 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
   /**
    * Update multi value fields.
    *
-   * @param \Drupal\feeds\FeedInterface $feed
-   *   The feed object.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity to process.
    * @param \Drupal\feeds\Feeds\Item\ItemInterface $item
    *   The item to process.
    */
@@ -177,7 +173,7 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
     $mappings = $this->feedType->getMappings();
 
     $multivalue_fields = [];
-    foreach ($mappings as $delta => $mapping) {
+    foreach ($mappings as $mapping) {
       if ($mapping['target'] === 'feeds_item' || $mapping['target'] === 'temporary_target') {
         // Skip feeds item as this field gets default values before mapping.
         continue;
@@ -245,12 +241,12 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
   protected function setDefaultValueToEmptyFeild(EntityInterface $entity) {
     // Get the mappings.
     $mappings = $this->feedType->getMappings();
-    foreach ($mappings as $delta => $mapping) {
+    foreach ($mappings as $mapping) {
       if ($mapping['target'] === 'feeds_item' || $mapping['target'] === 'temporary_target') {
         // Skip feeds item as this field gets default values before mapping.
         continue;
       }
-      foreach ($mapping['map'] as $column => $source) {
+      foreach ($mapping['map'] as $source) {
         if ($source === '') {
           // Skip empty sources.
           continue;
@@ -315,7 +311,7 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
     }
     $langcode = explode('_', $addtional_langcode)[0];
 
-    foreach ($mappings as $delta => $mapping) {
+    foreach ($mappings as $mapping) {
       // Skip mappings that are not auto create or do not have a target.
       if (empty($mapping['settings']['autocreate']) || empty($mapping['map']['target_id'])) {
         continue;
@@ -420,8 +416,8 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
             // If the translated entity already has the value, we can use it.
             return;
           }
-          // If the default entity has a translation for the given language code,
-          // we can use it.
+          // If the default entity has a translation for the given language
+          // code, we can use it.
           $item->set($mapping['map']['target_id'], (is_array($value) ? [$default_value] : $default_value));
           continue;
         }

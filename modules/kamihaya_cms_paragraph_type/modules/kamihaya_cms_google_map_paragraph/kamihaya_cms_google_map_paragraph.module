@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hooks for the Kamihaya CMS Google Map Paragraph module.
  */
 
 use Drupal\Core\Url;
@@ -54,7 +55,8 @@ function kamihaya_cms_google_map_paragraph_preprocess_paragraph(&$variables) {
         '#tag' => 'script',
         '#attributes' => ['src' => "{$api_url}?key={$api_key}"],
       ],
-      // A key, to make it possible to recognize this HTML element when altering.
+      // A key, to make it possible to recognize this HTML element when
+      // altering.
       'google-map-api',
     ];
   }
