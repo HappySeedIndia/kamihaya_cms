@@ -15,6 +15,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'paragraph_type_limiter' formatter.
+ *
+ * @phpstan-consistent-constructor
  */
 #[FieldFormatter(
   id: 'paragraph_type_limiter',

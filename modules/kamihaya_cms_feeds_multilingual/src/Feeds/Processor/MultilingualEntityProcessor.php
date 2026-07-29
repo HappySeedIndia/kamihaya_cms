@@ -46,7 +46,6 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->entityFieldManager = $container->get('entity_field.manager');
     return $instance;
-    ;
   }
 
   /**
@@ -333,8 +332,7 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
    * Check if language code is valid.
    */
   protected function isValidLanguageCode($language_code) {
-    $language_manager = \Drupal::languageManager();
-    $languages = $language_manager->getLanguages();
+    $languages = $this->languageManager->getLanguages();
     return isset($languages[$language_code]);
   }
 

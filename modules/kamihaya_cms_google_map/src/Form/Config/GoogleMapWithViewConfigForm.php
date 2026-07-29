@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configuration form for Google Map with View pages.
+ *
+ * @phpstan-consistent-constructor
  */
 class GoogleMapWithViewConfigForm extends ConfigFormBase {
 

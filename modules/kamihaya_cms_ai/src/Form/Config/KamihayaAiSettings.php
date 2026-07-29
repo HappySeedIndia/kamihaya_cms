@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class Kamihaya AI Settings.
+ *
+ * @phpstan-consistent-constructor
  */
 class KamihayaAiSettings extends ConfigFormBase {
 

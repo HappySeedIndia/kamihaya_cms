@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a 'Google map' block.
+ *
+ * @phpstan-consistent-constructor
  */
 #[Block(
   id: "google_map_block",

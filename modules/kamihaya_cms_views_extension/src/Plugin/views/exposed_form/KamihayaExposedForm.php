@@ -34,7 +34,6 @@ class KamihayaExposedForm extends BetterExposedFilters {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->routeMatch = $container->get('current_route_match');
     return $instance;
-    ;
   }
 
   /**

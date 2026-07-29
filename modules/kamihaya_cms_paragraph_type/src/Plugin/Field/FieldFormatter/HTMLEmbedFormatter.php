@@ -13,6 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'htmlembed_formatter' formatter.
+ *
+ * @phpstan-consistent-constructor
  */
 #[FieldFormatter(
   id: 'htmlembed_formatter',

@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Process form base.
+ *
+ * @phpstan-consistent-constructor
  */
 class ProcessFormBase extends FormBase {
 

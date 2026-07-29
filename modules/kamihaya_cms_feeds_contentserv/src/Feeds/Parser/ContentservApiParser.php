@@ -23,6 +23,7 @@ use Drupal\file\FileInterface;
 use Drupal\kamihaya_cms_feeds_contentserv\Service\ContentservClient;
 use Drupal\kamihaya_cms_feeds_contentserv\Trait\ContentservApiTrait;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7\Stream;
 use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
@@ -36,6 +37,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   title = "Kamihaya Contentserv",
  *   description = @Translation("Parse Contentserv JSON gotten by Kamihaya Contentserv API."),
  * )
+ *
+ * @phpstan-consistent-constructor
  */
 class ContentservApiParser extends ParserBase implements ContainerFactoryPluginInterface {
 
@@ -152,6 +155,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     $skipped_count = 0;
 
     foreach ($results as $result_data) {
+      $item = NULL;
       try {
         // Get the data ID from the result data.
         $data_id = $result_data['ID'];
@@ -564,14 +568,14 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     if ($status_code != 200) {
       // Throw an exception if the status code is not 200.
       $args = ['%status' => $status_code];
-      throw new GuzzleException(strtr('Faild to get the file with status code "%status".', $args));
+      throw new TransferException(strtr('Failed to get the file with status code "%status".', $args));
     }
 
     /** @var \GuzzleHttp\Psr7\Stream $stream */
     $stream = $response->getBody();
-    if (empty($stream) || !($stream instanceof Stream) || !is_readable($file_destination)) {
+    if (!($stream instanceof Stream) || !is_readable($file_destination)) {
       // Throw an exception if the stream is not correct.
-      throw new GuzzleException('Faild to get the file because the stream is not correct.');
+      throw new TransferException('Failed to get the file because the stream is not correct.');
     }
     // Save the file.
     $files = $this->entityTypeManager->getStorage('file')->loadByProperties(['uri' => $file_destination]);

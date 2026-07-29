@@ -13,6 +13,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Controller for Google Map with View pages.
+ *
+ * @phpstan-consistent-constructor
  */
 class GoogleMapWithViewController extends ControllerBase implements ContainerInjectionInterface {
 

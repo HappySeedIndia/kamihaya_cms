@@ -13,6 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class Contentserv API Settings.
+ *
+ * @phpstan-consistent-constructor
  */
 class ContentservApiSettings extends ConfigFormBase {
 

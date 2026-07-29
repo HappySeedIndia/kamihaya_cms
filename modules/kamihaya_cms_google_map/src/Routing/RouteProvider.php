@@ -9,6 +9,8 @@ use Symfony\Component\Routing\Route;
 
 /**
  * Provides dynamic routes based on configuration.
+ *
+ * @phpstan-consistent-constructor
  */
 class RouteProvider implements ContainerInjectionInterface {
 

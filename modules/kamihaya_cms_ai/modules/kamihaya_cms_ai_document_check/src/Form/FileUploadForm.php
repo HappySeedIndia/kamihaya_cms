@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * File upload form.
+ *
+ * @phpstan-consistent-constructor
  */
 class FileUploadForm extends FormBase {
 

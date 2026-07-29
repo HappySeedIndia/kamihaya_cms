@@ -12,6 +12,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Company select form.
+ *
+ * @phpstan-consistent-constructor
  */
 class CompanySelectForm extends FormBase {
 

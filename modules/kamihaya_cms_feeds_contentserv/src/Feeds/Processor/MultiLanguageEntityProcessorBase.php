@@ -84,6 +84,7 @@ abstract class MultiLanguageEntityProcessorBase extends EntityProcessorBase {
    */
   protected function mapTranslation(FeedInterface $feed, EntityInterface $source_entity, TranslatableInterface $entity, ItemInterface $item) {
     $mappings = $this->feedType->getMappings();
+    $source_values = [];
 
     // Mappers add to existing fields rather than replacing them. Hence we need
     // to clear target elements of each item before mapping in case we are

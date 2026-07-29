@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure FlowiseApi settings for this site.
+ *
+ * @phpstan-consistent-constructor
  */
 class DocumentStoreUpsertForm extends FormBase {
 

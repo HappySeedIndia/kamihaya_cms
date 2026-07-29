@@ -23,7 +23,7 @@ use Drupal\user\Entity\User;
  * Implements hook_form_FORM_ID_alter().
  */
 function kamihaya_digitalagency_form_system_theme_settings_alter(&$form, FormStateInterface $form_state, $form_id = NULL) {
-  $settings_manager = new KamihayaSettingsManager(\Drupal::service('theme.manager'));
+  $settings_manager = new KamihayaSettingsManager(\Drupal::service('theme.manager'), \Drupal::service('module_handler'));
   return $settings_manager->themeSettingsAlter($form, $form_state, $form_id);
 }
 

@@ -8,6 +8,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Returns responses for Kamihaya CMS Deel routes.
+ *
+ * @phpstan-consistent-constructor
  */
 class Contracts extends ControllerBase {
 

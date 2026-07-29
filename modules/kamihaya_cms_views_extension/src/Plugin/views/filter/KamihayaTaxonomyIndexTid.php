@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
  * Filter by term id using Simple hierarchical select widgets.
  *
  * @ingroup views_filter_handlers
+ *
+ * @phpstan-consistent-constructor
  */
 #[ViewsFilter("kamihaya_taxonomy_index_tid")]
 class KamihayaTaxonomyIndexTid extends ShsTaxonomyIndexTid {

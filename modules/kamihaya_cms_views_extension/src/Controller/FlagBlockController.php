@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides AJAX callback for refreshing the favorite count block.
+ *
+ * @phpstan-consistent-constructor
  */
 class FlagBlockController extends ControllerBase {
 

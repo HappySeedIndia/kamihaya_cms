@@ -13,6 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class SPIRAL Settings.
+ *
+ * @phpstan-consistent-constructor
  */
 class SpiralSettings extends ConfigFormBase {
 

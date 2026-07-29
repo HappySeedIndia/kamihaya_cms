@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Cancel a user account.
+ *
+ * @phpstan-consistent-constructor
  */
 #[Action(
   id: 'vbo_redirect_to_view_action',

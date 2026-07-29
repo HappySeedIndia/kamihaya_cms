@@ -23,6 +23,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   category = "Other",
  *   handle_multiples = TRUE
  * )
+ *
+ * @phpstan-consistent-constructor
  */
 class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPluginInterface, KamihayaTamperInterface {
 

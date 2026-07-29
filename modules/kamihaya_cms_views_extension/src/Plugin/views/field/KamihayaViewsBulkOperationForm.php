@@ -26,7 +26,7 @@ class KamihayaViewsBulkOperationForm extends ViewsBulkOperationsBulkForm {
   /**
    * {@inheritdoc}
    */
-  public function buildOptionsForm(&$form, FormStateInterface $form_state) {
+  public function buildOptionsForm(&$form, FormStateInterface $form_state): void {
     parent::buildOptionsForm($form, $form_state);
 
     $actions = $form['selected_actions'];

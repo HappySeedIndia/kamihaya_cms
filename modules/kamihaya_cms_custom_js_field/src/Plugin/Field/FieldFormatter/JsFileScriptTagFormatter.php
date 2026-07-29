@@ -15,6 +15,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'js_file_script_tag' formatter.
+ *
+ * @phpstan-consistent-constructor
  */
 #[FieldFormatter(
   id: "js_file_script_tag",

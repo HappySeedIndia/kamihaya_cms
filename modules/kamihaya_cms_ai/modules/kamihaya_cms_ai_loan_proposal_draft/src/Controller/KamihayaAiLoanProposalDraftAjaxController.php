@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Controller for handling the ajax request.
+ *
+ * @phpstan-consistent-constructor
  */
 class KamihayaAiLoanProposalDraftAjaxController extends KamihayaAiAjaxController {
 

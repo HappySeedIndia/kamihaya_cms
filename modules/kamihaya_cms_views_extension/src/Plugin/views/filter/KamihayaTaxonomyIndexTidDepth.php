@@ -20,6 +20,8 @@ use Symfony\Component\HttpFoundation\Request;
  * Filter handler for taxonomy terms with depth.
  *
  * @ingroup views_filter_handlers
+ *
+ * @phpstan-consistent-constructor
  */
 #[ViewsFilter("kamihaya_taxonomy_index_tid_depth")]
 class KamihayaTaxonomyIndexTidDepth extends ShsTaxonomyIndexTidDepth {

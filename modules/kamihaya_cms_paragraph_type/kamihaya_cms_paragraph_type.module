@@ -139,7 +139,6 @@ function kamihaya_cms_paragraph_type_preprocess_paragraph(array &$variables) {
       if (empty($fid)) {
         continue;
       }
-      /** @var \Drupal\file\FileInterface $file */
       $file = \Drupal::entityTypeManager()->getStorage('file')->load($fid);
       if (empty($file) || empty($image_style)) {
         continue;
