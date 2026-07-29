@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure FlowiseApi settings for this site.
+ *
+ * @phpstan-consistent-constructor
  */
 class DocumentStoreUpsertForm extends FormBase {
 
@@ -21,7 +23,7 @@ class DocumentStoreUpsertForm extends FormBase {
    *   The Flowise API client.
    */
   public function __construct(
-    protected FlowiseClient $flowiseClient
+    protected FlowiseClient $flowiseClient,
   ) {
   }
 
@@ -64,13 +66,6 @@ class DocumentStoreUpsertForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state): void {
-    parent::validateForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $document_store_id = $form_state->getValue('document_store_id');
     if (empty($document_store_id)) {
@@ -95,10 +90,12 @@ class DocumentStoreUpsertForm extends FormBase {
             '@skipped' => $response['numSkipped'] ?? 0,
           ]));
 
-      } else {
+      }
+      else {
         $this->messenger()->addError($this->t('Failed to upsert Document Store %id.', ['%id' => $document_store_id]));
       }
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $this->messenger()->addError($this->t('An error occurred while upserting the Document Store: @message', ['@message' => $e->getMessage()]));
     }
   }

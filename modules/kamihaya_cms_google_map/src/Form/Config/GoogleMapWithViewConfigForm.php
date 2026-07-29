@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configuration form for Google Map with View pages.
+ *
+ * @phpstan-consistent-constructor
  */
 class GoogleMapWithViewConfigForm extends ConfigFormBase {
 
@@ -73,7 +75,8 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
       foreach ($pages as $key => $page) {
         $form['pages']['existing_pages_info'][$key] = $this->buildPageForm($page, $key);
       }
-    } else {
+    }
+    else {
       $form['pages']['no_pages_info'] = [
         '#type' => 'item',
         '#title' => $this->t('No Pages'),
@@ -298,7 +301,8 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
     $title = '';
     if ($key === 'new') {
       $title = $this->t('New Page');
-    } else {
+    }
+    else {
       $page_title = $page['page_title'] ?? '';
       $title = $this->t('Page: @config_name (@page_title)', [
         '@config_name' => $key,
@@ -457,6 +461,7 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
     ];
 
     if ($key !== 'new') {
+      $confirm_message = $this->t('Are you sure you want to remove this page configuration?');
       $form['remove'] = [
         '#type' => 'submit',
         '#value' => $this->t('Remove'),
@@ -464,7 +469,7 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
         '#name' => 'remove_' . $key,
         '#attributes' => [
           'class' => ['button', 'button--danger'],
-          'onclick' => 'return confirm("' . $this->t('Are you sure you want to remove this page configuration?') . '");',
+          'onclick' => 'return confirm("' . $confirm_message . '");',
         ],
       ];
     }
@@ -494,7 +499,7 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
         // Separate view_name and view_display from view_block.
         $parts = explode('-', $new_page['view_block'], 2);
         $new_page['view_name'] = $parts[0];
-        $new_page['view_display'] = isset($parts[1]) ? $parts[1] : 'default';
+        $new_page['view_display'] = $parts[1] ?? 'default';
       }
 
       // Set the configuration name as the key for the new page.
@@ -573,7 +578,7 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
         if (!empty($page_data['view_block'])) {
           $parts = explode('-', $page_data['view_block'], 2);
           $page_data['view_name'] = $parts[0];
-          $page_data['view_display'] = isset($parts[1]) ? $parts[1] : 'default';
+          $page_data['view_display'] = $parts[1] ?? 'default';
         }
 
         if (!empty($page_data['layout_settings'])) {
@@ -605,7 +610,8 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
       $this->routeBuilder->rebuild();
 
       $this->messenger()->addMessage($this->t('The configuration has been updated.'));
-    } else {
+    }
+    else {
       // Add a warning if no pages data found in form values.
       $this->messenger()->addWarning($this->t('No pages data found in form values.'));
     }
@@ -613,7 +619,7 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
   }
 
-    /**
+  /**
    * Get View blocks options.
    */
   private function getViewBlocks() {
@@ -623,7 +629,7 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
     foreach ($views as $view) {
       $displays = $view->get('display');
       foreach ($displays as $display_id => $display) {
-        // Block表示のみを対象とする
+        // Block表示のみを対象とする.
         if ($display['display_plugin'] === 'block') {
           $view_name = $view->id();
           $display_title = $display['display_title'];
@@ -634,4 +640,5 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
 
     return $options;
   }
+
 }

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Hooks for the Kamihaya CMS Content Type module.
+ */
+
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Field\FieldConfigInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -10,7 +15,7 @@ use Drupal\views_flipped_table\Plugin\views\style\FlippedTable;
 
 /**
  * @file
- * hook implementation for Content type.
+ * Hook implementation for Content type.
  */
 
 /**
@@ -42,7 +47,6 @@ function kamihaya_cms_content_type_preprocess_layout(array &$variables) {
   // Create anchor links for headings.
   kamihaya_cms_content_type_create_headins_anchor_link($node, $variables);
 
-
   // Create anchor links for field groups.
   kamihaya_cms_content_type_create_anchor_link($view_display, $variables);
 }
@@ -63,7 +67,7 @@ function kamihaya_cms_content_type_create_anchor_link(EntityViewDisplayInterface
   }
   $sticky = FALSE;
   $full_width = FALSE;
-  foreach($variables['content'] as $name => &$element) {
+  foreach ($variables['content'] as $name => &$element) {
     if (is_array($element) && array_key_exists('anchor_links', $element)) {
       $anchor_links = &$element['anchor_links'];
     }
@@ -143,7 +147,8 @@ function kamihaya_cms_content_type_create_headins_anchor_link(NodeInterface $nod
     if (empty($paragraphs)) {
       continue;
     }
-    // Check if any of the referenced Paragraphs is of type 'headings' and has an anchor link ID.
+    // Check if any of the referenced Paragraphs is of type 'headings' and
+    // has an anchor link ID.
     /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
     foreach ($paragraphs as $paragraph) {
       if ($paragraph->bundle() !== 'headings' || empty($paragraph->get('field_anchor_link_id')->value)) {
@@ -168,7 +173,7 @@ function kamihaya_cms_content_type_create_headins_anchor_link(NodeInterface $nod
     return;
   }
 
-  foreach($variables['content'] as $name => &$element) {
+  foreach ($variables['content'] as $name => &$element) {
     if (is_array($element) && array_key_exists('headings_anchor_links', $element)) {
       $anchor_links = &$element['headings_anchor_links'];
     }
@@ -219,8 +224,7 @@ function kamihaya_cms_content_type_node_view(array &$build, NodeInterface $node,
       $default_value = array_slice($default_value, count($value));
     }
     $entity_repository = \Drupal::service('entity.repository');
-    $target_id = NULL;
-    foreach($default_value as $item) {
+    foreach ($default_value as $item) {
       if (empty($item) || empty($item['target_uuid']) || ($field_definition->getType() === 'viewsreference' && empty($item['display_id']))) {
         continue;
       }
@@ -257,13 +261,14 @@ function kamihaya_cms_content_type_node_view(array &$build, NodeInterface $node,
 /**
  * Check if the node has Paragraphs of type 'headings'.
  *
- * @param NodeInterface $node
- *   The node to check
+ * @param \Drupal\node\NodeInterface $node
+ *   The node to check.
+ *
  * @return bool
  *   TRUE if the node has Paragraphs of type 'headings', FALSE otherwise.
  */
 function kamihaya_cms_content_type_need_check_headings_paragraph(NodeInterface $node) {
-  foreach ($node->getFields() as $field_name => $field) {
+  foreach ($node->getFields() as $field) {
     // Check if the field is a Paragraph field.
     $field_def = $field->getFieldDefinition();
     $field_type = $field_def->getType();
@@ -277,7 +282,8 @@ function kamihaya_cms_content_type_need_check_headings_paragraph(NodeInterface $
     if (empty($paragraphs)) {
       continue;
     }
-    // Check if any of the referenced Paragraphs is of type 'headings' and has an anchor link ID.
+    // Check if any of the referenced Paragraphs is of type 'headings' and
+    // has an anchor link ID.
     /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
     foreach ($paragraphs as $paragraph) {
       if ($paragraph->bundle() === 'headings' && !empty($paragraph->get('field_anchor_link_id')->value)) {
@@ -317,13 +323,14 @@ function kamihaya_cms_content_type_entity_extra_field_info() {
 }
 
 /**
- * Checks if a given content type has any field referencing a specific Paragraph type.
+ * Checks if a content type has any field referencing a Paragraph type.
  *
  * @param string $node_bundle
  *   The machine name of the content type.
  *
  * @return bool
- *   TRUE if the content type has a field referencing the specified Paragraph type, FALSE otherwise.
+ *   TRUE if the content type has a field referencing the specified Paragraph
+ *   type, FALSE otherwise.
  */
 function kamihaya_cms_content_type_node_with_headings_paragraph(string $node_bundle) {
   // Get the entity field manager service.
@@ -332,8 +339,9 @@ function kamihaya_cms_content_type_node_with_headings_paragraph(string $node_bun
   // Get all field definitions for the given content type.
   $field_definitions = $field_manager->getFieldDefinitions('node', $node_bundle);
 
-  foreach ($field_definitions as $field_name => $field_definition) {
-    // Check if the field is an entity_reference_revisions field and not a Paragraph field.
+  foreach ($field_definitions as $field_definition) {
+    // Check if the field is an entity_reference_revisions field and not a
+    // Paragraph field.
     if ($field_definition->getType() !== 'entity_reference_revisions' || $field_definition->getSetting('target_type') !== 'paragraph') {
       continue;
     }
@@ -341,7 +349,7 @@ function kamihaya_cms_content_type_node_with_headings_paragraph(string $node_bun
     $target_bundles = $field_definition->getSetting('handler_settings')['target_bundles'] ?? [];
 
     // If the target Paragraph type is included, return TRUE.
-    if (in_array('headings', $target_bundles, true)) {
+    if (in_array('headings', $target_bundles, TRUE)) {
       return TRUE;
     }
   }
@@ -349,7 +357,6 @@ function kamihaya_cms_content_type_node_with_headings_paragraph(string $node_bun
   // No matching Paragraph type reference found.
   return FALSE;
 }
-
 
 /**
  * Implements hook_field_group_pre_render().
@@ -360,12 +367,12 @@ function kamihaya_cms_content_type_field_group_pre_render(array &$element, $grou
   }
 
   $empty = FALSE;
-  foreach($element as $name => &$field) {
+  foreach ($element as $name => &$field) {
     if (strpos($name, 'field_') !== 0 || empty($field['#field_type']) || $field['#field_type'] !== 'viewsreference') {
       continue;
     }
     $empty = TRUE;
-    foreach($field as $key => $value) {
+    foreach ($field as $key => $value) {
       if (!is_numeric($key)) {
         continue;
       }
@@ -404,7 +411,7 @@ function kamihaya_cms_content_type_node_load(array $nodes) {
     foreach ($field_configs as $field_name => $field_config) {
       if (!($field_config instanceof FieldConfigInterface) || $field_config->getType() !== 'entity_reference'
         || empty($field_config->getDefaultValue($node))
-        || empty($field_config->getDefaultValue($node)[0]['target_id']))  {
+        || empty($field_config->getDefaultValue($node)[0]['target_id'])) {
         continue;
       }
       if ($field_config->getSetting('handler') !== 'default:media'

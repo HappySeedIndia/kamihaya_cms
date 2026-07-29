@@ -2,13 +2,12 @@
 
 namespace Drupal\kamihaya_cms_feeds_contentserv\Feeds\Parser;
 
-use Drupal\content_moderation\ModerationInformation;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\File\FileSystemInterface;
-use GuzzleHttp\Psr7\Stream;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\content_moderation\ModerationInformation;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\DynamicItem;
@@ -23,8 +22,10 @@ use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\kamihaya_cms_feeds_contentserv\Service\ContentservClient;
 use Drupal\kamihaya_cms_feeds_contentserv\Trait\ContentservApiTrait;
-use GuzzleHttp\RequestOptions;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\TransferException;
+use GuzzleHttp\Psr7\Stream;
+use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -36,6 +37,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   title = "Kamihaya Contentserv",
  *   description = @Translation("Parse Contentserv JSON gotten by Kamihaya Contentserv API."),
  * )
+ *
+ * @phpstan-consistent-constructor
  */
 class ContentservApiParser extends ParserBase implements ContainerFactoryPluginInterface {
 
@@ -61,15 +64,16 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    * @param \Drupal\content_moderation\ModerationInformation $moderationInformation
    *   The content moderation information service.
    */
-  public function __construct
-    (array $configuration,
+  public function __construct(
+    array $configuration,
     $plugin_id,
     array $plugin_definition,
     protected ContentservClient $contentservClient,
     protected FileSystemInterface $fileSystem,
     protected EntityTypeManagerInterface $entityTypeManager,
     protected LoggerInterface $logger,
-    protected ModerationInformation $moderationInformation) {
+    protected ModerationInformation $moderationInformation,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -119,7 +123,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
 
     /** @var \Drupal\kamihaya_cms_feeds_contentserv\Result\ContentservApiFetcherResultInterface $fetcher_result */
     if (empty($fetcher_result->getResults())) {
-      // If there are no results, set the last imported time and throw an exception.
+      // If there are no results, set the last imported time and throw an
+      // exception.
       $this->updateLastImportedTime($feed);
       throw new EmptyFeedException(strtr('@name: There is no fetched data.', ['@name' => $feed->label()]));
     }
@@ -150,11 +155,13 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     $skipped_count = 0;
 
     foreach ($results as $result_data) {
+      $item = NULL;
       try {
         // Get the data ID from the result data.
         $data_id = $result_data['ID'];
 
-        // Skip the data if its last changed time is less than the last imported time.
+        // Skip the data if its last changed time is less than the last
+        // imported time.
         if (!$fetcher_config['filter_by_date'] && !empty($result_data['Changed']) && strtotime($result_data['Changed']) < $last_imported_time
           && ($this->checkExistsEntity($feed, $data_id) || !$fetcher_config['create_content'])) {
           $state->report(StateType::SKIP, strtr('Skipped the data because it is not changed since last import. [@type ID: @id]', [
@@ -219,8 +226,9 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
 
             try {
               // Create the media file.
-               $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
-            } catch (GuzzleException $e) {
+              $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
+            }
+            catch (GuzzleException $e) {
               // Skip the file if failed to create media.
               $state->report(StateType::FAIL, strtr('Skipped the file because failed to create the media file. [@type ID: @id, File label: @label, File ID: @value]', [
                 '@type' => $data_type,
@@ -248,7 +256,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
         if (!empty($langcode)) {
           // Get additional language data.
           $add_options = $options;
-          //  Add the language code to the query.
+          // Add the language code to the query.
           $add_options[RequestOptions::QUERY] = ['lang' => $langcode];
           // Get the additional data.
           $response = $this->getData($feed, $url, "$data_url{$result_data['ID']}", $fetcher_result->getAccessToken(), $add_options);
@@ -266,14 +274,16 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
               $value = $this->getAttributeValue($data[$data_type], $json_key);
 
               $alt = FALSE;
-              // Skip the value is not set or the value is same as the original language value and not alt or description.
+              // Skip when the value is not set, or it matches the original
+              // language value and is not an alt or description.
               foreach ($mappings as $mapping) {
                 if (empty($mapping['map']['alt']) || $mapping['map']['alt'] !== $key) {
                   continue;
                 }
                 $alt = TRUE;
               }
-              // Skip the value is not set or the value is same as the original language value and not alt or description.
+              // Skip when the value is not set, or it matches the original
+              // language value and is not an alt or description.
               if (strlen($value) === 0 || (!$has_translation && $value === $item->get($key) && !$alt)) {
                 continue;
               }
@@ -288,7 +298,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
                 try {
                   // Create the media file.
                   $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
-                } catch (GuzzleException $e) {
+                }
+                catch (GuzzleException $e) {
                   // Skip the file if failed to create media.
                   $state->report(StateType::SKIP, strtr('Skipped the file because failed to create the media file. [@type ID: @id, File label: @label, File ID: @value, Language: @lang]', [
                     '@type' => $data_type,
@@ -484,6 +495,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    *   The file name.
    * @param string $langcode
    *   The langcode.
+   * @param bool $retry
+   *   Whether this is a retry attempt.
    *
    * @return int
    *   The file id.
@@ -555,14 +568,14 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     if ($status_code != 200) {
       // Throw an exception if the status code is not 200.
       $args = ['%status' => $status_code];
-      throw new GuzzleException(strtr('Faild to get the file with status code "%status".', $args));
+      throw new TransferException(strtr('Failed to get the file with status code "%status".', $args));
     }
 
     /** @var \GuzzleHttp\Psr7\Stream $stream */
     $stream = $response->getBody();
-    if (empty($stream) || !($stream instanceof Stream) || !is_readable($file_destination)) {
+    if (!($stream instanceof Stream) || !is_readable($file_destination)) {
       // Throw an exception if the stream is not correct.
-      throw new GuzzleException('Faild to get the file because the stream is not correct.');
+      throw new TransferException('Failed to get the file because the stream is not correct.');
     }
     // Save the file.
     $files = $this->entityTypeManager->getStorage('file')->loadByProperties(['uri' => $file_destination]);
@@ -599,6 +612,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
    *   The feed object.
    * @param string $data_id
    *   The data ID to check.
+   * @param string|null $langcode
+   *   The language code to check, or NULL for none.
    *
    * @return bool
    *   TRUE if the entity exists, FALSE otherwise.
@@ -743,7 +758,8 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     $states = $workflow->getTypePlugin()->getStates();
     foreach ($states as $state_id => $state) {
       if (!$state->isPublishedState() && $state->isDefaultRevisionState()) {
-        // Return the moderation state if it is unpublished and is the default revision.
+        // Return the moderation state if it is unpublished and is the default
+        // revision.
         return $state_id;
       }
     }
@@ -765,6 +781,7 @@ class ContentservApiParser extends ParserBase implements ContainerFactoryPluginI
     $entity->setUnpublished();
     $entity->save();
   }
+
   /**
    * Update the last imported time in the feed configuration.
    *

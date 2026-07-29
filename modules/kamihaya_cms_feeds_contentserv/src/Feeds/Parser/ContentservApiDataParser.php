@@ -60,7 +60,7 @@ class ContentservApiDataParser extends ContentservApiParser {
     try {
       $results = $fetcher_result->getResults();
       if (empty($results[0])) {
-        throw new FetchException($this->t('@name: No detailed results found.', ['@name' => $feed->label()]));
+        throw new FetchException(strtr('@name: No detailed results found.', ['@name' => $feed->label()]));
       }
       $result_data = $results[0];
       $data_id = $result_data[$data_type]['ID'];
@@ -103,7 +103,8 @@ class ContentservApiDataParser extends ContentservApiParser {
           try {
             // Create the media file.
             $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
-          } catch (GuzzleException $e) {
+          }
+          catch (GuzzleException $e) {
             $state->report(StateType::FAIL, strtr('Skipped file because the file extentioon is not correct. [@type ID: @id, File label: @label, File ID: @value]', [
               '@type' => $data_type,
               '@id' => $data_id,
@@ -159,7 +160,8 @@ class ContentservApiDataParser extends ContentservApiParser {
               }
               $label = TRUE;
             }
-            // Skip the value is not set or the value is same as the original language value and not alt or description.
+            // Skip when the value is not set, or it matches the original
+            // language value and is not an alt or description.
             if (strlen($value) === 0 || (!$has_translation && $value === $item->get($key) && !$label)) {
               continue;
             }
@@ -174,7 +176,8 @@ class ContentservApiDataParser extends ContentservApiParser {
               try {
                 // Create the media file.
                 $value = $this->createMediaFile($feed, $fetcher_result, $target, $value, $label);
-              } catch (GuzzleException $e) {
+              }
+              catch (GuzzleException $e) {
                 throw new SkipItemException(strtr('@name - Failed to create file. [@type ID: @id, File label: @label, File ID: @value, error: %error]', [
                   '@name' => $feed->label(),
                   '@type' => $data_type,
@@ -208,7 +211,8 @@ class ContentservApiDataParser extends ContentservApiParser {
       $state->setCompleted();
       $args = [
         '@name' => $feed->label(),
-        '%error' => $e->getMessage()];
+        '%error' => $e->getMessage(),
+      ];
       $this->logger->error('Failed to get detailed data from Contentserv API: @name - The error occurs while getting detailed data because of error "%error".', $args);
       throw new FetchException(strtr('@name - The error occurs while getting detailed data because of error "%error".', $args));
     }

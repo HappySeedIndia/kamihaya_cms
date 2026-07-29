@@ -54,7 +54,15 @@ class MarkerService {
       $operator = $marker_setting['operator'];
       $condition_time = $this->getSystemTime($condition);
       $field_time = $this->getSystemTime($value);
-      $display = eval("return $condition_time $operator $field_time;");
+      $display = match ($operator) {
+        '>' => $condition_time > $field_time,
+        '>=' => $condition_time >= $field_time,
+        '==' => $condition_time == $field_time,
+        '!=' => $condition_time != $field_time,
+        '<=' => $condition_time <= $field_time,
+        '<' => $condition_time < $field_time,
+        default => FALSE,
+      };
     }
     if ($field_type === 'boolean') {
       $display = $condition ? !$value : $value;
@@ -65,7 +73,7 @@ class MarkerService {
       $name = str_replace('_', '-', $field_name);
       return "<div class='kamihaya-marker marker-{$position} marker-{$name}'>{$marker_label}</div>";
     }
-    return null;
+    return NULL;
   }
 
   /**
@@ -84,5 +92,5 @@ class MarkerService {
     $date_time->setTimezone(new \DateTimeZone($site_timezone));
     return mktime(0, 0, 0, date('n', $date_time->getTimestamp()), date('j', $date_time->getTimestamp()), date('Y', $date_time->getTimestamp()));
   }
-}
 
+}

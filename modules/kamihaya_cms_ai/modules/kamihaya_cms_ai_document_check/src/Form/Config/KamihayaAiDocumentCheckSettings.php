@@ -2,8 +2,6 @@
 
 namespace Drupal\kamihaya_cms_ai_document_check\Form\Config;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\file\Entity\File;
 use Drupal\kamihaya_cms_ai\Form\Config\KamihayaAiSettingsBase;
 
 /**
@@ -28,8 +26,7 @@ class KamihayaAiDocumentCheckSettings extends KamihayaAiSettingsBase {
   /**
    * {@inheritdoc}
    */
-  protected function getSteps()
-  {
+  protected function getSteps() {
     return [
       'summarize' => $this->t('Summarize'),
       'copyright_check' => $this->t('Copyright check'),

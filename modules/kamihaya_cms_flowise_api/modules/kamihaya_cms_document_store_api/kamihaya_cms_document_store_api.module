@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Hooks for the Kamihaya CMS Document Store API module.
+ */
+
+/**
  * Implements hook_cron().
  */
 function kamihaya_cms_document_store_api_cron(): void {
@@ -63,11 +68,13 @@ function kamihaya_cms_document_store_api_upsert_operation(): void {
             '@deleted' => $response['numDeleted'] ?? 0,
             '@skipped' => $response['numSkipped'] ?? 0,
           ]);
-    } else {
+    }
+    else {
       Drupal::logger('kamihaya_cms_document_store_api')
         ->error('Failed to upsert Document Store %id.', ['%id' => $document_store_id]);
     }
-  } catch (\Exception $e) {
+  }
+  catch (\Exception $e) {
     Drupal::logger('kamihaya_cms_document_store_api')
       ->error('An error occurred while upserting the Document Store: @message', ['@message' => $e->getMessage()]);
   }

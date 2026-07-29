@@ -44,7 +44,7 @@ final class KamihayaQuantityTotal extends FieldPluginBase {
         'library' => ['kamihaya_cms_views_extension/estimate'],
       ],
     ];
-    return \Drupal::service('renderer')->render($build);
+    return $this->getRenderer()->render($build);
   }
 
 }

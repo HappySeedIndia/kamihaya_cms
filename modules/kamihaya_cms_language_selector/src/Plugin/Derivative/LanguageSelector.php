@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides language selector block plugin definitions for all languages.
+ *
+ * @phpstan-consistent-constructor
  */
 class LanguageSelector extends DeriverBase implements ContainerDeriverInterface {
 

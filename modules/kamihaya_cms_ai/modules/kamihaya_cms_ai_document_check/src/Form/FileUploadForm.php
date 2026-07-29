@@ -2,18 +2,23 @@
 
 namespace Drupal\kamihaya_cms_ai_document_check\Form;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * File upload form.
+ *
+ * @phpstan-consistent-constructor
  */
 class FileUploadForm extends FormBase {
 
-  public function __construct(protected AccountProxyInterface $currentUser) {
+  public function __construct(
+    protected AccountProxyInterface $currentUser,
+    protected EntityTypeManagerInterface $entityTypeManager,
+  ) {
   }
 
   /**
@@ -21,7 +26,8 @@ class FileUploadForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -36,7 +42,7 @@ class FileUploadForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $user = User::load($this->currentUser->id());
+    $user = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $name = $user->hasField('field_name') && !empty($user->get('field_name')->value) ? $user->get('field_name')->value : $user->getAccountName();
 
     $form['welcome'] = [

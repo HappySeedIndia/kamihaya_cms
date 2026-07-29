@@ -42,14 +42,6 @@ class SettingsFormBase extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state): void {
-    // @todo Validate the form here.
-    parent::validateForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $config = $this->configFactory()->getEditable($this->getEditableConfigNames()[0]);
     $config->set('endpoint', $form_state->getValue('endpoint'))->save();

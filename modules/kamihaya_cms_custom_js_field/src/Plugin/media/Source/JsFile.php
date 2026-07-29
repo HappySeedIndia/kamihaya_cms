@@ -3,11 +3,11 @@
 namespace Drupal\kamihaya_cms_custom_js_field\Plugin\media\Source;
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\media\Plugin\media\Source\File;
-use Drupal\media\Attribute\MediaSource;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\media\Attribute\MediaSource;
 use Drupal\media\MediaSourceFieldConstraintsInterface;
 use Drupal\media\MediaTypeInterface;
+use Drupal\media\Plugin\media\Source\File;
 
 /**
  * Media source for JavaScript files.
@@ -19,7 +19,7 @@ use Drupal\media\MediaTypeInterface;
   allowed_field_types: ["js_file"],
   default_thumbnail_filename: "js.png",
   forms: [
-     "media_library_add" => "\Drupal\media_library\Form\FileUploadForm",
+    "media_library_add" => "\Drupal\media_library\Form\FileUploadForm",
   ]
 )]
 class JsFile extends File implements MediaSourceFieldConstraintsInterface {
@@ -28,23 +28,23 @@ class JsFile extends File implements MediaSourceFieldConstraintsInterface {
    * {@inheritdoc}
    */
   public function getSourceFieldConstraints() {
-  return [
-    'field_type' => ['js_file'],
-    'settings' => [
-      'file_extensions' => ['js', 'txt'],
-    ],
-  ];
+    return [
+      'field_type' => ['js_file'],
+      'settings' => [
+        'file_extensions' => ['js', 'txt'],
+      ],
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function createSourceField(MediaTypeInterface $type) {
-    // Let parent create the field
+    // Let parent create the field.
     /** @var \Drupal\Core\Field\FieldConfigInterface $field */
     $field = parent::createSourceField($type);
 
-    // Customize field settings for JS files
+    // Customize field settings for JS files.
     $field->setSetting('file_extensions', 'js txt');
     $field->setSetting('file_directory', 'js-files/[date:custom:Y]-[date:custom:m]');
     $field->setLabel($this->t('JavaScript file'));
@@ -57,10 +57,10 @@ class JsFile extends File implements MediaSourceFieldConstraintsInterface {
    * {@inheritdoc}
    */
   public function prepareViewDisplay(MediaTypeInterface $type, EntityViewDisplayInterface $display) {
-    // Let parent prepare the display first
+    // Let parent prepare the display first.
     parent::prepareViewDisplay($type, $display);
 
-    // Override with JS-specific formatter
+    // Override with JS-specific formatter.
     $source_field = $this->getSourceFieldDefinition($type)->getName();
     $display->setComponent($source_field, [
       'type' => 'js_file_script_tag',

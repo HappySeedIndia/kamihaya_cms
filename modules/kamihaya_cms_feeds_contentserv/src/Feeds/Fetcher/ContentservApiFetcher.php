@@ -29,6 +29,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     "feed" = "Drupal\kamihaya_cms_feeds_contentserv\Feeds\Fetcher\Form\ContentservApiFetcherFeedForm",
  *   }
  * )
+ *
+ * @phpstan-consistent-constructor
  */
 class ContentservApiFetcher extends PluginBase implements FetcherInterface, ContainerFactoryPluginInterface {
 

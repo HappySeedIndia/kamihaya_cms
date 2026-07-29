@@ -6,7 +6,7 @@ use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\feeds\Plugin\Derivative\GenericContentEntityProcessor;
 
 /**
- * Provides generic Feeds processor plugin definitions for multilingual content entities.
+ * Provides Feeds processor plugin definitions for multilingual entities.
  *
  * @see \Drupal\feeds\Feeds\Processor\GenericContentEntityProcessor
  */
@@ -24,7 +24,7 @@ class GenericMultilingualEntityProcessor extends GenericContentEntityProcessor {
         continue;
       }
       $this->derivatives[$entity_type_id] = $base_plugin_definition;
-      $this->derivatives[$entity_type_id]['title'] = $entity_type->getLabel(). '(multilingual)';
+      $this->derivatives[$entity_type_id]['title'] = $entity_type->getLabel() . '(multilingual)';
       $this->derivatives[$entity_type_id]['description'] = $this->t('Creates multilingual @plural_label from feed items.', [
         '@plural_label' => $entity_type->getPluralLabel(),
       ]);

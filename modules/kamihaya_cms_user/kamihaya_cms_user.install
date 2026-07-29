@@ -1,6 +1,9 @@
 <?php
 
-use Drupal\Component\Serialization\Yaml;
+/**
+ * @file
+ * Install, update and uninstall hooks for the Kamihaya CMS User module.
+ */
 
 /**
  * Update configs.

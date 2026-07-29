@@ -20,7 +20,7 @@ class ContentservApiFetcherResult extends FetcherResult implements ContentservAp
    * @param array $results
    *   An array of results.
    * @param string $accessToken
-   *  The access token.
+   *   The access token.
    */
   public function __construct(protected array $results, protected string $accessToken) {
 

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Install hooks for the Kamihaya CMS Landing Page Content Type module.
+ */
+
 use Drupal\block\Entity\Block;
 use Drupal\node\Entity\NodeType;
 
@@ -11,8 +16,6 @@ use Drupal\node\Entity\NodeType;
 function kamihaya_cms_landing_page_content_type_install() {
   // Target content type to hide the page title block.
   $target_content_type = 'kamihaya_landing_page';
-  // Theme name.
-  $theme = 'kamihaya_digitalagency';
 
   // Block ID for the page title block.
   $block_id = 'kamihaya_digitalagency_page_title';

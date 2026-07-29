@@ -5,7 +5,7 @@ namespace Drupal\kamihaya_cms_feeds_contentserv\Result;
 use Drupal\feeds\Result\FetcherResultInterface;
 
 /**
- * Defines the interface for result objects returned by Contentserv API fetchers.
+ * Defines the interface for Contentserv API fetcher results.
  */
 interface ContentservApiFetcherResultInterface extends FetcherResultInterface {
 

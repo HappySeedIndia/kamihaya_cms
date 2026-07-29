@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Hooks for the Kamihaya CMS Commerce module.
+ */
+
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\SelectInterface;
 
@@ -12,16 +17,16 @@ function kamihaya_cms_commerce_query_product_list_alter(AlterableInterface $quer
   }
 
   $conditions = &$query->conditions();
-  foreach($conditions as &$condition) {
+  foreach ($conditions as &$condition) {
     if (empty($condition['field']) || !is_object($condition['field'])) {
       continue;
     }
-    foreach($condition['field']->conditions() as &$con1) {
+    foreach ($condition['field']->conditions() as &$con1) {
       if (empty($con1['field']) || !is_object($con1['field'])) {
         continue;
       }
       $cons = &$con1['field']->conditions();
-      foreach($cons as $idx => &$con2) {
+      foreach ($cons as $idx => &$con2) {
         if (empty($con2['field']) || is_object($con2['field'])) {
           continue;
         }
@@ -47,4 +52,3 @@ function kamihaya_cms_commerce_query_product_list_alter(AlterableInterface $quer
     }
   }
 }
-

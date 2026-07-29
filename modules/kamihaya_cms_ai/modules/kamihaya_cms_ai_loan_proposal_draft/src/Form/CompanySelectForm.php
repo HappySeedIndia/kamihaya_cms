@@ -3,15 +3,17 @@
 namespace Drupal\kamihaya_cms_ai_loan_proposal_draft\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\kamihaya_cms_loan_proposal_api\ExabaseClient;
-use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Company select form.
+ *
+ * @phpstan-consistent-constructor
  */
 class CompanySelectForm extends FormBase {
 
@@ -25,17 +27,24 @@ class CompanySelectForm extends FormBase {
   /**
    * The constructor of CompanySelectForm.
    *
-   * @param AccountProxyInterface $currentUser
+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user.
-   * @param ExabaseClient $exabaseClient
-   *  The Exabase client.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory.
+   * @param \Drupal\kamihaya_cms_loan_proposal_api\ExabaseClient $exabaseClient
+   *   The Exabase client.
+   * @param \Drupal\kamihaya_cms_loan_proposal_api\ExabaseClient $fallbackClient
+   *   The fallback Exabase client.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    */
   public function __construct(
     protected AccountProxyInterface $currentUser,
     protected ConfigFactoryInterface $config_factory,
     protected ExabaseClient $exabaseClient,
     protected ExabaseClient $fallbackClient,
-    ) {
+    protected EntityTypeManagerInterface $entityTypeManager,
+  ) {
     $this->config = $this->config_factory->getEditable('kamihaya_cms_ai_loan_proposal_draft.settings');
   }
 
@@ -47,7 +56,8 @@ class CompanySelectForm extends FormBase {
       $container->get('current_user'),
       $container->get('config.factory'),
       $container->get('kamihaya_cms_loan_proposal_api.client'),
-      $container->get('kamihaya_cms_ai_loan_proposal_draft.fallback_client')
+      $container->get('kamihaya_cms_ai_loan_proposal_draft.fallback_client'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -62,7 +72,7 @@ class CompanySelectForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $user = User::load($this->currentUser->id());
+    $user = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $name = $user->hasField('field_name') && !empty($user->get('field_name')->value) ? $user->get('field_name')->value : $user->getAccountName();
 
     $form['welcome'] = [
@@ -163,7 +173,18 @@ class CompanySelectForm extends FormBase {
     // Do nothing.
   }
 
-  function ajaxSelectCompanyCallback(array &$form, FormStateInterface $form_state) {
+  /**
+   * Ajax callback returning the file upload element after company selection.
+   *
+   * @param array $form
+   *   The form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   *
+   * @return array
+   *   The file upload form element.
+   */
+  public function ajaxSelectCompanyCallback(array &$form, FormStateInterface $form_state) {
     return $form['file_upload'];
   }
 

@@ -1,7 +1,9 @@
 <?php
 
-use Drupal\field\Entity\FieldConfig;
-use Drupal\field\Entity\FieldStorageConfig;
+/**
+ * @file
+ * Install hooks for the Kamihaya CMS Dynamic Filter Label module.
+ */
 
 /**
  * Implements hook_install().
@@ -14,8 +16,9 @@ function kamihaya_cms_dynamic_filter_label_install() {
 }
 
 /**
- * Scan taxonomy term fields for references to other vocabularies
- * and add field_filter_labels to those target vocabularies.
+ * Scan taxonomy term fields for references to other vocabularies.
+ *
+ * Adds field_filter_labels to those target vocabularies.
  */
 function dynamic_filter_label_scan_reference_fields() {
   $field_configs = \Drupal::entityTypeManager()
@@ -31,7 +34,7 @@ function dynamic_filter_label_scan_reference_fields() {
       $settings = $field_config->getSetting('handler_settings') ?: [];
       $target_vocabs = $settings['target_bundles'] ?? [];
       foreach ($target_vocabs as $vocab_id) {
-        _dynamic_filter_label_ensure_field($vocab_id);
+        _kamihaya_cms_dynamic_filter_label_ensure_field($vocab_id);
       }
     }
   }

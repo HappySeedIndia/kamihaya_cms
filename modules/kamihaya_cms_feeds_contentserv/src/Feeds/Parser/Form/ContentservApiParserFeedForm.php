@@ -14,14 +14,14 @@ class ContentservApiParserFeedForm extends ExternalPluginFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildConfigurationForm(array $form, FormStateInterface $form_state, FeedInterface $feed = NULL) {
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state, ?FeedInterface $feed = NULL) {
     return $form;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state, FeedInterface $feed = NULL) {
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state, ?FeedInterface $feed = NULL) {
     $feed->setConfigurationFor($this->plugin, $form_state->getValues());
   }
 

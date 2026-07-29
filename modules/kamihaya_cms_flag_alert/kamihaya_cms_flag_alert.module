@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Hook implementations for the Kamihaya CMS Flag Alert module.
+ */
+
 use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -34,7 +39,8 @@ function kamihaya_cms_flag_alert_entity_type_alter(array &$entity_types) {
     'unflag_alert_message_bg_color_opacity',
     'unflag_alert_position',
   ], $current_export)) {
-    return; // Already added.
+    // Already added.
+    return;
   }
   $current_export[] = 'flag_alert_message';
   $current_export[] = 'flag_alert_message_link_url';
@@ -204,10 +210,10 @@ function kamihaya_cms_flag_alert_form_flag_edit_form_alter(array &$form, FormSta
     '#default_value' => $flag->getUnflagAlertPosition() ?? 'top',
     '#description' => t('Position of the unflag alert on the page.'),
   ];
-  kamihaya_cms_flag_add_color_spectrum('flag_alert_message_color', $flag_message['flag_alert']['flag_alert_message_color']);
-  kamihaya_cms_flag_add_color_spectrum('flag_alert_message_bg_color', $flag_message['flag_alert']['flag_alert_message_bg_color']);
-  kamihaya_cms_flag_add_color_spectrum('unflag_alert_message_color', $unflag_message['unflag_alert']['unflag_alert_message_color']);
-  kamihaya_cms_flag_add_color_spectrum('unflag_alert_message_bg_color', $unflag_message['unflag_alert']['unflag_alert_message_bg_color']);
+  kamihaya_cms_flag_alert_add_color_spectrum('flag_alert_message_color', $flag_message['flag_alert']['flag_alert_message_color']);
+  kamihaya_cms_flag_alert_add_color_spectrum('flag_alert_message_bg_color', $flag_message['flag_alert']['flag_alert_message_bg_color']);
+  kamihaya_cms_flag_alert_add_color_spectrum('unflag_alert_message_color', $unflag_message['unflag_alert']['unflag_alert_message_color']);
+  kamihaya_cms_flag_alert_add_color_spectrum('unflag_alert_message_bg_color', $unflag_message['unflag_alert']['unflag_alert_message_bg_color']);
   $form['messages'] = $messages + $flag_message + $unflag_message;
 
   if (!empty($form['actions']['submit'])) {
@@ -284,7 +290,7 @@ function kamihaya_cms_flag_alert_preprocess_flag(&$variables) {
   }
   $variables['#attached']['library'][] = 'kamihaya_cms_flag_alert/flag-alert';
   $css_vars = [];
-  if ($flag->getFlagAlertMessage() ) {
+  if ($flag->getFlagAlertMessage()) {
     $variables['#attached']['drupalSettings']['flag_alert']['message'] = $flag->getFlagAlertMessage();
     $url = $flag->getFlagAlertMessageLinkUrl();
     if ($url) {
@@ -320,7 +326,8 @@ function kamihaya_cms_flag_alert_preprocess_flag(&$variables) {
   }
 
   if (empty($css_vars)) {
-    return; // No CSS variables to attach.
+    // No CSS variables to attach.
+    return;
   }
 
   // Add CSS color variables.
@@ -331,7 +338,7 @@ function kamihaya_cms_flag_alert_preprocess_flag(&$variables) {
         'type' => 'text/css',
       ],
       '#value' => '.flag-alert, .unflag-alert {'
-        . implode(' ', $css_vars)
+      . implode(' ', $css_vars)
       . '}',
     ],
     ' kamihaya_cms_flag_alert',
@@ -346,7 +353,7 @@ function kamihaya_cms_flag_alert_preprocess_flag(&$variables) {
  * @param array $element
  *   The element to add the color spectrum to.
  */
-function kamihaya_cms_flag_add_color_spectrum($name, array &$element) {
+function kamihaya_cms_flag_alert_add_color_spectrum($name, array &$element) {
   $palette = [
     ["#000", "#444", "#666", "#999", "#ccc", "#eee", "#f3f3f3", "#fff"],
     ["#f00", "#f90", "#ff0", "#0f0", "#0ff", "#00f", "#90f", "#f0f"],

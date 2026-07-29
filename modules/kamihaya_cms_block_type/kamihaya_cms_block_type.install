@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @file
+ * Install, update and uninstall hooks for the Kamihaya CMS Block Type module.
+ */
+
+use Drupal\block\Entity\Block;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\block_content\Entity\BlockContentType;
 
@@ -28,7 +34,7 @@ function kamihaya_cms_block_type_update_10002() {
  * Update configs.
  */
 function kamihaya_cms_block_type_update_10003() {
-  $block = \Drupal\block\Entity\Block::load('maintenance_mode');
+  $block = Block::load('maintenance_mode');
   if (!empty($block)) {
     return;
   }

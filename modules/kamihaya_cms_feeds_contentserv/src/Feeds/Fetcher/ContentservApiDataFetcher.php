@@ -63,10 +63,10 @@ class ContentservApiDataFetcher extends ContentservApiFetcher {
         $options[RequestOptions::QUERY] = ['expand' => 'Tags'];
       }
       // Get the detail of product.
-      $response = $this->getData($feed, $url, "$data_url{$source}" , $token, $options);
+      $response = $this->getData($feed, $url, "$data_url{$source}", $token, $options);
       $result = json_decode($response, TRUE);
       if (empty($result[$data_type])) {
-        throw new FetchException($this->t('@name: Faild to fetch the data. [@type ID: @id]', [
+        throw new FetchException(strtr('@name: Failed to fetch the data. [@type ID: @id]', [
           '@name' => $feed->label(),
           '@type' => $data_type,
           '@id' => $source,

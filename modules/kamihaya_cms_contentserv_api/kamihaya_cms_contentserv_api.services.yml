@@ -5,5 +5,5 @@ services:
     arguments: ['kamihaya_cms_contentserv_api']
 
   contentserv.api:
-    class: Drupal\kamihaya_cms_contentserv_api\Service\ContentServApi
+    class: Drupal\kamihaya_cms_contentserv_api\Service\ContentservApi
     arguments: ['@http_client', '@config.factory', '@messenger', '@string_translation', '@kamihaya_cms_contentserv_api.logger_channel']

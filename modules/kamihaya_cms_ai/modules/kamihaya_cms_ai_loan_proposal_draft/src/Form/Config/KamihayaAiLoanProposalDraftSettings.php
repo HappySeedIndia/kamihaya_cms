@@ -3,7 +3,6 @@
 namespace Drupal\kamihaya_cms_ai_loan_proposal_draft\Form\Config;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\file\Entity\File;
 use Drupal\kamihaya_cms_ai\Form\Config\KamihayaAiSettingsBase;
 
 /**
@@ -92,8 +91,7 @@ class KamihayaAiLoanProposalDraftSettings extends KamihayaAiSettingsBase {
   /**
    * {@inheritdoc}
    */
-  protected function getSteps()
-  {
+  protected function getSteps() {
     return [
       'summarize' => $this->t('Summary Extraction'),
       'draft' => $this->t('Loan Proposal Draft'),

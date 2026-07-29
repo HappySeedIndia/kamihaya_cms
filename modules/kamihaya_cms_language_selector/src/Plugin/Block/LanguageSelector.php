@@ -20,6 +20,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Provides an alternative language switcher block.
+ *
+ * @phpstan-consistent-constructor
  */
 #[Block(
   id: "kamihaya_language_selector",

@@ -81,7 +81,7 @@ final class FallbackResponseProvider extends ExabaseClient {
     return $this->config->get('pdf_summary');
   }
 
-    /**
+  /**
    * Calls the make loan proposal endpoint.
    */
   public function makeLoanProposal(string $prompt, string $loan, string $company) {
@@ -90,4 +90,5 @@ final class FallbackResponseProvider extends ExabaseClient {
       'loan_summary' => $this->config->get('loan_document'),
     ];
   }
+
 }

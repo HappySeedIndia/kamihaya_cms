@@ -16,6 +16,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Form handler for the user edit forms.
  *
  * @internal
+ *
+ * @phpstan-consistent-constructor
  */
 class KamihayaUserEditForm extends AccountForm {
 

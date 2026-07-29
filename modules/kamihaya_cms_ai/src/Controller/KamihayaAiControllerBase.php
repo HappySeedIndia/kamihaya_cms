@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base controller for Kamihaya AI.
+ *
+ * @phpstan-consistent-constructor
  */
 class KamihayaAiControllerBase extends ControllerBase {
 
@@ -33,7 +35,6 @@ class KamihayaAiControllerBase extends ControllerBase {
       $container->get('file_url_generator'),
     );
   }
-
 
   /**
    * Set the title of the page.

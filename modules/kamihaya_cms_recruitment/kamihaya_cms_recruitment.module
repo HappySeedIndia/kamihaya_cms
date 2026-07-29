@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Hooks for the Kamihaya CMS Recruitment module.
+ */
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
@@ -9,7 +14,6 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
-
 
 /**
  * Implements hook_entity_type_alter().
@@ -27,7 +31,7 @@ function kamihaya_cms_recruitment_query_job_match_alter(AlterableInterface $quer
   $skill_paragraphs = $current_user->get('field_skill')->referencedEntities();
 
   $skills = [];
-  foreach($skill_paragraphs as $paragraph) {
+  foreach ($skill_paragraphs as $paragraph) {
     if (empty($paragraph->get('field_skill')->target_id)) {
       continue;
     }
@@ -42,7 +46,7 @@ function kamihaya_cms_recruitment_query_job_match_alter(AlterableInterface $quer
   foreach ($query_conditions as &$conditions) {
     if (is_array($conditions) && is_object($conditions['field'])) {
       $conditions1 = &$conditions['field']->conditions();
-      foreach ($conditions1 as $idx => &$condition) {
+      foreach ($conditions1 as &$condition) {
         if (is_array($condition) && is_object($condition['field']) && is_array($condition['field']->conditions())) {
           foreach ($condition['field']->conditions() as &$con) {
             if (is_array($con)) {
@@ -80,7 +84,7 @@ function kamihaya_cms_recruitment_query_applicant_search_alter(AlterableInterfac
     }
   }
   $fields = &$query->getFields();
-  foreach($fields as $name => $field) {
+  foreach ($fields as $name => $field) {
     if (strpos($name, 'skill_tid') === FALSE
       && strpos($name, 'field_skill_taxonomy_term_field_data_id') === FALSE
       && strpos($name, 'paragraphs_item_field_data_user__field_source_code_id') === FALSE
@@ -106,7 +110,7 @@ function kamihaya_cms_recruitment_query_applicant_search_alter(AlterableInterfac
   foreach ($query->conditions() as &$conditions) {
     if (is_array($conditions) && is_object($conditions['field'])) {
       $conditions1 = &$conditions['field']->conditions();
-      foreach ($conditions1 as $idx => &$condition) {
+      foreach ($conditions1 as &$condition) {
         if (is_array($condition) && is_object($condition['field']) && is_array($condition['field']->conditions())) {
           foreach ($condition['field']->conditions() as &$con) {
             if (is_array($con)) {
@@ -127,7 +131,7 @@ function kamihaya_cms_recruitment_query_applicant_search_alter(AlterableInterfac
  */
 function kamihaya_cms_recruitment_preprocess_field(&$variables, $hook) {
   $current_user = User::load(Drupal::currentUser()->id());
-  if (!$current_user->hasRole('applicant') ) {
+  if (!$current_user->hasRole('applicant')) {
     return;
   }
   $name = $variables['element']['#field_name'];
@@ -139,7 +143,7 @@ function kamihaya_cms_recruitment_preprocess_field(&$variables, $hook) {
   if (isset($node) && $name === "field_required_skill" || $name === "field_welcome_skill") {
     $skill_paragraphs = $current_user->get('field_skill')->referencedEntities();
     $target_ids = [];
-    foreach($skill_paragraphs as $paragraph) {
+    foreach ($skill_paragraphs as $paragraph) {
       if (empty($paragraph->get('field_skill')->target_id)) {
         continue;
       }
@@ -258,7 +262,8 @@ function kamihaya_cms_recruitment_alter_user_form(array &$form, FormStateInterfa
     $fields = [
       'field_last_password_reset',
       'field_password_expiration',
-      'field_pending_expire_sent'];
+      'field_pending_expire_sent',
+    ];
     foreach ($fields as $field) {
       if (empty($form[$field])) {
         continue;

@@ -6,11 +6,13 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides AJAX callback for refreshing the favorite count block.
+ *
+ * @phpstan-consistent-constructor
  */
 class FlagBlockController extends ControllerBase {
 
@@ -32,7 +34,6 @@ class FlagBlockController extends ControllerBase {
       $container->get('renderer')
     );
   }
-
 
   /**
    * Returns the updated Views block.

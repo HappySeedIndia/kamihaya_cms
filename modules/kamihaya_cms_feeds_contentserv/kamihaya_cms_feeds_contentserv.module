@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Hook implementations for the Kamihaya CMS Feeds Contentserv module.
+ */
+
 use Drupal\feeds\FeedInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;

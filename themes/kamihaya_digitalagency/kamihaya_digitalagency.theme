@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Theme functions for the Kamihaya Digital Agency theme.
+ */
+
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
@@ -14,11 +19,11 @@ use Drupal\user\Entity\User;
  * Kamihaya デジタル庁デザインシステム準拠テーマ theme file.
  */
 
- /**
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function kamihaya_digitalagency_form_system_theme_settings_alter(&$form, FormStateInterface $form_state, $form_id = NULL) {
-  $settings_manager = new KamihayaSettingsManager(\Drupal::service('theme.manager'));
+  $settings_manager = new KamihayaSettingsManager(\Drupal::service('theme.manager'), \Drupal::service('module_handler'));
   return $settings_manager->themeSettingsAlter($form, $form_state, $form_id);
 }
 
@@ -34,7 +39,7 @@ function kamihaya_digitalagency_preprocess_pager(&$variables) {
     return;
   }
   $variables['pager_max'] = $pager->getTotalPages();
- }
+}
 
 /**
  * Implements hook_preprocess_views_mini_pager().
@@ -78,9 +83,9 @@ function kamihaya_digitalagency_preprocess_views_mini_pager(&$variables) {
     ];
     $items['last']['href'] = Url::fromRoute($route_name, $route_parameters, $options)->toString();
   }
- }
+}
 
- /**
+/**
  * Implements hook_theme_suggestions_alter().
  */
 function kamihaya_digitalagency_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
@@ -122,7 +127,7 @@ function kamihaya_digitalagency_theme_suggestions_page_alter(array &$suggestions
       $suggestions[] = 'page__' . $content_type;
       $paths = explode('/', $node->toUrl()->toString());
       $suggest = '';
-      foreach($paths as $path) {
+      foreach ($paths as $path) {
         if (empty($path)) {
           continue;
         }
@@ -149,8 +154,7 @@ function kamihaya_digitalagency_theme_suggestions_menu_alter(array &$suggestions
   }
 }
 
-
- /**
+/**
  * Implements hook_preprocess_node().
  */
 function kamihaya_digitalagency_preprocess_node(array &$variables) {
@@ -160,7 +164,7 @@ function kamihaya_digitalagency_preprocess_node(array &$variables) {
     $view_builder = \Drupal::entityTypeManager()->getViewBuilder('user');
 
     $variables['profile'] = $view_builder->view($user, 'profile');
-    $variables['resume'] =  $view_builder->view($user, 'resume');
+    $variables['resume'] = $view_builder->view($user, 'resume');
   }
 
   if ($variables['elements']['#node']->bundle() === 'kamihaya_article') {
@@ -181,7 +185,7 @@ function kamihaya_digitalagency_preprocess_layout(array &$variables) {
   $variables['#attached']['library'][] = 'kamihaya_digitalagency/node';
 }
 
- /**
+/**
  * Implements hook_preprocess_user().
  */
 function kamihaya_digitalagency_preprocess_user(array &$variables) {
@@ -189,7 +193,7 @@ function kamihaya_digitalagency_preprocess_user(array &$variables) {
   $variables['view_mode'] = $variables['elements']['#view_mode'];
 }
 
- /**
+/**
  * Implements hook_preprocess_view().
  */
 function kamihaya_digitalagency_preprocess_views_view(array &$variables) {
@@ -222,22 +226,22 @@ function kamihaya_digitalagency_preprocess_views_view(array &$variables) {
 /**
  * Implements hook_preprocess_breadcrumb().
  */
-function kamihaya_digitalagency_preprocess_breadcrumb(&$variables){
+function kamihaya_digitalagency_preprocess_breadcrumb(&$variables) {
   $breadcrumb = [];
-  foreach($variables['breadcrumb'] as $item) {
+  foreach ($variables['breadcrumb'] as $item) {
     if ($idx = array_search($item['text'], $breadcrumb)) {
       unset($variables['breadcrumb'][$idx]);
       continue;
     }
     $breadcrumb[] = is_array($item['text']) && !empty($item['text']['#markup']) ? $item['text']['#markup'] : $item['text'];
   }
-  if(($node = \Drupal::routeMatch()->getParameter('node')) && $variables['breadcrumb']) {
+  if (($node = \Drupal::routeMatch()->getParameter('node')) && $variables['breadcrumb']) {
     $variables['#cache']['contexts'][] = 'url.path';
     $variables['#cache']['tags'][] = 'node:' . $node->id();
   }
 }
 
- /**
+/**
  * Implements hook_preprocess_tb_megamenu_item().
  */
 function kamihaya_digitalagency_preprocess_tb_megamenu_item(array &$variables) {
@@ -252,7 +256,7 @@ function kamihaya_digitalagency_preprocess_tb_megamenu_item(array &$variables) {
     'menu_icon_image_alt',
     'menu_icon_image_height',
   ];
-  foreach($variables['item']->link->getOptions()['container_attributes'] as $key => $value) {
+  foreach ($variables['item']->link->getOptions()['container_attributes'] as $key => $value) {
     if (in_array($key, $custom_attributes)) {
       if ($key === 'menu_icon_image' && is_array($value)) {
         $fid = reset($value);
@@ -274,7 +278,7 @@ function kamihaya_digitalagency_preprocess_tb_megamenu_item(array &$variables) {
  * Implements template_preprocess_menu().
  */
 function kamihaya_digitalagency_preprocess_menu(array &$variables) {
-   _kamihaya_digitalagency_preprocess_menu_items($variables['items']);
+  _kamihaya_digitalagency_preprocess_menu_items($variables['items']);
 }
 
 /**
@@ -287,7 +291,7 @@ function kamihaya_digitalagency_preprocess_paragraph(array &$variables) {
   }
 }
 
- /**
+/**
  * Implements hook_preprocess_commerce_product().
  */
 function kamihaya_digitalagency_preprocess_commerce_product(array &$variables) {
@@ -340,7 +344,7 @@ function _kamihaya_digitalagency_preprocess_menu_items(array &$items) {
   }
 }
 
- /**
+/**
  * Implements hook_preprocess_html().
  */
 function kamihaya_digitalagency_preprocess_html(array &$variables) {
@@ -362,7 +366,7 @@ function kamihaya_digitalagency_preprocess_html(array &$variables) {
   }
 }
 
- /**
+/**
  * Implements hook_preprocess_page().
  */
 function kamihaya_digitalagency_preprocess_page(array &$variables) {
@@ -428,8 +432,7 @@ function kamihaya_digitalagency_preprocess_field(&$variables, $hook) {
   }
 }
 
-
- /**
+/**
  * Implements hook_preprocess_block().
  */
 function kamihaya_digitalagency_preprocess_block(array &$variables) {
@@ -473,7 +476,7 @@ function kamihaya_digitalagency_preprocess_block(array &$variables) {
   }
 }
 
- /**
+/**
  * Implements hook_preprocess_file_link().
  */
 function kamihaya_digitalagency_preprocess_file_link(array &$variables) {
@@ -629,7 +632,8 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
     if (!empty(theme_get_setting('b5_footer_link_hover_color'))) {
       $css_vars['footer']['--bs-footer-link-hover-color'] = theme_get_setting('b5_footer_link_hover_color');
       if (empty(theme_get_setting('b5_footer_link_active_color'))) {
-        $css_vars['footer']['--bs-footer-link-active-color'] = theme_get_setting('b5_footer_link_hover_color');;
+        $css_vars['footer']['--bs-footer-link-active-color'] = theme_get_setting('b5_footer_link_hover_color');
+        ;
       }
     }
     if (!empty(theme_get_setting('b5_footer_link_active_color'))) {
@@ -637,10 +641,10 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
     }
   }
   if (theme_get_setting('b5_footer_bg_schema') === 'custom') {
-    if(!empty(theme_get_setting('b5_footer_bg_schema_custom'))) {
+    if (!empty(theme_get_setting('b5_footer_bg_schema_custom'))) {
       $css_vars['footer']['--bs-footer-bg'] = theme_get_setting('b5_footer_bg_schema_custom');
     }
-    if(!empty(theme_get_setting('b5_footer_secondary_bg_schema_custom'))) {
+    if (!empty(theme_get_setting('b5_footer_secondary_bg_schema_custom'))) {
       $css_vars['footer']['--bs-footer-secondary-bg'] = theme_get_setting('b5_footer_secondary_bg_schema_custom');
     }
   }
@@ -654,8 +658,8 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
     'secondary' => '.btn-secondary',
   ];
 
-  foreach($buttons as $button => $selector) {
-    foreach(['text', 'bg', 'bd'] as $type) {
+  foreach ($buttons as $button => $selector) {
+    foreach (['text', 'bg', 'bd'] as $type) {
       $field = "{$button}_button_{$type}_color";
       $hover_field = "{$button}_button_hover_{$type}_color";
       $active_field = "{$button}_button_active_{$type}_color";
@@ -667,11 +671,11 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
         if ($type === 'bg') {
           $css_vars[$selector]['--bs-btn-bg'] = $color;
           if ($button === 'primary') {
-            $css_vars['.form-checkbox']=
+            $css_vars['.form-checkbox'] =
             [
               '--bs-form-check-border-color' => $color,
               '--bs-form-check-checked-bg' => $color,
-              '--bs-form-check-checked-border-color' => $color
+              '--bs-form-check-checked-border-color' => $color,
             ];
           }
         }
@@ -705,26 +709,26 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
 
   $module_handler = \Drupal::service('module_handler');
   if ($module_handler->moduleExists('back_to_top')) {
-      $config = \Drupal::config('back_to_top.settings');
-      $settings = $config->get();
+    $config = \Drupal::config('back_to_top.settings');
+    $settings = $config->get();
 
-      if (!empty($settings['back_to_top_bg_color'])) {
-        $css_vars['body #backtotop']['--bs-backtotop-bg'] = $settings['back_to_top_bg_color'];
-        $css_vars['body #backtotop']['--bs-backtotop-border-color'] = $settings['back_to_top_bg_color'];
-      }
-      if (!empty($settings['back_to_top_border_color'])) {
-        $css_vars['body #backtotop']['--bs-backtotop-active-border-color'] = $settings['back_to_top_border_color'];
-      }
-      if (!empty($settings['back_to_top_hover_color'])) {
-        $css_vars['body #backtotop']['--bs-backtotop-hover-bg'] = $settings['back_to_top_hover_color'];
-        $css_vars['body #backtotop']['--bs-backtotop-hover-border-color'] = $settings['back_to_top_hover_color'];
-        $css_vars['body #backtotop']['--bs-backtotop-active-bg'] = $settings['back_to_top_hover_color'];
-      }
-      if (!empty($settings['back_to_top_text_color'])) {
-        $css_vars['body #backtotop']['--bs-backtotop-color'] = $settings['back_to_top_text_color'];
-        $css_vars['body #backtotop']['--bs-backtotop-hover-color'] = $settings['back_to_top_text_color'];
-        $css_vars['body #backtotop']['--bs-backtotop-active-color'] = $settings['back_to_top_text_color'];
-      }
+    if (!empty($settings['back_to_top_bg_color'])) {
+      $css_vars['body #backtotop']['--bs-backtotop-bg'] = $settings['back_to_top_bg_color'];
+      $css_vars['body #backtotop']['--bs-backtotop-border-color'] = $settings['back_to_top_bg_color'];
+    }
+    if (!empty($settings['back_to_top_border_color'])) {
+      $css_vars['body #backtotop']['--bs-backtotop-active-border-color'] = $settings['back_to_top_border_color'];
+    }
+    if (!empty($settings['back_to_top_hover_color'])) {
+      $css_vars['body #backtotop']['--bs-backtotop-hover-bg'] = $settings['back_to_top_hover_color'];
+      $css_vars['body #backtotop']['--bs-backtotop-hover-border-color'] = $settings['back_to_top_hover_color'];
+      $css_vars['body #backtotop']['--bs-backtotop-active-bg'] = $settings['back_to_top_hover_color'];
+    }
+    if (!empty($settings['back_to_top_text_color'])) {
+      $css_vars['body #backtotop']['--bs-backtotop-color'] = $settings['back_to_top_text_color'];
+      $css_vars['body #backtotop']['--bs-backtotop-hover-color'] = $settings['back_to_top_text_color'];
+      $css_vars['body #backtotop']['--bs-backtotop-active-color'] = $settings['back_to_top_text_color'];
+    }
 
   }
 
@@ -777,7 +781,7 @@ function kamihaya_digitalagency_create_css_vars(array $colors, array $bg_colors)
  *
  * @return string
  *   CSS code.
-*/
+ */
 function kamihaya_digitalagency_create_css_custom_vars(array $css_vars) : string {
   $css = [];
   foreach ($css_vars as $selector => $values) {
@@ -810,14 +814,14 @@ function kamihaya_digitalagency_create_css_custom_vars(array $css_vars) : string
  *   RGB color.
  */
 function _kamihaya_digitalagency_get_rgb_color($color) {
-    if (!is_string($color) || !preg_match('/^#?[0-9a-fA-F]{6}$/', $color)) {
-      return '';
-    }
-    $hex = ltrim($color, '#');
-    $red   = hexdec(substr($hex, 0, 2));
-    $green = hexdec(substr($hex, 2, 2));
-    $blue  = hexdec(substr($hex, 4, 2));
-    return "$red, $green, $blue";
+  if (!is_string($color) || !preg_match('/^#?[0-9a-fA-F]{6}$/', $color)) {
+    return '';
+  }
+  $hex   = ltrim($color, '#');
+  $red   = hexdec(substr($hex, 0, 2));
+  $green = hexdec(substr($hex, 2, 2));
+  $blue  = hexdec(substr($hex, 4, 2));
+  return "$red, $green, $blue";
 }
 
 /**
@@ -825,7 +829,7 @@ function _kamihaya_digitalagency_get_rgb_color($color) {
  */
 function kamihaya_digitalagency_theme_suggestions_html_alter(array &$suggestions, array $variables) {
   if ($node = \Drupal::routeMatch()->getParameter('node')) {
-	$suggestions[] = 'html__' . $node->bundle();
+    $suggestions[] = 'html__' . $node->bundle();
   }
 }
 
@@ -834,7 +838,7 @@ function kamihaya_digitalagency_theme_suggestions_html_alter(array &$suggestions
  */
 function kamihaya_digitalagency_preprocess_blazy(&$variables) {
   // Remove lightbox icon in blazy.
-  if ( !empty($variables['icon']['lightbox'])) {
+  if (!empty($variables['icon']['lightbox'])) {
     unset($variables['icon']['lightbox']);
   }
 }
@@ -849,7 +853,7 @@ function kamihaya_digitalagency_preprocess_views_view_grid(&$variables) {
   }
 
   $dom = new DOMDocument();
-  libxml_use_internal_errors(true);
+  libxml_use_internal_errors(TRUE);
   $dom->loadHTML($title);
   libxml_clear_errors();
   $header_tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
@@ -884,7 +888,7 @@ function kamihaya_digitalagency_preprocess_addtoany_standard(&$variables) {
     return;
   }
 
-  /* @var Drupal\Core\File\FileUrlGeneratorInterface $file_url_generator */
+  /** @var Drupal\Core\File\FileUrlGeneratorInterface $file_url_generator */
   $file_url_generator = \Drupal::service('file_url_generator');
   // Generate the absolute URL for the button image.
   $variables['button_image'] = $file_url_generator->generateAbsoluteString($button_path);

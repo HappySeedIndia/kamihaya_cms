@@ -13,8 +13,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class SPIRAL Settings.
+ *
+ * @phpstan-consistent-constructor
  */
-class SPIRALSettings extends ConfigFormBase {
+class SpiralSettings extends ConfigFormBase {
 
   /**
    * The entity field manager.
@@ -31,7 +33,7 @@ class SPIRALSettings extends ConfigFormBase {
   protected $stringTranslation;
 
   /**
-   * Constructs a SPIRALSettings object.
+   * Constructs a SpiralSettings object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.

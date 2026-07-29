@@ -1,1 +1,6 @@
 <?php
+
+/**
+ * @file
+ * Hooks for the Kamihaya CMS Feeds Multilingual module.
+ */

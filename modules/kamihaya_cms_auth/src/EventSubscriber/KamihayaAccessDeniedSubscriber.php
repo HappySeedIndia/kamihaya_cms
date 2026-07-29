@@ -14,6 +14,9 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Redirects anonymous access to user.page to the configured 403 page.
+ */
 class KamihayaAccessDeniedSubscriber implements EventSubscriberInterface {
 
   public function __construct(
@@ -21,15 +24,25 @@ class KamihayaAccessDeniedSubscriber implements EventSubscriberInterface {
     protected ConfigFactoryInterface $configFactory,
     protected RouteMatchInterface $routeMatch,
     protected AliasManagerInterface $aliasManager,
-    protected LanguageManagerInterface $languageManager) {
+    protected LanguageManagerInterface $languageManager,
+  ) {
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function getSubscribedEvents() {
     // Set higher priority than core's AccessDeniedSubscriber (priority 75).
     $events[KernelEvents::EXCEPTION][] = ['onException', 100];
     return $events;
   }
 
+  /**
+   * Redirects anonymous user.page denials to the configured 403 page.
+   *
+   * @param \Symfony\Component\HttpKernel\Event\ExceptionEvent $event
+   *   The kernel exception event.
+   */
   public function onException(ExceptionEvent $event) {
     $exception = $event->getThrowable();
     if (!$exception instanceof AccessDeniedHttpException) {
@@ -58,7 +71,8 @@ class KamihayaAccessDeniedSubscriber implements EventSubscriberInterface {
         if ($this->languageManager->isMultilingual()) {
           $default_language = $this->languageManager->getDefaultLanguage();
 
-          // Only add prefix if not default language or if prefix is configured for default.
+          // Only add prefix if not default language or if prefix is
+          // configured for default.
           $negotiation_config = $this->configFactory->get('language.negotiation');
           $prefixes = $negotiation_config->get('url.prefixes');
 

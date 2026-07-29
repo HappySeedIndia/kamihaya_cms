@@ -2,13 +2,35 @@
 
 namespace Drupal\kamihaya_digitalagency;
 
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Theme\ThemeManagerInterface;
 use Drupal\bootstrap5\SettingsManager;
 
 /**
  * Kamihaya theme settings manager.
  */
 class KamihayaSettingsManager extends SettingsManager {
+
+  /**
+   * The module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected ModuleHandlerInterface $moduleHandler;
+
+  /**
+   * Constructs a KamihayaSettingsManager object.
+   *
+   * @param \Drupal\Core\Theme\ThemeManagerInterface $theme_manager
+   *   The theme manager.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler.
+   */
+  public function __construct(ThemeManagerInterface $theme_manager, ModuleHandlerInterface $module_handler) {
+    parent::__construct($theme_manager);
+    $this->moduleHandler = $module_handler;
+  }
 
   /**
    * Alters theme settings form.
@@ -25,7 +47,7 @@ class KamihayaSettingsManager extends SettingsManager {
   public function themeSettingsAlter(array &$form, FormStateInterface $form_state, $form_id) {
     parent::themeSettingsAlter($form, $form_state, $form_id);
     if (!empty($form['logo']['#title'])) {
-      $form['logo']['#title'] = t('Logo');
+      $form['logo']['#title'] = $this->t('Logo');
     }
 
     if (!empty($form['logo']['settings'])) {
@@ -605,7 +627,7 @@ class KamihayaSettingsManager extends SettingsManager {
       $form['text_formats'] = $text_formats;
     }
 
-    if (\Drupal::moduleHandler()->moduleExists('color_field')) {
+    if ($this->moduleHandler->moduleExists('color_field')) {
 
       foreach ($form as &$children) {
         if (!is_array($children) || empty($children['#type'])) {

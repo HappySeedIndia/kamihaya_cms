@@ -8,4 +8,3 @@ dependencies:
   - paragraphs:paragraphs
 
 configure: kamihaya_cms_google_map_paragraph.settings
-

@@ -15,7 +15,7 @@ class ContentservApiFetcherFeedForm extends ExternalPluginFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildConfigurationForm(array $form, FormStateInterface $form_state, FeedInterface $feed = NULL) {
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state, ?FeedInterface $feed = NULL) {
     $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
     $last_import_start_time = !empty($feed_config['last_import_start_time']) ? $feed_config['last_import_start_time'] : time();
     $form['last_import_start_time'] = [
@@ -36,7 +36,7 @@ class ContentservApiFetcherFeedForm extends ExternalPluginFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state, FeedInterface $feed = NULL) {
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state, ?FeedInterface $feed = NULL) {
     $feed_config = $feed->getConfigurationFor($feed->getType()->getFetcher());
     $feed_config['last_import_start_time'] = strtotime($form_state->getValue('last_import_start_time')->format('Y-m-d H:i:s'));
     $feed->setConfigurationFor($feed->getType()->getFetcher(), $feed_config);

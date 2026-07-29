@@ -9,8 +9,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\feeds\Entity\Feed;
 use Drupal\feeds\FeedInterface;
-use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
+use Drupal\tamper\TamperableItemInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -23,6 +23,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   category = "Other",
  *   handle_multiples = TRUE
  * )
+ *
+ * @phpstan-consistent-constructor
  */
 class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPluginInterface, KamihayaTamperInterface {
 
@@ -112,7 +114,7 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public function tamper($data, TamperableItemInterface $item = NULL) {
+  public function tamper($data, ?TamperableItemInterface $item = NULL) {
     return $data;
   }
 
@@ -131,7 +133,7 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
     $name = $feed->label() . ' - ' . $this->getSetting(self::SETTING_FEEDS);
     $feeds = $this->entityTypeManager->getStorage('feeds_feed')->loadByProperties(['title' => $name]);
 
-    /* @var Drupal\feeds\FeedInterface $additinal_feed */
+    /** @var Drupal\feeds\FeedInterface $additinal_feed */
     $additinal_feed = NULL;
     if (!empty($feeds)) {
       $additinal_feed = reset($feeds);
@@ -186,16 +188,15 @@ class AdditionalFeedsImport extends TamperBase implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public function preSaveTamper(FeedInterface $feed, EntityInterface $entity, ?TamperableItemInterface $item, $source) {
-    return;
   }
 
-    /**
+  /**
    * Check if the entity exists.
    *
    * @param \Drupal\feeds\FeedInterface $feed
    *   The feed object.
-   * @param string $data_id
-   *   The data ID to check.
+   * @param string $data
+   *   The data value to check.
    *
    * @return bool
    *   TRUE if the entity exists, FALSE otherwise.

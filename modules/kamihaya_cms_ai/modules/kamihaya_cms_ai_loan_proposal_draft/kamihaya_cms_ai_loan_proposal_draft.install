@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Install, update and uninstall hooks for the AI Loan Proposal Draft module.
+ */
+
+/**
  * Install new entity type.
  */
 function kamihaya_cms_ai_loan_proposal_draft_update_10001() {
