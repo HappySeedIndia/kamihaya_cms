@@ -550,7 +550,7 @@
 .results-block-header.step-design-slider .results-block-header-item span:before {
   position: absolute;
   left: 8px;
-  font-family: "Font Awesome 6 Pro";
+  font-family: "Font Awesome 6 Free";
 }
 
 .results-block-header.step-design-slider .results-block-header-item.finished span:before {
@@ -587,7 +587,7 @@
 .results-block-header.step-design-slider .results-block-header-item.step-arrow:before {
   content: "\f04b";
   font-weight: 400;
-  font-family: "Font Awesome 6 Pro";
+  font-family: "Font Awesome 6 Free";
 }
 
 .results-block-body .results-block-body-item-movie video {
@@ -830,7 +830,7 @@
 .edit-prompt .edit-prompt-header .edit-prompt-header-close a.prompt-close:before,
 .history-block .history-block-header-close a.history-close:before {
   content: "\f00d";
-  font-family: "Font Awesome 6 Pro";
+  font-family: "Font Awesome 6 Free";
   font-weight: 900;
   color: rgb(var(--text-color));
 }
