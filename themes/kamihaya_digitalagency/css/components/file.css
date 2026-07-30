@@ -80,5 +80,5 @@
 }
 .file.file--application-pdf:before {
   content: '\f1c1';
-  font-weight: 400;
+  font-weight: 900;
 }
