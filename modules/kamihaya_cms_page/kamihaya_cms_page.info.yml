@@ -1,7 +1,7 @@
 name: 'Kamihaya CMS Page content type'
 description: 'Provides page content type and related configuration. Please use <em>Page content type</em> for content that is not updated very often, such as an “About Us” page.'
 type: module
-core_version_requirement: '^9.4 || ^10'
+core_version_requirement: ^10 || ^11
 package: 'Kamihaya CMS'
 dependencies:
   - 'drupal:field'

@@ -2,7 +2,7 @@ name: 'Kamihaya CMS AI Document Check'
 description: 'Kamihaya CMS AI Document Check module.'
 package: 'Kamihaya CMS'
 type: module
-core_version_requirement: '^9.4 || ^10'
+core_version_requirement: ^10 || ^11
 dependencies:
   - kamihaya_cms_ai:kamihaya_cms_ai
   - kamihaya_cms_document_check_api:kamihaya_cms_document_check_api

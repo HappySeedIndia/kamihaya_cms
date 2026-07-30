@@ -1,7 +1,7 @@
 name: 'Kamihaya CMS Workflow'
 description: 'Workflow for Kamihaya CMS.'
 type: module
-core_version_requirement: '^9.4 || ^10'
+core_version_requirement: ^10 || ^11
 package: 'Kamihaya CMS'
 dependencies:
   - drupal:content_moderation

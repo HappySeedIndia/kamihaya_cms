@@ -2,4 +2,4 @@ name: 'Kamihaya CMS Deel'
 type: module
 description: Integrates with Deel API.
 package: 'Kamihaya CMS'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
