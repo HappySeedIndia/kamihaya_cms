@@ -677,7 +677,7 @@
   font-size: 1.5rem;
   font-size: 20px;
   cursor: pointer;
-  font-family: "Font Awesome 6 Pro";
+  font-family: "Font Awesome 6 Free";
   content: "\f078";
 }
 
@@ -970,7 +970,7 @@
 .display-switch-view .view-header .views-display-link-table_page:before,
 .display-switch-view .view-header .views-display-link-grid_page:before {
   font-weight: 900;
-  font-family: "Font Awesome 6 Pro";
+  font-family: "Font Awesome 6 Free";
   margin-right: 0.5rem;
 }
 
@@ -1044,7 +1044,7 @@
   left: 16px;
   font-size: 20px;
   cursor: pointer;
-  font-family: "Font Awesome 6 Pro";
+  font-family: "Font Awesome 6 Free";
   font-weight: 900;
   content: "\f002";
 }
@@ -1368,7 +1368,7 @@
   margin-bottom: 0;
 }
 .view .item-list ul li .grid-list .label-box::before {
-  font-family: 'Font Awesome 6 Pro';
+  font-family: 'Font Awesome 6 Free';
   font-weight: 900;
   font-size: 0.65rem;
   content: '\f054';

@@ -27,7 +27,7 @@
   font-variant: normal;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
-  font-family: "Font Awesome 6 Pro";
+  font-family: "Font Awesome 6 Free";
   font-weight: 900;
   margin-right: 0.5rem;
 }
@@ -80,5 +80,5 @@
 }
 .file.file--application-pdf:before {
   content: '\f1c1';
-  font-weight: 400;
+  font-weight: 900;
 }
