@@ -1,6 +1,6 @@
 name: 'Kamihaya CMS SEO Policy'
 type: module
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'Kamihaya CMS'
 description: 'Provides site-level SEO policies, including XML Sitemap exclusions.'
 

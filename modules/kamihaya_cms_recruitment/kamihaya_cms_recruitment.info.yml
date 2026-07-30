@@ -1,7 +1,7 @@
 name: 'Kamihaya CMS Recruitment'
 description: 'Provides recruitment content type and related configuration.'
 type: module
-core_version_requirement: '^9.4 || ^10'
+core_version_requirement: ^10 || ^11
 package: 'Kamihaya CMS'
 dependencies:
   - 'drupal:field'

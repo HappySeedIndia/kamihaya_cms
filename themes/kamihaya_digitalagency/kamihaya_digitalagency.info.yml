@@ -1,7 +1,7 @@
 name: 'Kamihaya デジタル庁デザインシステム準拠テーマ'
 type: theme
 description: 'Kamihaya デジタル庁デザインシステム準拠テーマ subtheme based on Bootstrap 5 theme.'
-core_version_requirement: '^9.4 || ^10'
+core_version_requirement: ^10 || ^11
 'base theme': bootstrap5
 regions:
   header_top_right: Header Top Right

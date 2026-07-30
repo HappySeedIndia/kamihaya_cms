@@ -1,7 +1,7 @@
 name: 'Kamihaya CMS Webform'
 description: 'Provides webform content type and related configuration. A basic page with a webform attached.'
 type: module
-core_version_requirement: '^9.4 || ^10'
+core_version_requirement: ^10 || ^11
 package: 'Kamihaya CMS'
 dependencies:
   - 'address:address'

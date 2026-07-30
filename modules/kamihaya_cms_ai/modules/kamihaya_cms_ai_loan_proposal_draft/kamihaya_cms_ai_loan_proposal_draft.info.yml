@@ -2,7 +2,7 @@ name: 'Kamihaya CMS AI Loan Proposal Draft'
 description: 'Kamihaya CMS AI Loan Proposal Draft module'
 package: 'Kamihaya CMS'
 type: module
-core_version_requirement: '^9.4 || ^10'
+core_version_requirement: ^10 || ^11
 dependencies:
   - kamihaya_cms_ai:kamihaya_cms_ai
   - kamihaya_cms_loan_proposal_api:kamihaya_cms_loan_proposal_api
