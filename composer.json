@@ -125,7 +125,7 @@
         "drupal/cloud": "^7.0",
         "drupal/color_field": "^3.0",
         "drupal/colorbox": "^2.1",
-        "drupal/commerce": "^2.40",
+        "drupal/commerce": "^3.0",
         "drupal/content_access": "^2.1@RC",
         "drupal/core-composer-scaffold": "10.4.10",
         "drupal/core-project-message": "10.4.10",

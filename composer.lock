@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5fca194435b1bc58de31e1a2c3de0efa",
+    "content-hash": "eb48bd9ad9205b003ae69708c9df7071",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2861,22 +2861,22 @@
         },
         {
             "name": "drupal/commerce",
-            "version": "2.40.0",
+            "version": "3.3.8",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/commerce.git",
-                "reference": "8.x-2.40"
+                "reference": "3.3.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/commerce-8.x-2.40.zip",
-                "reference": "8.x-2.40",
-                "shasum": "4c1bc0f0d90eba5853741cc61560810507311bbd"
+                "url": "https://ftp.drupal.org/files/projects/commerce-3.3.8.zip",
+                "reference": "3.3.8",
+                "shasum": "faef0a4d2e0495ae46fcacf1cefd52230177f9b5"
             },
             "require": {
                 "commerceguys/intl": "^2.0.6",
                 "drupal/address": "^2.0",
-                "drupal/core": "^9.3 || ^10",
+                "drupal/core": "^10.3 || ^11",
                 "drupal/entity": "^1.0",
                 "drupal/entity_reference_revisions": "~1.0",
                 "drupal/inline_entity_form": "^1.0@RC || ^3.0@RC",
@@ -2884,7 +2884,7 @@
                 "drupal/state_machine": "^1.5",
                 "drupal/token": "^1.7",
                 "ext-bcmath": "*",
-                "php": "^8.0"
+                "php": "^8.1"
             },
             "conflict": {
                 "drupal/commerce_shipping": "<2.1",
@@ -2896,12 +2896,10 @@
                 "drupal/commerce_order": "*",
                 "drupal/commerce_payment": "*",
                 "drupal/commerce_price": "*",
-                "drupal/commerce_product": "*",
                 "drupal/commerce_store": "*",
                 "drupal/entity_print": "^2.2",
                 "drupal/entity_reference_revisions": "*",
                 "drupal/mailsystem": "^4.3",
-                "drupal/panelizer": "^5.0",
                 "drupal/physical": "^1.3",
                 "drupal/profile": "*",
                 "drupal/state_machine": "*"
@@ -2909,8 +2907,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.40",
-                    "datestamp": "1724399894",
+                    "version": "3.3.8",
+                    "datestamp": "1784272833",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
