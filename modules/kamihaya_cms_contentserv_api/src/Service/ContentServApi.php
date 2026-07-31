@@ -64,7 +64,8 @@ class ContentservApi {
     ConfigFactoryInterface $config_factory,
     Messenger $messenger,
     TranslationInterface $string_translation,
-    LoggerInterface $logger) {
+    LoggerInterface $logger,
+  ) {
     // Setup the http client.
     $this->httpClient = $http_client;
     // Setup the configuration factory.

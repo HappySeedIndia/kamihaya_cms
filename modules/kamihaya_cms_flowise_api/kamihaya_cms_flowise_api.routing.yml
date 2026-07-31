@@ -4,6 +4,8 @@ system.flowise:
     _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
     _title: 'Flowise'
   requirements:
+    # This route only renders the admin menu landing page, not a config form.
+    # phpcs:ignore DrupalPractice.Yaml.RoutingAccess.PermissionFound
     _permission: 'access administration pages'
 
 kamihaya_cms_flowise_api.settings:

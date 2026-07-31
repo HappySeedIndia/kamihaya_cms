@@ -1,6 +1,6 @@
 name: 'Kamihaya CMS Access Control'
 type: module
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'Kamihaya CMS'
 description: 'Customize the access control.'
 

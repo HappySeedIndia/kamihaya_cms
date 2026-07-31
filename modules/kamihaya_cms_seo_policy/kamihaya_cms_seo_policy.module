@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Hooks for the Kamihaya CMS SEO Policy module.
+ */
+
 use Drupal\Core\Database\Query\AlterableInterface;
 
 /**

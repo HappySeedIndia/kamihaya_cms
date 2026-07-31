@@ -42,6 +42,8 @@ class KamihayaAiAjaxController extends ControllerBase {
    * Format the result.
    *
    * @param string $result
+   *   The raw result to format.
+   *
    * @return string
    *   The formatted result.
    */
@@ -117,7 +119,6 @@ class KamihayaAiAjaxController extends ControllerBase {
         $idx++;
       }
       if (count($table_value) > 0) {
-        $table_end = $idx;
         $formated_result .= $this->convertToTable($table_value);
         $idx--;
       }
@@ -130,6 +131,7 @@ class KamihayaAiAjaxController extends ControllerBase {
    *
    * @param string $result
    *   The result to be converted.
+   *
    * @return string
    *   The result in HTML format.
    */
@@ -157,6 +159,7 @@ class KamihayaAiAjaxController extends ControllerBase {
    *
    * @param array $table_value
    *   The table value.
+   *
    * @return string
    *   The result in table format.
    */

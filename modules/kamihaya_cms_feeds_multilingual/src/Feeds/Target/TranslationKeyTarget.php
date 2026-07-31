@@ -3,8 +3,8 @@
 namespace Drupal\kamihaya_cms_feeds_multilingual\Feeds\Target;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\feeds\Feeds\Target\Temporary;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Feeds\Target\Temporary;
 use Drupal\feeds\Plugin\Type\Target\ConfigurableTargetInterface;
 use Drupal\feeds\TargetDefinition;
 
@@ -17,7 +17,7 @@ use Drupal\feeds\TargetDefinition;
  */
 class TranslationKeyTarget extends Temporary implements ConfigurableTargetInterface {
 
-    /**
+  /**
    * {@inheritdoc}
    */
   public static function targets(array &$targets, FeedTypeInterface $feed_type, array $definition) {
@@ -26,7 +26,7 @@ class TranslationKeyTarget extends Temporary implements ConfigurableTargetInterf
     $entity_type = $processor->entityType();
     $entity_type = \Drupal::entityTypeManager()->getDefinition($entity_type);
 
-    // Only add target if entity type is translatable
+    // Only add target if entity type is translatable.
     if (!$entity_type->isTranslatable()) {
       return;
     }
@@ -66,11 +66,10 @@ class TranslationKeyTarget extends Temporary implements ConfigurableTargetInterf
   }
 
   /**
-   * Get tartget options
+   * Get tartget options.
    *
    * @return array
    *   An array of target options.
-   *
    */
   private function getTargetOptions() {
     return [
@@ -85,8 +84,7 @@ class TranslationKeyTarget extends Temporary implements ConfigurableTargetInterf
    */
   public function getSummary() {
     $options = $this->getTargetOptions();
-   // $summary = parent::getSummary();
-
+    // $summary = parent::getSummary();
     if ($this->configuration['key_target'] && isset($options[$this->configuration['key_target']])) {
       $summary[] = $this->t('Target key: %message', ['%message' => $options[$this->configuration['key_target']]]);
     }
@@ -100,4 +98,5 @@ class TranslationKeyTarget extends Temporary implements ConfigurableTargetInterf
 
     return $summary;
   }
+
 }

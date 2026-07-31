@@ -1,7 +1,12 @@
 <?php
 
+/**
+ * @file
+ * Hooks for the Kamihaya CMS Custom JS Field module.
+ */
+
 use Drupal\Core\File\FileExists;
-use \Drupal\file\FileInterface;
+use Drupal\file\FileInterface;
 use Drupal\media\MediaInterface;
 
 /**
@@ -11,7 +16,7 @@ use Drupal\media\MediaInterface;
  */
 function kamihaya_cms_custom_js_field_imce_supported_widgets_alter(array &$widgets) {
   // Add the custom JS file widget to the list of supported widgets.
-  $widgets[] ='js_file_widget';
+  $widgets[] = 'js_file_widget';
 }
 
 /**

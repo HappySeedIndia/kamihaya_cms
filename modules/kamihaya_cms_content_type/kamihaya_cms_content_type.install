@@ -1,6 +1,10 @@
 <?php
 
-use Drupal\field\Entity\FieldConfig;
+/**
+ * @file
+ * Install, update and uninstall hooks for the Kamihaya CMS Content Type module.
+ */
+
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
 use Drupal\taxonomy\Entity\Vocabulary;
@@ -117,9 +121,7 @@ function kamihaya_cms_content_type_update_10003() {
   /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
   $display_repository = \Drupal::service('entity_display.repository');
 
-  foreach($bundles as $bundle) {
-    $field = FieldConfig::loadByName('node', $bundle, 'field_meta_tag');
-
+  foreach ($bundles as $bundle) {
     $display_repository->getFormDisplay('node', $bundle)
       ->setComponent('field_meta_tag', [
         'type' => 'metatag_firehose',
@@ -249,7 +251,7 @@ function kamihaya_cms_content_type_update_10006() {
     return;
   }
 
-  foreach($content_types as $content_type) {
+  foreach ($content_types as $content_type) {
     _kamihaya_cms_common_add_paragraph('node', $content_type, 'block', 'field_body');
     _kamihaya_cms_common_add_paragraph('node', $content_type, 'views', 'field_body');
   }
@@ -272,7 +274,7 @@ function kamihaya_cms_content_type_update_10007() {
   if (empty($content_types)) {
     return;
   }
-  foreach($content_types as $content_type) {
+  foreach ($content_types as $content_type) {
     _kamihaya_cms_common_add_paragraph('node', $content_type, 'border_box', 'field_body');
   }
 }
@@ -294,8 +296,9 @@ function kamihaya_cms_content_type_update_10008() {
   if (empty($content_types)) {
     return;
   }
-  foreach($content_types as $content_type) {
-    _kamihaya_cms_common_add_fields('kamihaya_cms_content_type', 'node', $content_type, ['field_not_display_title', 'field_body'], 'optional');
+  foreach ($content_types as $content_type) {
+    $fields = ['field_not_display_title', 'field_body'];
+    _kamihaya_cms_common_add_fields('kamihaya_cms_content_type', 'node', $content_type, $fields, 'optional');
   }
 }
 
@@ -316,7 +319,7 @@ function kamihaya_cms_content_type_update_10009() {
   if (empty($content_types)) {
     return;
   }
-  foreach($content_types as $content_type) {
+  foreach ($content_types as $content_type) {
     _kamihaya_cms_common_add_paragraph('node', $content_type, 'anchor_link', 'field_body');
   }
 }
@@ -338,7 +341,7 @@ function kamihaya_cms_content_type_update_10010() {
   if (empty($content_types)) {
     return;
   }
-  foreach($content_types as $content_type) {
+  foreach ($content_types as $content_type) {
     _kamihaya_cms_common_add_paragraph('node', $content_type, 'background_image', 'field_body');
   }
 }
@@ -367,7 +370,7 @@ function kamihaya_cms_content_type_update_10012() {
   if (empty($content_types)) {
     return;
   }
-  foreach($content_types as $content_type) {
+  foreach ($content_types as $content_type) {
     _kamihaya_cms_common_add_paragraph('node', $content_type, 'tab', 'field_body');
   }
 }

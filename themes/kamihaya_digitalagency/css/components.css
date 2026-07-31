@@ -215,7 +215,7 @@ body.back-to-top-scquare #backtotop {
 
 body.back-to-top-circle #backtotop:before,
 body.back-to-top-scquare #backtotop:before {
-  font-family: "Font Awesome 6 Pro";
+  font-family: "Font Awesome 6 Free";
   position: absolute;
   left: 0;
   top: 0;
@@ -668,15 +668,15 @@ html[lang='ja'] .form-required:after {
 
 .table.td-file td .file a:before,
 .item-bordered.item-file .file a::before {
-  font-family:'Font Awesome 6 Pro';
-  font-weight: 400;
+  font-family:'Font Awesome 6 Free';
+  font-weight: 900;
   font-size: 1.5rem;
   margin-right: 0.5rem;
 }
 
 .table.td-file td .file a:after,
 .item-bordered.item-file .file a:after {
-  font-family: 'Font Awesome 6 Pro';
+  font-family: 'Font Awesome 6 Free';
   font-size: 1.5rem;
   font-weight: 900;
 }
@@ -1508,7 +1508,7 @@ h2.accordion-header::after {
 }
 
 .expand-collapse a:after {
-  font-family: 'Font Awesome 6 Pro';
+  font-family: 'Font Awesome 6 Free';
   font-weight: 900;
   margin-left: 0.5rem;
 }
@@ -1552,7 +1552,7 @@ iframe[title="YouTube video player"] {
   padding-left: 20px;
 }
 .reference-links a::before {
-  font-family: 'Font Awesome 6 Pro';
+  font-family: 'Font Awesome 6 Free';
   font-weight: 900;
   content: '\f054';
   display: inline-block;
@@ -1618,7 +1618,7 @@ iframe[title="YouTube video player"] {
 
 /* Location with Map icon */
 .location-icon:before {
-  font-family: 'Font Awesome 6 Pro';
+  font-family: 'Font Awesome 6 Free';
   font-weight: 900;
   padding-right: 5px;
   content: '\f3c5';
@@ -1710,7 +1710,7 @@ iframe[title="YouTube video player"] {
   transform: translateY(-50%);
 }
 .related-carousel .view-content .owl-carousel .owl-nav button:before {
-  font-family: 'Font Awesome 6 Pro';
+  font-family: 'Font Awesome 6 Free';
   font-weight: 900;
   padding-right: 0;
   display: block;
@@ -1771,7 +1771,7 @@ iframe[title="YouTube video player"] {
 }
 
 .thumbnail-image-slider .slick-arrow::before {
-  font-family: 'Font Awesome 6 Pro';
+  font-family: 'Font Awesome 6 Free';
   font-weight: 900;
   padding-right: 0;
   display: block;
@@ -2014,8 +2014,8 @@ iframe[title="YouTube video player"] {
   padding-bottom: 2px;
 }
 .contact-icon::before {
-  font-family: 'Font Awesome 6 Pro';
-  font-weight: 700;
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
   display: inline-block;
   padding-right: 5px;
 }
@@ -2082,7 +2082,7 @@ a:hover .btn.border-hover-dark-grey {
 }
 /* Top carousel icon changes */
 .top-carousel .flex-direction-nav a::before {
-  font-family: 'Font Awesome 6 Pro' !important;
+  font-family: 'Font Awesome 6 Free' !important;
   font-weight: 900;
   color: #fff;
   font-size: 28px;

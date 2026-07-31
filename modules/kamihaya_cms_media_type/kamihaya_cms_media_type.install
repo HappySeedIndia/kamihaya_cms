@@ -1,6 +1,9 @@
 <?php
 
-use Drupal\Component\Serialization\Yaml;
+/**
+ * @file
+ * Install, update and uninstall hooks for the Kamihaya CMS Media Type module.
+ */
 
 /**
  * Update configs.
@@ -39,7 +42,7 @@ function kamihaya_cms_media_type_update_10001() {
  * Update configs.
  */
 function kamihaya_cms_media_type_update_10002() {
-  _kamihaya_cms_common_change_configs('kamihaya_cms_media_type' , [
+  _kamihaya_cms_common_change_configs('kamihaya_cms_media_type', [
     'taxonomy.vocabulary.document_type.yml',
     'language.content_settings.taxonomy_term.document_type.yml',
     'core.entity_form_display.taxonomy_term.document_type.default.yml',
@@ -56,7 +59,7 @@ function kamihaya_cms_media_type_update_10002() {
  * Update configs.
  */
 function kamihaya_cms_media_type_update_10003() {
-  _kamihaya_cms_common_change_configs('kamihaya_cms_media_type' , [
+  _kamihaya_cms_common_change_configs('kamihaya_cms_media_type', [
     'field.storage.media.field_document_type.yml',
     'field.field.media.document.field_document_type.yml',
     'core.entity_form_display.media.document.default.yml',
@@ -80,7 +83,7 @@ function kamihaya_cms_media_type_update_10004() {
     'field.field.media.document.field_thumbnail_image',
     'field.field.media.image.field_media_image',
   ];
-  foreach($fields as $field) {
+  foreach ($fields as $field) {
     if ($field_config = \Drupal::configFactory()->getEditable($field)) {
       $value = explode(' ', $field_config->get('settings.file_extensions'));
       if (!in_array('svg', $value)) {
@@ -104,7 +107,7 @@ function kamihaya_cms_media_type_update_10005() {
     return;
   }
 
-  _kamihaya_cms_common_change_configs('kamihaya_cms_media_type' , [
+  _kamihaya_cms_common_change_configs('kamihaya_cms_media_type', [
     'image.style.convert_to_webp.yml',
   ], 'install');
 }

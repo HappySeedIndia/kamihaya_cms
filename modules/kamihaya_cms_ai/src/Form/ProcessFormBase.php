@@ -2,18 +2,23 @@
 
 namespace Drupal\kamihaya_cms_ai\Form;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Process form base.
+ *
+ * @phpstan-consistent-constructor
  */
 class ProcessFormBase extends FormBase {
 
-  public function __construct(protected AccountProxyInterface $currentUser) {
+  public function __construct(
+    protected AccountProxyInterface $currentUser,
+    protected EntityTypeManagerInterface $entityTypeManager,
+  ) {
   }
 
   /**
@@ -21,7 +26,8 @@ class ProcessFormBase extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -36,7 +42,7 @@ class ProcessFormBase extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $user = User::load($this->currentUser->id());
+    $user = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $name = $user->hasField('field_name') && !empty($user->get('field_name')->value) ? $user->get('field_name')->value : $user->getAccountName();
 
     $form['welcome'] = [
@@ -54,7 +60,6 @@ class ProcessFormBase extends FormBase {
       '#title' => $this->t('Actions'),
       '#open' => TRUE,
     ];
-
 
     $form['actions'] = [
       '#type' => 'actions',

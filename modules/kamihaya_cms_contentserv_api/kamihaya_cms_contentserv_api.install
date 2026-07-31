@@ -1,3 +1,6 @@
 <?php
 
-use Drupal\Component\Serialization\Yaml;
+/**
+ * @file
+ * Install hooks for the Kamihaya CMS Contentserv API module.
+ */

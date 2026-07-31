@@ -4,8 +4,8 @@ namespace Drupal\kamihaya_cms_feeds_contentserv\Plugin\Tamper;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\feeds\FeedInterface;
-use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperInterface;
+use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Interface definition for tamper plugins.
@@ -20,7 +20,7 @@ interface KamihayaTamperInterface extends TamperInterface {
    * @param mixed $data
    *   The data to tamper.
    * @param \Drupal\tamper\TamperableItemInterface $item
-   *  The item to alter.
+   *   The item to alter.
    */
   public function postParseTamper(FeedInterface $feed, $data, TamperableItemInterface $item);
 
@@ -32,7 +32,7 @@ interface KamihayaTamperInterface extends TamperInterface {
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to alter.
    * @param \Drupal\tamper\TamperableItemInterface $item
-   *  The item to alter.
+   *   The item to alter.
    * @param string $source
    *   The source name to alter.
    */

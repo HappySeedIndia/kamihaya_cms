@@ -6,8 +6,8 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\RevisionLogInterface;
-use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Event\FeedsEvents;
+use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\DynamicItem;
 use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Feeds\Processor\EntityProcessorBase;
@@ -45,7 +45,7 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->entityFieldManager = $container->get('entity_field.manager');
-    return $instance;;
+    return $instance;
   }
 
   /**
@@ -64,7 +64,8 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
 
     $mappings = $feed->getType()->getMappings();
 
-    // Get langcode key, translation key map and translation key target from feeds mapping.
+    // Get langcode key, translation key map and translation key target from
+    // feeds mapping.
     foreach ($mappings as $mapping) {
       if (empty($mapping['target']) || empty($mapping['map']['value'])) {
         continue;
@@ -83,23 +84,23 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
     }
 
     if (empty($langcode_target) || empty($translation_key_map) || empty($translation_key_target)) {
-      $this->messenger()->addError(t('Missing required mappings for language code or translation key.'));
+      $this->messenger()->addError($this->t('Missing required mappings for language code or translation key.'));
       return;
     }
 
-    // Get language identifier field value
+    // Get language identifier field value.
     $language_code = $item->get($langcode_target);
 
-    // Get translation key field value
+    // Get translation key field value.
     $translation_key = $item->get($translation_key_map);
 
-    // Validate language code
+    // Validate language code.
     if (!$this->isValidLanguageCode($language_code)) {
-      $this->messenger()->addError(t('Invalid language code: @code', ['@code' => $language_code]));
+      $this->messenger()->addError($this->t('Invalid language code: @code', ['@code' => $language_code]));
       return;
     }
 
-    // Search for existing entity
+    // Search for existing entity.
     /** @var \Drupal\Core\Entity\ContentEntityInterface $existing_entity */
     $existing_entity = $this->findExistingEntity($translation_key_target, $translation_key);
 
@@ -111,8 +112,8 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
 
     /** @var \Drupal\feeds\State $state */
     if ($existing_entity && $skip_existing && ($existing_entity->language()->getId() === $language_code || $existing_entity->hasTranslation($language_code))) {
-      // Skip the item if the entity already existing and when we are not updating
-      // existing entities.
+      // Skip the item if the entity already existing and when we are not
+      // updating existing entities.
       $state->report(StateType::SKIP, 'Skipped because the entity already exists.', [
         'feed' => $feed,
         'item' => $item,
@@ -134,10 +135,10 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
     $hash = $this->hash($item);
     $translation_entity = $existing_entity && $existing_entity->language()->getId() !== $language_code && $existing_entity->hasTranslation($language_code)
       ? $existing_entity->getTranslation($language_code)
-      : null;
+      : NULL;
 
     $feeds_entity = $translation_entity ?: $existing_entity;
-    $changed = false;
+    $changed = FALSE;
     if ($feeds_entity) {
       /** @var \Drupal\feeds\FeedsItemListInterface $feedsItem */
       $feedsItem = $feeds_entity->get('feeds_item');
@@ -274,29 +275,28 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
    *
    * @return \Drupal\Core\Entity\EntityInterface|null
    *   The existing entity if found, NULL otherwise.
-   *
    */
   protected function findExistingEntity($target_field, $target_value) {
     $storage = $this->entityTypeManager->getStorage($this->entityType());
     $entity_type = $this->entityTypeManager->getDefinition($this->entityType());
 
-    // Check if entity type supports translation key field
+    // Check if entity type supports translation key field.
     if (!$entity_type->hasKey($target_field)) {
       return NULL;
     }
     $target_key = $entity_type->getKey($target_field);
 
-    // If the target value is empty, return NULL
+    // If the target value is empty, return NULL.
     if (empty($target_key)) {
       return NULL;
     }
 
-    // Build query to find existing entity by translation key
+    // Build query to find existing entity by translation key.
     $query = $storage->getQuery();
     $query->condition($target_key, $target_value);
     $query->accessCheck(TRUE);
 
-    // Add bundle condition if entity type has bundles
+    // Add bundle condition if entity type has bundles.
     if ($entity_type->hasKey('bundle')) {
       $query->condition($entity_type->getKey('bundle'), $this->bundle());
     }
@@ -332,8 +332,7 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
    * Check if language code is valid.
    */
   protected function isValidLanguageCode($language_code) {
-    $language_manager = \Drupal::languageManager();
-    $languages = $language_manager->getLanguages();
+    $languages = $this->languageManager->getLanguages();
     return isset($languages[$language_code]);
   }
 
@@ -341,7 +340,6 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
    * {@inheritdoc}
    */
   protected function map(FeedInterface $feed, EntityInterface $entity, ItemInterface $item) {
-    $mappings = $this->feedType->getMappings();
     $map_mappings = $feed->getType()->getMappings();
     if ($entity instanceof ContentEntityInterface && !$entity->isDefaultTranslation()) {
       foreach ($map_mappings as $idx => $mapping) {
@@ -352,7 +350,7 @@ class MultilingualEntityProcessor extends EntityProcessorBase {
         // If the mapping target is not translatable, remove it from the item.
         if ($mapping['target'] !== 'langcode' && $mapping['target'] !== 'translation_key' && !$entity->getFieldDefinitions()[$mapping['target']]->isTranslatable()) {
           unset($map_mappings[$idx]);
-          $this->messenger()->addWarning(t('The mapping target @target is not translatable and will be removed from the item.', ['@target' => $mapping['target']]));
+          $this->messenger()->addWarning($this->t('The mapping target @target is not translatable and will be removed from the item.', ['@target' => $mapping['target']]));
         }
       }
     }

@@ -13,8 +13,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class Contentserv API Settings.
+ *
+ * @phpstan-consistent-constructor
  */
-class ContentServApiSettings extends ConfigFormBase {
+class ContentservApiSettings extends ConfigFormBase {
 
   /**
    * The entity bundle info.
@@ -43,7 +45,8 @@ class ContentServApiSettings extends ConfigFormBase {
   public function __construct(
     ConfigFactoryInterface $config_factory,
     EntityTypeBundleInfo $entity_type_bundleInfo,
-    EntityTypeManagerInterface $entity_type_manager) {
+    EntityTypeManagerInterface $entity_type_manager,
+  ) {
     parent::__construct($config_factory);
     $this->entityTypeBundleInfo = $entity_type_bundleInfo;
     $this->entityTypeManager = $entity_type_manager;

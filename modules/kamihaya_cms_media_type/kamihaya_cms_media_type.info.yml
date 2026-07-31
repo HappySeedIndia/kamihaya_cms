@@ -1,6 +1,6 @@
 name: 'Kamihaya CMS Media type'
 type: module
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'Kamihaya CMS'
 description: 'Media types for Kamihaya CMS.'
 
@@ -14,4 +14,3 @@ dependencies:
   - svg_image:svg_image
   - webp:webp
   - kamihaya_cms_common:kamihaya_cms_common
-

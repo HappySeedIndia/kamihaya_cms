@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Hooks for the Kamihaya CMS Paragraph Type module.
+ */
+
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\MediaInterface;
@@ -87,7 +92,8 @@ function kamihaya_cms_paragraph_type_theme() {
 function kamihaya_cms_paragraph_type_field_widget_single_element_layout_paragraphs_form_alter(
   array &$element,
   FormStateInterface $form_state,
-  array $context) {
+  array $context,
+) {
   $element['#attached']['library'][] = 'kamihaya_cms_paragraph_type/lpb_component_list';
 
   /** @var \Drupal\Core\Extension\ThemeHandlerInterface $thene_handler */
@@ -110,7 +116,7 @@ function kamihaya_cms_paragraph_type_preprocess_paragraph(array &$variables) {
         continue;
       }
       if ($field['#field_type'] === 'image') {
-        $item = $field[0]['#item'] ?? null;
+        $item = $field[0]['#item'] ?? NULL;
         if (empty($item)) {
           continue;
         }
@@ -120,7 +126,7 @@ function kamihaya_cms_paragraph_type_preprocess_paragraph(array &$variables) {
         $image_style = $field[0]['#image_style'] ?? 'default';
       }
       if ($field['#field_type'] === 'entity_reference') {
-        $entity = $field[0]['#entity'] ?? null;
+        $entity = $field[0]['#entity'] ?? NULL;
         // Check if the entity is a media entity and has an image field.
         if (empty($entity) || !($entity instanceof MediaInterface) || $entity->bundle() !== 'image') {
           continue;
@@ -133,7 +139,6 @@ function kamihaya_cms_paragraph_type_preprocess_paragraph(array &$variables) {
       if (empty($fid)) {
         continue;
       }
-      /* @var \Drupal\file\FileInterface $file */
       $file = \Drupal::entityTypeManager()->getStorage('file')->load($fid);
       if (empty($file) || empty($image_style)) {
         continue;
@@ -190,61 +195,61 @@ function kamihaya_cms_paragraph_type_preprocess_paragraph(array &$variables) {
 
     // Tab color.
     if (!empty($paragraph->get('field_tab_color')->color)) {
-      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-button-color:' .  $paragraph->get('field_tab_color')->color . ';';
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-button-color:' . $paragraph->get('field_tab_color')->color . ';';
     }
     // Tab background color.
     if (!empty($paragraph->get('field_tab_bg_color')->color)) {
-      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-button-bg-color:' .  $paragraph->get('field_tab_bg_color')->color . ';';
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-button-bg-color:' . $paragraph->get('field_tab_bg_color')->color . ';';
     }
     // Tab border color.
     if (!empty($paragraph->get('field_tab_bd_color')->color)) {
-      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-button-bd-color:' .  $paragraph->get('field_tab_bd_color')->color . ';';
-      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '---tabs-bd-btm-color:' .  $paragraph->get('field_tab_bd_color')->color . ';';
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-button-bd-color:' . $paragraph->get('field_tab_bd_color')->color . ';';
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '---tabs-bd-btm-color:' . $paragraph->get('field_tab_bd_color')->color . ';';
     }
     // Tab active color.
     if (!empty($paragraph->get('field_active_tab_color')->color)) {
-      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-active-button-color:' .  $paragraph->get('field_active_tab_color')->color . ';';
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-active-button-color:' . $paragraph->get('field_active_tab_color')->color . ';';
     }
     // Tab active background bcolor.
     if (!empty($paragraph->get('field_active_tab_bg_color')->color)) {
-      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-active-button-bg-color:' .  $paragraph->get('field_active_tab_bg_color')->color . ';';
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-active-button-bg-color:' . $paragraph->get('field_active_tab_bg_color')->color . ';';
     }
     // Tab active border color.
     if (!empty($paragraph->get('field_active_tab_bd_color')->color)) {
-      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-active-button-bd-color:' .  $paragraph->get('field_active_tab_bd_color')->color . ';';
-      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tabs-bd-btm-color:' .  $paragraph->get('field_active_tab_bd_color')->color . ';';
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-active-button-bd-color:' . $paragraph->get('field_active_tab_bd_color')->color . ';';
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tabs-bd-btm-color:' . $paragraph->get('field_active_tab_bd_color')->color . ';';
     }
     // Active tab background color.
     if (!empty($paragraph->get('field_active_tab_body_bg_color')->color)) {
-      $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = '--tab-body-bg-color:' .  $paragraph->get('field_active_tab_body_bg_color')->color . ';';
+      $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = '--tab-body-bg-color:' . $paragraph->get('field_active_tab_body_bg_color')->color . ';';
     }
     // Tab width.
     if (!empty($paragraph->get('field_width')->value)) {
       $unit = $paragraph->get('field_width_unit')->value ?? 'px';
       if ($unit === 'px') {
-        $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-max-width:' .  $paragraph->get('field_width')->value . "{$unit};";
-        $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = '--tab-body-max-width:' .  $paragraph->get('field_width')->value . "{$unit};";
+        $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-max-width:' . $paragraph->get('field_width')->value . "{$unit};";
+        $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = '--tab-body-max-width:' . $paragraph->get('field_width')->value . "{$unit};";
       }
       else {
-        $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-width:' .  $paragraph->get('field_width')->value . "{$unit};";
-        $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = '--tab-body-width:' .  $paragraph->get('field_width')->value . "{$unit};";
+        $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-width:' . $paragraph->get('field_width')->value . "{$unit};";
+        $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = '--tab-body-width:' . $paragraph->get('field_width')->value . "{$unit};";
       }
 
       if ($unit === 'vw') {
         $width = $paragraph->get('field_width')->value;
         $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-max-width: none;';
-        $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = 'margin-left: calc(-' . $width/2 . 'vw + 50%);';
-        $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = '--tab-body-max-width: none;' ;
-        $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = 'margin-left: calc(-' . $width/2 . 'vw + 50%);';
+        $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = 'margin-left: calc(-' . $width / 2 . 'vw + 50%);';
+        $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = '--tab-body-max-width: none;';
+        $css_vars[".paragraph--type--tab#{$id} .tab-content"][] = 'margin-left: calc(-' . $width / 2 . 'vw + 50%);';
       }
     }
     // Tab align.
     if (!empty($paragraph->get('field_tab_button_align')->value)) {
-      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-button-align:' .  $paragraph->get('field_tab_button_align')->value . ';';
+      $css_vars[".paragraph--type--tab#{$id} .nav-tabs"][] = '--tab-button-align:' . $paragraph->get('field_tab_button_align')->value . ';';
     }
 
     $css_string = '';
-    foreach($css_vars as $selector => $colors) {
+    foreach ($css_vars as $selector => $colors) {
       if (empty($colors)) {
         continue;
       }
@@ -261,7 +266,7 @@ function kamihaya_cms_paragraph_type_preprocess_paragraph(array &$variables) {
           '#attributes' => [
             'type' => 'text/css',
           ],
-          '#value' => $css_string
+          '#value' => $css_string,
         ],
         'kamihaya_cms_paragraph',
       ];

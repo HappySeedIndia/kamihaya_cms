@@ -72,7 +72,7 @@ maintenance:
 font-awesome:
   css:
     theme:
-      https://site-assets.fontawesome.com/releases/v6.7.1/css/all.css: { type: external, minified: true }
+      https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css: { type: external, minified: true }
 
 landing-page:
   css:

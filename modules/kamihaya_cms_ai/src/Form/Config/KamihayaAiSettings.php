@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class Kamihaya AI Settings.
+ *
+ * @phpstan-consistent-constructor
  */
 class KamihayaAiSettings extends ConfigFormBase {
 
@@ -125,7 +127,7 @@ class KamihayaAiSettings extends ConfigFormBase {
         '#type' => 'textfield',
         '#maxlength' => 7,
         '#size' => 7,
-        '#title' => $this->t("Background item color $i"),
+        '#title' => $this->t('Background item color @num', ['@num' => $i]),
         '#default_value' => $this->getHexColor($config->get("bg_item_color_$i")),
       ];
     }
@@ -230,7 +232,7 @@ class KamihayaAiSettings extends ConfigFormBase {
         '#type' => 'textfield',
         '#maxlength' => 7,
         '#size' => 7,
-        '#title' => $this->t("Background item color $i"),
+        '#title' => $this->t('Background item color @num', ['@num' => $i]),
         '#default_value' => $this->getHexColor($config->get("second_bg_item_color_$i")),
       ];
     }
@@ -440,7 +442,7 @@ class KamihayaAiSettings extends ConfigFormBase {
     if (!is_string($color) || !preg_match('/^#?[0-9a-fA-F]{6}$/', $color)) {
       return '';
     }
-    $hex = ltrim($color, '#');
+    $hex   = ltrim($color, '#');
     $red   = hexdec(substr($hex, 0, 2));
     $green = hexdec(substr($hex, 2, 2));
     $blue  = hexdec(substr($hex, 4, 2));
@@ -477,6 +479,5 @@ class KamihayaAiSettings extends ConfigFormBase {
     // Convert RGB to HEX format.
     return sprintf('#%02X%02X%02X', $red, $green, $blue);
   }
-
 
 }

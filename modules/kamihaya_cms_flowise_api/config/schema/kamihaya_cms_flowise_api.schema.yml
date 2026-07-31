@@ -9,4 +9,3 @@ kamihaya_cms_flowise_api.settings:
     api_key:
       type: string
       label: 'API Key'
-

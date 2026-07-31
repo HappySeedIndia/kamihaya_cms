@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Plugin implementation of the 'paragraph_type_limiter' formatter.
  *
+ * @phpstan-consistent-constructor
  */
 #[FieldFormatter(
   id: 'paragraph_type_limiter',
@@ -54,7 +55,8 @@ class ParagraphTypeLimiterFormatter extends FormatterBase {
     $label,
     $view_mode,
     array $third_party_settings,
-    protected EntityTypeManagerInterface $entityTypeManager) {
+    protected EntityTypeManagerInterface $entityTypeManager,
+  ) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
   }
 
@@ -103,7 +105,7 @@ class ParagraphTypeLimiterFormatter extends FormatterBase {
       // If the field definition is not a FieldConfig, load the FieldConfig.
       $field_name = $field_definition->getName();
       $entity_type = $field_definition->getTargetEntityTypeId();
-      $field_configs = \Drupal::entityTypeManager()
+      $field_configs = $this->entityTypeManager
         ->getStorage('field_config')
         ->loadByProperties([
           'field_name' => $field_name,
@@ -112,7 +114,7 @@ class ParagraphTypeLimiterFormatter extends FormatterBase {
 
       if (empty($field_configs)) {
         // If no field config is found, try to load it by field name.
-        $field_config = FieldConfig::load($field_name);
+        $field_config = $this->entityTypeManager->getStorage('field_config')->load($field_name);
         if ($field_config) {
           $handler_settings = $field_config->getSetting('handler_settings');
           $target_bundles = $handler_settings['target_bundles'] ?? [];

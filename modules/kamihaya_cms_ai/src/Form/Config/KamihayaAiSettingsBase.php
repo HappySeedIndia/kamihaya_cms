@@ -172,6 +172,10 @@ abstract class KamihayaAiSettingsBase extends ConfigFormBase {
       if ((strpos($key, '_image') === FALSE && !array_key_exists($key, $this->getSteps())) || empty($value[0])) {
         continue;
       }
+      // File entities are loaded by ID here; injecting entity_type.manager into
+      // this abstract config form base would require overriding the constructor
+      // across all child settings forms.
+      // phpcs:ignore DrupalPractice.Objects.GlobalClass.GlobalClass
       $file = File::load($value[0]);
       if (!empty($file)) {
         $file->setPermanent();

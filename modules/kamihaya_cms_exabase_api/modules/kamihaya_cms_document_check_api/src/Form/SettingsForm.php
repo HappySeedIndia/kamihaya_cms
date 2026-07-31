@@ -24,4 +24,5 @@ final class SettingsForm extends SettingsFormBase {
   protected function getEditableConfigNames(): array {
     return ['kamihaya_cms_document_check_api.settings'];
   }
+
 }

@@ -2,7 +2,6 @@
 
 namespace Drupal\kamihaya_cms_feeds_contentserv\Feeds\Fetcher\Form;
 
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Plugin\Type\ExternalPluginFormBase;
@@ -15,7 +14,7 @@ class ContentservApiDataFetcherFeedForm extends ExternalPluginFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildConfigurationForm(array $form, FormStateInterface $form_state, FeedInterface $feed = NULL) {
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state, ?FeedInterface $feed = NULL) {
     $form['source'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Data ID'),
@@ -30,7 +29,7 @@ class ContentservApiDataFetcherFeedForm extends ExternalPluginFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state, FeedInterface $feed = NULL) {
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state, ?FeedInterface $feed = NULL) {
     $feed->setSource($form_state->getValue('source'));
   }
 

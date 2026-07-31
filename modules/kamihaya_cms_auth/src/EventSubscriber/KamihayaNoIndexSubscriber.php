@@ -44,8 +44,6 @@ class KamihayaNoIndexSubscriber implements EventSubscriberInterface {
    *
    * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
    *   The kernel response event.
-   *
-   * @return void
    */
   public function onResponse(ResponseEvent $event): void {
 
@@ -57,7 +55,7 @@ class KamihayaNoIndexSubscriber implements EventSubscriberInterface {
     $route_name = $this->routeMatch->getRouteName();
 
     // Ensure a valid route name is available.
-    if ($route_name === null) {
+    if ($route_name === NULL) {
       return;
     }
 
@@ -75,7 +73,7 @@ class KamihayaNoIndexSubscriber implements EventSubscriberInterface {
     }
 
     $content = $response->getContent();
-    if ($content === false) {
+    if ($content === FALSE) {
       return;
     }
 
@@ -98,7 +96,7 @@ class KamihayaNoIndexSubscriber implements EventSubscriberInterface {
     );
 
     // preg_replace may return null on error.
-    if ($updated_content !== null) {
+    if ($updated_content !== NULL) {
       $response->setContent($updated_content);
     }
   }

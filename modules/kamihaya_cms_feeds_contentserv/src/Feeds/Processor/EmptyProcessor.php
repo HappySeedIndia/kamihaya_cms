@@ -2,7 +2,6 @@
 
 namespace Drupal\kamihaya_cms_feeds_contentserv\Feeds\Processor;
 
-use Drupal\Core\State\StateInterface;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Feeds\Processor\EntityProcessorBase;

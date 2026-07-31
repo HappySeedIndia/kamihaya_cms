@@ -31,10 +31,10 @@ function kamihaya_cms_json_field_token_info_alter(&$data) {
       continue;
     }
     $fields = [];
-    foreach( ['json', 'json_native', 'json_native_binary'] as $type) {
+    foreach (['json', 'json_native', 'json_native_binary'] as $type) {
       $fields = array_merge($fields, \Drupal::entityTypeManager()->getStorage('field_storage_config')->loadByProperties([
         'entity_type' => $entity_type_id,
-        'type' => $type
+        'type' => $type,
       ]));
     }
     foreach ($fields as $field) {
@@ -93,7 +93,8 @@ function kamihaya_cms_json_field_tokens($type, $tokens, array $data, array $opti
     $token_service = \Drupal::token();
     foreach ($tokens as $name => $original) {
       $field_name = explode(':', $name)[0];
-      if (!$entity->hasField($field_name) || !in_array($entity->get($field_name)->getFieldDefinition()->getType(), ['json', 'json_native', 'json_native_binary'])) {
+      $json_field_types = ['json', 'json_native', 'json_native_binary'];
+      if (!$entity->hasField($field_name) || !in_array($entity->get($field_name)->getFieldDefinition()->getType(), $json_field_types)) {
         continue;
       }
       $json_tokens = $token_service->findWithPrefix($tokens, $field_name);

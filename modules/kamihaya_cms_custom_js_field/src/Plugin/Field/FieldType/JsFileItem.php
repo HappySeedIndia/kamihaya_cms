@@ -2,11 +2,11 @@
 
 namespace Drupal\kamihaya_cms_custom_js_field\Plugin\Field\FieldType;
 
-use Drupal\file\Plugin\Field\FieldType\FileItem;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\Attribute\FieldType;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\file\Plugin\Field\FieldType\FileFieldItemList;
+use Drupal\file\Plugin\Field\FieldType\FileItem;
 
 /**
  * Plugin implementation of the 'js_file' field type.
@@ -17,7 +17,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   description: new TranslatableMarkup("Upload JavaScript files with optional TXT to JS conversion"),
   default_widget: "js_file_widget",
   default_formatter: "js_file_script_tag",
-  list_class: \Drupal\file\Plugin\Field\FieldType\FileFieldItemList::class,
+  list_class: FileFieldItemList::class,
   constraints: ["ReferenceAccess" => [], "FileValidation" => []]
 )]
 class JsFileItem extends FileItem {
@@ -43,13 +43,6 @@ class JsFileItem extends FileItem {
     $element['file_directory']['#default_value'] = $this->getSetting('file_directory');
 
     return $element;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function schema(FieldStorageDefinitionInterface $field_definition): array {
-    return parent::schema($field_definition);
   }
 
 }

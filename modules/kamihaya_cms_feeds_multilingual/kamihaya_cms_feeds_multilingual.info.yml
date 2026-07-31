@@ -1,7 +1,7 @@
 name: 'Kamihaya CMS Feeds Multilingual'
 type: module
 description: 'Feeds extention to support multilingual content.'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'Kamihaya CMS'
 
 dependencies:

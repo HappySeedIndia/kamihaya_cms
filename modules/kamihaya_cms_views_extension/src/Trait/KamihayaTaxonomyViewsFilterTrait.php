@@ -89,7 +89,8 @@ trait KamihayaTaxonomyViewsFilterTrait {
       ],
     ];
     if (!empty($form['extra_vids'])) {
-      // Add an option to hide the filter if the term of the selected vocabulary is empty.
+      // Add an option to hide the filter if the term of the selected
+      // vocabulary is empty.
       $form['hide_if_vid_term_empty'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Hide if term of <strong>Vocabulary</strong> is empty'),
@@ -139,7 +140,8 @@ trait KamihayaTaxonomyViewsFilterTrait {
       return;
     }
 
-    // Load additional vocabularies specified in 'extra_vids', excluding the main 'vid'.
+    // Load additional vocabularies specified in 'extra_vids', excluding the
+    // main 'vid'.
     $vocabularies = [];
     foreach (array_filter($this->options['extra_vids']) as $vid) {
       if (empty($vid) || $vid === $this->options['vid']) {
@@ -153,7 +155,8 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
     $vids = array_keys($vocabularies);
 
-    // If the filter is a textfield and there are extra vocabularies, set the title and selection bundles.
+    // If the filter is a textfield and there are extra vocabularies, set
+    // the title and selection bundles.
     if ($this->options['type'] === 'textfield' && !empty($vocabularies)) {
       $labels = array_map(function ($vocabulary) {
           return $vocabulary->label();
@@ -174,7 +177,8 @@ trait KamihayaTaxonomyViewsFilterTrait {
       return;
     }
 
-    // If the filter is not a select box or is not exposed, skip further processing.
+    // If the filter is not a select box or is not exposed, skip further
+    // processing.
     if (($this->options['type'] !== 'select') || !$form_state->get('exposed')) {
       return;
     }
@@ -262,13 +266,15 @@ trait KamihayaTaxonomyViewsFilterTrait {
       }
     }
 
-    // If no options are available or depth/relation filtering is disabled, return early.
+    // If no options are available or depth/relation filtering is disabled,
+    // return early.
     if (empty($form['value']['#options'])
       || (empty($this->options['display_depth']) && empty($this->options['reduce_by_relation']))) {
       return;
     }
 
-    // Hide the filter if it has no options and 'hide_if_empty_options' is enabled.
+    // Hide the filter if it has no options and 'hide_if_empty_options' is
+    // enabled.
     $form['value']['#hide_if_empty_options'] = !empty($this->options['hide_if_empty_options']) ? $this->options['hide_if_empty_options'] : FALSE;
     if (!empty($this->options['hide_if_empty_options']) && empty($form['value']['#options'])) {
       if (empty($this->options['reduce_by_relation'])) {
@@ -339,7 +345,8 @@ trait KamihayaTaxonomyViewsFilterTrait {
       }
       $bundle_field_mapping[$vid] = [];
       $field_definitions = $this->entityFieldManager->getFieldDefinitions('taxonomy_term', $vid);
-      // Bundles should store the child filters which will be updated using AJAX.
+      // Bundles should store the child filters which will be updated using
+      // AJAX.
       foreach ($field_definitions as $field_name => $field_definition) {
         if (strpos($field_name, 'field_') !== 0 || $field_definition->getType() !== 'entity_reference' || strpos($field_definition->getSetting('handler'), 'taxonomy_term') === FALSE) {
           continue;
@@ -353,7 +360,8 @@ trait KamihayaTaxonomyViewsFilterTrait {
       }
     }
 
-    // $request_params consists the AJAX request query parameters including (term_node_tid_depth).
+    // $request_params consists the AJAX request query parameters including
+    // (term_node_tid_depth).
     $request_params = array_merge($this->request->query->all(), $this->request->request->all());
     $filters = [];
     // Loop through all the filters configured in the current view.
@@ -506,7 +514,8 @@ trait KamihayaTaxonomyViewsFilterTrait {
             $exist_vid_term = TRUE;
           }
           if (!$exist_extra_vid_term && in_array($term->bundle(), array_filter($this->options['extra_vids']))) {
-            // If the term belongs to any of the extra vocabularies, set the flag.
+            // If the term belongs to any of the extra vocabularies, set the
+            // flag.
             $exist_extra_vid_term = TRUE;
           }
         }
@@ -516,13 +525,13 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
 
     if ($this->options['hide_if_vid_term_empty'] && !$exist_vid_term) {
-      // If the main vocabulary has no terms, and the hide_if_vid_term_empty option is enabled,
-      // hide the filter.
+      // If the main vocabulary has no terms, and the hide_if_vid_term_empty
+      // option is enabled, hide the filter.
       $options = [];
     }
     if ($this->options['hide_if_extra_vids_term_empty'] && !$exist_extra_vid_term) {
-      // If the additional vocabularies have no terms, and the hide_if_extra_vids_term_empty option is enabled,
-      // hide the filter.
+      // If the additional vocabularies have no terms, and the
+      // hide_if_extra_vids_term_empty option is enabled, hide the filter.
       $options = [];
     }
 
@@ -594,12 +603,13 @@ trait KamihayaTaxonomyViewsFilterTrait {
       return;
     }
 
-    // Iterate over bundles to find entity reference fields referencing taxonomy terms.
+    // Iterate over bundles to find entity reference fields referencing
+    // taxonomy terms.
     foreach ($bundles as $bundle) {
       $field_definitions = $this->entityFieldManager->getFieldDefinitions($entity_type, $bundle);
 
-      // Only consider fields starting with 'field_', of type 'entity_reference',
-      // and referencing taxonomy terms.
+      // Only consider fields starting with 'field_', of type
+      // 'entity_reference', and referencing taxonomy terms.
       foreach ($field_definitions as $field_name => $field_definition) {
         if (strpos($field_name, 'field_') !== 0
           || $field_definition->getType() !== 'entity_reference'
@@ -613,7 +623,8 @@ trait KamihayaTaxonomyViewsFilterTrait {
         }
 
         $new_table = TRUE;
-        // For each target bundle, map the field to the correct table and column.
+        // For each target bundle, map the field to the correct table and
+        // column.
         foreach (array_intersect_key($handler_settings['target_bundles'], $vids) as $target_bundle) {
           if (!isset($vids[$target_bundle])) {
             continue;
@@ -713,6 +724,8 @@ trait KamihayaTaxonomyViewsFilterTrait {
    *
    * @param array $form
    *   The form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
    */
   protected function defaultSelectAndDisabled(array &$form, FormStateInterface $form_state) {
     if (empty($this->options['vid']) || empty($this->options['check_disabled']) || empty($form['value']['#options']) || empty($this->view->argument)) {
@@ -720,7 +733,7 @@ trait KamihayaTaxonomyViewsFilterTrait {
     }
 
     $user_input = $form_state->getUserInput();
-    foreach ($this->view->argument as $name => $argument) {
+    foreach ($this->view->argument as $argument) {
       if (!($argument instanceof Taxonomy)) {
         continue;
       }

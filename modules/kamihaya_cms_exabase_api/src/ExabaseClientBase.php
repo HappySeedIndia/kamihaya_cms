@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Drupal\kamihaya_cms_exabase_api;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Http\Client\Exception\RequestException;
 use GuzzleHttp\ClientInterface;
+use Http\Client\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -65,4 +65,5 @@ class ExabaseClientBase {
   public function getHealth() {
     return $this->request('GET', '/health');
   }
+
 }

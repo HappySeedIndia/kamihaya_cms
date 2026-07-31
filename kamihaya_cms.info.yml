@@ -1,7 +1,7 @@
 name: Kamihaya CMS
 type: profile
 description: 'Kamihaya CMS distribution.'
-core_version_requirement: '^10'
+core_version_requirement: ^10 || ^11
 
 distribution:
   name: Kamihaya CMS

@@ -5,7 +5,7 @@ package: 'Kamihaya CMS'
 dependencies:
   - externalauth:externalauth
 
-core_version_requirement: ^9.5 || ^10
+core_version_requirement: ^10 || ^11
 configure: kamihaya_cms_spiral_api.settings
 
 interface translation project: kamihaya_cms_spiral_api

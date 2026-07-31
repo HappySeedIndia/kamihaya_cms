@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Install, update and uninstall hooks for the Paragraph Type module.
+ */
+
 use Drupal\Core\Serialization\Yaml;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -156,7 +161,7 @@ function kamihaya_cms_paragraph_type_update_10003() {
     'field.field.paragraph.slider_item.field_slider_image',
   ];
 
-  foreach($fields as $field) {
+  foreach ($fields as $field) {
     if ($field_config = \Drupal::configFactory()->getEditable($field)) {
       $value = explode(' ', $field_config->get('settings.file_extensions'));
       if (!in_array('svg', $value)) {
@@ -194,7 +199,7 @@ function kamihaya_cms_paragraph_type_update_10005() {
     'field_height_unit',
   ]);
 
-    // Add fields to Image link Paragraph.
+  // Add fields to Image link Paragraph.
   _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image_link', [
     'field_width',
     'field_width_unit',
@@ -249,7 +254,7 @@ function kamihaya_cms_paragraph_type_update_10007() {
  * Create border box item and border box paragraphs.
  */
 function kamihaya_cms_paragraph_type_update_10008() {
-    // Create Boeder box item Paragraph.
+  // Create Boeder box item Paragraph.
   _kamihaya_cms_common_create_paragraph('border_box_item', [
     'field_border_box_body',
     'field_bg_color',
@@ -343,7 +348,7 @@ function kamihaya_cms_paragraph_type_update_10009() {
  * Add fields to Image link Paragraph.
  */
 function kamihaya_cms_paragraph_type_update_10010() {
-    // Add fields to Image link Paragraph.
+  // Add fields to Image link Paragraph.
   _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'image_link', [
     'field_link_text',
     'field_link_text_halign',
@@ -353,7 +358,7 @@ function kamihaya_cms_paragraph_type_update_10010() {
 }
 
 /**
- * Change field settings of Link button Paragraph and add fields to some paragraphs.
+ * Change Link button field settings and add fields to some paragraphs.
  */
 function kamihaya_cms_paragraph_type_update_10011() {
   $field_storage = FieldStorageConfig::loadByName('paragraph', 'field_button_link');
@@ -370,7 +375,7 @@ function kamihaya_cms_paragraph_type_update_10011() {
   }
   $field_config = FieldConfig::loadByName('paragraph', 'link_button', 'field_button_text');
   if ($field_config) {
-    $field_config->set('required', false);
+    $field_config->set('required', FALSE);
     $field_config->save();
   }
 
@@ -405,7 +410,7 @@ function kamihaya_cms_paragraph_type_update_10012() {
     'field_link_item',
   ]);
 
-    // Add fields to Headings Paragraph.
+  // Add fields to Headings Paragraph.
   _kamihaya_cms_common_add_fields('kamihaya_cms_paragraph_type', 'paragraph', 'headings', [
     'field_anchor_link_id',
   ]);
@@ -495,7 +500,7 @@ function kamihaya_cms_paragraph_type_update_10013() {
   $file = file_get_contents($filename);
   $storage_config = !empty($file) ? Yaml::decode($file) : [];
   $allowed_values = [];
-  foreach($storage_config['settings']['allowed_values'] as $value) {
+  foreach ($storage_config['settings']['allowed_values'] as $value) {
     $allowed_values[$value['value']] = $value['label'];
   }
   $field_storage->setSetting('allowed_values', $allowed_values);
@@ -586,7 +591,6 @@ function kamihaya_cms_paragraph_type_update_10017() {
 
 }
 
-
 /**
  * Create tab and tab item paragraph.
  */
@@ -598,7 +602,7 @@ function kamihaya_cms_paragraph_type_update_10018() {
     'field_tab_label',
   ], [], 'optional');
 
-    // Create Tab Paragraph.
+  // Create Tab Paragraph.
   _kamihaya_cms_common_create_paragraph('tab', [
     'field_active_tab_bg_color',
     'field_active_tab_body_bg_color',
