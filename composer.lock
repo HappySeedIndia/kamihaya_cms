@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb48bd9ad9205b003ae69708c9df7071",
+    "content-hash": "b8e906d96eade55fce3eaf7a8919f353",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -6536,121 +6536,6 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/new_relic_rpm",
                 "issues": "https://drupal.org/project/issues/new_relic_rpm"
-            }
-        },
-        {
-            "name": "drupal/open_ai_metadata",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/open_ai_metadata.git",
-                "reference": "2.0.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/open_ai_metadata-2.0.0.zip",
-                "reference": "2.0.0",
-                "shasum": "09ebdcc364e7bc08e5b8738f073c04869afe87cc"
-            },
-            "require": {
-                "drupal/core": "^9 || ^10"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "2.0.0",
-                    "datestamp": "1702305116",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "vinaymahale",
-                    "homepage": "https://www.drupal.org/user/3680816"
-                }
-            ],
-            "description": "Provides integration with OpenAI to generate meta data for content types.",
-            "homepage": "https://www.drupal.org/project/open_ai_metadata",
-            "support": {
-                "source": "https://git.drupalcode.org/project/open_ai_metadata"
-            }
-        },
-        {
-            "name": "drupal/openai",
-            "version": "1.0.0-beta6",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/openai.git",
-                "reference": "1.0.0-beta6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/openai-1.0.0-beta6.zip",
-                "reference": "1.0.0-beta6",
-                "shasum": "08c0beac5e4cecafc2a49dbdaa134c0a0e72a5cf"
-            },
-            "require": {
-                "drupal/core": "^10 || ^11",
-                "openai-php/client": ">=v0.7.8"
-            },
-            "require-dev": {
-                "drupal/devel_generate": "*",
-                "drupal/eca": "*"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "1.0.0-beta6",
-                    "datestamp": "1720013825",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Kevin Quillen",
-                    "homepage": "https://kevinquillen.com",
-                    "role": "Maintainer"
-                },
-                {
-                    "name": "laurencemercer",
-                    "homepage": "https://www.drupal.org/user/96416"
-                },
-                {
-                    "name": "scott_euser",
-                    "homepage": "https://www.drupal.org/user/3267594"
-                }
-            ],
-            "description": "A set of modules to enable OpenAI integration with Drupal and augment the content experience with AI assisted tools.",
-            "homepage": "https://www.drupal.org/project/openai",
-            "keywords": [
-                "AI",
-                "AI content",
-                "Bard",
-                "DALL-E",
-                "GPT-3",
-                "GPT-4",
-                "artificial intelligence",
-                "content generation",
-                "content moderation",
-                "gpt",
-                "openai"
-            ],
-            "support": {
-                "source": "https://git.drupalcode.org/project/openai"
             }
         },
         {
@@ -17683,7 +17568,6 @@
         "drupal/default_content": 15,
         "drupal/entity_clone": 10,
         "drupal/gin": 5,
-        "drupal/openai": 10,
         "drupal/shs": 5,
         "drupal/tb_megamenu": 15,
         "drupal/viewsreference": 10,
