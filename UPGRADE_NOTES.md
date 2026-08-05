@@ -8,12 +8,10 @@ updating an existing site should read `UPDATE_2.0.md` instead.
 | Series | Drupal core | Status |
 | --- | --- | --- |
 | 1.x | 10.4 | Superseded. Pins sites to an exact core release; see below. |
-| 2.x | 10.6 | Current. Bridge release. |
-| 3.x | 11.x | Planned. |
+| 2.x | 10.6 | Current. |
 
 Drupal 10 reaches end of life on 9 December 2026, and 10.6 is its final minor
-release. The 2.x series therefore has a limited support window by design. Sites
-should be moved to 3.x before that date.
+release. The 2.x series therefore has a limited support window by design.
 
 ## Core version constraints
 
@@ -35,9 +33,9 @@ Require `drupal/core` with a range constraint instead. Managing
 `composer.json`.
 
 Keep the constraint narrow enough to express what has actually been verified.
-The 2.x series uses `^10.6`, not `^10.6 || ^11`: widening it to include Drupal
-11 before Drupal 11 has been verified would ship untested core to any site whose
-root allows it.
+The 2.x series uses `^10.6` rather than a wider range: a constraint that admits
+a core version the distribution has not been tested against will ship that
+version to any site whose root allows it.
 
 ## Composer update discipline
 
@@ -47,13 +45,12 @@ Not for contrib, and not for core. Naming `genero/kamihaya_cms` together with
 any dependency flag opens **every package this distribution requires** for
 update.
 
-This has been measured twice on this project. Removing the CKEditor 4 modules
-with `-W` moved 55 packages, including major jumps such as
-`phpoffice/phpspreadsheet` 2.4 to 5.9. Attempting the core 10.6 update with `-W`
-moved 23 contributed modules plus `dompdf/dompdf` 2.0 to 3.1,
+Contributed modules are direct dependencies of the profile, so lowercase `-w`
+behaves the same as `-W`. Observed effects on this dependency graph: a module
+removal run with `-W` moved 55 packages, and a core minor update run with `-W`
+moved 23 contributed modules together with `dompdf/dompdf` 2.0 to 3.1,
 `phpoffice/phpspreadsheet` 2.4 to 5.9 and `sabberworm/php-css-parser` 8.9 to
-9.4 — none of which core required. Lowercase `-w` behaved identically, because
-contrib packages are direct dependencies of the profile.
+9.4, none of which core required.
 
 Limiting the *named targets* to `drupal/core-*` does not limit what a dependency
 flag updates. There is no safe form of this flag on this project.
@@ -64,8 +61,8 @@ flag updates. There is no safe form of this flag on this project.
 cp composer.lock composer.lock.bak
 ```
 
-The verification environment is not under version control, so this is the only
-rollback mechanism for a Composer operation.
+A test site assembled from this distribution is normally not under version
+control, so this is the only rollback mechanism for a Composer operation.
 
 ### Updating a contributed module
 
@@ -159,7 +156,7 @@ Distinguish two cases in the documentation:
 | Package | State | Revisit when |
 | --- | --- | --- |
 | `drupal/youtube` | `^3.0@beta` (3.0.0-beta1) | A stable 3.x release is published. The constraint tracks beta releases automatically. |
-| `drupal/blazy` | Held at 3.0.x | A 4.x stable release is available. 3.0.x declares Drupal 11 compatibility. |
+| `drupal/blazy` | Held at 3.0.x | A 4.x stable release is available. |
 | `drupal/entity_clone` | Beta | A stable release is published. |
 | `drupal/viewsreference` | Beta | A stable release is published. |
 | `drupal/inline_entity_form` | Was RC in 1.x, stable available | Already resolved. |
@@ -187,18 +184,17 @@ Two consequences for maintainers:
 stable release ever published. It is not the provider for `drupal/ai`; that is
 `drupal/ai_provider_openai`. Do not confuse the two.
 
-## Development environment
+## Filename casing
 
-### Filename casing
+PSR-4 autoloading resolves a class name directly to a filename. A filename that
+differs from its declared class name only in casing therefore loads without
+complaint on a case-insensitive filesystem (the macOS and Windows defaults) and
+fails with `Class not found` on the case-sensitive filesystems used by typical
+Linux servers.
 
-The distribution is developed on macOS, whose filesystem is case-insensitive.
-Consuming sites run on Linux, where it is not. PSR-4 autoloading resolves a
-class name directly to a filename, so a filename that differs from its declared
-class name only in casing loads on the development machine and fails with
-`Class not found` in production. Neither PHPStan nor the standard PHPCS sniff
-set detects this.
-
-Two such files existed in 1.x and were fixed in 2.0. Audit before release:
+Neither PHPStan nor the standard PHPCS sniff set detects this, so it must be
+checked explicitly. Two such files existed in 1.x and were corrected in 2.0.
+Audit before tagging a release:
 
 ```
 for f in $(find modules themes -path "*/src/*" -name "*.php"); do
@@ -212,13 +208,14 @@ done
 ```
 
 Note that `git status` does not report a case-only rename while
-`core.ignorecase` is `true`, which is the macOS default. Use
-`git diff-index --cached --name-status HEAD` to confirm such a change is staged,
-and set `core.ignorecase false` only for the duration of the commit.
+`core.ignorecase` is `true`, which is the default on case-insensitive
+filesystems. Use `git diff-index --cached --name-status HEAD` to confirm such a
+change is staged, and set `core.ignorecase false` only for the duration of the
+commit.
 
-### Verification expectations
+## Pre-release checks
 
-Before a release, the verification environment should report:
+A site assembled from a release candidate should report:
 
 - `drush status` — expected core version, successful bootstrap
 - `drush core:requirements --severity=2` — no core security coverage errors
@@ -231,14 +228,3 @@ Before a release, the verification environment should report:
 
 PHPStan resolves class names case-insensitively and does not execute code, so it
 cannot substitute for the runtime checks above.
-
-## Documentation language
-
-Everything committed to this repository is written in English, because the
-project is published on drupal.org. Internal working documents are kept outside
-the repository.
-
-Do not add internal file paths to `.gitignore`. `.gitignore` is itself
-committed and published, so listing internal filenames there discloses the
-existence and naming of internal tooling even though the file contents remain
-private. Keep internal files in a separate working directory instead.

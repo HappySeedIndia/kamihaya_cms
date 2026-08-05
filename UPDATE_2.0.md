@@ -27,16 +27,15 @@ your site to a single core release. See "Core version constraints" below.
 **2.0 does not move your site to Drupal 11.** The core constraint in this
 release is `^10.6`, which resolves within the Drupal 10.6 series only.
 
-Drupal 11 support is delivered in Kamihaya CMS 3.0. Because Drupal 10 reaches
-end of life on 9 December 2026, plan the update to 3.0 accordingly; 2.0 is a
-bridge release, not a destination.
+Note that Drupal 10 reaches end of life on 9 December 2026, and 10.6 is its
+final minor release. Plan accordingly.
 
 ## Prerequisites
 
 - **Drupal core 10.3.0 or later.** Sites on 10.2 or earlier must first update
   to 10.3+ before applying this release.
 - **PHP 8.1 or later.** Drupal core 10.6 declares `php: >=8.1.0`. PHP 8.3 or
-  later is recommended, because Kamihaya CMS 3.0 (Drupal 11) will require it.
+  later is recommended.
 - Composer 2.x.
 - Drush 13. The commands in this guide were verified against Drush 13.3.3.
   Note that `drush updb --dry-run` does not exist in Drush 13; use
@@ -60,14 +59,14 @@ bridge release, not a destination.
 | commerce | 2.x | 3.x | Major upgrade. Modifies order data. |
 | webform | 6.2 | 6.3 | Service classes removed. |
 | xmlsitemap | 8.x-1.x | 2.0 | Major upgrade. |
-| youtube | 2.x | 3.0.0-beta1 | Beta, pending a stable Drupal 11 release. |
+| youtube | 2.x | 3.0.0-beta1 | Beta; no stable release is available yet. |
 
 ### Modules removed
 
 | Module | Reason | Action required |
 | --- | --- | --- |
-| ckeditor, colorbutton, panelbutton | CKEditor 4 is not available on Drupal 11. All text formats already use CKEditor 5. | Uninstall before updating. See Step 2. |
-| open_ai_metadata | No Drupal 11 compatible release. Never enabled by the install profile and not used by any Kamihaya CMS feature. | Uninstall only if you enabled it manually. See Step 2. |
+| ckeditor, colorbutton, panelbutton | CKEditor 4 reached end of life upstream and is unused: all text formats already use CKEditor 5. | Uninstall before updating. See Step 2. |
+| open_ai_metadata | Not maintained for current Drupal versions. Never enabled by the install profile and not used by any Kamihaya CMS feature. | Uninstall only if you enabled it manually. See Step 2. |
 | openai | No stable release has ever been published. Never enabled by the install profile. Superseded by the AI Core (`drupal/ai`) ecosystem, which is retained. | Uninstall only if you enabled it manually. See Step 2. |
 
 The CKEditor 4 plugin JavaScript libraries under `web/libraries/` are removed by
@@ -227,9 +226,9 @@ running anything.
 
 Adding `-W` (or `-w`) while naming `genero/kamihaya_cms` opens **every package
 the distribution requires** for update, not only the packages you intended to
-move. During development of this release, that behaviour was measured: `-W`
-moved 23 contributed modules that core did not require, and pulled unrelated
-vendor libraries across major version boundaries, including
+move. Measured against this release, `-W` moved 23 contributed modules that
+core did not require, and pulled unrelated vendor libraries across major
+version boundaries, including
 `phpoffice/phpspreadsheet` 2.4 to 5.9, `dompdf/dompdf` 2.0 to 3.1 and
 `sabberworm/php-css-parser` 8.9 to 9.4. Major vendor jumps of this kind can
 break custom code and are very difficult to attribute afterwards.
@@ -308,8 +307,8 @@ composer update \
   <every package listed by why-not>
 ```
 
-For reference, updating from core 10.4.10 to 10.6.14 during development required
-these 21 vendor packages to be named alongside the core packages:
+For reference, updating from core 10.4.10 to 10.6.14 requires these 21 vendor
+packages to be named alongside the core packages:
 
 ```
 asm89/stack-cors  guzzlehttp/guzzle  guzzlehttp/promises  guzzlehttp/psr7
@@ -349,7 +348,7 @@ Review the output carefully. Look for:
 
 Only then run the command without `--dry-run`.
 
-This path was **not** used to verify the release. The staged path was.
+The staged path above is the one this release was verified with. Prefer it.
 
 ## Step 5 — Clear the compiled service container
 
@@ -401,8 +400,9 @@ regenerate the sitemap and confirm `/sitemap.xml` is served.
 ### youtube (2.x to 3.0.0-beta1)
 
 Field type and formatter machine names are unchanged, so existing youtube fields
-keep working. This is a beta release, adopted because a stable Drupal 11
-compatible release is not yet available.
+keep working. This is a beta release, adopted because no stable release is
+available. It defines no update hooks, so no database update is needed for this
+module.
 
 ### commerce (2.x to 3.x)
 
@@ -445,26 +445,13 @@ A major upgrade, and the only step that modifies order data.
 - Menus, media, and any site-specific features.
 - Check the log for errors: `drush watchdog:show`.
 
-## Deferred to Kamihaya CMS 3.0
-
-The following are intentionally not part of 2.0:
-
-- **Drupal 11.** Core stays in the 10.6 series in this release.
-- **bootstrap5 3.x to 4.x**, together with the decision on the `cloud`,
-  `bootstrap_cloud` and `rigel` modules, which currently constrain bootstrap5.
-- **Metatag AI.** `open_ai_metadata` is removed in 2.0 without a replacement,
-  because it was never enabled. Metatag AI 2.x, together with an AI provider
-  module, is planned for 3.0.
-- **Font Awesome consolidation.** The distribution currently loads Font Awesome
-  through more than one path. This has no functional impact and is deferred.
-
 ## Notes
 
 - `drupal/ai` (AI Core) is retained deliberately, so that AI capabilities remain
   available to sites built on this distribution. It is not enabled by the
   install profile. To use it, install an AI provider module and enable both.
-- Blazy is held at 3.0.x, which declares Drupal 11 compatibility. It will move
-  to a 4.x stable release when one is available.
+- Blazy is held at 3.0.x. It will move to a 4.x stable release when one is
+  available.
 - After updating, `drush core:requirements` may report
   "Module and theme update status: Not secure!" if contributed modules have newer
   releases available. The distribution pins the versions it has verified. If you
