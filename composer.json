@@ -113,6 +113,7 @@
         "drupal/admin_toolbar": "^3.5",
         "drupal/advanced_text_formatter": "^3.0@RC",
         "drupal/ai": "^1.4",
+        "drupal/ai_provider_openai": "^1.2",
         "drupal/back_to_top": "^3.0",
         "drupal/better_exposed_filters": "^7.0",
         "drupal/blazy": "^3.0",
