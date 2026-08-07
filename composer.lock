@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4adf5bbc118b702f2fe0ce19df5b41c8",
+    "content-hash": "0ea46501d5edc2a774d859e525ea5e1a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2302,26 +2302,26 @@
         },
         {
             "name": "drupal/bootstrap5",
-            "version": "3.0.14",
+            "version": "4.0.8",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/bootstrap5.git",
-                "reference": "3.0.14"
+                "reference": "4.0.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/bootstrap5-3.0.14.zip",
-                "reference": "3.0.14",
-                "shasum": "a595afb1f983e96b4719f47592f08349792ef058"
+                "url": "https://ftp.drupal.org/files/projects/bootstrap5-4.0.8.zip",
+                "reference": "4.0.8",
+                "shasum": "1d7dc5c04ce262628c005671117888caa498453e"
             },
             "require": {
-                "drupal/core": "^9.4 || ^10"
+                "drupal/core": "^10.1 || ^11.0"
             },
             "type": "drupal-theme",
             "extra": {
                 "drupal": {
-                    "version": "3.0.14",
-                    "datestamp": "1723049842",
+                    "version": "4.0.8",
+                    "datestamp": "1770988520",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -2352,30 +2352,30 @@
         },
         {
             "name": "drupal/bootstrap_cloud",
-            "version": "6.0.8",
+            "version": "7.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/bootstrap_cloud.git",
-                "reference": "6.0.8"
+                "reference": "7.0.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/bootstrap_cloud-6.0.8.zip",
-                "reference": "6.0.8",
-                "shasum": "474db49f959e4635ae38fa5a5558afd72cd72820"
+                "url": "https://ftp.drupal.org/files/projects/bootstrap_cloud-7.0.0-beta1.zip",
+                "reference": "7.0.0-beta1",
+                "shasum": "2f7c24f68752a3022639eb1f6da4403abe18ab1e"
             },
             "require": {
-                "drupal/bootstrap5": "^3",
-                "drupal/core": "^9.5 || ^10"
+                "drupal/bootstrap5": "^4",
+                "drupal/core": "^9.5 || ^10 || ^11"
             },
             "type": "drupal-theme",
             "extra": {
                 "drupal": {
-                    "version": "6.0.8",
-                    "datestamp": "1697082923",
+                    "version": "7.0.0-beta1",
+                    "datestamp": "1746210743",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -2385,16 +2385,17 @@
             ],
             "authors": [
                 {
-                    "name": "DOCOMO Innovations, Inc.",
-                    "homepage": "https://www.docomoinnovations.com",
+                    "name": "Yas Naoi (yas)",
+                    "homepage": "https://drupal.org/u/yas",
                     "role": "Maintainer"
                 },
                 {
-                    "name": "yas",
-                    "homepage": "https://www.drupal.org/user/17536"
+                    "name": "Baldwin Louie (baldwinlouie)",
+                    "homepage": "https://www.drupal.org/u/baldwinlouie",
+                    "role": "Maintainer"
                 }
             ],
-            "description": "A Bootstrap 5 theme designed for <a href=\"https://drupal.org/project/cloud\" title=\"cloud\">Cloud</a> module",
+            "description": "A theme designed for Cloud module, which is a sub-theme of Bootstrap or Bootstrap 5.",
             "homepage": "https://drupal.org/project/bootstrap_cloud",
             "support": {
                 "source": "https://git.drupalcode.org/project/bootstrap_cloud"
@@ -2648,28 +2649,28 @@
         },
         {
             "name": "drupal/cloud",
-            "version": "7.0.0",
+            "version": "8.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cloud.git",
-                "reference": "7.0.0"
+                "reference": "8.0.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cloud-7.0.0.zip",
-                "reference": "7.0.0",
-                "shasum": "73a887491e7046711967b956ccdcb1005367adb8"
+                "url": "https://ftp.drupal.org/files/projects/cloud-8.0.0-beta1.zip",
+                "reference": "8.0.0-beta1",
+                "shasum": "18945bb4e45c2f2f1e9fb79ef92ee6b7e8d6e9a4"
             },
             "require": {
                 "aws/aws-sdk-php": "^3",
-                "drupal/bootstrap_cloud": "^6",
-                "drupal/core": "^10.3",
+                "drupal/bootstrap_cloud": "^7",
+                "drupal/core": "^10.3 || ^11",
                 "drupal/geocoder": "^3 || ^4",
-                "drupal/rigel": "^7",
+                "drupal/rigel": "*",
                 "ext-json": "*",
                 "geocoder-php/nominatim-provider": "^5",
                 "google/apiclient": "^2",
-                "maclof/kubernetes-client": "^0.29"
+                "maclof/kubernetes-client": "^0.31"
             },
             "require-dev": {
                 "composer/installers": "*",
@@ -2691,11 +2692,11 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "7.0.0",
-                    "datestamp": "1720041878",
+                    "version": "8.0.0-beta1",
+                    "datestamp": "1746044540",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 },
                 "drush": {
@@ -2719,13 +2720,14 @@
             ],
             "authors": [
                 {
-                    "name": "DOCOMO Innovations, Inc.",
-                    "homepage": "https://www.docomoinnovations.com",
+                    "name": "Yas Naoi (yas)",
+                    "homepage": "https://drupal.org/u/yas",
                     "role": "Maintainer"
                 },
                 {
-                    "name": "dii",
-                    "homepage": "https://www.drupal.org/user/1041734"
+                    "name": "Baldwin Louie (baldwinlouie)",
+                    "homepage": "https://www.drupal.org/u/baldwinlouie",
+                    "role": "Maintainer"
                 },
                 {
                     "name": "yas",
@@ -7314,30 +7316,30 @@
         },
         {
             "name": "drupal/rigel",
-            "version": "7.0.5",
+            "version": "8.0.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/rigel.git",
-                "reference": "7.0.5"
+                "reference": "8.0.0-beta2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rigel-7.0.5.zip",
-                "reference": "7.0.5",
-                "shasum": "910be17feecb49bef999f5ee687e341950cb7975"
+                "url": "https://ftp.drupal.org/files/projects/rigel-8.0.0-beta2.zip",
+                "reference": "8.0.0-beta2",
+                "shasum": "582f753b9af3211769aa42fe00615b946b868747"
             },
             "require": {
-                "drupal/bootstrap5": "^3",
-                "drupal/core": "^10.3"
+                "drupal/bootstrap5": "^4",
+                "drupal/core": "^10.3 || ^11"
             },
             "type": "drupal-theme",
             "extra": {
                 "drupal": {
-                    "version": "7.0.5",
-                    "datestamp": "1718062920",
+                    "version": "8.0.0-beta2",
+                    "datestamp": "1771309573",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -7347,16 +7349,17 @@
             ],
             "authors": [
                 {
-                    "name": "DOCOMO Innovations, Inc.",
-                    "homepage": "https://www.docomoinnovations.com",
+                    "name": "Yas Naoi (yas)",
+                    "homepage": "https://drupal.org/u/yas",
                     "role": "Maintainer"
                 },
                 {
-                    "name": "yas",
-                    "homepage": "https://www.drupal.org/user/17536"
+                    "name": "Baldwin Louie (baldwinlouie)",
+                    "homepage": "https://www.drupal.org/u/baldwinlouie",
+                    "role": "Maintainer"
                 }
             ],
-            "description": "A Bootstrap 5 theme designed for <a href=\"https://drupal.org/project/cloud\" title=\"cloud\">Cloud</a> module",
+            "description": "A sleek theme designed for Cloud module, which is a sub-theme of Bootstrap5.",
             "homepage": "https://drupal.org/project/rigel",
             "support": {
                 "source": "https://git.drupalcode.org/project/rigel"
@@ -11018,26 +11021,26 @@
         },
         {
             "name": "maclof/kubernetes-client",
-            "version": "0.29.0",
+            "version": "0.31.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maclof/kubernetes-client.git",
-                "reference": "2c1034c11f078daccc516dd96012630d7e1d0545"
+                "reference": "3246638c8ce40ff187f8f1c2bf709e2fd4f0883f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maclof/kubernetes-client/zipball/2c1034c11f078daccc516dd96012630d7e1d0545",
-                "reference": "2c1034c11f078daccc516dd96012630d7e1d0545",
+                "url": "https://api.github.com/repos/maclof/kubernetes-client/zipball/3246638c8ce40ff187f8f1c2bf709e2fd4f0883f",
+                "reference": "3246638c8ce40ff187f8f1c2bf709e2fd4f0883f",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^5.0|^6.0|^7.0|^8.0|^9.0|^10.0",
+                "illuminate/support": "^5.0|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
                 "php": "^7.4|^8.0",
                 "php-http/client-common": "^2.0",
                 "php-http/discovery": "^1.0",
                 "ratchet/pawl": "^0.3",
                 "softcreatr/jsonpath": "^0.5 || ^0.7 || ^0.8",
-                "symfony/yaml": "^4.0|^5.0|^6.0"
+                "symfony/yaml": "^4.0|^5.0|^6.0|^7.0"
             },
             "require-dev": {
                 "mockery/mockery": "~1.2",
@@ -11071,9 +11074,9 @@
             ],
             "support": {
                 "issues": "https://github.com/maclof/kubernetes-client/issues",
-                "source": "https://github.com/maclof/kubernetes-client/tree/0.29.0"
+                "source": "https://github.com/maclof/kubernetes-client/tree/0.31.0"
             },
-            "time": "2023-08-28T13:42:22+00:00"
+            "time": "2024-03-14T08:01:22+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -17579,10 +17582,13 @@
     "stability-flags": {
         "drupal/advanced_text_formatter": 5,
         "drupal/block_field": 5,
+        "drupal/bootstrap_cloud": 10,
+        "drupal/cloud": 10,
         "drupal/content_access": 5,
         "drupal/default_content": 15,
         "drupal/entity_clone": 10,
         "drupal/gin": 5,
+        "drupal/rigel": 10,
         "drupal/shs": 5,
         "drupal/tb_megamenu": 15,
         "drupal/viewsreference": 10,
