@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5d059b498b063b3557bd5c888aa24253",
+    "content-hash": "126aab94c6c9e171c4ac98a1bf1f0bdd",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -9174,7 +9174,7 @@
                     "role": "Maintainer"
                 },
                 {
-                    "name": "Rajab Natshah",
+                    "name": "rajab natshah",
                     "homepage": "https://www.drupal.org/user/1414312"
                 }
             ],
@@ -17593,6 +17593,7 @@
         "drupal/shs": 5,
         "drupal/tb_megamenu": 15,
         "drupal/viewsreference": 10,
+        "drupal/webform_mautic": 20,
         "drupal/webp": 5,
         "drupal/youtube": 10
     },
