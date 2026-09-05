@@ -3,6 +3,7 @@
 namespace Drupal\kamihaya_cms_ai\Form\Config;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,14 +20,14 @@ class KamihayaAiSettings extends ConfigFormBase {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
-   * @param \Drupal\Core\Config\TypedConfigManagerInterface|null $typedConfigManager
+   * @param \Drupal\Core\Config\TypedConfigManagerInterface $typedConfigManager
    *   The typed config manager.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface|null $moduleHandler
    *   The module handler.
    */
   public function __construct(
     ConfigFactoryInterface $config_factory,
-    protected $typedConfigManager = NULL,
+    TypedConfigManagerInterface $typedConfigManager,
     protected $moduleHandler = NULL,
   ) {
     parent::__construct($config_factory, $typedConfigManager);

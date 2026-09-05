@@ -4,6 +4,7 @@ namespace Drupal\kamihaya_cms_spiral_api\Form\Config;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -42,8 +43,8 @@ class SpiralSettings extends ConfigFormBase {
    * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
    *   The string translation.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, EntityFieldManagerInterface $entity_field_manager, TranslationInterface $string_translation) {
-    parent::__construct($config_factory);
+  public function __construct(ConfigFactoryInterface $config_factory, TypedConfigManagerInterface $typed_config_manager, EntityFieldManagerInterface $entity_field_manager, TranslationInterface $string_translation) {
+    parent::__construct($config_factory, $typed_config_manager);
     $this->entityFieldManager = $entity_field_manager;
     $this->stringTranslation = $string_translation;
   }
@@ -54,6 +55,7 @@ class SpiralSettings extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('entity_field.manager'),
       $container->get('string_translation')
     );

@@ -4,6 +4,7 @@ namespace Drupal\kamihaya_cms_contentserv_api\Form\Config;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeBundleInfo;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -44,10 +45,11 @@ class ContentservApiSettings extends ConfigFormBase {
    */
   public function __construct(
     ConfigFactoryInterface $config_factory,
+    TypedConfigManagerInterface $typed_config_manager,
     EntityTypeBundleInfo $entity_type_bundleInfo,
     EntityTypeManagerInterface $entity_type_manager,
   ) {
-    parent::__construct($config_factory);
+    parent::__construct($config_factory, $typed_config_manager);
     $this->entityTypeBundleInfo = $entity_type_bundleInfo;
     $this->entityTypeManager = $entity_type_manager;
   }
@@ -58,6 +60,7 @@ class ContentservApiSettings extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('entity_type.bundle.info'),
       $container->get('entity_type.manager')
     );
