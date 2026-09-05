@@ -2,6 +2,8 @@
 
 namespace Drupal\kamihaya_cms_google_map\Form\Config;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteBuilderInterface;
@@ -16,12 +18,21 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class GoogleMapWithViewConfigForm extends ConfigFormBase {
 
   /**
-   * Constructs a new RouteProvider object.
+   * Constructs a new GoogleMapWithViewConfigForm object.
    *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
+   * @param \Drupal\Core\Config\TypedConfigManagerInterface $typed_config_manager
+   *   The typed config manager.
    * @param \Drupal\Core\Routing\RouteBuilderInterface $routeBuilder
    *   The route builder service.
    */
-  public function __construct(protected RouteBuilderInterface $routeBuilder) {
+  public function __construct(
+    ConfigFactoryInterface $config_factory,
+    TypedConfigManagerInterface $typed_config_manager,
+    protected RouteBuilderInterface $routeBuilder,
+  ) {
+    parent::__construct($config_factory, $typed_config_manager);
   }
 
   /**
@@ -29,6 +40,8 @@ class GoogleMapWithViewConfigForm extends ConfigFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
+      $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('router.builder')
     );
   }
