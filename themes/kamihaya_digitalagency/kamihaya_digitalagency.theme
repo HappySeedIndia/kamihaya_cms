@@ -43,7 +43,11 @@ function kamihaya_digitalagency_get_setting(string $name, ?string $theme = NULL)
  * Implements hook_form_FORM_ID_alter().
  */
 function kamihaya_digitalagency_form_system_theme_settings_alter(&$form, FormStateInterface $form_state, $form_id = NULL) {
-  $settings_manager = new KamihayaSettingsManager(\Drupal::service('theme.manager'), \Drupal::service('module_handler'));
+  $settings_manager = new KamihayaSettingsManager(
+    \Drupal::service('theme.manager'),
+    \Drupal::service('module_handler'),
+    \Drupal::service(ThemeSettingsProvider::class)
+  );
   return $settings_manager->themeSettingsAlter($form, $form_state, $form_id);
 }
 
