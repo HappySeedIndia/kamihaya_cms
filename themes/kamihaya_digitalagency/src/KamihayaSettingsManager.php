@@ -3,6 +3,7 @@
 namespace Drupal\kamihaya_digitalagency;
 
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Extension\ThemeSettingsProvider;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Theme\ThemeManagerInterface;
 use Drupal\bootstrap5\SettingsManager;
@@ -54,7 +55,7 @@ class KamihayaSettingsManager extends SettingsManager {
       $form['logo']['settings']['logo_url'] = [
         '#type' => 'url',
         '#title' => $this->t('Logo URL'),
-        '#default_value' => theme_get_setting('logo_url'),
+        '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('logo_url'),
         '#description' => $this->t("The URL of the logo. Please leave it empty if you want to link to the front page."),
       ];
     }
@@ -105,7 +106,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Body text color:'),
-      '#default_value' => theme_get_setting('b5_body_text_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_body_text_color'),
       '#description' => $this->t("Custom text color of the body."),
     ];
 
@@ -114,7 +115,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Body link color:'),
-      '#default_value' => theme_get_setting('b5_body_link_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_body_link_color'),
       '#description' => $this->t("Custom link color of the body."),
     ];
 
@@ -123,7 +124,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Body link hover color:'),
-      '#default_value' => theme_get_setting('b5_body_link_hover_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_body_link_hover_color'),
       '#description' => $this->t("Custom link hover color of the body."),
     ];
 
@@ -145,7 +146,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Body custom background:'),
-      '#default_value' => theme_get_setting('b5_body_bg_schema_custom'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_body_bg_schema_custom'),
       '#description' => $this->t("Custom background color of the body."),
     ];
 
@@ -154,7 +155,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Body custom light background:'),
-      '#default_value' => theme_get_setting('b5_body_light_bg_schema_custom'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_body_light_bg_schema_custom'),
       '#description' => $this->t("Custom light background color of the body."),
     ];
 
@@ -163,7 +164,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Body custom secondary background:'),
-      '#default_value' => theme_get_setting('b5_body_secondary_bg_schema_custom'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_body_secondary_bg_schema_custom'),
       '#description' => $this->t("Custom secondary background color of the body."),
     ];
 
@@ -186,7 +187,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Navbar text color:'),
-      '#default_value' => theme_get_setting('b5_navbar_text_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_navbar_text_color'),
       '#description' => $this->t("Custom text color of the navbar."),
     ];
 
@@ -195,7 +196,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Navbar link color:'),
-      '#default_value' => theme_get_setting('b5_navbar_link_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_navbar_link_color'),
       '#description' => $this->t("Custom link color of the navbar."),
     ];
 
@@ -204,7 +205,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Navbar link hover color:'),
-      '#default_value' => theme_get_setting('b5_navbar_link_hover_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_navbar_link_hover_color'),
       '#description' => $this->t("Custom link hover color of the navbar."),
     ];
 
@@ -213,7 +214,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Navbar link active color:'),
-      '#default_value' => theme_get_setting('b5_navbar_link_active_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_navbar_link_active_color'),
       '#description' => $this->t("Custom link active color of the navbar."),
     ];
 
@@ -222,7 +223,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Navbar dropdown hover color:'),
-      '#default_value' => theme_get_setting('b5_navbar_dropdown_hover_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_navbar_dropdown_hover_color'),
       '#description' => $this->t("Custom dropdown hover color of the navbar."),
     ];
 
@@ -231,7 +232,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Navbar dropdown hover background color:'),
-      '#default_value' => theme_get_setting('b5_navbar_dropdown_hover_bk_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_navbar_dropdown_hover_bk_color'),
       '#description' => $this->t("Custom dropdown background hover color of the navbar."),
     ];
 
@@ -240,7 +241,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Navbar dropdown active color:'),
-      '#default_value' => theme_get_setting('b5_navbar_dropdown_active_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_navbar_dropdown_active_color'),
       '#description' => $this->t("Custom dropdown active color of the navbar."),
     ];
 
@@ -249,7 +250,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Navbar dropdown active background color:'),
-      '#default_value' => theme_get_setting('b5_navbar_dropdown_active_bg_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_navbar_dropdown_active_bg_color'),
       '#description' => $this->t("Custom dropdown background active color of the navbar."),
     ];
 
@@ -271,7 +272,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Navbar custom background:'),
-      '#default_value' => theme_get_setting('b5_navbar_bg_schema_custom'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_navbar_bg_schema_custom'),
       '#description' => $this->t("Custom background color of the navbar."),
     ];
 
@@ -280,14 +281,14 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Navbar custom secondary background:'),
-      '#default_value' => theme_get_setting('b5_navbar_secondary_bg_schema_custom'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_navbar_secondary_bg_schema_custom'),
       '#description' => $this->t("Custom background secondary color of the navbar."),
     ];
 
     $form['nav_details']['b5_navbar_sp_position'] = [
       '#type' => 'select',
       '#title' => $this->t('Navbar mobile menu position:'),
-      '#default_value' => theme_get_setting('b5_navbar_sp_position'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_navbar_sp_position'),
       '#description' => $this->t("Position of mobile menu."),
       '#options' => [
         'left' => $this->t('Left'),
@@ -298,7 +299,7 @@ class KamihayaSettingsManager extends SettingsManager {
     $form['nav_details']['b5_navbar_sp_revert'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Navbar mobile revert position'),
-      '#default_value' => theme_get_setting('b5_navbar_sp_revert'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_navbar_sp_revert'),
       '#description' => $this->t("Revert the position in the mobile display."),
     ];
 
@@ -321,7 +322,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Footer text color:'),
-      '#default_value' => theme_get_setting('b5_footer_text_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_footer_text_color'),
       '#description' => $this->t("Custom text color of the footer."),
     ];
 
@@ -330,7 +331,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Footer link color:'),
-      '#default_value' => theme_get_setting('b5_footer_link_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_footer_link_color'),
       '#description' => $this->t("Custom link color of the footer."),
     ];
 
@@ -339,7 +340,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Footer link hover color:'),
-      '#default_value' => theme_get_setting('b5_footer_link_hover_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_footer_link_hover_color'),
       '#description' => $this->t("Custom link hover color of the footer."),
     ];
 
@@ -348,7 +349,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Footer link active color:'),
-      '#default_value' => theme_get_setting('b5_footer_link_active_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_footer_link_active_color'),
       '#description' => $this->t("Custom link active color of the footer."),
     ];
 
@@ -370,7 +371,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Footer custom background:'),
-      '#default_value' => theme_get_setting('b5_footer_bg_schema_custom'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_footer_bg_schema_custom'),
       '#description' => $this->t("Custom background color of the footer."),
     ];
 
@@ -379,14 +380,14 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Footer custom secondary background:'),
-      '#default_value' => theme_get_setting('b5_footer_secondary_bg_schema_custom'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_footer_secondary_bg_schema_custom'),
       '#description' => $this->t("Custom background secondary color of the footer."),
     ];
 
     $form['footer_details']['b5_footer_width_ratio'] = [
       '#type' => 'select',
       '#title' => $this->t('Footer width ratio:'),
-      '#default_value' => theme_get_setting('b5_footer_width_ratio'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_footer_width_ratio'),
       '#description' => $this->t("Footer left and right width ratio."),
       '#options' => [
         '3:7' => $this->t('3:7'),
@@ -400,7 +401,7 @@ class KamihayaSettingsManager extends SettingsManager {
     $form['footer_details']['b5_footer_sp_rightt_top'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Footer mobile right top'),
-      '#default_value' => theme_get_setting('b5_footer_sp_rightt_top'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_footer_sp_rightt_top'),
       '#description' => $this->t("Place footer right on the top of footer in the mobile display."),
     ];
 
@@ -420,13 +421,13 @@ class KamihayaSettingsManager extends SettingsManager {
     $form['site_common']['site_max_width'] = [
       '#type' => 'number',
       '#title' => $this->t('Site max width(px)'),
-      '#default_value' => theme_get_setting('site_max_width'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('site_max_width'),
     ];
 
     $form['site_common']['b5_back_to_top_shape'] = [
       '#type' => 'select',
       '#title' => $this->t('Back to top link shape:'),
-      '#default_value' => theme_get_setting('b5_back_to_top_shape'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('b5_back_to_top_shape'),
       '#description' => $this->t("The shape of the back to top link."),
       '#options' => [
         'circle' => $this->t('Circle'),
@@ -446,7 +447,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#type' => 'number',
       '#minimum' => 0,
       '#title' => $this->t('Button radius:'),
-      '#default_value' => theme_get_setting('button_radius'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('button_radius'),
     ];
 
     $form['button_details']['primary_button'] = [
@@ -460,7 +461,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Primary button text color:'),
-      '#default_value' => theme_get_setting('primary_button_text_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('primary_button_text_color'),
       '#description' => $this->t("Custom text color of the primary button."),
     ];
 
@@ -469,7 +470,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Primary button background color:'),
-      '#default_value' => theme_get_setting('primary_button_bg_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('primary_button_bg_color'),
       '#description' => $this->t("Custom background color of the primary button."),
     ];
 
@@ -478,7 +479,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Primary button border color:'),
-      '#default_value' => theme_get_setting('primary_button_bd_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('primary_button_bd_color'),
       '#description' => $this->t("Custom border color of the primary button."),
     ];
 
@@ -487,7 +488,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Primary button hover text color:'),
-      '#default_value' => theme_get_setting('primary_button_hover_text_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('primary_button_hover_text_color'),
       '#description' => $this->t("Custom hover text color of the primary button."),
     ];
 
@@ -496,7 +497,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Primary button hover color:'),
-      '#default_value' => theme_get_setting('primary_button_hover_bg_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('primary_button_hover_bg_color'),
       '#description' => $this->t("Custom hover color of the primary button."),
     ];
 
@@ -505,7 +506,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Primary button hover border color:'),
-      '#default_value' => theme_get_setting('primary_button_hover_bd_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('primary_button_hover_bd_color'),
       '#description' => $this->t("Custom hover border color of the primary button."),
     ];
 
@@ -514,7 +515,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Primary button active text color:'),
-      '#default_value' => theme_get_setting('primary_button_active_text_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('primary_button_active_text_color'),
       '#description' => $this->t("Custom active text color of the primary button."),
     ];
 
@@ -523,7 +524,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Primary button active color:'),
-      '#default_value' => theme_get_setting('primary_button_active_bg_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('primary_button_active_bg_color'),
       '#description' => $this->t("Custom active color of the primary button."),
     ];
 
@@ -532,7 +533,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Primary button active border color:'),
-      '#default_value' => theme_get_setting('primary_button_active_bd_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('primary_button_active_bd_color'),
       '#description' => $this->t("Custom active border color of the primary button."),
     ];
 
@@ -547,7 +548,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Secondary button text color:'),
-      '#default_value' => theme_get_setting('secondary_button_text_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('secondary_button_text_color'),
       '#description' => $this->t("Custom text color of the secondary button."),
     ];
 
@@ -556,7 +557,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Secondary button background color:'),
-      '#default_value' => theme_get_setting('secondary_button_bg_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('secondary_button_bg_color'),
       '#description' => $this->t("Custom background color of the secondary button."),
     ];
 
@@ -565,7 +566,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Secondary button border color:'),
-      '#default_value' => theme_get_setting('secondary_button_bd_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('secondary_button_bd_color'),
       '#description' => $this->t("Custom border color of the secondary button."),
     ];
 
@@ -574,7 +575,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Secondary button hover text color:'),
-      '#default_value' => theme_get_setting('secondary_button_hover_text_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('secondary_button_hover_text_color'),
       '#description' => $this->t("Custom hover text color of the secondary button."),
     ];
 
@@ -583,7 +584,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Secondary button hover color:'),
-      '#default_value' => theme_get_setting('secondary_button_hover_bg_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('secondary_button_hover_bg_color'),
       '#description' => $this->t("Custom hover color of the secondary button."),
     ];
 
@@ -592,7 +593,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Secondary button hover border color:'),
-      '#default_value' => theme_get_setting('secondary_button_hover_bd_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('secondary_button_hover_bd_color'),
       '#description' => $this->t("Custom hover border color of the secondary button."),
     ];
 
@@ -601,7 +602,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Secondary button active text color:'),
-      '#default_value' => theme_get_setting('secondary_button_active_text_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('secondary_button_active_text_color'),
       '#description' => $this->t("Custom active text color of the secondary button."),
     ];
 
@@ -610,7 +611,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Secondary button active color:'),
-      '#default_value' => theme_get_setting('secondary_button_active_bg_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('secondary_button_active_bg_color'),
       '#description' => $this->t("Custom active color of the secondary button."),
     ];
 
@@ -619,7 +620,7 @@ class KamihayaSettingsManager extends SettingsManager {
       '#maxlength' => 7,
       '#size' => 7,
       '#title' => $this->t('Secondary button active border color:'),
-      '#default_value' => theme_get_setting('secondary_button_active_bd_color'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('secondary_button_active_bd_color'),
       '#description' => $this->t("Custom active border color of the secondary button."),
     ];
 
@@ -672,14 +673,14 @@ class KamihayaSettingsManager extends SettingsManager {
       '#type' => 'checkbox',
       '#title' => $this->t('Show author info'),
       '#description' => '',
-      '#default_value' => theme_get_setting('teaser_show_author_info'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('teaser_show_author_info'),
     ];
 
     $form['teaser']['teaser_show_post_date'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Show post date'),
       '#description' => '',
-      '#default_value' => theme_get_setting('teaser_show_post_date'),
+      '#default_value' => \Drupal::service(ThemeSettingsProvider::class)->getSetting('teaser_show_post_date'),
     ];
 
     if (!empty($subtheme)) {

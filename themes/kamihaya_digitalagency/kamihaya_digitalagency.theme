@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Extension\ThemeSettingsProvider;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Template\Attribute;
@@ -18,6 +19,25 @@ use Drupal\user\Entity\User;
  * @file
  * Kamihaya デジタル庁デザインシステム準拠テーマ theme file.
  */
+
+/**
+ * Returns a theme setting.
+ *
+ * Wraps the theme settings service so that the deprecated
+ * theme_get_setting() is not called throughout this file. The signature
+ * matches the one it replaces.
+ *
+ * @param string $name
+ *   The setting name.
+ * @param string|null $theme
+ *   The theme machine name, or NULL for the active theme.
+ *
+ * @return mixed
+ *   The setting value, or NULL if it does not exist.
+ */
+function kamihaya_digitalagency_get_setting(string $name, ?string $theme = NULL) {
+  return \Drupal::service(ThemeSettingsProvider::class)->getSetting($name, $theme);
+}
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -169,8 +189,8 @@ function kamihaya_digitalagency_preprocess_node(array &$variables) {
 
   if ($variables['elements']['#node']->bundle() === 'kamihaya_article') {
     $variables['#attached']['library'][] = 'kamihaya_digitalagency/node-kamihaya-article';
-    $variables['show_post_date'] = theme_get_setting('teaser_show_post_date');
-    $variables['show_author_info'] = theme_get_setting('teaser_show_author_info');
+    $variables['show_post_date'] = kamihaya_digitalagency_get_setting('teaser_show_post_date');
+    $variables['show_author_info'] = kamihaya_digitalagency_get_setting('teaser_show_author_info');
   }
 }
 
@@ -348,18 +368,18 @@ function _kamihaya_digitalagency_preprocess_menu_items(array &$items) {
  * Implements hook_preprocess_html().
  */
 function kamihaya_digitalagency_preprocess_html(array &$variables) {
-  if (theme_get_setting('b5_navbar_schema') === 'custom') {
+  if (kamihaya_digitalagency_get_setting('b5_navbar_schema') === 'custom') {
     $variables['attributes']['class'][] = 'navbar-custom';
   }
   // Navbar colour theme.
-  $variables['b5_navbar_schema'] = theme_get_setting('b5_navbar_schema');
-  $variables['b5_navbar_bg_schema'] = theme_get_setting('b5_navbar_bg_schema');
+  $variables['b5_navbar_schema'] = kamihaya_digitalagency_get_setting('b5_navbar_schema');
+  $variables['b5_navbar_bg_schema'] = kamihaya_digitalagency_get_setting('b5_navbar_bg_schema');
   // Footer colour theme.
-  $variables['b5_footer_schema'] = theme_get_setting('b5_footer_schema');
-  $variables['b5_footer_bg_schema'] = theme_get_setting('b5_footer_bg_schema');
+  $variables['b5_footer_schema'] = kamihaya_digitalagency_get_setting('b5_footer_schema');
+  $variables['b5_footer_bg_schema'] = kamihaya_digitalagency_get_setting('b5_footer_bg_schema');
   $back_to_top_type = \Drupal::config('back_to_top.settings')->get('back_to_top_button_type');
-  if (!empty(theme_get_setting('b5_back_to_top_shape')) && $back_to_top_type === 'text') {
-    $variables['back_to_top_shape'] = theme_get_setting('b5_back_to_top_shape');
+  if (!empty(kamihaya_digitalagency_get_setting('b5_back_to_top_shape')) && $back_to_top_type === 'text') {
+    $variables['back_to_top_shape'] = kamihaya_digitalagency_get_setting('b5_back_to_top_shape');
   }
   if (!empty($back_to_top_type)) {
     $variables['back_to_top_type'] = $back_to_top_type;
@@ -370,17 +390,17 @@ function kamihaya_digitalagency_preprocess_html(array &$variables) {
  * Implements hook_preprocess_page().
  */
 function kamihaya_digitalagency_preprocess_page(array &$variables) {
-  if (!empty(theme_get_setting('b5_navbar_sp_position'))) {
-    $variables['menu_sp_position'] = theme_get_setting('b5_navbar_sp_position');
+  if (!empty(kamihaya_digitalagency_get_setting('b5_navbar_sp_position'))) {
+    $variables['menu_sp_position'] = kamihaya_digitalagency_get_setting('b5_navbar_sp_position');
   }
-  if (!empty(theme_get_setting('b5_footer_width_ratio'))) {
-    $variables['footer_width_ratio'] = theme_get_setting('b5_footer_width_ratio');
+  if (!empty(kamihaya_digitalagency_get_setting('b5_footer_width_ratio'))) {
+    $variables['footer_width_ratio'] = kamihaya_digitalagency_get_setting('b5_footer_width_ratio');
   }
-  if (!empty(theme_get_setting('b5_navbar_sp_revert'))) {
-    $variables['navbar_sp_revert'] = theme_get_setting('b5_navbar_sp_revert');
+  if (!empty(kamihaya_digitalagency_get_setting('b5_navbar_sp_revert'))) {
+    $variables['navbar_sp_revert'] = kamihaya_digitalagency_get_setting('b5_navbar_sp_revert');
   }
-  if (!empty(theme_get_setting('b5_footer_sp_rightt_top'))) {
-    $variables['footer_sp_rightt_top'] = theme_get_setting('b5_footer_sp_rightt_top');
+  if (!empty(kamihaya_digitalagency_get_setting('b5_footer_sp_rightt_top'))) {
+    $variables['footer_sp_rightt_top'] = kamihaya_digitalagency_get_setting('b5_footer_sp_rightt_top');
   }
   if (!empty($variables['page']['header_left'])) {
     foreach ($variables['page']['header_left'] as $key => $value) {
@@ -467,9 +487,9 @@ function kamihaya_digitalagency_preprocess_block(array &$variables) {
     }
     $variables['content']['#access'] = FALSE;
   }
-  if (!empty($variables['plugin_id']) && $variables['plugin_id'] === 'system_branding_block' && !empty(theme_get_setting('logo_url'))) {
-    $variables['logo_url'] = theme_get_setting('logo_url');
-    $url = Url::fromUri(theme_get_setting('logo_url'));
+  if (!empty($variables['plugin_id']) && $variables['plugin_id'] === 'system_branding_block' && !empty(kamihaya_digitalagency_get_setting('logo_url'))) {
+    $variables['logo_url'] = kamihaya_digitalagency_get_setting('logo_url');
+    $url = Url::fromUri(kamihaya_digitalagency_get_setting('logo_url'));
     if ($url->isExternal()) {
       $variables['logo_url_external'] = TRUE;
     }
@@ -529,128 +549,128 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
     '.navbar .dropdown-menu' => [],
     'footer' => [],
   ];
-  if (theme_get_setting('b5_body_schema') === 'custom') {
-    if (!empty(theme_get_setting('b5_body_text_color'))) {
-      $css_vars[':root']['--bs-body-color'] = theme_get_setting('b5_body_text_color');
+  if (kamihaya_digitalagency_get_setting('b5_body_schema') === 'custom') {
+    if (!empty(kamihaya_digitalagency_get_setting('b5_body_text_color'))) {
+      $css_vars[':root']['--bs-body-color'] = kamihaya_digitalagency_get_setting('b5_body_text_color');
     }
-    if (!empty(theme_get_setting('b5_body_link_color'))) {
-      $css_vars[':root']['--bs-link-color'] = theme_get_setting('b5_body_link_color');
+    if (!empty(kamihaya_digitalagency_get_setting('b5_body_link_color'))) {
+      $css_vars[':root']['--bs-link-color'] = kamihaya_digitalagency_get_setting('b5_body_link_color');
     }
-    if (!empty(theme_get_setting('b5_body_link_hover_color'))) {
-      $css_vars[':root']['--bs-link-hover-color'] = theme_get_setting('b5_body_link_hover_color');
-      if (empty(theme_get_setting('b5_body_link_active_color'))) {
-        $css_vars[':root']['--bs-link-active-color'] = theme_get_setting('b5_body_link_hover_color');
+    if (!empty(kamihaya_digitalagency_get_setting('b5_body_link_hover_color'))) {
+      $css_vars[':root']['--bs-link-hover-color'] = kamihaya_digitalagency_get_setting('b5_body_link_hover_color');
+      if (empty(kamihaya_digitalagency_get_setting('b5_body_link_active_color'))) {
+        $css_vars[':root']['--bs-link-active-color'] = kamihaya_digitalagency_get_setting('b5_body_link_hover_color');
       }
     }
   }
-  if (theme_get_setting('b5_body_bg_schema') === 'custom') {
-    if (!empty(theme_get_setting('b5_body_bg_schema_custom'))) {
-      $css_vars[':root']['--bs-body-bg'] = theme_get_setting('b5_body_bg_schema_custom');
+  if (kamihaya_digitalagency_get_setting('b5_body_bg_schema') === 'custom') {
+    if (!empty(kamihaya_digitalagency_get_setting('b5_body_bg_schema_custom'))) {
+      $css_vars[':root']['--bs-body-bg'] = kamihaya_digitalagency_get_setting('b5_body_bg_schema_custom');
     }
-    if (!empty(theme_get_setting('b5_body_light_bg_schema_custom'))) {
-      $css_vars[':root']['--bs-light'] = theme_get_setting('b5_body_light_bg_schema_custom');
+    if (!empty(kamihaya_digitalagency_get_setting('b5_body_light_bg_schema_custom'))) {
+      $css_vars[':root']['--bs-light'] = kamihaya_digitalagency_get_setting('b5_body_light_bg_schema_custom');
     }
-    if (!empty(theme_get_setting('b5_body_secondary_bg_schema_custom'))) {
-      $css_vars[':root']['--bs-secondary-bg'] = theme_get_setting('b5_body_secondary_bg_schema_custom');
-    }
-  }
-
-  if (!empty(theme_get_setting('site_max_width'))) {
-    $css_vars[':root']['--bs-site-max-width'] = theme_get_setting('site_max_width') . 'px';
-  }
-
-  if (theme_get_setting('b5_navbar_schema') === 'custom') {
-    if (!empty(theme_get_setting('b5_navbar_text_color'))) {
-      $css_vars['.navbar']['--bs-navbar-color'] = theme_get_setting('b5_navbar_text_color');
-    }
-    if (!empty(theme_get_setting('b5_navbar_link_color'))) {
-      $css_vars['.navbar']['--bs-navbar-link-color'] = theme_get_setting('b5_navbar_link_color');
-      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-color'] = theme_get_setting('b5_navbar_link_color');
-    }
-    if (!empty(theme_get_setting('b5_navbar_link_hover_color'))) {
-      $css_vars['.navbar']['--bs-navbar-hover-color'] = theme_get_setting('b5_navbar_link_hover_color');
-      $css_vars['.navbar']['--bs-navbar-link-hover-color'] = theme_get_setting('b5_navbar_link_hover_color');
-      if (empty(theme_get_setting('b5_navbar_link_active_color'))) {
-        $css_vars['.navbar']['--bs-navbar-link-active-color'] = theme_get_setting('b5_navbar_dropdown_hover_color');
-      }
-      if (empty(theme_get_setting('b5_navbar_dropdown_hover_color'))) {
-        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-hover-color'] = theme_get_setting('b5_navbar_dropdown_hover_color');
-      }
-      if (empty(theme_get_setting('b5_navbar_dropdown_active_color'))) {
-        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-color'] = theme_get_setting('b5_navbar_dropdown_hover_color');
-      }
-    }
-    if (!empty(theme_get_setting('b5_navbar_link_active_color'))) {
-      $css_vars['.navbar']['--bs-navbar-active-color'] = theme_get_setting('b5_navbar_link_active_color');
-      $css_vars['.navbar']['--bs-navbar-link-active-color'] = theme_get_setting('b5_navbar_link_active_color');
-      if (empty(theme_get_setting('b5_navbar_dropdown_active_color'))) {
-        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-color'] = theme_get_setting('b5_navbar_dropdown_hover_color');
-      }
-    }
-    if (!empty(theme_get_setting('b5_navbar_dropdown_hover_color'))) {
-      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-hover-color'] = theme_get_setting('b5_navbar_dropdown_hover_color');
-      if (empty(theme_get_setting('b5_navbar_dropdown_active_color'))) {
-        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-color'] = theme_get_setting('b5_navbar_dropdown_hover_color');
-      }
-    }
-    if (!empty(theme_get_setting('b5_navbar_dropdown_hover_bk_color'))) {
-      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-hover-bg'] = theme_get_setting('b5_navbar_dropdown_hover_bk_color');
-      if (!empty(theme_get_setting('b5_navbar_dropdown_active_bg_color'))) {
-        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-bg'] = theme_get_setting('b5_navbar_dropdown_hover_bk_color');
-      }
-    }
-    if (!empty(theme_get_setting('b5_navbar_dropdown_active_color'))) {
-      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-color'] = theme_get_setting('b5_navbar_dropdown_active_color');
-    }
-    if (!empty(theme_get_setting('b5_navbar_dropdown_active_bg_color'))) {
-      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-bg'] = theme_get_setting('b5_navbar_dropdown_active_bg_color');
+    if (!empty(kamihaya_digitalagency_get_setting('b5_body_secondary_bg_schema_custom'))) {
+      $css_vars[':root']['--bs-secondary-bg'] = kamihaya_digitalagency_get_setting('b5_body_secondary_bg_schema_custom');
     }
   }
 
-  if (theme_get_setting('b5_navbar_bg_schema') === 'custom') {
-    if (!empty(theme_get_setting('b5_navbar_bg_schema_custom'))) {
-      $css_vars['.navbar']['--bs-navbar-bg'] = theme_get_setting('b5_navbar_bg_schema_custom');
-      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-bg'] = theme_get_setting('b5_navbar_bg_schema_custom');
-      if (empty(theme_get_setting('b5_navbar_dropdown_hover_bk_color'))) {
-        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-hover-bg'] = theme_get_setting('b5_navbar_dropdown_hover_bk_color');
+  if (!empty(kamihaya_digitalagency_get_setting('site_max_width'))) {
+    $css_vars[':root']['--bs-site-max-width'] = kamihaya_digitalagency_get_setting('site_max_width') . 'px';
+  }
+
+  if (kamihaya_digitalagency_get_setting('b5_navbar_schema') === 'custom') {
+    if (!empty(kamihaya_digitalagency_get_setting('b5_navbar_text_color'))) {
+      $css_vars['.navbar']['--bs-navbar-color'] = kamihaya_digitalagency_get_setting('b5_navbar_text_color');
+    }
+    if (!empty(kamihaya_digitalagency_get_setting('b5_navbar_link_color'))) {
+      $css_vars['.navbar']['--bs-navbar-link-color'] = kamihaya_digitalagency_get_setting('b5_navbar_link_color');
+      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-color'] = kamihaya_digitalagency_get_setting('b5_navbar_link_color');
+    }
+    if (!empty(kamihaya_digitalagency_get_setting('b5_navbar_link_hover_color'))) {
+      $css_vars['.navbar']['--bs-navbar-hover-color'] = kamihaya_digitalagency_get_setting('b5_navbar_link_hover_color');
+      $css_vars['.navbar']['--bs-navbar-link-hover-color'] = kamihaya_digitalagency_get_setting('b5_navbar_link_hover_color');
+      if (empty(kamihaya_digitalagency_get_setting('b5_navbar_link_active_color'))) {
+        $css_vars['.navbar']['--bs-navbar-link-active-color'] = kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_color');
       }
-      if (empty(theme_get_setting('b5_navbar_dropdown_active_bg_color'))) {
-        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-bg'] = theme_get_setting('b5_navbar_dropdown_hover_bk_color');
+      if (empty(kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-hover-color'] = kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_color');
+      }
+      if (empty(kamihaya_digitalagency_get_setting('b5_navbar_dropdown_active_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-color'] = kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_color');
       }
     }
-    if (!empty(theme_get_setting('b5_navbar_secondary_bg_schema_custom'))) {
-      $css_vars['.navbar']['--bs-navbar-secondary-bg'] = theme_get_setting('b5_navbar_secondary_bg_schema_custom');
+    if (!empty(kamihaya_digitalagency_get_setting('b5_navbar_link_active_color'))) {
+      $css_vars['.navbar']['--bs-navbar-active-color'] = kamihaya_digitalagency_get_setting('b5_navbar_link_active_color');
+      $css_vars['.navbar']['--bs-navbar-link-active-color'] = kamihaya_digitalagency_get_setting('b5_navbar_link_active_color');
+      if (empty(kamihaya_digitalagency_get_setting('b5_navbar_dropdown_active_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-color'] = kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_color');
+      }
+    }
+    if (!empty(kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_color'))) {
+      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-hover-color'] = kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_color');
+      if (empty(kamihaya_digitalagency_get_setting('b5_navbar_dropdown_active_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-color'] = kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_color');
+      }
+    }
+    if (!empty(kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_bk_color'))) {
+      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-hover-bg'] = kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_bk_color');
+      if (!empty(kamihaya_digitalagency_get_setting('b5_navbar_dropdown_active_bg_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-bg'] = kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_bk_color');
+      }
+    }
+    if (!empty(kamihaya_digitalagency_get_setting('b5_navbar_dropdown_active_color'))) {
+      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-color'] = kamihaya_digitalagency_get_setting('b5_navbar_dropdown_active_color');
+    }
+    if (!empty(kamihaya_digitalagency_get_setting('b5_navbar_dropdown_active_bg_color'))) {
+      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-bg'] = kamihaya_digitalagency_get_setting('b5_navbar_dropdown_active_bg_color');
     }
   }
-  if (theme_get_setting('b5_footer_schema') === 'custom') {
-    if (!empty(theme_get_setting('b5_footer_text_color'))) {
-      $css_vars['footer']['--bs-footer-color'] = theme_get_setting('b5_footer_text_color');
+
+  if (kamihaya_digitalagency_get_setting('b5_navbar_bg_schema') === 'custom') {
+    if (!empty(kamihaya_digitalagency_get_setting('b5_navbar_bg_schema_custom'))) {
+      $css_vars['.navbar']['--bs-navbar-bg'] = kamihaya_digitalagency_get_setting('b5_navbar_bg_schema_custom');
+      $css_vars['.navbar .dropdown-menu']['--bs-dropdown-bg'] = kamihaya_digitalagency_get_setting('b5_navbar_bg_schema_custom');
+      if (empty(kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_bk_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-hover-bg'] = kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_bk_color');
+      }
+      if (empty(kamihaya_digitalagency_get_setting('b5_navbar_dropdown_active_bg_color'))) {
+        $css_vars['.navbar .dropdown-menu']['--bs-dropdown-link-active-bg'] = kamihaya_digitalagency_get_setting('b5_navbar_dropdown_hover_bk_color');
+      }
     }
-    if (!empty(theme_get_setting('b5_footer_link_color'))) {
-      $css_vars['footer']['--bs-footer-link-color'] = theme_get_setting('b5_footer_link_color');
+    if (!empty(kamihaya_digitalagency_get_setting('b5_navbar_secondary_bg_schema_custom'))) {
+      $css_vars['.navbar']['--bs-navbar-secondary-bg'] = kamihaya_digitalagency_get_setting('b5_navbar_secondary_bg_schema_custom');
     }
-    if (!empty(theme_get_setting('b5_footer_link_hover_color'))) {
-      $css_vars['footer']['--bs-footer-link-hover-color'] = theme_get_setting('b5_footer_link_hover_color');
-      if (empty(theme_get_setting('b5_footer_link_active_color'))) {
-        $css_vars['footer']['--bs-footer-link-active-color'] = theme_get_setting('b5_footer_link_hover_color');
+  }
+  if (kamihaya_digitalagency_get_setting('b5_footer_schema') === 'custom') {
+    if (!empty(kamihaya_digitalagency_get_setting('b5_footer_text_color'))) {
+      $css_vars['footer']['--bs-footer-color'] = kamihaya_digitalagency_get_setting('b5_footer_text_color');
+    }
+    if (!empty(kamihaya_digitalagency_get_setting('b5_footer_link_color'))) {
+      $css_vars['footer']['--bs-footer-link-color'] = kamihaya_digitalagency_get_setting('b5_footer_link_color');
+    }
+    if (!empty(kamihaya_digitalagency_get_setting('b5_footer_link_hover_color'))) {
+      $css_vars['footer']['--bs-footer-link-hover-color'] = kamihaya_digitalagency_get_setting('b5_footer_link_hover_color');
+      if (empty(kamihaya_digitalagency_get_setting('b5_footer_link_active_color'))) {
+        $css_vars['footer']['--bs-footer-link-active-color'] = kamihaya_digitalagency_get_setting('b5_footer_link_hover_color');
         ;
       }
     }
-    if (!empty(theme_get_setting('b5_footer_link_active_color'))) {
-      $css_vars['footer']['--bs-footer-link-active-color'] = theme_get_setting('b5_footer_link_active_color');
+    if (!empty(kamihaya_digitalagency_get_setting('b5_footer_link_active_color'))) {
+      $css_vars['footer']['--bs-footer-link-active-color'] = kamihaya_digitalagency_get_setting('b5_footer_link_active_color');
     }
   }
-  if (theme_get_setting('b5_footer_bg_schema') === 'custom') {
-    if (!empty(theme_get_setting('b5_footer_bg_schema_custom'))) {
-      $css_vars['footer']['--bs-footer-bg'] = theme_get_setting('b5_footer_bg_schema_custom');
+  if (kamihaya_digitalagency_get_setting('b5_footer_bg_schema') === 'custom') {
+    if (!empty(kamihaya_digitalagency_get_setting('b5_footer_bg_schema_custom'))) {
+      $css_vars['footer']['--bs-footer-bg'] = kamihaya_digitalagency_get_setting('b5_footer_bg_schema_custom');
     }
-    if (!empty(theme_get_setting('b5_footer_secondary_bg_schema_custom'))) {
-      $css_vars['footer']['--bs-footer-secondary-bg'] = theme_get_setting('b5_footer_secondary_bg_schema_custom');
+    if (!empty(kamihaya_digitalagency_get_setting('b5_footer_secondary_bg_schema_custom'))) {
+      $css_vars['footer']['--bs-footer-secondary-bg'] = kamihaya_digitalagency_get_setting('b5_footer_secondary_bg_schema_custom');
     }
   }
 
-  if (theme_get_setting('button_radius') !== NULL) {
-    $css_vars['.btn']['--bs-btn-border-radius'] = theme_get_setting('button_radius') . 'px';
+  if (kamihaya_digitalagency_get_setting('button_radius') !== NULL) {
+    $css_vars['.btn']['--bs-btn-border-radius'] = kamihaya_digitalagency_get_setting('button_radius') . 'px';
   }
 
   $buttons = [
@@ -663,8 +683,8 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
       $field = "{$button}_button_{$type}_color";
       $hover_field = "{$button}_button_hover_{$type}_color";
       $active_field = "{$button}_button_active_{$type}_color";
-      if (!empty(theme_get_setting($field))) {
-        $color = theme_get_setting($field);
+      if (!empty(kamihaya_digitalagency_get_setting($field))) {
+        $color = kamihaya_digitalagency_get_setting($field);
         if ($type === 'text') {
           $css_vars[$selector]['--bs-btn-color'] = $color;
         }
@@ -683,23 +703,23 @@ function kamihaya_digitalagency_page_attachments_alter(array &$page) {
           $css_vars[$selector]['--bs-btn-border-color'] = $color;
         }
       }
-      if (!empty(theme_get_setting($hover_field))) {
-        $color = theme_get_setting($hover_field);
+      if (!empty(kamihaya_digitalagency_get_setting($hover_field))) {
+        $color = kamihaya_digitalagency_get_setting($hover_field);
         if ($type === 'text') {
           $css_vars[$selector]['--bs-btn-hover-color'] = $color;
-          if (empty(theme_get_setting($active_field))) {
+          if (empty(kamihaya_digitalagency_get_setting($active_field))) {
             $css_vars[$selector]['--bs-btn-active-color'] = $color;
           }
         }
         if ($type === 'bg') {
           $css_vars[$selector]['--bs-btn-hover-bg'] = $color;
-          if (empty(theme_get_setting($active_field))) {
+          if (empty(kamihaya_digitalagency_get_setting($active_field))) {
             $css_vars[$selector]['--bs-btn-active-bg'] = $color;
           }
         }
         if ($type === 'bd') {
           $css_vars[$selector]['--bs-btn-hover-border-color'] = $color;
-          if (empty(theme_get_setting($active_field))) {
+          if (empty(kamihaya_digitalagency_get_setting($active_field))) {
             $css_vars[$selector]['--bs-btn-active-border-color'] = $color;
           }
         }
