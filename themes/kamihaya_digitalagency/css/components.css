@@ -255,6 +255,12 @@ body.back-to-top-circle:has(.anchor-links.sticky) #backtotop {
   max-width: 100%;
 }
 
+.form-select.hidden,
+.form-control.hidden,
+.form-element.hidden {
+  display: none;
+}
+
 .form-required {
   display: flex;
   align-items: center;
