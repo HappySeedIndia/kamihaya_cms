@@ -288,10 +288,6 @@ html[lang='ja'] .form-required:after {
   box-shadow: none;
 }
 
-.form-control.hidden {
-  display: none;
-}
-
 .form-item input.error,
 .form-item textarea.error,
 .form-item select.error {
