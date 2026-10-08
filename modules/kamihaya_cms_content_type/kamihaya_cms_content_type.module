@@ -386,7 +386,7 @@ function kamihaya_cms_content_type_field_group_pre_render(array &$element, $grou
         continue;
       }
       if ($view->style_plugin instanceof FlippedTable) {
-        $render = Drupal::service('renderer')->render($value['contents']);
+        $render = Drupal::service('renderer')->renderInIsolation($value['contents']);
         if (strpos($render, '</tr>') === FALSE) {
           continue;
         }
