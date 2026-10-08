@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b7a20aceeb8a99e9f14f1447ac62b4cd",
+    "content-hash": "308ad9cc50b9c930215beaac928e9e45",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -7303,26 +7303,26 @@
         },
         {
             "name": "drupal/responsive_preview",
-            "version": "2.2.0",
+            "version": "2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/responsive_preview.git",
-                "reference": "2.2.0"
+                "reference": "2.3.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/responsive_preview-2.2.0.zip",
-                "reference": "2.2.0",
-                "shasum": "4d4ce0dde333e9bd1b2d70c0e23cf75a009be830"
+                "url": "https://ftp.drupal.org/files/projects/responsive_preview-2.3.2.zip",
+                "reference": "2.3.2",
+                "shasum": "d93606c2d7d0e1ca13a11326514a21e63b14fe9d"
             },
             "require": {
-                "drupal/core": "^9.2 || ^10 || ^11"
+                "drupal/core": "^10.5 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.2.0",
-                    "datestamp": "1722171392",
+                    "version": "2.3.2",
+                    "datestamp": "1769512418",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7347,7 +7347,7 @@
                     "homepage": "https://www.drupal.org/user/748566"
                 },
                 {
-                    "name": "Rajeshreeputra",
+                    "name": "rajeshreeputra",
                     "homepage": "https://www.drupal.org/user/3418561"
                 },
                 {
