@@ -6,6 +6,22 @@
  */
 
 /**
+ * Implements hook_update_dependencies().
+ */
+function kamihaya_cms_menu_icon_update_dependencies() {
+  // update_10003 renames menu link attribute keys to the hyphenated form
+  // that menu_link_attributes 1.10.0 requires. menu_link_attributes'
+  // own update_8004 does the same for menu_link_attributes.config, so it
+  // must run first: otherwise this module's config entries, written by
+  // update_10001 and update_10002 under the old names, would be left
+  // behind.
+  $dependencies['kamihaya_cms_menu_icon'][10003] = [
+    'menu_link_attributes' => 8004,
+  ];
+  return $dependencies;
+}
+
+/**
  * Add the option to hide label.
  */
 function kamihaya_cms_menu_icon_update_10001() {
@@ -71,4 +87,77 @@ function kamihaya_cms_menu_icon_update_10002() {
   }
   $config->set('attributes', $attributes);
   $config->save();
+}
+
+/**
+ * Migrate menu icon attribute keys from underscores to hyphens.
+ *
+ * menu_link_attributes 1.10.0 drops attribute names that contain underscores
+ * (after stripping the "container_" prefix) at render time, so the five menu
+ * icon attributes are renamed to hyphenated names. Existing menu links store
+ * their values under the old keys in link.options.attributes; this migrates
+ * them so no data is orphaned.
+ *
+ * The menu_link_attributes.config side is handled by
+ * menu_link_attributes_update_8004, which this update depends on (see
+ * kamihaya_cms_menu_icon_update_dependencies()), so it only needs to deal
+ * with the entity data here.
+ */
+function kamihaya_cms_menu_icon_update_10003(&$sandbox) {
+  // Old key => new key. The "container_" prefix is stripped before the
+  // underscore check, so it keeps its underscore; only the rest is hyphenated.
+  $map = [
+    'container_font_awesome_class' => 'container_font-awesome-class',
+    'container_hide_label' => 'container_hide-label',
+    'container_menu_icon_image' => 'container_menu-icon-image',
+    'container_menu_icon_image_alt' => 'container_menu-icon-image-alt',
+    'container_menu_icon_image_height' => 'container_menu-icon-image-height',
+  ];
+
+  $storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+
+  // Initialise the sandbox on the first pass.
+  if (!isset($sandbox['ids'])) {
+    $sandbox['ids'] = array_values($storage->getQuery()->accessCheck(FALSE)->execute());
+    $sandbox['total'] = count($sandbox['ids']);
+    $sandbox['processed'] = 0;
+    $sandbox['migrated'] = 0;
+  }
+
+  // Process in chunks so memory stays bounded on sites with many menu links.
+  $batch = array_slice($sandbox['ids'], $sandbox['processed'], 50);
+  foreach ($storage->loadMultiple($batch) as $entity) {
+    $values = $entity->get('link')->getValue();
+    $entity_changed = FALSE;
+    foreach ($values as $delta => $item) {
+      if (empty($item['options']['attributes']) || !is_array($item['options']['attributes'])) {
+        continue;
+      }
+      $attributes = $item['options']['attributes'];
+      $changed = FALSE;
+      foreach ($map as $old => $new) {
+        if (array_key_exists($old, $attributes)) {
+          $attributes[$new] = $attributes[$old];
+          unset($attributes[$old]);
+          $changed = TRUE;
+        }
+      }
+      if ($changed) {
+        $values[$delta]['options']['attributes'] = $attributes;
+        $entity_changed = TRUE;
+      }
+    }
+    if ($entity_changed) {
+      $entity->set('link', $values);
+      $entity->save();
+      $sandbox['migrated']++;
+    }
+    $sandbox['processed']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['total']) ? 1 : ($sandbox['processed'] / $sandbox['total']);
+
+  if ($sandbox['#finished'] >= 1) {
+    return t('Migrated menu icon attributes on @count menu link(s).', ['@count' => $sandbox['migrated']]);
+  }
 }
