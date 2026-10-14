@@ -134,7 +134,7 @@
         "drupal/core-project-message": "^11.4",
         "drupal/custom_pub": "^1.0",
         "drupal/default_content": "^2.0@alpha",
-        "drupal/diff": "^1.8",
+        "drupal/diff": "^2.1",
         "drupal/ds": "^3.24",
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/editoria11y": "^2.1",
