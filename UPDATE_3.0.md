@@ -54,11 +54,40 @@ Add the entry to your site's own root `composer.json`:
 
 This must be done before the update, not after the failure.
 
-## 2 — Raise the core constraint in your root composer.json
+## 2 — Raise the constraints in your root composer.json
 
 Composer applies the intersection of your root constraints and the
-distribution's, so the distribution's `^11.4` alone cannot raise core if your
-root still says `^10`.
+distribution's, so a change inside the distribution has no effect if your root
+is narrower. Two constraints in your root `composer.json` need attention before
+you run anything.
+
+### 2a — The distribution constraint (required)
+
+This is the step that actually pulls in 3.0. Without it, `composer update`
+reports that there is nothing to do, no matter how many times you run it.
+
+Check what your root currently declares, then raise the line that requires the
+distribution to the 3.x series:
+
+```
+grep -n "kamihaya_cms" composer.json
+```
+
+```json
+"genero/kamihaya_cms": "^3.0"
+```
+
+A `^2` constraint will never resolve to 3.0.0 — a major version bump is outside
+the range by definition — so it must be raised explicitly. If your root pins an
+exact version or a development branch, replace it with `"^3.0"`. If your root
+declares a `repositories` entry for the distribution, that entry does not
+change; only the version constraint does.
+
+### 2b — The core constraint
+
+The distribution requires `drupal/core` at `^11.4`, but Composer applies the
+intersection with your root, so the distribution's constraint alone cannot
+raise core if your root still says `^10`.
 
 ```json
 "drupal/core-recommended": "^11",
@@ -81,10 +110,9 @@ reasons, and both abort the whole install when
 
 The second case is easy to misread as a broken patch. Read the issue and
 compare against the Drupal 11 source before rerolling anything — the patch
-may simply be unnecessary now.
-
-This distribution removed one of its own core patches for exactly that
-reason in this release.
+may simply be unnecessary now and can be dropped rather than rerolled. After a
+major core upgrade, expect at least one long-standing core patch to fall into
+this category.
 
 ## 4 — Check Drush and its dependencies
 
@@ -116,15 +144,27 @@ drush pmu tour
 ```
 
 If it was enabled at some point and later removed, a leftover entry in
-`system.schema` produces a warning during `drush updatedb:status`. The
-warning is harmless as long as no `tour` update is queued; check with:
+`system.schema` remains. That entry is not harmless: **installing any module
+afterwards fails** with
+
+```
+The module tour does not exist.
+```
+
+because Drupal resolves the full module list during installation. Remove the
+entry:
+
+```
+drush php:eval "\Drupal::keyValue('system.schema')->delete('tour');"
+drush cr
+```
+
+Also check whether a `tour` update is queued. If one is, its code no longer
+exists and `updb` will fail:
 
 ```
 drush updatedb:status | grep -i tour
 ```
-
-If a `tour` update *is* queued, its code no longer exists and the update will
-fail. Resolve that before continuing.
 
 ## 6 — Update with Composer
 
@@ -140,8 +180,8 @@ packages explicitly instead, with no flag.
 Two commands are needed, and both matter:
 
 ```
-composer why-not drupal/core-recommended 11.4.6
-composer why-not drupal/core 11.4.6
+composer why-not drupal/core-recommended <latest 11.4.x>
+composer why-not drupal/core <latest 11.4.x>
 ```
 
 `core-recommended` pins core's vendor tree to exact versions, so the first
@@ -160,8 +200,14 @@ release that Drupal 11.4 does not support: several Symfony components have an
 
 ### The command
 
+Name `genero/kamihaya_cms` as well, so the 3.0 distribution — and the
+constraints it ships — is pulled in alongside core. Updating core without it
+leaves the distribution on 2.x, whose `^10.6` core constraint conflicts with
+Drupal 11 and fails to resolve.
+
 ```
 composer update \
+  genero/kamihaya_cms \
   drupal/core drupal/core-recommended \
   drupal/core-composer-scaffold drupal/core-project-message \
   drupal/gin drupal/gin_toolbar \
@@ -226,7 +272,7 @@ needs a decision, not a retry — restore the backup and investigate.
 | | 2.x | 3.0 |
 | --- | --- | --- |
 | Constraint | `^10.6` | `^11.4` |
-| Resolved | 10.6.14 | 11.4.6 |
+| Resolved | 10.6.14 | 11.4.9 |
 
 ### Administration theme
 
@@ -240,23 +286,31 @@ is why they move together with core rather than in a separate step.
 upstream. The `cloud`, `bootstrap_cloud` and `rigel` stack moves with it,
 because `bootstrap_cloud` constrains `bootstrap5`.
 
-If your site has its own sub-theme of `bootstrap5`, check it against 4.0
-before updating. If it uses `stylesheets-remove` in its `.info.yml`, replace
-that with `libraries-override`.
-
 ### AI capability
 
-`drupal/ai` is raised to 1.4 and the OpenAI provider (`ai_provider_openai`)
-and `metatag_ai` are added. None of them is enabled by the install profile.
+`drupal/ai` (AI Core) is constrained at `^1.4` and resolves to 1.5.0 in this
+release. AI Core 1.5 requires six further modules, which are therefore shipped
+as well:
 
-To use them, enable `key`, `ai`, `ai_provider_openai` and `metatag_ai` in
-that order, then configure a provider and an API key. `key` is not declared
-as a module dependency by either the provider or `metatag_ai`, so enable it
-explicitly. Enabling a provider without configured credentials raises an
-exception, which is why none of these is enabled by default.
+- `ai_content_suggestions`
+- `ai_logging`
+- `ai_translate`
+- `ai_validations`
+- `field_widget_actions`
+- `field_validation`
 
-`metatag_ai` declares `^11` only, so it becomes usable for the first time in
-this release.
+The OpenAI provider (`ai_provider_openai`) and `metatag_ai` are also shipped.
+**None of these modules is enabled by the install profile**, so nothing changes
+at runtime unless you enable them yourself.
+
+To use the AI features, enable `key`, `ai`, `ai_provider_openai` and
+`metatag_ai` in that order, then configure a provider and an API key. `key` is
+not declared as a module dependency by either the provider or `metatag_ai`, so
+enable it explicitly. Enabling a provider without configured credentials raises
+an exception, which is why none of these is enabled by default.
+
+`metatag_ai` declares `core_version_requirement: ^11`, so it becomes usable for
+the first time in this release.
 
 ### Other contributed modules
 
@@ -265,16 +319,17 @@ plugin ids are unchanged, and the settings it stores survive the update. The
 CKEditor 4 plugin it used to carry was removed upstream; this distribution
 does not use it.
 
-Sixteen further contributed modules move to newer releases that their
+A number of further contributed modules move to newer releases that their
 existing constraints already permitted.
 
 ### Unstable releases in this series
 
-Five packages have no stable release that supports Drupal 11. They are
+Several packages have no stable release that supports Drupal 11. They are
 constrained with `@dev` or `@beta`, which permits an unstable release rather
 than requiring one: as soon as a stable release supporting Drupal 11 is
 published, it will be preferred automatically, with no change to the
-distribution.
+distribution. Five are new to this release; `youtube` has carried a beta
+constraint since 2.0 and is listed here for completeness.
 
 | Package | State |
 | --- | --- |
@@ -303,6 +358,42 @@ install.
 - The administration interface loads with Gin.
 - Forms, sitemap and Commerce pages behave as before.
 - `drush watchdog:show` reports no new errors.
+- **Log in and load a page immediately after clearing caches.** Several
+  Drupal 11 faults appear only for authenticated users, and only on the first
+  request after a cache clear. The symptom is a page with no CSS at all: view
+  the source and check that `<head>` contains stylesheet links rather than
+  `<css-placeholder>` and `<js-placeholder>`. See "If pages render without
+  CSS" below.
+
+## If pages render without CSS
+
+A page whose `<head>` still contains `<css-placeholder>`, `<js-placeholder>`
+and `<head-placeholder>` has lost its asset metadata during rendering. No
+stylesheet is loaded and the page appears unstyled. Nothing is logged.
+
+It affects **authenticated users only**, and only the **first request after a
+cache clear** — a second request is served from cache and looks correct, so
+it reads as an intermittent glitch.
+
+The cause is a nested render started while another render is in progress.
+Drupal 11 wraps controller execution in a Fiber, and a nested render now
+strands a frame on the render context so that the assets collected below it
+never reach the response. The usual trigger is `Url::toString()` called with
+no arguments inside a `#pre_render` callback, `hook_page_attachments()` or
+`hook_toolbar()`.
+
+If your site has custom modules, check them for this pattern.
+`Url::toString(TRUE)` returns a `GeneratedUrl` without rendering;
+`renderInIsolation()` is the right call where a nested render is genuinely
+needed.
+
+To confirm the cause, set `zend.assertions=1` on a copy of the site. The
+failure then raises `AssertionError: Bubbling failed.` instead of failing
+silently, and the stack trace identifies the code responsible.
+
+If your site or its custom modules contain this pattern, expect to fix it the
+same way. A contributed module may also carry it, in which case updating that
+module is the fix.
 
 ## Updating directly from 1.x
 
@@ -326,6 +417,16 @@ Drupal 11.3 deprecated `theme_get_setting()` in favour of
 the function is not removed until Drupal 13 — but static analysis will report
 it. If your site has a custom theme that reads theme settings, expect to see
 these warnings and plan the replacement.
+
+## After updating
+
+Run `composer audit` once the update is complete. A major core upgrade moves
+the packages that block it and leaves everything else where the lock had it,
+so a site can finish the upgrade with contributed modules several releases
+behind and carrying published advisories.
+
+Most are reachable without changing any constraint — the constraint already
+permits the fixed release and only the lock is behind.
 
 ## Notes
 

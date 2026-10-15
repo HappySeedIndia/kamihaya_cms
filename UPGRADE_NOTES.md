@@ -17,7 +17,13 @@ release. The 2.x series therefore has a limited support window by design and
 exists to give sites a supported Drupal 10 position while they prepare for
 Drupal 11.
 
-Drupal 11.4 receives security coverage until June 2027.
+Drupal 11.4 receives security coverage for a limited window; check the
+drupal.org core release cycle for the end-of-life date of the target minor.
+
+Ship the latest patch release of the target minor, not the one that happened
+to be current when the work started. Core security advisories arrive as patch
+releases, and a release that ships a known-vulnerable core is worse than one
+that ships a few days later.
 
 ## Core version constraints
 
@@ -52,11 +58,9 @@ any dependency flag opens **every package this distribution requires** for
 update.
 
 Contributed modules are direct dependencies of the profile, so lowercase `-w`
-behaves the same as `-W`. Observed effects on this dependency graph: a module
-removal run with `-W` moved 55 packages, and a core minor update run with `-W`
-moved 23 contributed modules together with `dompdf/dompdf` 2.0 to 3.1,
-`phpoffice/phpspreadsheet` 2.4 to 5.9 and `sabberworm/php-css-parser` 8.9 to
-9.4, none of which core required.
+behaves the same as `-W`. On this dependency graph a dependency flag pulls
+dozens of contributed modules and drags unrelated vendor libraries across major
+versions, none of which core required.
 
 Limiting the *named targets* to `drupal/core-*` does not limit what a dependency
 flag updates. There is no safe form of this flag on this project.
@@ -72,23 +76,52 @@ control, so this is the only rollback mechanism for a Composer operation.
 
 ### Updating a contributed module
 
-Name the profile **and** the module:
+The command differs by environment, because `genero/kamihaya_cms` is the root
+package in the distribution repository but a dependency in a site or
+verification checkout.
+
+**In the distribution repository** (where `genero/kamihaya_cms` is the root
+package): the root cannot be an update target. Change the constraint in
+`composer.json`, then name the module alone:
+
+```
+composer update drupal/<name> --no-install
+```
+
+Because the distribution is the root here, the edited constraint applies
+directly — the module-alone update resolves it. (`--no-install` keeps Composer
+from expanding `vendor/`, which the distribution checkout does not need.)
+
+**In a site or verification checkout** (where the distribution is a
+dependency): name the profile **and** the module, so the profile is re-resolved
+and the new constraint takes effect:
 
 ```
 composer update genero/kamihaya_cms drupal/<name>
 ```
 
-Version constraints live in this distribution's `composer.json`, so the profile
-must be re-resolved for a new constraint to take effect. Naming the module alone
-returns "Nothing to modify".
+In that environment, naming the module alone returns "Nothing to modify",
+because the constraint that changed lives in the distribution package rather
+than in the root.
 
 ### Removing a module
 
-Name the profile alone:
+Remove the requirement from the distribution's `composer.json`, then reconcile
+the lock. The command depends on the environment:
 
-```
-composer update genero/kamihaya_cms
-```
+- **In the distribution repository**: the root cannot be named, so name the
+  package you removed, which drops it from the lock:
+
+  ```
+  composer update drupal/<removed-name> --no-install
+  ```
+
+- **In a site or verification checkout**: name the profile, so it is
+  re-resolved against the changed requirement:
+
+  ```
+  composer update genero/kamihaya_cms
+  ```
 
 ### Updating core
 
@@ -127,14 +160,15 @@ only need to be in the update set. Composer reports this as
 
 Iterating on `fixed to X by a partial update` errors also converges, but it
 converges to a *lower* core version: Composer prefers resolving with an older
-core over moving a package that was not named. On this project that approach
-capped at 10.6.8 when 10.6.14 was the target, and left the core packages split.
+core over moving a package that was not named, so error-driven iteration can
+settle on a core version below the one you intended, with the core packages
+left split.
 
 **Verify that all four `drupal/core*` packages land on the same version.** A
-split — core at 11.4.4 with `core-project-message` at 11.4.6 — means the target
-list is incomplete. A successful dry-run is not proof that the intended version
-was reached. On the 11.4 upgrade this split was the signal that `twig/twig` was
-missing from the list.
+split — core at one release with `core-project-message` at another — means the
+target list is incomplete. A successful dry-run is not proof that the intended
+version was reached. A split is the signal that a directly-pinned vendor package
+such as `twig/twig` is missing from the list.
 
 ### Blockers are not limited to enabled modules
 
@@ -165,9 +199,8 @@ drush cr
 
 Do this whenever the profile itself is updated, not only when a module providing
 services is removed. A profile update ships changed module code, which can stale
-the compiled container even when no module is added or removed. Observed with
-webform 6.3, with Commerce 3, and with a profile update that changed only the
-distribution's own module code.
+the compiled container even when no module is added or removed — a major module
+update and a profile-only code change can both trigger it.
 
 If a service class has been removed, `drush cr` fails with `Class "..." not
 found` because rebuilding requires booting with the old container. Clearing the
@@ -348,6 +381,96 @@ The warning is harmless as long as no update for the removed module is queued.
 If one is, its code no longer exists and `updb` will fail. Check with
 `drush updatedb:status` before running the updates.
 
+## Nested rendering on Drupal 11
+
+Drupal 11 wraps controller execution in a `\Fiber`. A nested render started
+while another render is in progress now leaves an unbalanced frame on the
+render context, and the metadata collected below it never bubbles up.
+
+The failure is **silent in production**. With assertions enabled it raises
+
+```
+AssertionError: Bubbling failed. in Renderer::executeInRenderContext()
+```
+
+but `zend.assertions` is off on production, so nothing is logged at all. What
+the visitor gets is a page whose `<head>` still contains
+`<css-placeholder>`, `<js-placeholder>` and `<head-placeholder>`: no
+stylesheet links, no scripts, an unstyled page. The second request renders
+correctly because it comes from cache, so it reads as an intermittent glitch
+rather than a defect.
+
+### What triggers it
+
+Calling `Url::toString()` with no arguments inside a render. It goes through
+`MetadataBubblingUrlGenerator::bubble()`, which calls `Renderer::render()` to
+collect the URL's cacheability, and that pushes the frame.
+
+The contexts where this happens are `#pre_render` callbacks,
+`hook_page_attachments()`, `hook_toolbar()` and anything else that runs
+inside `HtmlRenderer::prepare()`.
+
+`Url::toString(TRUE)` returns a `GeneratedUrl` without rendering. Where a
+nested render really is needed, `renderInIsolation()` runs it in its own
+context — it replaced `renderPlain()`, deprecated in Drupal 10.3.
+
+### It usually shows up as an authenticated-only fault
+
+The toolbar is only rendered for authenticated users, and anonymous requests
+are served by the internal page cache without reaching the code at all. A
+fault in this class therefore affects logged-in users only, on the first
+request after a cache clear. That combination is easy to misattribute to
+caching or to the hosting environment.
+
+### Finding it
+
+Keep `zend.assertions=1` in the verification environment. The assertion is the
+only thing that turns a silent failure into a visible one: with it, the stray
+frame raises `AssertionError: Bubbling failed.` with a stack trace instead of
+failing silently.
+
+A bare `renderer->render()` in a render hook, or a module that calls
+`Url::toString()` from a `#pre_render`, are the usual culprits. Where the
+culprit is a contributed module, updating it is the fix.
+
+## Security advisories
+
+Run `composer audit` after a major core upgrade, and before any release.
+
+A core major upgrade moves a great deal at once, and it is easy to finish it
+believing the dependency tree is current when it is not. A core upgrade names
+only the packages that block the new core; everything else stays at whatever
+version the lock held, which can leave contributed modules several releases
+behind and carrying published advisories.
+
+Most are reachable without touching a single constraint: the constraint already
+permits the fixed release and only the lock is behind.
+
+### Reading the output
+
+Separate three groups:
+
+- **`drupal/*` the distribution declares** — act on these.
+- **vendor packages pulled in by contributed modules** — whether they can
+  move depends on the contributed module's constraint. If it pins an old
+  major, the fix is out of reach until that module updates.
+- **the root project's `require-dev`** — static analysis, testing and code
+  style tools. These never reach a consuming site.
+
+### Pairs that block each other
+
+When two packages constrain one another, naming them without versions leaves
+the pair unresolvable and Composer reports nothing to do. Give both an
+explicit target:
+
+```
+composer update "drupal/svg_image:^3.2" "enshrined/svg-sanitize:^1.0"
+```
+
+A dependency flag would also resolve it, and would also drag unrelated packages
+across majors — including Symfony components to an 8.x series against a core
+that pins them to `~7.4`. Name the pair with explicit versions instead.
+
 ## Pre-release checks
 
 A site assembled from a release candidate should report:
@@ -382,6 +505,33 @@ drush php:eval "\$r = \Drupal::service('http_kernel')->handle(\Symfony\Component
 Run it against the front page and against a node of each content type whose
 template differs. A test site with no content cannot exercise node templates at
 all, so create one node per relevant type before starting.
+
+Re-measure the baseline whenever the content itself changes. Editing a test
+node invalidates its figure, and the resulting difference reads as a
+regression when it is not.
+
+### Exercise the authenticated path, properly
+
+Several classes of fault appear only for authenticated users: the toolbar is
+not rendered for anonymous visitors, and anonymous requests are served from
+the page cache without reaching most code.
+
+Setting the current user and then calling the HTTP kernel does **not**
+produce an authenticated request:
+
+```php
+\Drupal::currentUser()->setAccount($account);
+\Drupal::service('http_kernel')->handle($request);   // still anonymous
+```
+
+The authentication middleware re-evaluates the request and resets it. The
+check passes and proves nothing.
+
+Use a real session instead: take a one-time login URL from `drush uli`,
+fetch it with `curl` to capture the cookie, then request a page with that
+cookie. A healthy result is a full page with the expected number of
+stylesheet links. A page of roughly two thousand bytes with none is the
+signature of a stranded render context frame.
 
 ### Deprecations surface only after the upgrade
 
