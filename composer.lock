@@ -3423,16 +3423,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "11.4.9",
+            "version": "11.4.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "cb07269d7829379f0960d469d7a0e6c045facd22"
+                "reference": "7dc54b5a0281efaf995a579f02a9b473424a9d09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/cb07269d7829379f0960d469d7a0e6c045facd22",
-                "reference": "cb07269d7829379f0960d469d7a0e6c045facd22",
+                "url": "https://api.github.com/repos/drupal/core/zipball/7dc54b5a0281efaf995a579f02a9b473424a9d09",
+                "reference": "7dc54b5a0281efaf995a579f02a9b473424a9d09",
                 "shasum": ""
             },
             "require": {
@@ -3605,7 +3605,7 @@
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
             "support": {
-                "source": "https://github.com/drupal/core/tree/11.4.9"
+                "source": "https://github.com/drupal/core/tree/11.4.10"
             },
             "funding": [
                 {
@@ -3613,11 +3613,11 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-10-09T17:44:27+00:00"
+            "time": "2026-10-14T10:58:06+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "11.4.9",
+            "version": "11.4.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -3661,13 +3661,13 @@
                 "drupal"
             ],
             "support": {
-                "source": "https://github.com/drupal/core-composer-scaffold/tree/11.4.9"
+                "source": "https://github.com/drupal/core-composer-scaffold/tree/11.4.10"
             },
             "time": "2026-07-09T23:23:24+00:00"
         },
         {
             "name": "drupal/core-project-message",
-            "version": "11.4.9",
+            "version": "11.4.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-project-message.git",
@@ -3705,7 +3705,7 @@
                 "drupal"
             ],
             "support": {
-                "source": "https://github.com/drupal/core-project-message/tree/11.4.9"
+                "source": "https://github.com/drupal/core-project-message/tree/11.4.10"
             },
             "time": "2026-01-07T19:00:53+00:00"
         },
