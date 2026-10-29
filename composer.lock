@@ -2816,26 +2816,29 @@
         },
         {
             "name": "drupal/captcha",
-            "version": "2.0.10",
+            "version": "2.0.11",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/captcha.git",
-                "reference": "2.0.10"
+                "reference": "2.0.11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/captcha-2.0.10.zip",
-                "reference": "2.0.10",
-                "shasum": "f1052ffe99ec2f8246f7da75e467b281fc2d804a"
+                "url": "https://ftp.drupal.org/files/projects/captcha-2.0.11.zip",
+                "reference": "2.0.11",
+                "shasum": "566bd0d80ceb667e2df56f2442840c85378df39c"
             },
             "require": {
                 "drupal/core": "^9.5 || ^10 || ^11"
             },
+            "require-dev": {
+                "drupal/crowdsec": "^1"
+            },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.10",
-                    "datestamp": "1772046216",
+                    "version": "2.0.11",
+                    "datestamp": "1793215346",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5887,25 +5890,25 @@
         },
         {
             "name": "drupal/google_tag",
-            "version": "2.0.6",
+            "version": "2.0.9",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/google_tag.git",
-                "reference": "2.0.6"
+                "reference": "2.0.9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/google_tag-2.0.6.zip",
-                "reference": "2.0.6",
-                "shasum": "c8f2895a81a7898ac909bdc693fcd25ffe6f62be"
+                "url": "https://ftp.drupal.org/files/projects/google_tag-2.0.9.zip",
+                "reference": "2.0.9",
+                "shasum": "78749a4520f6d89ca374061ac4f85f561118b3f1"
             },
             "require": {
                 "drupal/core": "^9.5 || ^10 || ^11"
             },
             "require-dev": {
-                "drupal/commerce": "^2.0",
+                "drupal/commerce": "^2.0 || ^3.0",
                 "drupal/commerce_wishlist": "^3.0@beta",
-                "drupal/csp": "^1.0",
+                "drupal/csp": "^1.0 || ~2.1.1",
                 "drupal/google_analytics": "^4.0",
                 "drupal/search_api": "^1.28.0",
                 "drupal/token": "^1.11.0",
@@ -5914,8 +5917,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.6",
-                    "datestamp": "1721948116",
+                    "version": "2.0.9",
+                    "datestamp": "1756130983",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6329,20 +6332,20 @@
         },
         {
             "name": "drupal/json_field",
-            "version": "1.4.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/json_field.git",
-                "reference": "8.x-1.4"
+                "reference": "8.x-1.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/json_field-8.x-1.4.zip",
-                "reference": "8.x-1.4",
-                "shasum": "422ec5a48bb0a36d6c506bc51a38e0b85ceba69d"
+                "url": "https://ftp.drupal.org/files/projects/json_field-8.x-1.7.zip",
+                "reference": "8.x-1.7",
+                "shasum": "4243b6adc2dd9d44a8a243cede59f7935a0c9b65"
             },
             "require": {
-                "drupal/core": "^10 || ^11",
+                "drupal/core": "^10.3 || ^11",
                 "ext-json": "*"
             },
             "require-dev": {
@@ -6357,8 +6360,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.4",
-                    "datestamp": "1729185545",
+                    "version": "8.x-1.7",
+                    "datestamp": "1759661334",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6382,6 +6385,10 @@
                 {
                     "name": "Jaesin",
                     "homepage": "https://www.drupal.org/user/841054"
+                },
+                {
+                    "name": "ptmkenny",
+                    "homepage": "https://www.drupal.org/user/97885"
                 }
             ],
             "description": "Provides a JSON field, formatter and views integration",
@@ -8262,17 +8269,17 @@
         },
         {
             "name": "drupal/shield",
-            "version": "1.8.0",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/shield.git",
-                "reference": "8.x-1.8"
+                "reference": "8.x-1.10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/shield-8.x-1.8.zip",
-                "reference": "8.x-1.8",
-                "shasum": "709b5580790a3b5bd8dda26f722cdb5a9c3911c5"
+                "url": "https://ftp.drupal.org/files/projects/shield-8.x-1.10.zip",
+                "reference": "8.x-1.10",
+                "shasum": "2a3efbc456c6282c54e4148217cc0a12409ff44c"
             },
             "require": {
                 "drupal/core": "^9.2 || ^10 || ^11"
@@ -8283,8 +8290,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.8",
-                    "datestamp": "1719947682",
+                    "version": "8.x-1.10",
+                    "datestamp": "1792606350",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
