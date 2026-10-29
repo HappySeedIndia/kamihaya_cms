@@ -721,16 +721,16 @@
         },
         {
             "name": "commerceguys/intl",
-            "version": "v2.0.6",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/commerceguys/intl.git",
-                "reference": "53d10f3f2f7375fa20ad83314c3eb5a272ce246d"
+                "reference": "53c23d309739d2f460da4832517473fe3eee8036"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/commerceguys/intl/zipball/53d10f3f2f7375fa20ad83314c3eb5a272ce246d",
-                "reference": "53d10f3f2f7375fa20ad83314c3eb5a272ce246d",
+                "url": "https://api.github.com/repos/commerceguys/intl/zipball/53c23d309739d2f460da4832517473fe3eee8036",
+                "reference": "53c23d309739d2f460da4832517473fe3eee8036",
                 "shasum": ""
             },
             "require": {
@@ -766,9 +766,9 @@
             "description": "Internationalization library powered by CLDR data.",
             "support": {
                 "issues": "https://github.com/commerceguys/intl/issues",
-                "source": "https://github.com/commerceguys/intl/tree/v2.0.6"
+                "source": "https://github.com/commerceguys/intl/tree/v2.1.0"
             },
-            "time": "2024-07-12T07:51:53+00:00"
+            "time": "2026-09-23T09:38:12+00:00"
         },
         {
             "name": "composer/pcre",
@@ -3284,20 +3284,20 @@
         },
         {
             "name": "drupal/commerce",
-            "version": "3.3.8",
+            "version": "3.3.13",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/commerce.git",
-                "reference": "3.3.8"
+                "reference": "3.3.13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/commerce-3.3.8.zip",
-                "reference": "3.3.8",
-                "shasum": "faef0a4d2e0495ae46fcacf1cefd52230177f9b5"
+                "url": "https://ftp.drupal.org/files/projects/commerce-3.3.13.zip",
+                "reference": "3.3.13",
+                "shasum": "94e00c20f6a8133a30a613b54cc5239eaea77a5e"
             },
             "require": {
-                "commerceguys/intl": "^2.0.6",
+                "commerceguys/intl": "^2.1.0",
                 "drupal/address": "^2.0",
                 "drupal/core": "^10.3 || ^11",
                 "drupal/entity": "^1.0",
@@ -3330,8 +3330,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "3.3.8",
-                    "datestamp": "1784272833",
+                    "version": "3.3.13",
+                    "datestamp": "1793214825",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3354,6 +3354,14 @@
                 {
                     "name": "rszrama",
                     "homepage": "https://www.drupal.org/user/49344"
+                },
+                {
+                    "name": "tomtech",
+                    "homepage": "https://www.drupal.org/user/254986"
+                },
+                {
+                    "name": "zaporylie",
+                    "homepage": "https://www.drupal.org/user/1532844"
                 }
             ],
             "description": "Drupal Commerce is a flexible eCommerce solution.",
@@ -19442,5 +19450,5 @@
     "prefer-lowest": false,
     "platform": {},
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
