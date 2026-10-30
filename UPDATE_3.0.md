@@ -177,19 +177,38 @@ packages explicitly instead, with no flag.
 
 ### Build the target list from the requirements
 
-Two commands are needed, and both matter:
+Read the requirements rather than iterating on error messages. Three commands
+are needed:
 
 ```
+composer why-not genero/kamihaya_cms 3.0.0
 composer why-not drupal/core-recommended <latest 11.4.x>
 composer why-not drupal/core <latest 11.4.x>
 ```
 
-`core-recommended` pins core's vendor tree to exact versions, so the first
-command lists every vendor package that must move, with the version each one
-needs. The second lists the contributed modules whose locked versions do not
-yet support Drupal 11, **and** the vendor packages that core pins directly
-rather than through `core-recommended` — `twig/twig` is one of these and is
-easy to miss.
+- The first lists the locked packages whose versions do not satisfy 3.0's
+  constraints. It finds what the other two miss: a package whose locked
+  release still supports Drupal 11, so it does not block core, but falls
+  outside the range 3.0 requires. On a site coming from 2.0, `drupal/ai` is in
+  this position: 2.0 allowed any 1.x release, and 3.0 requires the 1.5 series.
+- The second lists the vendor packages `core-recommended` pins, with the version
+  each one needs.
+- The third lists the contributed modules whose locked versions do not yet
+  support Drupal 11, **and** the vendor packages that core pins directly rather
+  than through `core-recommended`. `twig/twig` is one of these. Reading only the
+  second misses them.
+
+Name every package these commands list, together with what the target release
+of each requires. To see what a release requires:
+
+```
+composer show <package> <version> --available
+```
+
+A required package that is already in your lock at a version the new release
+does not accept must be named, or Composer holds it where it is and the update
+fails. A required package that is not yet in your lock is installed without
+being named; naming it does no harm.
 
 ### Pin the vendor versions explicitly
 
@@ -210,14 +229,16 @@ composer update \
   genero/kamihaya_cms \
   drupal/core drupal/core-recommended \
   drupal/core-composer-scaffold drupal/core-project-message \
-  drupal/gin drupal/gin_toolbar \
-  <every contributed module why-not listed> \
+  <each package the three why-not commands listed> \
+  <each package those releases require that is already in your lock> \
   drush/drush consolidation/robo consolidation/config \
   chi-teck/drupal-code-generator \
-  "twig/twig:~3.28.0" \
-  "<every vendor package with its required version>" \
+  "<each vendor package with its required version>" \
   --dry-run
 ```
+
+The Drush packages are the ones described in Step 4. The rest come from the
+`why-not` output for your site, so the list differs from site to site.
 
 Review the dry-run before executing. Two checks matter most:
 
@@ -232,6 +253,37 @@ If the dry-run fails to resolve, read the error and add only the packages it
 names. If the error blames "another require" without naming it, use
 `composer why <package>` to find which locked package is holding the
 constraint down.
+
+### Watch for development branches and downgrades
+
+A dry-run can succeed and still put a package somewhere you did not intend. When
+a package's newest release needs a dependency that is locked below what it
+requires, and that dependency is not named, Composer does not fail: it chooses
+an older release, or a development branch, that the locked dependency still
+satisfies.
+
+Read the dry-run for:
+
+- any package resolving to a `dev-` branch or an `x-dev` version, and
+- any package moving to a **lower** version than it holds now.
+
+When you see either, name that package with an explicit version, name what that
+version requires as well, and run the dry-run again.
+
+Two packages to check in this release:
+
+- **`drupal/commerce`.** Commerce 3.3.10 and later require `commerceguys/intl`
+  `^2.1.0`. If your lock holds `commerceguys/intl` below that and you do not
+  name it, Commerce resolves to the 3.0.x development branch rather than
+  failing. Name both, for example
+  `"drupal/commerce:^3.3.10" "commerceguys/intl:^2.1"`.
+- **`drupal/ai`.** The distribution requires `^1.5`, so `drupal/ai` cannot fall
+  back to the 1.4 series. If the 1.5 series cannot be resolved — because
+  `drupal/ai` or a package it requires is held at its locked version — the
+  dry-run fails instead of downgrading. Read the error, name the package it
+  reports together with what that release requires, and run the dry-run again.
+  `composer show drupal/ai <version> --available` lists what a release
+  requires.
 
 Then run the command without `--dry-run`.
 
@@ -272,7 +324,7 @@ needs a decision, not a retry — restore the backup and investigate.
 | | 2.x | 3.0 |
 | --- | --- | --- |
 | Constraint | `^10.6` | `^11.4` |
-| Resolved | 10.6.14 | 11.4.9 |
+| Resolved | 10.6.14 | 11.4.10 or later in the 11.4 series |
 
 ### Administration theme
 
@@ -288,9 +340,14 @@ because `bootstrap_cloud` constrains `bootstrap5`.
 
 ### AI capability
 
-`drupal/ai` (AI Core) is constrained at `^1.4` and resolves to 1.5.0 in this
-release. AI Core 1.5 requires six further modules, which are therefore shipped
-as well:
+`drupal/ai` (AI Core) is constrained at `^1.5` in this release. 2.0 allowed any
+1.x release, so a site updating from 2.0 must update `drupal/ai` to the 1.5
+series as part of the upgrade, unless its lock already holds a 1.5 release. This
+applies even if the module is not enabled. The 1.2 and 1.4 releases still
+support Drupal 11, so they do not block core; the first `why-not` in Step 6 is
+what lists them.
+
+AI Core 1.5 requires six further modules, which are therefore shipped as well:
 
 - `ai_content_suggestions`
 - `ai_logging`
@@ -427,6 +484,84 @@ behind and carrying published advisories.
 
 Most are reachable without changing any constraint — the constraint already
 permits the fixed release and only the lock is behind.
+
+## Applying a core security release between distribution releases
+
+Drupal publishes core security fixes as patch releases of the current minor.
+This distribution requires `drupal/core` with a range constraint (`^11.4`)
+rather than pinning `core-recommended`, so your site can take such a release as
+soon as it appears. **No new distribution release is needed, and none will be
+issued for a core-only security fix** — the responsibility and the control sit
+with your root `composer.json`.
+
+### The constraint does not change
+
+`^11.4` already permits every 11.4.x patch, so a fix published as a later
+11.4.x release is within range. A constraint only changes to move to a new
+minor, never for a patch within the minor you are on.
+
+### Build the target list
+
+Core and its vendor libraries are fixed in `composer.lock`, and a partial
+update does not move packages you do not name. Read **both** `why-not` forms to
+derive the list:
+
+```
+composer why-not drupal/core-recommended <latest 11.4.x>
+composer why-not drupal/core <latest 11.4.x>
+```
+
+`core-recommended` pins core's vendor tree, so the first lists the vendor
+packages that must move, with the version each needs. Core also pins some
+vendor packages directly — `twig/twig` is one — and those appear only in the
+second. Give each vendor package the version `why-not` reported, in the form
+`vendor/package:~7.4.13`.
+
+### The command
+
+Name the four core packages together, with any vendor packages `why-not`
+listed, and **no** dependency flag:
+
+```
+composer update \
+  drupal/core drupal/core-recommended \
+  drupal/core-composer-scaffold drupal/core-project-message \
+  "<each vendor package with its required version>" \
+  --dry-run
+```
+
+Review the dry-run, then run it again without `--dry-run`. Two checks:
+
+- **All four `drupal/core*` packages must land on the same version.** If they
+  split — one on the new release, another left behind — the vendor list is
+  incomplete. Composer resolves successfully with an older core rather than
+  move a package you did not name, so a clean dry-run does not prove the
+  intended version was reached.
+- **Do not add `-W` / `--with-all-dependencies`.** It opens every package in
+  the dependency graph and can drag unrelated libraries across major versions.
+  Name only what must move.
+
+### Afterwards
+
+```
+drush updatedb:status
+drush updb -y
+drush cr
+drush status --field=drupal-version
+```
+
+A patch-level security release usually queues few or no database updates, but
+run `updatedb:status` and `updb` regardless. Confirm the resolved core version
+with `drush status`.
+
+### Knowing an update is needed
+
+- `composer audit` reports published advisories affecting your locked packages.
+  Run it periodically, not only after an upgrade.
+- `drush core:requirements --severity=2` reports when core security coverage is
+  missing or an update is due.
+- Core security releases are announced at drupal.org/security; the Drupal
+  security team publishes them on a published schedule.
 
 ## Notes
 

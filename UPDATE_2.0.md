@@ -226,129 +226,101 @@ running anything.
 
 Adding `-W` (or `-w`) while naming `genero/kamihaya_cms` opens **every package
 the distribution requires** for update, not only the packages you intended to
-move. Measured against this release, `-W` moved 23 contributed modules that
-core did not require, and pulled unrelated vendor libraries across major
-version boundaries, including
-`phpoffice/phpspreadsheet` 2.4 to 5.9, `dompdf/dompdf` 2.0 to 3.1 and
-`sabberworm/php-css-parser` 8.9 to 9.4. Major vendor jumps of this kind can
-break custom code and are very difficult to attribute afterwards.
+move. It can update contributed modules that core did not require, and pull
+unrelated vendor libraries across major version boundaries. Major vendor jumps
+of this kind can break custom code and are very difficult to attribute
+afterwards.
 
 If you use `-W`, always inspect `--dry-run` output first and look specifically
 for major version changes in non-Drupal packages.
 
-### Recommended: staged update
+### Why this is a single operation
 
-The distribution was verified by applying these changes one at a time, checking
-the site after each one. Following the same order is the lowest-risk path,
-and it means that if something breaks you know which change caused it.
+Moving from a 1.x release to 2.0.0 cannot be staged module by module. Once your
+root constraint on `genero/kamihaya_cms` is `^2.0` (Step 3a), Composer resolves
+the distribution to 2.0.0, which requires `drupal/core` at `^10.6`. Your
+`composer.lock` still holds core at the exact version 1.x pinned, and a partial
+update does not move packages you have not named. A command that names the
+distribution and one contributed module therefore fails, reporting the four
+core packages as fixed to their current version by a partial update.
 
-Take a `composer.lock` snapshot before each stage so that you can roll back:
+So core moves in the same operation as everything else, together with every
+contributed module whose locked 1.x version does not satisfy 2.0.0's
+constraints. Updating modules one at a time is only possible when a site tracks
+a development branch of the distribution, where constraints change one at a
+time. Between release tags it is not.
+
+### Build the target list
+
+Take a `composer.lock` snapshot first, so that you can roll back:
 
 ```
 cp composer.lock composer.lock.bak
 ```
 
-Apply the stages in this order. In each command, naming the distribution
-together with the target module is required: the version constraints live in the
-distribution's `composer.json`, so Composer cannot move a module without also
-re-resolving the distribution.
+Read the requirements rather than iterating on error messages. Three commands
+are needed:
 
 ```
-composer update genero/kamihaya_cms drupal/xmlsitemap
-drush cr && drush updb
-
-composer update genero/kamihaya_cms drupal/youtube
-drush cr
-
-composer update genero/kamihaya_cms drupal/webform
-drush cr && drush updb
-
-composer update genero/kamihaya_cms drupal/commerce
-drush cr && drush updb
-
-composer update genero/kamihaya_cms
-drush cr && drush updb
+composer why-not genero/kamihaya_cms 2.0.0
+composer why-not drupal/core-recommended <latest 10.6.x>
+composer why-not drupal/core <latest 10.6.x>
 ```
 
-The youtube stage has no `drush updb`: the module defines no update hooks at
-all. xmlsitemap, webform and commerce all do, and commerce's include the order
-balance backfill described below.
+- The first lists the locked packages that block the distribution: core, and the
+  contributed modules that must move.
+- The second lists the vendor packages `core-recommended` pins, with the version
+  each one needs.
+- The third lists vendor packages that core pins directly rather than through
+  `core-recommended`. Reading only the second misses them.
 
-Use `drush updatedb:status` before each `drush updb` if you want to see what is
-pending. `drush updb --dry-run` does not exist in Drush 13.
+### The command
 
-The final command applies the module removals. See the notes in Step 7 for the
-container cache handling that webform and Commerce require.
-
-Then update core, as described below.
-
-### Updating core
-
-Core cannot be moved by naming the distribution alone, because core and its
-vendor libraries are pinned in your `composer.lock` and a partial update will
-not touch packages you have not named. Naming them all explicitly, with **no
-dependency flag**, moves exactly what is needed and nothing else.
-
-To build the list of packages to name, read the requirements directly rather
-than guessing:
-
-```
-composer why-not drupal/core-recommended 10.6.14
-```
-
-`core-recommended` pins core's whole vendor tree to exact versions, so this
-single command lists every vendor package that must move, together with the
-version required. Name all of them, plus the four core packages, with no flag:
+Name the distribution, the four core packages, the contributed modules that
+must move, and each vendor package with the version `why-not` reported, in the
+form `vendor/package:<version>`. Use **no** dependency flag:
 
 ```
 composer update \
+  genero/kamihaya_cms \
   drupal/core drupal/core-recommended \
   drupal/core-composer-scaffold drupal/core-project-message \
-  <every package listed by why-not>
+  drupal/commerce drupal/webform drupal/xmlsitemap drupal/youtube \
+  "<each vendor package with its required version>" \
+  --dry-run
 ```
 
-For reference, updating from core 10.4.10 to 10.6.14 requires these 21 vendor
-packages to be named alongside the core packages:
+The four contributed modules are the ones listed under "Contributed modules
+updated" above. Add any other module the first `why-not` reports for your site.
+The modules removed in this release do not need to be named: once the
+distribution no longer requires them, Composer removes them in the same
+operation. That is why Step 2 must come first.
+
+**Check the dry-run before executing.**
+
+- All four `drupal/core*` packages must land on the **same** version. If they
+  split, the target list is incomplete. Composer resolves successfully with an
+  older core rather than move a package you did not name, so a successful
+  dry-run is not by itself proof that you reached the version you wanted.
+- No package should resolve to a development branch, and none should move to a
+  lower version than it holds now. Either means a requirement was not named:
+  name that package with an explicit version, together with what that version
+  requires, and run the dry-run again.
+- The packages removed should be the ones listed under "Modules removed", and
+  no others.
+
+If the target core release does not appear as a candidate — for example, if
+Composer reports it as unavailable, or as affected by a security advisory that
+does not apply to it — the local package metadata may be stale. Clear the cache
+and run the dry-run again:
 
 ```
-asm89/stack-cors  guzzlehttp/guzzle  guzzlehttp/promises  guzzlehttp/psr7
-masterminds/html5  mck89/peast  pear/archive_tar  twig/twig
-symfony/deprecation-contracts  symfony/event-dispatcher-contracts
-symfony/http-foundation  symfony/routing  symfony/service-contracts
-symfony/translation-contracts  symfony/polyfill-ctype
-symfony/polyfill-iconv  symfony/polyfill-intl-grapheme
-symfony/polyfill-intl-idn  symfony/polyfill-intl-normalizer
-symfony/polyfill-mbstring  symfony/polyfill-php83
+composer clear-cache
 ```
 
-Your list will differ, because it depends on the versions currently in your
-`composer.lock`. Use `why-not` against the core version you are targeting.
-
-**Check the dry-run before executing.** All four `drupal/core*` packages must
-land on the **same** version. If they split — for example core at 10.6.8 while
-`core-composer-scaffold` is at 10.6.14 — your target list is incomplete.
-Composer will resolve successfully with an older core rather than move a package
-you did not name, so a successful dry-run is not by itself proof that you
-reached the version you wanted.
-
-### Alternative: single update
-
-If you accept the risk described above, the whole release can be applied in one
-operation:
-
-```
-cp composer.lock composer.lock.bak
-composer update genero/kamihaya_cms --with-all-dependencies --dry-run
-```
-
-Review the output carefully. Look for:
-
-- any non-Drupal package crossing a major version boundary
-- contributed modules moving that you did not expect
-
-Only then run the command without `--dry-run`.
-
-The staged path above is the one this release was verified with. Prefer it.
+Then run the command without `--dry-run`. Continue with Step 5 **before** running
+`drush cr`. Step 6 runs the database updates for every module at once,
+including the Commerce order balance backfill described in Step 7.
 
 ## Step 5 — Clear the compiled service container
 
@@ -365,8 +337,9 @@ drush sqlq "TRUNCATE cache_container; TRUNCATE cache_bootstrap; TRUNCATE cache_d
 drush cr
 ```
 
-Run this after every stage of the update, not only when a failure occurs. It is
-inexpensive and it prevents a failure mode that is confusing to diagnose.
+Run this after the Composer update and before the first `drush cr`, not only
+when a failure occurs. It is inexpensive and it prevents a failure mode that is
+confusing to diagnose.
 
 ## Step 6 — Run database updates
 
@@ -375,10 +348,11 @@ drush updb
 drush cr
 ```
 
-Review the update hooks that run. Updating core from 10.4.10 to 10.6.14 runs
-`system_update_10600` only; a site starting from a different 10.x release may
-see more. The Commerce update hooks write to order data — see the Commerce notes
-below.
+Because Step 4 moved core and the contributed modules in one operation, this
+single run applies all of their update hooks. Inspect them first with
+`drush updatedb:status`. Updating core from 10.4.10 runs `system_update_10600`;
+a site starting from a different 10.x release may see more. The Commerce update
+hooks write to order data — see the Commerce notes below.
 
 ## Step 7 — Contributed module notes
 
@@ -444,6 +418,84 @@ A major upgrade, and the only step that modifies order data.
 - Commerce: confirm order pages load and the order balance displays correctly.
 - Menus, media, and any site-specific features.
 - Check the log for errors: `drush watchdog:show`.
+
+## Applying a core security release between distribution releases
+
+Drupal publishes core security fixes as patch releases of the current minor.
+From 2.0 this distribution requires `drupal/core` with a range constraint
+(`^10.6`) rather than pinning `core-recommended`, so your site can take such a
+release as soon as it appears. **No new distribution release is needed, and none
+will be issued for a core-only security fix** — the responsibility and the
+control sit with your root `composer.json`.
+
+### The constraint does not change
+
+`^10.6` already permits every 10.6.x patch, so a fix published as a later
+10.6.x release is within range. A constraint only changes to move to a new
+minor, never for a patch within the minor you are on.
+
+### Build the target list
+
+Core and its vendor libraries are fixed in `composer.lock`, and a partial
+update does not move packages you do not name. Read **both** `why-not` forms to
+derive the list:
+
+```
+composer why-not drupal/core-recommended <latest 10.6.x>
+composer why-not drupal/core <latest 10.6.x>
+```
+
+`core-recommended` pins core's vendor tree, so the first lists the vendor
+packages that must move, with the version each needs. Core also pins some
+vendor packages directly — `twig/twig` is one — and those appear only in the
+second. Give each vendor package the version `why-not` reported, in the form
+`vendor/package:<version>`.
+
+### The command
+
+Name the four core packages together, with any vendor packages `why-not`
+listed, and **no** dependency flag:
+
+```
+composer update \
+  drupal/core drupal/core-recommended \
+  drupal/core-composer-scaffold drupal/core-project-message \
+  "<each vendor package with its required version>" \
+  --dry-run
+```
+
+Review the dry-run, then run it again without `--dry-run`. Two checks:
+
+- **All four `drupal/core*` packages must land on the same version.** If they
+  split — one on the new release, another left behind — the vendor list is
+  incomplete. Composer resolves successfully with an older core rather than
+  move a package you did not name, so a clean dry-run does not prove the
+  intended version was reached.
+- **Do not add `-W` / `--with-all-dependencies`.** It opens every package in
+  the dependency graph and can drag unrelated libraries across major versions.
+  Name only what must move.
+
+### Afterwards
+
+```
+drush updatedb:status
+drush updb -y
+drush cr
+drush status --field=drupal-version
+```
+
+A patch-level security release usually queues few or no database updates, but
+run `updatedb:status` and `updb` regardless. Confirm the resolved core version
+with `drush status`.
+
+### Knowing an update is needed
+
+- `composer audit` reports published advisories affecting your locked packages.
+  Run it periodically, not only after an upgrade.
+- `drush core:requirements --severity=2` reports when core security coverage is
+  missing or an update is due.
+- Core security releases are announced at drupal.org/security; the Drupal
+  security team publishes them on a published schedule.
 
 ## Notes
 

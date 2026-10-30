@@ -170,6 +170,15 @@ target list is incomplete. A successful dry-run is not proof that the intended
 version was reached. A split is the signal that a directly-pinned vendor package
 such as `twig/twig` is missing from the list.
 
+**Read the dry-run for development branches and downgrades.** When the newest
+release of a named package needs a dependency that is locked below what it
+requires and was not named, Composer does not fail. It chooses an older release
+or a development branch that the locked dependency still satisfies, and the
+dry-run reports success. Look for any package resolving to a `dev-` branch or an
+`x-dev` version, and for any package moving to a lower version than it holds
+now. When you find one, name it with an explicit version and name the packages
+that version requires as well, then run the dry-run again.
+
 ### Blockers are not limited to enabled modules
 
 Composer resolves against `composer.json`, not `core.extension`. A module that
@@ -471,6 +480,35 @@ A dependency flag would also resolve it, and would also drag unrelated packages
 across majors — including Symfony components to an 8.x series against a core
 that pins them to `~7.4`. Name the pair with explicit versions instead.
 
+## Checking templates after a base theme or core update
+
+When the base theme or core changes a template, markup that this theme depends
+on can stop being emitted without any error. A class is no longer added, an
+element is replaced by another, or a class is renamed so that core's own
+JavaScript or CSS no longer finds it. The page still renders, nothing is
+logged, and the change does not show up in byte counts, element counts or
+empty-class counts. Only reading diffs finds it.
+
+After a major update of the base theme or of core:
+
+1. **Diff the base theme's old and new release first.** Templates that the new
+   release did not change need no further checking.
+2. **For each template the new release removed**, find what this theme's CSS
+   and JavaScript relied on from that template's output — the classes,
+   elements and attributes it emitted — and check whether anything still
+   provides them.
+3. **For each template this theme overrides**, diff the override against the
+   new upstream version, and separate deliberate customisation (framework
+   classes, extra wrappers, this theme's own markup) from drift: places where
+   upstream changed a class name, a variable or the markup structure and the
+   override did not follow. A variable may be kept only for compatibility, so
+   check the preprocess function as well as the template.
+
+**Key CSS and JavaScript on classes, not on element names.** An element name is
+not a contract: upstream changes it when the semantics of the markup change. A
+selector such as `.card article` stops matching as soon as the wrapper becomes
+a `<div>`; a selector keyed on the wrapper's class does not.
+
 ## Pre-release checks
 
 A site assembled from a release candidate should report:
@@ -509,6 +547,10 @@ all, so create one node per relevant type before starting.
 Re-measure the baseline whenever the content itself changes. Editing a test
 node invalidates its figure, and the resulting difference reads as a
 regression when it is not.
+
+These metrics catch a variable that disappears. They do not catch a class that
+is renamed or an element that is replaced, because neither changes the counts.
+For those, see "Checking templates after a base theme or core update".
 
 ### Exercise the authenticated path, properly
 
