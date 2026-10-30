@@ -25,7 +25,7 @@
       {% endif %}
       {% if items.previous %}
         <li class="page-item pager__item pager__item--previous">
-          <a href="{{ items.previous.href }}" title="{{ 'Go to previous page'|t }}" rel="prev" {{ items.previous.attributes.addCLass('page-link')|without('href', 'title', 'rel') }}>>
+          <a href="{{ items.previous.href }}" title="{{ 'Go to previous page'|t }}" rel="prev" {{ items.previous.attributes.addCLass('page-link')|without('href', 'title', 'rel') }}>
             <span class="visually-hidden">{{ 'Previous page'|t }}</span>
             <span aria-hidden="true">{{ items.previous.text|default('‹‹'|t) }}</span>
           </a>
