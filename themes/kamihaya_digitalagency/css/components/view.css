@@ -359,7 +359,7 @@
   text-align: center;
 }
 
-.views-view-grid .views-col .views-field-rendered-entity article {
+.views-view-grid .views-col .views-field-rendered-entity > * {
   position: relative;
   height: 100%;
   padding-bottom: 2rem;

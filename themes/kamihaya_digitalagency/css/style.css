@@ -4608,7 +4608,7 @@ footer .navbar-nav a.is-active {
 }
 
 .card-body, .media-library-selection .media-library-item.media-library-item--grid > div,
-.media-library-selection .media-library-item.media-library-item--grid article, .view-media-library .media-library-views-form .media-library-item--grid .views-field-rendered-entity {
+.media-library-selection .media-library-item.media-library-item--grid .media, .view-media-library .media-library-views-form .media-library-item--grid .views-field-rendered-entity {
   flex: 1 1 auto;
   padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
   color: var(--bs-card-color);

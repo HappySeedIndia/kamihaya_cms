@@ -1864,7 +1864,7 @@ iframe[title="YouTube video player"] {
   .card-img-h-170 {
     height: 170px;
   }
-  .card-img-h-170 article,
+  .card-img-h-170 .media,
   .card-img-h-170 .media--image {
     height: 100%;
   }
