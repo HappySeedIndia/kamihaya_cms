@@ -249,16 +249,9 @@ body.back-to-top-circle:has(.anchor-links.sticky) #backtotop {
 .form-element {
   --bs-border-radius: 8px;
   --bs-border-color: #1A1A1C;
-  --bs-body-color: var(--kamihaya-form-text-color, #212529);
   padding: 0.75rem 1rem;
   width: auto;
   max-width: 100%;
-}
-
-.form-select.hidden,
-.form-control.hidden,
-.form-element.hidden {
-  display: none;
 }
 
 .form-required {
@@ -286,6 +279,10 @@ html[lang='ja'] .form-required:after {
 .form-control:focus,
 .form-element:focus {
   box-shadow: none;
+}
+
+.form-control.hidden {
+  display: none;
 }
 
 .form-item input.error,
@@ -360,7 +357,6 @@ html[lang='ja'] .form-required:after {
 .form-select {
   --bs-form-select-bg-img: url(../images/list_arrow.svg);
   --bs-form-select-disabled-bg-img: url(../images/list_arrow_disabled.svg);
-  --bs-body-color: var(--kamihaya-form-text-color, #212529);
   background-size: 24px 24px;
   padding: 0.75rem 2rem 0.75rem 1rem;
 }
