@@ -35,8 +35,7 @@ Drupal core and its entire vendor tree (Symfony, Twig, Guzzle and others) at
 to every consuming site, with two consequences:
 
 1. Sites cannot apply a core security release on their own. They must wait for a
-   new distribution release. During the 1.x series this left sites on core
-   10.4.10 after that release had reached end of life.
+   new distribution release.
 2. The distribution takes on responsibility for a vendor tree it does not
    manage or test.
 
@@ -82,10 +81,11 @@ verification checkout.
 
 **In the distribution repository** (where `genero/kamihaya_cms` is the root
 package): the root cannot be an update target. Change the constraint in
-`composer.json`, then name the module alone:
+`composer.json`, then name the module alone, replacing `MODULE` with its
+machine name:
 
 ```
-composer update drupal/<name> --no-install
+composer update drupal/MODULE --no-install
 ```
 
 Because the distribution is the root here, the edited constraint applies
@@ -97,7 +97,7 @@ dependency): name the profile **and** the module, so the profile is re-resolved
 and the new constraint takes effect:
 
 ```
-composer update genero/kamihaya_cms drupal/<name>
+composer update genero/kamihaya_cms drupal/MODULE
 ```
 
 In that environment, naming the module alone returns "Nothing to modify",
@@ -110,10 +110,10 @@ Remove the requirement from the distribution's `composer.json`, then reconcile
 the lock. The command depends on the environment:
 
 - **In the distribution repository**: the root cannot be named, so name the
-  package you removed, which drops it from the lock:
+  package you removed (`MODULE`), which drops it from the lock:
 
   ```
-  composer update drupal/<removed-name> --no-install
+  composer update drupal/MODULE --no-install
   ```
 
 - **In a site or verification checkout**: name the profile, so it is
@@ -130,25 +130,43 @@ are fixed in `composer.lock`, and a partial update will not touch packages that
 were not named. Name every package explicitly, with **no** dependency flag.
 
 Build the list by reading the requirements rather than by iterating on error
-messages. **Two commands are needed, and both matter:**
+messages. Find the target first — the highest release of the target minor that
+`composer show drupal/core-recommended --all` lists, or the release list at
+drupal.org/project/drupal/releases — and replace `TARGET` with it below.
+**Two commands are needed for core, and both matter:**
 
 ```
-composer why-not drupal/core-recommended <target-version>
-composer why-not drupal/core <target-version>
+composer why-not drupal/core-recommended TARGET
+composer why-not drupal/core TARGET
 ```
 
 The first lists every vendor package that `core-recommended` pins, with the
 version each one needs. The second lists the contributed modules whose locked
 versions do not support the target core, **and** the vendor packages that core
 pins directly rather than through `core-recommended`. `twig/twig` is one of
-these; reading only the first command misses it.
+these; reading only the first command misses it. (The second form reports
+both because `why-not` lists every installed package whose requirement excludes
+the target, and also every requirement of the target that the installed
+packages do not satisfy.)
+
+**A site moving to a new distribution release needs a third command**,
+`composer why-not genero/kamihaya_cms NEW_VERSION`. It lists the packages whose
+locked versions fall outside the new release's constraints even though they
+still support the target core — a constraint the distribution narrowed, for
+example. The two core forms cannot see those. A core security release within
+the same minor leaves the distribution unchanged, so the update guides use two
+commands for it and three for a distribution release.
 
 **Give every vendor package an explicit version**, in the form
-`vendor/package:~7.4.13`, taken from the `why-not` output. This distribution
-requires `drupal/core` rather than `core-recommended`, so nothing pins the
-vendor tree here and Composer is free to take a newer major of any component
-that has one. Several Symfony components have an 8.x series while core pins
-them to `~7.4.x`.
+`vendor/package:~7.4.13`, taken from the `why-not` output. In this repository
+the distribution is the root and requires `drupal/core` rather than
+`core-recommended`, so nothing pins the vendor tree to exact versions. Core's
+own requirements keep the Symfony components it requires directly on 7.4, but
+the components it reaches only indirectly are free, and several have an 8.x
+series that Drupal 11.4 does not support. On a site whose root keeps
+`core-recommended`, that package pins the vendor tree; the explicit version
+there serves to make a held-back package fail the dry-run instead of resolving
+quietly to an older core.
 
 **Include the root project's `require-dev` packages when they hold Symfony
 down.** Drush's dependency tree in particular can pin Symfony to 6.x through
@@ -194,8 +212,15 @@ release.
 ### One change per step
 
 Apply and verify one change at a time. Batching contrib updates makes failures
-impossible to attribute. Every contrib update in the 2.x series was applied and
-verified individually.
+impossible to attribute.
+
+This applies to **developing the distribution**: changing constraints in this
+repository, and verifying each change in a checkout that tracks the
+development branch. It does not apply to a site moving between two release
+tags. There the new release's constraints arrive all at once, and core moves
+together with every package that blocks it, so the update guides describe that
+move as a single operation and rely on the dry-run checks above to catch what
+one-change-at-a-time would otherwise isolate.
 
 ## Clearing the compiled service container
 
@@ -232,28 +257,49 @@ Distinguish two cases in the documentation:
 
 ## Unstable and held releases
 
-| Package | Constraint | Revisit when |
-| --- | --- | --- |
-| `drupal/field_group_table` | `^1.1@dev` | A stable release declaring `^11` is published. |
-| `drupal/webform_mautic` | `^2.0@dev` | A stable release declaring `^11` is published. |
-| `drupal/cloud` | `^8.0@beta` | An 8.x stable release is published. |
-| `drupal/bootstrap_cloud` | `^7.0@beta` | A 7.x stable release is published. |
-| `drupal/rigel` | `^8.0@beta` | An 8.x stable release is published. |
-| `drupal/youtube` | `^3.0@beta` | A stable 3.x release is published. |
-| `drupal/blazy` | Held at 3.0.x | A 4.x stable release is available. |
-| `drupal/entity_clone` | Beta | A stable release is published. |
-| `drupal/viewsreference` | Beta | A stable release is published. |
+| Package | Constraint | Resolves to | Revisit when |
+| --- | --- | --- | --- |
+| `drupal/field_group_table` | `^1.1@dev` | development branch | A stable release declaring `^11` is published. |
+| `drupal/webform_mautic` | `^2.0@dev` | development branch | A stable release declaring `^11` is published. |
+| `drupal/cloud` | `^8.0@beta` | beta | An 8.x stable release is published. |
+| `drupal/bootstrap_cloud` | `^7.0@beta` | beta | A 7.x stable release is published. |
+| `drupal/rigel` | `^8.0@beta` | beta | An 8.x stable release is published. |
+| `drupal/youtube` | `^3.0@beta` | beta | A stable 3.x release is published. |
+| `drupal/entity_clone` | `^2.1@beta` | beta | A stable 2.x release is published. |
+| `drupal/viewsreference` | `^2.0@beta` | beta | A stable 2.x release is published. |
+| `drupal/default_content` | `^2.0@alpha` | beta | A stable 2.x release is published. |
+| `drupal/flag` | `4.0-beta5` (exact) | beta | A stable 4.x release is published. The exact pin must then be changed by hand; it does not move on its own. |
+| `drupal/tb_megamenu` | `^3.0@alpha` | alpha | A stable 3.x release is published. |
+| `drupal/advanced_text_formatter` | `^3.0@RC` | release candidate | A stable 3.x release is published. |
+| `drupal/block_field` | `^1.0@RC` | release candidate | A stable 1.x release is published. |
+| `drupal/webp` | `^1.0@RC` | release candidate | A stable 1.x release is published. |
+| `drupal/inline_entity_form` | Not required directly | release candidate | Required by Commerce at RC stability. Keep it in the update guides' list while Commerce resolves it to an RC. |
+| `drupal/blazy` | Held at 3.0.x | stable | A 4.x stable release is available. |
+
+`content_access` (`^2.1@RC`) and `shs` (`^2.0@RC`) also carry a flag but
+currently resolve to stable releases, so they are not listed.
 
 Prefer stable releases. Adopt an unstable one only when no stable release
 supports the target core version, and record the reason.
 
 **Always write the constraint with an `@dev` or `@beta` flag rather than
 pinning a branch such as `1.x-dev`.** The flag permits an unstable release; it
-does not require one. With `prefer-stable: true` the moment a stable release
-appears that satisfies the constraint, it is preferred automatically and no
-distribution release is needed. Pinning a branch keeps every consuming site on
+does not require one. With `prefer-stable: true`, once a stable release that
+satisfies the constraint is published, the next update that names the package
+selects it, and no distribution release is needed. The lock does not move by
+itself: until an update names the package, the lock keeps the unstable release
+it already holds. Pinning a branch keeps every consuming site on
 the moving branch forever, which is the same trap as pinning
 `core-recommended` to an exact version.
+
+**Stability flags, `minimum-stability` and `prefer-stable` take effect only in
+the distribution repository, where the profile is the root package.** Composer
+ignores them in a dependency, so on a consuming site the distribution's flags
+do nothing. The site's own root must declare `"minimum-stability": "dev"` with
+`"prefer-stable": true`, or require each unstable package itself with a flag.
+Say so in the prerequisites of every update guide, and keep the list of
+unstable packages there complete — including packages the distribution does not
+require directly but receives at an unstable release through a dependency.
 
 A consequence of the flag is that the lock does not change when you add it.
 `field_group_table` stayed on its stable 1.1.0 until core moved to 11, because
@@ -262,7 +308,8 @@ is the expected result, not a failure.
 
 Record in the update guide that unstable releases are outside drupal.org
 security advisories, and that a development branch means the exact code a site
-receives depends on when it installs.
+runs depends on when the package was last updated: the lock records one commit
+of the branch.
 
 ## `drupal/ai`
 
@@ -275,7 +322,7 @@ From 3.0 the distribution also ships `drupal/ai_provider_openai` and
 
 Points for maintainers:
 
-- The `drupal/ai` constraint is `^1.4`, narrowed from the `^1.0` it carried
+- The `drupal/ai` constraint is `^1.5`, narrowed from the `^1.0` it carried
   through the 2.x series. `^1.0` was wider than anything verified, and once
   core reached 10.6 it allowed the resolver to jump several minor versions at
   once. Keep the constraint at the series that is actually tested.
@@ -286,7 +333,7 @@ Points for maintainers:
   dependency**, so a site enabling them must enable `key` explicitly. Say so in
   the update guide.
 - `ai_provider_openai` requires `drupal/ai` with a caret range (`^1.2.0`), not
-  a matching minor, so provider 1.2.x works with `ai` 1.4.x. Do not assume the
+  a matching minor, so provider 1.2.x works with `ai` 1.5.x. Do not assume the
   provider's minor must track the AI module's minor.
 - `metatag_ai` declares `drupal/ai: ^1.3@beta`. The `@beta` flag permits a beta
   rather than requiring one, so a stable `ai` release satisfies it.
@@ -370,8 +417,10 @@ upgrade, with an error such as `Unknown column 'alias' in 'INSERT INTO'`. The
 code is on the new major while the database still has the old schema, and the
 update that adds the column has not run yet. This is expected; run `updb`.
 
-Always inspect `drush updatedb:status` in full before running `drush updb`. A
-10.6 to 11.4 upgrade queues around forty-four updates.
+Always inspect `drush updatedb:status` in full before running `drush updb`, and
+document the two as separate steps in the update guides, with the review in
+between. A major core upgrade queues many updates across core and the
+contributed modules that moved.
 
 Note that `drush updb --dry-run` does not exist in Drush 13; `updatedb:status`
 is the way to inspect pending updates.
@@ -383,12 +432,21 @@ a decision, not a repetition.
 
 A core major upgrade can remove modules from core entirely. Drupal 11 removed
 `tour`, which moved to a contributed project. A site with it enabled must
-uninstall it before the upgrade; a site that enabled it in the past carries a
-leftover `system.schema` entry that produces a warning.
+uninstall it before the upgrade.
 
-The warning is harmless as long as no update for the removed module is queued.
-If one is, its code no longer exists and `updb` will fail. Check with
-`drush updatedb:status` before running the updates.
+A site that enabled it in the past carries a leftover `system.schema` entry.
+That entry is **not harmless**: installing any module afterwards fails with
+`The module tour does not exist.`, because Drupal resolves the full module list
+during installation. The update guide must tell sites to remove it:
+
+```
+drush php:eval "\Drupal::keyValue('system.schema')->delete('tour');"
+drush cr
+```
+
+If an update for the removed module is queued, its code no longer exists and
+`updb` will fail as well. Check with `drush updatedb:status` before running the
+updates.
 
 ## Nested rendering on Drupal 11
 
@@ -399,10 +457,10 @@ render context, and the metadata collected below it never bubbles up.
 The failure is **silent in production**. With assertions enabled it raises
 
 ```
-AssertionError: Bubbling failed. in Renderer::executeInRenderContext()
+AssertionError: Bubbling failed.
 ```
 
-but `zend.assertions` is off on production, so nothing is logged at all. What
+from `Renderer::executeInRenderContext()`, but `zend.assertions` is off on production, so nothing is logged at all. What
 the visitor gets is a page whose `<head>` still contains
 `<css-placeholder>`, `<js-placeholder>` and `<head-placeholder>`: no
 stylesheet links, no scripts, an unstyled page. The second request renders
@@ -415,9 +473,16 @@ Calling `Url::toString()` with no arguments inside a render. It goes through
 `MetadataBubblingUrlGenerator::bubble()`, which calls `Renderer::render()` to
 collect the URL's cacheability, and that pushes the frame.
 
-The contexts where this happens are `#pre_render` callbacks,
-`hook_page_attachments()`, `hook_toolbar()` and anything else that runs
-inside `HtmlRenderer::prepare()`.
+The contexts where this happens are those that run while a render is already
+in progress: `#pre_render` callbacks, `hook_toolbar()`,
+`hook_page_attachments()` and preprocess functions.
+
+`HtmlRenderer` works in two phases. `prepare()` builds the page and invokes
+`hook_page_attachments()`; `renderResponse()` then renders `html.html.twig`.
+The toolbar sits in `page_top`, which is rendered by `html.html.twig`, so its
+`#pre_render` — and the `hook_toolbar()` implementations it invokes — run in
+the second phase, inside `renderResponse()`. That is where the toolbar case
+occurs, not in `prepare()`.
 
 `Url::toString(TRUE)` returns a `GeneratedUrl` without rendering. Where a
 nested render really is needed, `renderInIsolation()` runs it in its own
@@ -515,7 +580,18 @@ A site assembled from a release candidate should report:
 
 - `drush status` — expected core version, successful bootstrap
 - `drush core:requirements --severity=2` — no core security coverage errors
-- PHPStan — no errors
+- PHPStan — no errors beyond the documented baseline. The baseline for 3.0 is
+  4 errors, all `drupal.entityStorageDirectInjection`. Any other error, or a
+  change in that count, must be resolved before tagging. Run it with a raised
+  memory limit:
+  ```
+  vendor/bin/phpstan analyse --memory-limit=2G
+  ```
+  With the default limit of 128M a worker process runs out of memory and the
+  analysis stops partway. The result then looks deceptively clean: the table
+  output reports "1 error" (the crash itself), and the JSON output reports no
+  findings at all. Before reading the count, confirm that the output does not
+  contain `Result is incomplete`.
 - PHPCS — no errors or warnings
 - A real request through the kernel, not only CLI checks:
   ```

@@ -6,7 +6,7 @@ Kamihaya CMS 3.0, which moves the distribution to **Drupal 11**.
 > Read this guide fully before starting. Perform the steps in order on a
 > staging copy first, then on production.
 >
-> Sections 1 to 4 are preparation you must complete **before** running any
+> Steps 1 to 5 are preparation you must complete **before** running any
 > Composer command. Skipping them leaves the update half-applied.
 
 ## What this release does
@@ -31,10 +31,156 @@ final Drupal 10 minor release.
   do not always use the same binary.
 - Composer 2.x.
 - Drush 13.
-- **A full database and files backup.** This update runs more than forty
+- **Stability settings in your root `composer.json`.** Several packages this
+  release requires have no stable release yet (see "Unstable releases in this
+  series" below). Composer reads stability flags such as `@dev` and `@beta`,
+  and the `minimum-stability` setting, **from the root `composer.json` only**;
+  the distribution's own settings have no effect on your site. Your root must
+  either declare
+
+  ```json
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  ```
+
+  or require each of those packages itself with a stability flag, for example
+  `"drupal/field_group_table": "^1.1@dev"`. Without one of these, the update
+  fails to resolve. `prefer-stable` is what makes Composer choose a stable
+  release whenever one satisfies the constraint.
+- **Patching enabled in your root `composer.json`.** The distribution ships
+  patches for Drupal core and several contributed modules, applied by
+  `cweagans/composer-patches` 1.x. That plugin applies patches declared by a
+  dependency only when the root allows the plugin and enables patching:
+
+  ```json
+  "config": {
+      "allow-plugins": {
+          "cweagans/composer-patches": true
+      }
+  },
+  "extra": {
+      "enable-patching": true
+  }
+  ```
+
+  Without `enable-patching`, the distribution's patches are skipped without an
+  error and the site runs unpatched code.
+- **Run commands from your project root.** Every `composer` and `drush` command
+  in this guide is run from the directory that holds your root
+  `composer.json`.
+- **A full database and files backup.** This update runs a large number of
   database updates. Several are not reversible without a backup.
 
-## 1 — Allow the symfony/runtime Composer plugin
+## What changed in 3.0
+
+### Core
+
+| | 2.x | 3.0 |
+| --- | --- | --- |
+| Constraint | `^10.6` | `^11.4` |
+| Resolved | 10.6.x | 11.4.10 or later in the 11.4 series |
+
+### Administration theme
+
+`gin` moves from the 3.x release candidates to 5.0, and `gin_toolbar` from
+1.x to 3.0. Both declare `^11.2` and cannot be installed on Drupal 10, which
+is why they move together with core rather than in a separate step.
+
+### Front-end theme
+
+`bootstrap5` moves from 3.0.x to 4.0.x. The 3.0.x branch is deprecated
+upstream. The `cloud`, `bootstrap_cloud` and `rigel` stack moves with it,
+because `bootstrap_cloud` constrains `bootstrap5`.
+
+### AI capability
+
+`drupal/ai` (AI Core) is constrained at `^1.5` in this release. 2.0 allowed any
+1.x release, so a site updating from 2.0 must update `drupal/ai` to the 1.5
+series as part of the upgrade, unless its lock already holds a 1.5 release. This
+applies even if the module is not enabled. The 1.2 and 1.4 releases still
+support Drupal 11, so they do not block core; the first `why-not` in Step 6 is
+what lists them.
+
+AI Core 1.5 requires five further modules, which are therefore shipped as
+well:
+
+- `ai_content_suggestions`
+- `ai_logging`
+- `ai_translate`
+- `ai_validations`
+- `field_widget_actions`
+
+`ai_validations` in turn requires `field_validation`, so that module is shipped
+too.
+
+The OpenAI provider (`ai_provider_openai`) and `metatag_ai` are also shipped.
+**None of these modules is enabled by the install profile**, so nothing changes
+at runtime unless you enable them yourself.
+
+To use the AI features, enable `key`, `ai`, `ai_provider_openai` and
+`metatag_ai` in that order, then configure a provider and an API key. `key` is
+not declared as a module dependency by either the provider or `metatag_ai`, so
+enable it explicitly. Enabling a provider without configured credentials raises
+an exception, which is why none of these is enabled by default.
+
+`metatag_ai` declares `core_version_requirement: ^11`, so it becomes usable for
+the first time in this release.
+
+### Other contributed modules
+
+`fontawesome` moves from 2.26 to 3.0. Its field type, widget and formatter
+plugin ids are unchanged, and the settings it stores survive the update. The
+CKEditor 4 plugin it used to carry was removed upstream; this distribution
+does not use it.
+
+A number of further contributed modules move to newer releases that their
+existing constraints already permitted.
+
+### Unstable releases in this series
+
+Several packages a 3.0 site receives resolve to a release that is not stable.
+The distribution constrains them with a stability flag such as `@dev` or
+`@beta`, which permits an unstable release rather than requiring one. Your
+lock does not move on its own when a stable release is published: it keeps the
+unstable release until you run an update that names the package. At that
+point, with `prefer-stable` set in your root (see Prerequisites), Composer
+selects the stable release if it satisfies the constraint, with no change to
+the distribution. `flag` is the exception: the distribution pins it to one
+exact beta release, so an update does not move it either.
+
+Five are new to this release. The others were already unstable in 2.x and are
+listed for completeness.
+
+| Package | State | Since |
+| --- | --- | --- |
+| `field_group_table` | development branch | 3.0 |
+| `webform_mautic` | development branch | 3.0 |
+| `cloud` | beta | 3.0 |
+| `bootstrap_cloud` | beta | 3.0 |
+| `rigel` | beta | 3.0 |
+| `youtube` | beta | 2.0 |
+| `entity_clone` | beta | 1.x |
+| `viewsreference` | beta | 1.x |
+| `default_content` | beta | 1.x |
+| `flag` | beta, exact version | 1.x |
+| `tb_megamenu` | alpha | 1.x |
+| `advanced_text_formatter` | release candidate | 1.x |
+| `block_field` | release candidate | 1.x |
+| `webp` | release candidate | 1.x |
+| `inline_entity_form` | release candidate, required by Commerce | — |
+
+`inline_entity_form` is not required by the distribution directly. Commerce
+requires it, and its flag, like every flag, takes effect only in your root —
+which is one more reason to prefer the `minimum-stability` setting over
+listing packages one by one.
+
+Two consequences are worth knowing. Releases that are not stable —
+development, alpha, beta and release candidate — are not covered by drupal.org
+security advisories. And a development release is a moving branch: your lock
+records one commit of it, so the exact code your site runs depends on when the
+package was last updated.
+
+## Step 1 — Allow the symfony/runtime Composer plugin
 
 Drupal 11 uses `symfony/runtime`, which ships a Composer plugin. Composer
 blocks plugins that are not explicitly allowed, and aborts mid-install when
@@ -54,7 +200,7 @@ Add the entry to your site's own root `composer.json`:
 
 This must be done before the update, not after the failure.
 
-## 2 — Raise the constraints in your root composer.json
+## Step 2 — Raise the constraints in your root composer.json
 
 Composer applies the intersection of your root constraints and the
 distribution's, so a change inside the distribution has no effect if your root
@@ -97,7 +243,7 @@ raise core if your root still says `^10`.
 `core-recommended` stays in your root. The distribution deliberately does not
 require it, so that your root keeps control of core and its vendor tree.
 
-## 3 — Review your core patches
+## Step 3 — Review your core patches
 
 If your site applies patches to `drupal/core`, check each one against Drupal
 11 before starting. Patches written for Drupal 10 fail for two different
@@ -114,7 +260,7 @@ may simply be unnecessary now and can be dropped rather than rerolled. After a
 major core upgrade, expect at least one long-standing core patch to fall into
 this category.
 
-## 4 — Check Drush and its dependencies
+## Step 4 — Check Drush and its dependencies
 
 Drush's own dependency tree can hold Symfony at 6.x. Drupal 11 needs Symfony
 7.4, and Composer cannot move a package that is not named in a partial
@@ -124,16 +270,24 @@ update, so the resolution fails with messages of the form:
 symfony/console ... not loaded, conflicts with another require
 ```
 
-The packages responsible are usually `consolidation/robo`,
-`consolidation/config` and `chi-teck/drupal-code-generator`. Their own
-constraints already permit Symfony 7; they simply need to be in the update
-set. Include `drush/drush` and those three in the update command in step 6.
+Find the packages that hold Symfony back by reading the requirements:
 
-If your root `require-dev` holds other tools that depend on Symfony — static
-analysis, testing, code generation — include them as well. Use
-`composer why symfony/console` to find them.
+```
+composer why symfony/console
+```
 
-## 5 — Uninstall the tour module if it is enabled
+Every package listed there whose locked version does not accept Symfony 7.4
+must be named in the update command in Step 6. If
+the resolution error names another Symfony component, run `composer why` for
+that component as well.
+
+On a typical site the list includes `drush/drush`, `consolidation/robo`,
+`consolidation/config` and `chi-teck/drupal-code-generator` — but these are
+examples, not the list. Tools in your root `require-dev` — static analysis,
+testing, code generation — appear in the same output and belong in the update
+set too. Use what `composer why` reports for your site.
+
+## Step 5 — Uninstall the tour module if it is enabled
 
 `tour` was removed from Drupal core in Drupal 11 and moved to a contributed
 project. If your site has it enabled, uninstall it first:
@@ -166,7 +320,32 @@ exists and `updb` will fail:
 drush updatedb:status | grep -i tour
 ```
 
-## 6 — Update with Composer
+## Step 6 — Update with Composer
+
+### Before you start
+
+Take a restore point immediately before the first Composer command, after the
+module changes in Step 5:
+
+```
+drush sql:dump --result-file="$HOME/backup-before-3.0.sql" --gzip
+cp composer.json "$HOME/composer.json.before-3.0"
+cp composer.lock "$HOME/composer.lock.before-3.0"
+```
+
+Back up the files directory as well, if your general backup does not already
+cover it. To roll back, copy the two Composer files back, run
+`composer install`, and import the dump.
+
+Capture the pages you will compare against in Step 8: the front page and one
+page of each content type, both as an anonymous visitor and logged in. Keep a
+screenshot and the page source of each. For the anonymous view, the source can
+be saved with the command below, replacing `YOUR_SITE` with your site's host
+name:
+
+```
+curl -s https://YOUR_SITE/ -o "$HOME/before-3.0-front.html"
+```
 
 ### Do not use `--with-all-dependencies`
 
@@ -175,15 +354,44 @@ it requires. On this dependency graph that pulls in dozens of contributed
 modules and can drag unrelated vendor libraries across major versions. Name
 packages explicitly instead, with no flag.
 
+### Why this is a single operation
+
+Core, the distribution and every package that blocks them move in one Composer
+operation. Once your root requires `^3.0`, the distribution needs Drupal 11,
+and Drupal 11 cannot be installed while any locked package still excludes it,
+so the change cannot be split into one module at a time. The one-change-per-step
+rule in `UPGRADE_NOTES.md` applies to developing the distribution, not to a site
+moving between releases; here, the dry-run checks below take its place.
+
 ### Build the target list from the requirements
 
-Read the requirements rather than iterating on error messages. Three commands
-are needed:
+Read the requirements rather than iterating on error messages.
+
+First find the target core release: the latest release in the 11.4 series.
+
+```
+composer show drupal/core-recommended --all
+```
+
+The `versions` line lists every published release; take the highest `11.4.`
+release. To print just that version:
+
+```
+composer show drupal/core-recommended --all | grep -oE '11\.4\.[0-9]+' | sort -V | tail -1
+```
+
+Development versions such as `11.4.x-dev` do not match the pattern, so only the
+latest stable release is printed. The release list at
+drupal.org/project/drupal/releases shows the same.
+In the commands below, replace `TARGET` with that version, for example
+`11.4.10`.
+
+Three commands are needed:
 
 ```
 composer why-not genero/kamihaya_cms 3.0.0
-composer why-not drupal/core-recommended <latest 11.4.x>
-composer why-not drupal/core <latest 11.4.x>
+composer why-not drupal/core-recommended TARGET
+composer why-not drupal/core TARGET
 ```
 
 - The first lists the locked packages whose versions do not satisfy 3.0's
@@ -198,11 +406,16 @@ composer why-not drupal/core <latest 11.4.x>
   than through `core-recommended`. `twig/twig` is one of these. Reading only the
   second misses them.
 
+Each command also lists packages that are already in the command below — the
+four `drupal/core*` packages and the distribution itself. Skip those.
+
 Name every package these commands list, together with what the target release
-of each requires. To see what a release requires:
+of each requires. To see what a release requires, run the command below,
+replacing `PACKAGE` and `VERSION`; `--available` makes Composer read the
+release from the package repository rather than from what is installed:
 
 ```
-composer show <package> <version> --available
+composer show PACKAGE VERSION --available
 ```
 
 A required package that is already in your lock at a version the new release
@@ -210,12 +423,21 @@ does not accept must be named, or Composer holds it where it is and the update
 fails. A required package that is not yet in your lock is installed without
 being named; naming it does no harm.
 
-### Pin the vendor versions explicitly
+### Give the vendor packages their versions
 
-Give each vendor package the version that `why-not` reported, in the form
-`vendor/package:~7.4.13`. Without this, Composer may select a newer major
-release that Drupal 11.4 does not support: several Symfony components have an
-8.x series, while `core-recommended` pins them to `~7.4.x`.
+Give each vendor package that the two core `why-not` commands reported the
+version they reported, in the form `"vendor/package:~7.4.13"`.
+
+On a site whose root requires `drupal/core-recommended` — the normal case, see
+Step 2b — that package already pins the vendor tree to exact versions, so the
+version argument does not change what is installed. What it changes is how a
+mistake shows up. A version given on the command line is a requirement: if
+something holds the package below it, the dry-run fails and names the
+conflict, instead of resolving quietly to an older core. If your root requires
+`drupal/core` without `core-recommended`, nothing pins the Symfony components
+that core requires only indirectly, and some of them have an 8.x series that
+Drupal 11.4 does not support; the version argument is then also what keeps
+them on 7.4.
 
 ### The command
 
@@ -229,16 +451,24 @@ composer update \
   genero/kamihaya_cms \
   drupal/core drupal/core-recommended \
   drupal/core-composer-scaffold drupal/core-project-message \
-  <each package the three why-not commands listed> \
-  <each package those releases require that is already in your lock> \
-  drush/drush consolidation/robo consolidation/config \
-  chi-teck/drupal-code-generator \
-  "<each vendor package with its required version>" \
+  NAMED_PACKAGES \
+  VERSIONED_PACKAGES \
   --dry-run
 ```
 
-The Drush packages are the ones described in Step 4. The rest come from the
-`why-not` output for your site, so the list differs from site to site.
+Replace the two placeholders with the packages collected above, separated by
+spaces. **Name each package once, in one of the two places:**
+
+- `VERSIONED_PACKAGES` — each package you give a version, quoted, for example
+  `"twig/twig:^3.28"`: the vendor packages the two core `why-not` commands
+  reported, and any package you pin after reading the dry-run (see "Watch for
+  development branches and downgrades" below).
+- `NAMED_PACKAGES` — every other package, by name alone: the packages the
+  `why-not` commands listed, the packages their target releases require that
+  are already in your lock, and the packages `composer why` listed in Step 4.
+
+Every name comes from the `why-not` and `composer why` output for your site, so
+the list differs from site to site.
 
 Review the dry-run before executing. Two checks matter most:
 
@@ -247,12 +477,18 @@ Review the dry-run before executing. Two checks matter most:
   target list is incomplete. Composer resolves successfully with an older
   core rather than move a package you did not name, so a clean dry-run is not
   proof that you reached the version you intended.
-- **No Symfony package should land on 8.x.**
+- **The Symfony components that core pins stay on 7.4.** That is every
+  `symfony/*` package `drupal/core-recommended` pins, and those `drupal/core`
+  requires directly. None of them may land on 8.x. Symfony packages outside
+  that set can legitimately resolve to 8.x — `symfony/cache`, which reaches the
+  site through AI Core's dependencies, is one — and that is expected.
 
-If the dry-run fails to resolve, read the error and add only the packages it
-names. If the error blames "another require" without naming it, use
-`composer why <package>` to find which locked package is holding the
-constraint down.
+If the dry-run fails to resolve, do not add the packages the error names one at
+a time. Go back to the three `why-not` commands and to `composer why` from
+Step 4, confirm that every package they listed is named together with what its
+target release requires, and rebuild the list. If the error blames "another
+require" without naming it, `composer why PACKAGE` shows which locked package
+is holding the constraint down; that package belongs in the list.
 
 ### Watch for development branches and downgrades
 
@@ -280,14 +516,14 @@ Two packages to check in this release:
 - **`drupal/ai`.** The distribution requires `^1.5`, so `drupal/ai` cannot fall
   back to the 1.4 series. If the 1.5 series cannot be resolved — because
   `drupal/ai` or a package it requires is held at its locked version — the
-  dry-run fails instead of downgrading. Read the error, name the package it
-  reports together with what that release requires, and run the dry-run again.
-  `composer show drupal/ai <version> --available` lists what a release
-  requires.
+  dry-run fails instead of downgrading. Run
+  `composer show drupal/ai VERSION --available` for the 1.5 release you are
+  targeting, name every package it requires that is already in your lock, and
+  run the dry-run again.
 
 Then run the command without `--dry-run`.
 
-## 7 — Rebuild and run database updates
+## Step 7 — Rebuild and run database updates
 
 `drush cr` will fail before the database updates run, with an error such as:
 
@@ -299,17 +535,22 @@ This is expected. The code is Drupal 11 while the database is still on the
 Drupal 10 schema, and `system_update_11201` is what adds that column. Do not
 try to fix it; run the updates.
 
+First clear the container caches and list the queued updates:
+
 ```
 drush sqlq "TRUNCATE cache_container; TRUNCATE cache_bootstrap; TRUNCATE cache_discovery; TRUNCATE cache_config;"
 drush updatedb:status
+```
+
+**Review the list before going further.** A 10.6 to 11.4 update queues many
+updates across core and the contributed modules that moved. Check that every
+entry belongs to a module present on your site; an entry for `tour` means
+Step 5 is incomplete. Proceed only when the list is what you expect:
+
+```
 drush updb -y
 drush cr
 ```
-
-Review `drush updatedb:status` before running `updb`. A 10.6 to 11.4 update
-queues around forty-four updates, spanning `system`, `views`, `locale`,
-`help`, `block`, `block_content`, `ckeditor5`, `content_moderation`, `field`,
-`file`, `media`, `node`, `path_alias` and `update`.
 
 `drush cr` succeeding afterwards is the confirmation that the schema has
 caught up with the code.
@@ -317,99 +558,15 @@ caught up with the code.
 If `updb` fails partway, do not re-run it. A partially applied update path
 needs a decision, not a retry — restore the backup and investigate.
 
-## What changed in 3.0
-
-### Core
-
-| | 2.x | 3.0 |
-| --- | --- | --- |
-| Constraint | `^10.6` | `^11.4` |
-| Resolved | 10.6.14 | 11.4.10 or later in the 11.4 series |
-
-### Administration theme
-
-`gin` moves from the 3.x release candidates to 5.0, and `gin_toolbar` from
-1.x to 3.0. Both declare `^11.2` and cannot be installed on Drupal 10, which
-is why they move together with core rather than in a separate step.
-
-### Front-end theme
-
-`bootstrap5` moves from 3.0.x to 4.0.x. The 3.0.x branch is deprecated
-upstream. The `cloud`, `bootstrap_cloud` and `rigel` stack moves with it,
-because `bootstrap_cloud` constrains `bootstrap5`.
-
-### AI capability
-
-`drupal/ai` (AI Core) is constrained at `^1.5` in this release. 2.0 allowed any
-1.x release, so a site updating from 2.0 must update `drupal/ai` to the 1.5
-series as part of the upgrade, unless its lock already holds a 1.5 release. This
-applies even if the module is not enabled. The 1.2 and 1.4 releases still
-support Drupal 11, so they do not block core; the first `why-not` in Step 6 is
-what lists them.
-
-AI Core 1.5 requires six further modules, which are therefore shipped as well:
-
-- `ai_content_suggestions`
-- `ai_logging`
-- `ai_translate`
-- `ai_validations`
-- `field_widget_actions`
-- `field_validation`
-
-The OpenAI provider (`ai_provider_openai`) and `metatag_ai` are also shipped.
-**None of these modules is enabled by the install profile**, so nothing changes
-at runtime unless you enable them yourself.
-
-To use the AI features, enable `key`, `ai`, `ai_provider_openai` and
-`metatag_ai` in that order, then configure a provider and an API key. `key` is
-not declared as a module dependency by either the provider or `metatag_ai`, so
-enable it explicitly. Enabling a provider without configured credentials raises
-an exception, which is why none of these is enabled by default.
-
-`metatag_ai` declares `core_version_requirement: ^11`, so it becomes usable for
-the first time in this release.
-
-### Other contributed modules
-
-`fontawesome` moves from 2.26 to 3.0. Its field type, widget and formatter
-plugin ids are unchanged, and the settings it stores survive the update. The
-CKEditor 4 plugin it used to carry was removed upstream; this distribution
-does not use it.
-
-A number of further contributed modules move to newer releases that their
-existing constraints already permitted.
-
-### Unstable releases in this series
-
-Several packages have no stable release that supports Drupal 11. They are
-constrained with `@dev` or `@beta`, which permits an unstable release rather
-than requiring one: as soon as a stable release supporting Drupal 11 is
-published, it will be preferred automatically, with no change to the
-distribution. Five are new to this release; `youtube` has carried a beta
-constraint since 2.0 and is listed here for completeness.
-
-| Package | State |
-| --- | --- |
-| `field_group_table` | development branch |
-| `webform_mautic` | development branch |
-| `cloud` | beta |
-| `bootstrap_cloud` | beta |
-| `rigel` | beta |
-| `youtube` | beta (unchanged since 2.0) |
-
-Two consequences are worth knowing. Development and beta releases are not
-covered by drupal.org security advisories. And a development release is a
-moving branch, so the exact code your site receives depends on when you
-install.
-
-## 8 — Verify
+## Step 8 — Verify
 
 - `drush status` reports Drupal 11.4.x and a successful bootstrap.
 - `drush core:requirements --severity=2` reports no core update or security
   coverage errors.
 - The front page and a page of each content type render, and the page
-  container structure is unchanged. If your theme extends `bootstrap5`,
-  compare the rendered markup against a capture taken before the update.
+  container structure is unchanged. Compare each page against the capture
+  taken in Step 6 — the markup as well as the screenshot if your theme
+  extends `bootstrap5`.
 - Content editing: open a node edit form, confirm CKEditor 5 loads.
 - Any field groups on your form and view displays still show their groups.
 - The administration interface loads with Gin.
@@ -503,32 +660,42 @@ minor, never for a patch within the minor you are on.
 ### Build the target list
 
 Core and its vendor libraries are fixed in `composer.lock`, and a partial
-update does not move packages you do not name. Read **both** `why-not` forms to
-derive the list:
+update does not move packages you do not name. Find the target release as in
+Step 6 — the highest `11.4.` release that `composer show
+drupal/core-recommended --all` lists — and read **both** `why-not` forms,
+replacing `TARGET` with that version:
 
 ```
-composer why-not drupal/core-recommended <latest 11.4.x>
-composer why-not drupal/core <latest 11.4.x>
+composer why-not drupal/core-recommended TARGET
+composer why-not drupal/core TARGET
 ```
 
 `core-recommended` pins core's vendor tree, so the first lists the vendor
 packages that must move, with the version each needs. Core also pins some
 vendor packages directly — `twig/twig` is one — and those appear only in the
-second. Give each vendor package the version `why-not` reported, in the form
-`vendor/package:~7.4.13`.
+second.
+
+Two commands are enough here, where Step 6 needs three. The third form,
+`why-not genero/kamihaya_cms`, finds packages that fall outside a *new*
+distribution release's constraints; a core security release leaves the
+distribution where it is, so there is nothing for it to find.
 
 ### The command
 
-Name the four core packages together, with any vendor packages `why-not`
+Name the four core packages together, with the vendor packages `why-not`
 listed, and **no** dependency flag:
 
 ```
 composer update \
   drupal/core drupal/core-recommended \
   drupal/core-composer-scaffold drupal/core-project-message \
-  "<each vendor package with its required version>" \
+  VERSIONED_PACKAGES \
   --dry-run
 ```
+
+Replace `VERSIONED_PACKAGES` with each vendor package `why-not` reported,
+quoted with the version it reported, for example `"symfony/console:~7.4.13"`,
+separated by spaces.
 
 Review the dry-run, then run it again without `--dry-run`. Two checks:
 
@@ -543,16 +710,23 @@ Review the dry-run, then run it again without `--dry-run`. Two checks:
 
 ### Afterwards
 
+List the queued database updates first:
+
 ```
 drush updatedb:status
+```
+
+A patch-level security release usually queues few or no database updates.
+Review the list, and proceed only when it is what you expect:
+
+```
 drush updb -y
 drush cr
 drush status --field=drupal-version
 ```
 
-A patch-level security release usually queues few or no database updates, but
-run `updatedb:status` and `updb` regardless. Confirm the resolved core version
-with `drush status`.
+Run `updb` even when the list is empty. Confirm the resolved core version with
+`drush status`.
 
 ### Knowing an update is needed
 
@@ -560,8 +734,8 @@ with `drush status`.
   Run it periodically, not only after an upgrade.
 - `drush core:requirements --severity=2` reports when core security coverage is
   missing or an update is due.
-- Core security releases are announced at drupal.org/security; the Drupal
-  security team publishes them on a published schedule.
+- Core security releases are announced at drupal.org/security, on a regular
+  schedule.
 
 ## Notes
 
@@ -571,5 +745,5 @@ with `drush status`.
   update status: Not secure!" if contributed modules have newer releases
   available. The distribution pins the versions it has verified. If you
   update contributed modules independently, avoid `-W` for the reasons given
-  in step 6.
+  in Step 6.
 - See `UPGRADE_NOTES.md` for ongoing maintenance guidance.

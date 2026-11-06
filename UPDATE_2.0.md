@@ -40,6 +40,47 @@ final minor release. Plan accordingly.
 - Drush 13. The commands in this guide were verified against Drush 13.3.3.
   Note that `drush updb --dry-run` does not exist in Drush 13; use
   `drush updatedb:status` to inspect pending updates.
+- **Stability settings in your root `composer.json`.** Several packages the
+  distribution requires have no stable release yet, and are required with a
+  stability flag such as `@beta` or `@RC`. Composer reads stability flags, and
+  the `minimum-stability` setting, **from the root `composer.json` only**; the
+  distribution's own settings have no effect on your site. Your root must
+  either declare
+
+  ```json
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  ```
+
+  or require each of those packages itself with a stability flag, for example
+  `"drupal/youtube": "^3.0@beta"`. Without one of these, the update fails to
+  resolve. `prefer-stable` is what makes Composer choose a stable release
+  whenever one satisfies the constraint.
+- **Patching enabled in your root `composer.json`.** The distribution ships
+  patches for Drupal core and several contributed modules, applied by
+  `cweagans/composer-patches` 1.x. That plugin applies patches declared by a
+  dependency only when the root allows the plugin and enables patching:
+
+  ```json
+  "config": {
+      "allow-plugins": {
+          "cweagans/composer-patches": true
+      }
+  },
+  "extra": {
+      "enable-patching": true
+  }
+  ```
+
+  Without `enable-patching`, the distribution's patches are skipped without an
+  error and the site runs unpatched code.
+- **Commerce extension modules.** The distribution itself requires none. If
+  your site added Commerce extension modules of its own, confirm that each has
+  a release compatible with Commerce 3 before starting; one that does not will
+  block the Composer update in Step 4.
+- **Run commands from your project root.** Every `composer` and `drush` command
+  in this guide is run from the directory that holds your root
+  `composer.json`.
 - **A full database and files backup.** Several steps run update hooks that
   modify data and are not reversible without a backup.
 
@@ -100,7 +141,7 @@ yourself, without waiting for a Kamihaya CMS release.**
 ## Step 1 — Back up
 
 ```
-drush sql:dump --result-file=../backup-before-2.0.sql --gzip
+drush sql:dump --result-file="$HOME/backup-before-2.0.sql" --gzip
 ```
 
 Also back up the files directory. Do not proceed without a restorable backup:
@@ -132,14 +173,16 @@ site enabled either of them manually:
 drush pm:list --status=enabled --format=list | grep -E "open_ai_metadata|^openai"
 ```
 
-If either is listed, uninstall it before updating:
+If the command lists anything, uninstall **only the modules it listed**, before
+updating. Replace `MODULES` with those module names, separated by spaces:
 
 ```
-drush pmu open_ai_metadata openai
+drush pmu MODULES
 drush cr
 ```
 
-If the command returns nothing, no action is needed.
+Naming a module that is not enabled makes `drush pmu` stop with an error. If
+the command returns nothing, no action is needed.
 
 > These uninstall steps are intentionally manual rather than update hooks. The
 > distribution does not carry code that references removed modules.
@@ -231,9 +274,6 @@ unrelated vendor libraries across major version boundaries. Major vendor jumps
 of this kind can break custom code and are very difficult to attribute
 afterwards.
 
-If you use `-W`, always inspect `--dry-run` output first and look specifically
-for major version changes in non-Drupal packages.
-
 ### Why this is a single operation
 
 Moving from a 1.x release to 2.0.0 cannot be staged module by module. Once your
@@ -248,7 +288,9 @@ So core moves in the same operation as everything else, together with every
 contributed module whose locked 1.x version does not satisfy 2.0.0's
 constraints. Updating modules one at a time is only possible when a site tracks
 a development branch of the distribution, where constraints change one at a
-time. Between release tags it is not.
+time. Between release tags it is not. The one-change-per-step rule in
+`UPGRADE_NOTES.md` applies to developing the distribution, not to a site moving
+between releases; here, the dry-run checks below take its place.
 
 ### Build the target list
 
@@ -258,27 +300,52 @@ Take a `composer.lock` snapshot first, so that you can roll back:
 cp composer.lock composer.lock.bak
 ```
 
-Read the requirements rather than iterating on error messages. Three commands
-are needed:
+Read the requirements rather than iterating on error messages.
+
+First find the target core release: the latest release in the 10.6 series.
+
+```
+composer show drupal/core-recommended --all
+```
+
+The `versions` line lists every published release; take the highest `10.6.`
+release. To print just that version:
+
+```
+composer show drupal/core-recommended --all | grep -oE '10\.6\.[0-9]+' | sort -V | tail -1
+```
+
+Development versions such as `10.6.x-dev` do not match the pattern, so only the
+latest stable release is printed. The release list at
+drupal.org/project/drupal/releases shows the same.
+In the commands below, replace `TARGET` with that version.
+
+Three commands are needed:
 
 ```
 composer why-not genero/kamihaya_cms 2.0.0
-composer why-not drupal/core-recommended <latest 10.6.x>
-composer why-not drupal/core <latest 10.6.x>
+composer why-not drupal/core-recommended TARGET
+composer why-not drupal/core TARGET
 ```
 
 - The first lists the locked packages that block the distribution: core, and the
   contributed modules that must move.
 - The second lists the vendor packages `core-recommended` pins, with the version
   each one needs.
-- The third lists vendor packages that core pins directly rather than through
-  `core-recommended`. Reading only the second misses them.
+- The third lists the contributed modules whose locked versions do not support
+  the target core, **and** the vendor packages that core pins directly rather
+  than through `core-recommended`. `twig/twig` is one of these. Reading only the
+  second misses them. On a move within Drupal 10 the contributed-module part is
+  usually empty.
+
+Each command also lists packages that are already in the command below — the
+four `drupal/core*` packages and the distribution itself. Skip those.
 
 ### The command
 
 Name the distribution, the four core packages, the contributed modules that
-must move, and each vendor package with the version `why-not` reported, in the
-form `vendor/package:<version>`. Use **no** dependency flag:
+must move, and each vendor package with the version `why-not` reported. Use
+**no** dependency flag:
 
 ```
 composer update \
@@ -286,12 +353,22 @@ composer update \
   drupal/core drupal/core-recommended \
   drupal/core-composer-scaffold drupal/core-project-message \
   drupal/commerce drupal/webform drupal/xmlsitemap drupal/youtube \
-  "<each vendor package with its required version>" \
+  NAMED_PACKAGES \
+  VERSIONED_PACKAGES \
   --dry-run
 ```
 
-The four contributed modules are the ones listed under "Contributed modules
-updated" above. Add any other module the first `why-not` reports for your site.
+Replace the two placeholders, separated by spaces, naming each package once,
+in one of the two places:
+
+- `VERSIONED_PACKAGES` — each package you give a version, quoted, in the form
+  `"vendor/package:VERSION"`: the vendor packages the two core `why-not` commands
+  reported, and any package you pin after reading the dry-run (see below).
+- `NAMED_PACKAGES` — any other package the `why-not` commands listed, by name
+  alone. Leave it out if there are none.
+
+The four contributed modules already in the command are the ones listed under
+"Contributed modules updated" above.
 The modules removed in this release do not need to be named: once the
 distribution no longer requires them, Composer removes them in the same
 operation. That is why Step 2 must come first.
@@ -343,16 +420,22 @@ confusing to diagnose.
 
 ## Step 6 — Run database updates
 
+Because Step 4 moved core and the contributed modules in one operation, this
+single run applies all of their update hooks. List them first:
+
+```
+drush updatedb:status
+```
+
+**Review the list before going further.** Updating core from 10.4.10 runs
+`system_update_10600`; a site starting from a different 10.x release may see
+more. The Commerce update hooks write to order data — see the Commerce notes
+below. Proceed only when the list is what you expect:
+
 ```
 drush updb
 drush cr
 ```
-
-Because Step 4 moved core and the contributed modules in one operation, this
-single run applies all of their update hooks. Inspect them first with
-`drush updatedb:status`. Updating core from 10.4.10 runs `system_update_10600`;
-a site starting from a different 10.x release may see more. The Commerce update
-hooks write to order data — see the Commerce notes below.
 
 ## Step 7 — Contributed module notes
 
@@ -380,23 +463,16 @@ module.
 
 ### commerce (2.x to 3.x)
 
-A major upgrade, and the only step that modifies order data.
+A major upgrade, and the only one that modifies order data.
 
-- **Back up the database first.** In Commerce 3 the order balance became a base
-  field, and update hooks (`commerce_order_update_82xx`) backfill the balance
-  for all existing orders. This is a data write and is not reversible without a
-  backup.
-- Clear the container caches before running `drush updb`, as Commerce 3 removes
-  deprecated service classes:
-  ```
-  drush sqlq "TRUNCATE cache_container; TRUNCATE cache_bootstrap; TRUNCATE cache_discovery; TRUNCATE cache_config;"
-  drush cr
-  drush updb
-  ```
-- No Commerce extension modules are used by this distribution, so the Composer
-  upgrade resolves cleanly, with no `commerce_base` or `commerce_cart_api`
-  blockers. If your site added Commerce extension modules of its own, check
-  their Commerce 3 compatibility before starting.
+- **Order data is rewritten in Step 6.** In Commerce 3 the order balance became
+  a base field, and update hooks (`commerce_order_update_82xx`) backfill the
+  balance for all existing orders. This write is not reversible, which is why
+  the backup in Step 1 is mandatory.
+- Commerce 3 removes deprecated service classes. This is one of the reasons
+  Step 5 clears the container caches before the first `drush cr`.
+- Commerce extension modules added by your site must be compatible with
+  Commerce 3; see Prerequisites.
 - Behaviour change: the "Add payment" form is now a single page. To keep the
   previous two-step form, set the following in `settings.php`:
   ```php
@@ -437,32 +513,42 @@ minor, never for a patch within the minor you are on.
 ### Build the target list
 
 Core and its vendor libraries are fixed in `composer.lock`, and a partial
-update does not move packages you do not name. Read **both** `why-not` forms to
-derive the list:
+update does not move packages you do not name. Find the target release as in
+Step 4 — the highest `10.6.` release that `composer show
+drupal/core-recommended --all` lists — and read **both** `why-not` forms,
+replacing `TARGET` with that version:
 
 ```
-composer why-not drupal/core-recommended <latest 10.6.x>
-composer why-not drupal/core <latest 10.6.x>
+composer why-not drupal/core-recommended TARGET
+composer why-not drupal/core TARGET
 ```
 
 `core-recommended` pins core's vendor tree, so the first lists the vendor
 packages that must move, with the version each needs. Core also pins some
 vendor packages directly — `twig/twig` is one — and those appear only in the
-second. Give each vendor package the version `why-not` reported, in the form
-`vendor/package:<version>`.
+second.
+
+Two commands are enough here, where Step 4 needs three. The third form,
+`why-not genero/kamihaya_cms`, finds packages that fall outside a *new*
+distribution release's constraints; a core security release leaves the
+distribution where it is, so there is nothing for it to find.
 
 ### The command
 
-Name the four core packages together, with any vendor packages `why-not`
+Name the four core packages together, with the vendor packages `why-not`
 listed, and **no** dependency flag:
 
 ```
 composer update \
   drupal/core drupal/core-recommended \
   drupal/core-composer-scaffold drupal/core-project-message \
-  "<each vendor package with its required version>" \
+  VERSIONED_PACKAGES \
   --dry-run
 ```
+
+Replace `VERSIONED_PACKAGES` with each vendor package `why-not` reported,
+quoted with the version it reported in the form `"vendor/package:VERSION"`,
+separated by spaces.
 
 Review the dry-run, then run it again without `--dry-run`. Two checks:
 
@@ -477,16 +563,23 @@ Review the dry-run, then run it again without `--dry-run`. Two checks:
 
 ### Afterwards
 
+List the queued database updates first:
+
 ```
 drush updatedb:status
+```
+
+A patch-level security release usually queues few or no database updates.
+Review the list, and proceed only when it is what you expect:
+
+```
 drush updb -y
 drush cr
 drush status --field=drupal-version
 ```
 
-A patch-level security release usually queues few or no database updates, but
-run `updatedb:status` and `updb` regardless. Confirm the resolved core version
-with `drush status`.
+Run `updb` even when the list is empty. Confirm the resolved core version with
+`drush status`.
 
 ### Knowing an update is needed
 
@@ -494,8 +587,8 @@ with `drush status`.
   Run it periodically, not only after an upgrade.
 - `drush core:requirements --severity=2` reports when core security coverage is
   missing or an update is due.
-- Core security releases are announced at drupal.org/security; the Drupal
-  security team publishes them on a published schedule.
+- Core security releases are announced at drupal.org/security, on a regular
+  schedule.
 
 ## Notes
 
