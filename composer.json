@@ -176,7 +176,7 @@
         "drupal/responsive_preview": "^2.1",
         "drupal/rigel": "^8.0@beta",
         "drupal/scheduled_transitions": "^2.7",
-        "drupal/scheduler": "^2.1",
+        "drupal/scheduler": "^2.3.1",
         "drupal/seckit": "^2.0",
         "drupal/select_or_other": "^4.1",
         "drupal/shield": "^1.7",

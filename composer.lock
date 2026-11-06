@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e961e051a3a4dd34aa7d334d07f92564",
+    "content-hash": "f42ac86958d797887970ac58a29bdcbb",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -8064,24 +8064,26 @@
         },
         {
             "name": "drupal/scheduler",
-            "version": "2.1.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/scheduler.git",
-                "reference": "2.1.0"
+                "reference": "2.3.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/scheduler-2.1.0.zip",
-                "reference": "2.1.0",
-                "shasum": "aea0f1dc40cfbc75f470860998d773a8749bcee2"
+                "url": "https://ftp.drupal.org/files/projects/scheduler-2.3.1.zip",
+                "reference": "2.3.1",
+                "shasum": "65a49574c8de1849257749f7ceb819cc61e0130c"
             },
             "require": {
-                "drupal/core": "^8 || ^9 || ^10 || ^11"
+                "drupal/core": "^9 || ^10 || ^11"
             },
             "require-dev": {
+                "doctrine/annotations": "*",
                 "drupal/commerce": "^2 || ^3",
-                "drupal/devel_generate": ">=4",
+                "drupal/devel": "*",
+                "drupal/devel_generate": "*",
                 "drupal/rules": "^3 || ^4",
                 "drupal/workbench_moderation": "*",
                 "drupal/workbench_moderation_actions": "*",
@@ -8090,8 +8092,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.1.0",
-                    "datestamp": "1723723795",
+                    "version": "2.3.1",
+                    "datestamp": "1793820105",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
